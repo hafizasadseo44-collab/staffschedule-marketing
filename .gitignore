@@ -51,6 +51,12 @@ find_slugs.js
 install-npm.js
 yarn.js
 
-# prisma local db (deploy separately)
+# prisma local db
+*.db
+*.db-journal
 prisma/dev.db
-prisma/dev.db-journal
+prisma/dummy.db
+
+# old config formats (using next.config.js)
+next.config.mjs
+next.config.ts
