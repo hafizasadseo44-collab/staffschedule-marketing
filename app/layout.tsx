@@ -20,7 +20,18 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
+  ...(process.env.SITE_PRIVATE_MODE === 'true' && {
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
+  }),
 };
+
 
 export default async function RootLayout({
   children,

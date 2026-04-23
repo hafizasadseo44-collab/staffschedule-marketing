@@ -8,6 +8,37 @@ const key = new TextEncoder().encode(JWT_SECRET);
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // 1. GLOBAL PRIVATE MODE PROTECTION
+  if (process.env.SITE_PRIVATE_MODE === 'true') {
+    const authHeader = request.headers.get('authorization');
+
+    if (!authHeader) {
+      return new NextResponse('Authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Secure Area"',
+        },
+      });
+    }
+
+    const auth = authHeader.split(' ')[1];
+    const [user, pwd] = atob(auth).split(':');
+
+    // Default username: 'admin', Password from ENV
+    const validUser = 'admin';
+    const validPass = process.env.SITE_PASSWORD || 'staff2026';
+
+    if (user !== validUser || pwd !== validPass) {
+      return new NextResponse('Authentication failed', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Secure Area"',
+        },
+      });
+    }
+  }
+
+  // 2. PATHNAME TRACKING
   // Set x-pathname header on the REQUEST so Server Components can read it
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-pathname', pathname);
@@ -19,6 +50,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  // 3. ADMIN PANEL PROTECTION
   // Protect /admin routes, excluding /admin/login
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const token = request.cookies.get('admin_token')?.value;
@@ -39,5 +71,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/|robots.txt).*)'],
 };
+

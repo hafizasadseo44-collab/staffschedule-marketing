@@ -2,7 +2,12 @@ import { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (process.env.SITE_PRIVATE_MODE === 'true') {
+    return [];
+  }
+
   const BASE = "https://staffschedule.io";
+
   const now = new Date();
 
   // 1. Fetch dynamic blog posts
