@@ -88,13 +88,14 @@ export default function FeaturesGrid() {
               <Star size={12} fill="currentColor" /> Powerful Features
             </motion.div>
 
-            <motion.h2 variants={fadeInUp} className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-8 leading-[1.05]">
+            <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05]">
               Everything you need to manage your <span className="text-indigo-600">workforce smarter</span>
             </motion.h2>
 
-            <motion.p variants={fadeInUp} className="text-xl text-slate-500 font-medium leading-relaxed mb-10">
+            <motion.p variants={fadeInUp} className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium leading-relaxed mb-8 sm:mb-10">
               StaffSchedule.io comes packed with powerful features designed to simplify scheduling, reduce errors, and keep your team happy.
             </motion.p>
+
 
             <motion.div variants={fadeInUp} className="mb-12">
               <Link

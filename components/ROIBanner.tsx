@@ -24,12 +24,12 @@ export default function ROIBanner() {
                transition={{ delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 100 }}
                className="flex flex-col items-center justify-center text-center"
              >
-               <span className="text-5xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-2">
-                 {metric.value}
-               </span>
-               <span className="text-xs md:text-sm lg:text-base font-bold text-brand-primary uppercase tracking-widest">
-                 {metric.label}
-               </span>
+                <span className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-1 sm:mb-2">
+                  {metric.value}
+                </span>
+                <span className="text-[10px] sm:text-sm lg:text-base font-bold text-brand-primary uppercase tracking-widest">
+                  {metric.label}
+                </span>
              </motion.div>
            ))}
         </div>

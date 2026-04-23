@@ -55,11 +55,11 @@ export default function GuidesClient() {
   return (
     <div className="space-y-24 pb-32">
       {/* ── Hero Search Section ── */}
-      <section className="relative pt-20 pb-12 overflow-hidden">
+      <section className="relative pt-12 sm:pt-20 pb-8 sm:pb-12 overflow-hidden px-4">
         {/* Background Accents */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-indigo-500/5 blur-[120px] rounded-full -z-10" />
         
-        <div className="max-w-4xl mx-auto text-center space-y-8 px-6">
+        <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8 px-2">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export default function GuidesClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1]"
+            className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1]"
           >
             How can we help you <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">scale today?</span>
           </motion.h1>
@@ -84,17 +84,18 @@ export default function GuidesClient() {
             transition={{ delay: 0.2 }}
             className="relative max-w-2xl mx-auto"
           >
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
+            <Search className="absolute left-5 sm:left-6 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 sm:w-6 sm:h-6" size={24} />
             <input 
               type="text"
-              placeholder="Search features, playbooks, or technical guides..."
+              placeholder="Search features or playbooks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-20 pl-16 pr-8 rounded-[2rem] bg-white border border-slate-200 shadow-2xl shadow-indigo-500/10 text-lg font-bold text-slate-900 placeholder:text-slate-300 outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-500/5 transition-all"
+              className="w-full h-16 sm:h-20 pl-12 sm:pl-16 pr-8 rounded-[1.5rem] sm:rounded-[2rem] bg-white border border-slate-200 shadow-2xl shadow-indigo-500/10 text-base sm:text-lg font-bold text-slate-900 placeholder:text-slate-300 outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-500/5 transition-all"
             />
           </motion.div>
         </div>
       </section>
+
 
       {/* ── Category Grid ── */}
       <section className="max-w-7xl mx-auto px-6">
@@ -158,42 +159,43 @@ export default function GuidesClient() {
 
       {/* ── Spotlight Section ── */}
       <section className="max-w-7xl mx-auto px-6">
-        <div className="bg-slate-900 rounded-[3rem] p-12 lg:p-20 relative overflow-hidden flex flex-col lg:flex-row items-center gap-12">
+        <div className="bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-20 relative overflow-hidden flex flex-col lg:flex-row items-center gap-10 sm:gap-12">
           {/* Background Text */}
-          <div className="absolute -bottom-10 -right-10 text-[200px] font-black text-white/[0.03] select-none pointer-events-none leading-none tracking-tighter">
+          <div className="absolute -bottom-10 -right-10 text-[120px] sm:text-[200px] font-black text-white/[0.03] select-none pointer-events-none leading-none tracking-tighter hidden sm:block">
             PRO
           </div>
 
-          <div className="flex-1 space-y-8 relative z-10">
+          <div className="flex-1 space-y-6 sm:space-y-8 relative z-10 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-[10px] font-black uppercase tracking-widest">
               <Sparkles size={14} className="text-indigo-400" />
               Featured Intelligence
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-              Operational Excellence <br /> <span className="text-indigo-400">Mastery Course</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+              Operational Excellence <br className="hidden sm:block" /> <span className="text-indigo-400">Mastery Course</span>
             </h2>
-            <p className="text-slate-400 text-lg font-bold max-w-xl">
+            <p className="text-slate-400 text-base sm:text-lg font-bold max-w-xl mx-auto lg:mx-0">
               Take a deep dive into the blueprint for scaling a workforce from 10 to 1,000 using StaffSchedule.io's advanced automation suite.
             </p>
             <Link 
               href="/guides/mastering-operational-intelligence"
-              className="inline-flex items-center gap-3 h-14 px-10 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20"
+              className="inline-flex items-center justify-center gap-3 h-14 w-full sm:w-auto px-10 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20"
             >
               Access Blueprint
               <ArrowRight size={18} />
             </Link>
           </div>
 
-          <div className="w-full lg:w-[400px] aspect-square rounded-[2rem] bg-gradient-to-br from-indigo-600 to-violet-700 p-1 shadow-2xl relative group">
+          <div className="w-full lg:w-[400px] aspect-square rounded-[2rem] bg-gradient-to-br from-indigo-600 to-violet-700 p-1 shadow-2xl relative group max-w-[320px] lg:max-w-none">
             <div className="absolute inset-0 bg-white/10 rounded-[1.9rem] backdrop-blur-3xl group-hover:scale-95 transition-transform duration-700" />
-            <div className="relative h-full flex flex-col items-center justify-center p-8 text-center text-white space-y-4">
-              <Target size={60} className="mb-4 text-indigo-300 opacity-50" />
-              <p className="text-[10px] font-black uppercase tracking-widest">Staffing Blueprint v4.2</p>
-              <h4 className="text-2xl font-black tracking-tight leading-tight">Automation & AI Mastery</h4>
+            <div className="relative h-full flex flex-col items-center justify-center p-6 sm:p-8 text-center text-white space-y-4">
+              <Target size={48} className="sm:w-[60px] sm:h-[60px] mb-4 text-indigo-300 opacity-50" />
+              <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Staffing Blueprint v4.2</p>
+              <h4 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Automation & AI Mastery</h4>
             </div>
           </div>
         </div>
       </section>
+
       {/* ── Newsletter Section ── */}
       <section className="max-w-7xl mx-auto px-6">
         <div className="bg-white rounded-[3rem] border border-slate-100 p-12 lg:p-20 text-center space-y-8 relative overflow-hidden">

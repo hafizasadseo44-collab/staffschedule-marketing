@@ -98,8 +98,8 @@ const PremiumFooter = () => {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-16 mb-24">
           
           {/* Brand Info */}
-          <div className="xl:col-span-4">
-            <Link href="/" className="flex items-center gap-3 mb-8 group">
+          <div className="xl:col-span-4 text-center xl:text-left">
+            <Link href="/" className="flex items-center justify-center xl:justify-start gap-3 mb-8 group">
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-xl shadow-indigo-500/20 group-hover:rotate-6 transition-transform">
                 <CalendarRange className="text-white w-6 h-6" />
               </div>
@@ -107,11 +107,11 @@ const PremiumFooter = () => {
                 StaffSchedule<span className="text-indigo-500">.io</span>
               </span>
             </Link>
-            <p className="text-lg text-slate-400 font-medium mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-400 font-medium mb-8 leading-relaxed max-w-xl mx-auto xl:mx-0">
               The world&apos;s most advanced workforce orchestration platform. Built for the modern enterprise, designed for the human experience.
             </p>
 
-            <div className="mb-10">
+            <div className="mb-10 max-w-sm mx-auto xl:mx-0">
               <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">
                 Join our Newsletter
               </h4>
@@ -119,7 +119,7 @@ const PremiumFooter = () => {
             </div>
 
             
-            <div className="flex gap-3">
+            <div className="flex justify-center xl:justify-start gap-3">
               {socialLinks.map((social, i) => (
                 <Link 
                   key={i} 
@@ -137,7 +137,7 @@ const PremiumFooter = () => {
           </div>
 
           {/* Links Sections */}
-          <div className="xl:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-12">
+          <div className="xl:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 text-center sm:text-left">
             {footerLinks.map((section, idx) => (
               <motion.div 
                 key={section.title}
@@ -146,7 +146,7 @@ const PremiumFooter = () => {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
               >
-                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-8">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-6 sm:mb-8">
                   {section.title}
                 </h4>
                 <ul className="space-y-4">
@@ -154,9 +154,9 @@ const PremiumFooter = () => {
                     <li key={link.name}>
                       <Link 
                         href={link.href}
-                        className="text-sm text-slate-400 hover:text-white font-bold transition-colors flex items-center group"
+                        className="text-sm text-slate-400 hover:text-white font-bold transition-colors flex items-center justify-center sm:justify-start group"
                       >
-                        <span className="w-0 h-0.5 bg-indigo-500 mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300" />
+                        <span className="hidden sm:block w-0 h-0.5 bg-indigo-500 mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300" />
                         {link.name}
                       </Link>
                     </li>
@@ -165,6 +165,7 @@ const PremiumFooter = () => {
               </motion.div>
             ))}
           </div>
+
         </div>
 
         {/* --- BOTTOM BAR --- */}

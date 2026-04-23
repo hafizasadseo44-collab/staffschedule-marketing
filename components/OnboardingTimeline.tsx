@@ -65,12 +65,12 @@ export default function OnboardingTimeline() {
       <div className="max-w-[1200px] mx-auto px-6 relative z-10">
         
         {/* Header Section */}
-        <div className="text-center mb-24 lg:mb-32">
+        <div className="text-center mb-16 lg:mb-32">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] mb-8 border border-slate-800 shadow-xl"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] mb-6 sm:mb-8 border border-slate-800 shadow-xl"
           >
             <Sparkles size={12} className="text-yellow-400" /> Frictionless Onboarding
           </motion.div>
@@ -79,7 +79,7 @@ export default function OnboardingTimeline() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.95]"
+            className="text-3xl sm:text-4xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.95]"
           >
             Live in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600">3 simple steps.</span>
           </motion.h2>
@@ -89,11 +89,12 @@ export default function OnboardingTimeline() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed px-4"
           >
             Ditch the training manuals. Most teams are fully operational and publishing their first schedule in <span className="text-slate-900 font-black">under 10 minutes</span>.
           </motion.p>
         </div>
+
 
         {/* Vertical Stepper Container */}
         <div className="relative space-y-32 lg:space-y-48">

@@ -50,20 +50,21 @@ const PricingHero = () => {
            transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Subtle Trust Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-6 sm:mb-8">
             <Award className="w-4 h-4 text-indigo-500" />
             <span className="text-xs font-semibold text-slate-600">Rated #1 in Workforce Optimization</span>
           </div>
  
-          <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
-            Simple pricing for <br />
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
+            Simple pricing for <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">elite teams.</span>
           </h1>
           
-          <p className="text-lg lg:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed px-2">
             One transparent monthly rate to power your entire operation. No hidden fees. No complex tiers.
           </p>
         </motion.div>
+
 
         {/* Improved Logo Marquee Integration */}
         <div className="mt-20">

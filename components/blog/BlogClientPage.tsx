@@ -125,16 +125,16 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* ═══ HERO SECTION ═══ */}
-        <section className="pt-44 pb-20 text-center">
+        <section className="pt-32 sm:pt-44 pb-12 sm:pb-20 text-center px-4">
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
             <motion.h1 
               {...fadeUp}
-              className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] mb-8 text-balance"
+              className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6 sm:mb-8 text-balance"
             >
-              Insights & Resources for <br />
+              Insights & Resources for <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600">
                 Smarter Team Management
               </span>
@@ -144,11 +144,12 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
           <motion.p 
             {...fadeUp}
             transition={{ ...fadeUp.transition, delay: 0.1 }}
-            className="text-lg text-slate-500 max-w-2xl mx-auto mb-12 font-medium"
+            className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto mb-8 sm:mb-12 font-medium"
           >
             Stay updated with the latest tips, trends, and best practices for <br className="hidden md:block" />
             efficient team management and AI integration.
           </motion.p>
+
 
           {/* Search Bar (Pill) */}
           <motion.div 
@@ -204,56 +205,52 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
             viewport={fadeUp.viewport}
             animate={floating.animate}
             transition={{ ...fadeUp.transition, delay: 0.4 }}
-            className="pb-32"
+            className="pb-24 sm:pb-32"
           >
             <Link href={`/blog/${featuredPost.slug}`}>
-              <div className="group relative bg-white/40 backdrop-blur-xl rounded-[3rem] border border-white shadow-[0_40px_80px_-20px_rgba(0,0,0,0.05)] p-6 md:p-10 flex flex-col lg:flex-row gap-12 hover:shadow-[0_60px_100px_-20px_rgba(79,70,229,0.15)] hover:bg-white/60 transition-all duration-700">
+              <div className="group relative bg-white/40 backdrop-blur-xl rounded-[2rem] sm:rounded-[3rem] border border-white shadow-[0_40px_80px_-20px_rgba(0,0,0,0.05)] p-4 sm:p-6 md:p-10 flex flex-col lg:flex-row gap-8 sm:gap-12 hover:shadow-[0_60px_100px_-20px_rgba(79,70,229,0.15)] hover:bg-white/60 transition-all duration-700">
                 {/* Animated Glowing Border Effect */}
-                <div className="absolute inset-x-0 inset-y-0 -m-1 rounded-[3.1rem] border-2 border-transparent bg-gradient-to-r from-indigo-500/0 via-indigo-500/20 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="absolute inset-x-0 inset-y-0 -m-1 rounded-[2.1rem] sm:rounded-[3.1rem] border-2 border-transparent bg-gradient-to-r from-indigo-500/0 via-indigo-500/20 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 
                 {/* Image Section */}
-                <div className="lg:w-1/2 aspect-[1.1] relative">
+                <div className="lg:w-1/2 aspect-video lg:aspect-[1.1] relative">
                   <div className="absolute inset-0 bg-indigo-500/10 blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <motion.div 
                     whileHover={{ scale: 1.02, rotateY: -5 }}
-                    className="relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl z-10"
+                    className="relative w-full h-full rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl z-10"
                   >
                     <img src={featuredPost.image} alt={featuredPost.title} className="w-full h-full object-cover" />
-                    <div className="absolute top-6 left-6 px-5 py-2.5 rounded-2xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg">
+                    <div className="absolute top-4 sm:top-6 left-4 sm:left-6 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-indigo-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-lg">
                       Featured
                     </div>
                   </motion.div>
                 </div>
 
                 {/* Content Section */}
-                <div className="lg:w-1/2 flex flex-col justify-center items-start">
-                  <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest mb-8">
+                <div className="lg:w-1/2 flex flex-col justify-center items-start px-2 sm:px-0">
+                  <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest mb-6 sm:mb-8">
                     {featuredPost.category}
                   </div>
-                  <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[1.05] mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-[1.1] sm:leading-[1.05] mb-6 sm:mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     {featuredPost.title}
                   </h2>
-                  <p className="text-lg text-slate-500 leading-relaxed mb-10 font-medium">
+                  <p className="text-base sm:text-lg text-slate-500 leading-relaxed mb-8 sm:mb-10 font-medium line-clamp-3 lg:line-clamp-none">
                     {featuredPost.excerpt}
                   </p>
                   
                   {/* Metadata */}
-                  <div className="flex flex-wrap items-center gap-8 mb-12 text-[11px] font-black text-slate-300 uppercase tracking-widest">
-                    <div className="flex items-center gap-2.5">
-                      <Calendar size={15} className="text-slate-200" />
-                      {new Date(featuredPost.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-8 mb-10 sm:mb-12 text-[10px] sm:text-[11px] font-black text-slate-300 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
+                      <Calendar size={14} className="text-slate-200" />
+                      {new Date(featuredPost.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <Clock size={15} className="text-slate-200" />
+                    <div className="flex items-center gap-2 sm:gap-2.5">
+                      <Clock size={14} className="text-slate-200" />
                       {featuredPost.readTime}
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <User size={15} className="text-slate-200" />
-                      {featuredPost.author}
                     </div>
                   </div>
 
-                  <div className="px-8 py-4 rounded-2xl bg-indigo-50 text-indigo-600 text-[11px] font-black uppercase tracking-widest flex items-center gap-4 group-hover:bg-indigo-600 group-hover:text-white group-hover:translate-x-2 transition-all font-bold">
+                  <div className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-indigo-50 text-indigo-600 text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-4 group-hover:bg-indigo-600 group-hover:text-white group-hover:translate-x-2 transition-all font-bold">
                     Read More
                     <ArrowRight size={18} />
                   </div>
@@ -261,6 +258,7 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
               </div>
             </Link>
           </motion.section>
+
         )}
 
         {/* ═══ BLOG CARDS GRID ═══ */}

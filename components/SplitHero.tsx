@@ -81,7 +81,7 @@ export default function SplitHero() {
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl sm:text-4xl lg:text-[3.2rem] xl:text-[3.6rem] font-black leading-[1.1] tracking-tight text-slate-900 mb-8"
+                className="text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] font-black leading-[1.1] tracking-tight text-slate-900 mb-6 sm:mb-8"
               >
                 AI-Powered Staff Scheduling. <br className="hidden sm:block" />
                 <motion.span 
@@ -100,7 +100,7 @@ export default function SplitHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
-              className="text-lg lg:text-xl text-slate-500 font-medium leading-relaxed max-w-[600px] mb-10"
+              className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium leading-relaxed max-w-[600px] mb-8 sm:mb-10"
             >
               The all-in-one AI workforce platform to automate complex shift schedules, track real-time labor costs, and optimize your team performance — in minutes, not hours.
             </motion.p>
@@ -110,19 +110,20 @@ export default function SplitHero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 2.0, ease: "easeOut" }}
-              className="flex flex-wrap items-center gap-4 mb-10"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10"
             >
               <Link href="https://app.staffschedule.io/signup.php">
-                <button className="h-14 px-10 rounded-2xl bg-indigo-600 text-white font-black text-sm uppercase tracking-widest hover:shadow-2xl hover:shadow-indigo-500/30 transition-all hover:-translate-y-1 active:scale-95 group">
+                <button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-indigo-600 text-white font-black text-sm uppercase tracking-widest hover:shadow-2xl hover:shadow-indigo-500/30 transition-all hover:-translate-y-1 active:scale-95 group">
                   Start Free Trial
                   <ArrowRight size={18} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
-              <button className="h-14 px-8 rounded-2xl bg-white border border-slate-200 text-slate-600 font-black text-sm uppercase tracking-widest flex items-center gap-3 hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-95 group">
+              <button className="h-14 px-8 rounded-2xl bg-white border border-slate-200 text-slate-600 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-95 group">
                 <Play size={18} className="fill-slate-400 group-hover:fill-slate-900 transition-colors" />
                 Watch Demo
               </button>
             </motion.div>
+
 
             {/* Trust Row */}
             <motion.div
@@ -162,11 +163,11 @@ export default function SplitHero() {
           </div>
 
           {/* ── Right Column: Adjusted Spacing ── */}
-          <div className="lg:col-span-6 xl:col-span-6 relative">
+          <div className="lg:col-span-6 xl:col-span-6 relative mt-12 lg:mt-0">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] as any }}
               className="relative"
             >
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-indigo-500/[0.04] rounded-full blur-[100px] -z-10" />
@@ -185,32 +186,33 @@ export default function SplitHero() {
                   alt="AI Staff Scheduling Dashboard"
                   width={1400}
                   height={1000}
-                  className="w-full h-auto rounded-[1.5rem] shadow-[0_50px_100px_-30px_rgba(79,70,229,0.15)] [mask-image:linear-gradient(to_bottom,black_95%,transparent)]"
+                  className="w-full h-auto rounded-[1.5rem] shadow-[0_30px_60px_-15px_rgba(79,70,229,0.15)] md:shadow-[0_50px_100px_-30px_rgba(79,70,229,0.15)] [mask-image:linear-gradient(to_bottom,black_95%,transparent)]"
                   priority
                   unoptimized
                 />
               </motion.div>
 
+              {/* Floating Cost Card - Adjusted for Mobile */}
               <motion.div
                 initial={{ opacity: 0, x: -20, y: 20 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ duration: 0.8, delay: 2.8 }}
-                className="absolute -left-10 -bottom-6 z-20"
+                className="absolute -left-4 sm:-left-10 -bottom-6 z-20 scale-75 sm:scale-100 origin-bottom-left"
               >
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="bg-white/95 backdrop-blur-xl p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[220px]"
+                  className="bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[180px] sm:w-[220px]"
                 >
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Labor Cost This Week</p>
-                  <div className="flex items-end justify-between gap-4 mb-3">
-                    <h4 className="text-xl font-black text-slate-900">$16,450</h4>
-                    <div className="flex items-center gap-1 text-emerald-500 font-bold text-xs">
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 sm:mb-2">Labor Cost This Week</p>
+                  <div className="flex items-end justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
+                    <h4 className="text-lg sm:text-xl font-black text-slate-900">$16,450</h4>
+                    <div className="flex items-center gap-1 text-emerald-500 font-bold text-[10px] sm:text-xs">
                       <TrendingUp size={12} />
                       8%
                     </div>
                   </div>
-                  <div className="h-8 w-full flex items-end gap-1">
+                  <div className="h-6 sm:h-8 w-full flex items-end gap-0.5 sm:gap-1">
                     {[30, 50, 40, 60, 45, 75, 50, 85].map((h, i) => (
                       <div key={i} className="flex-1 bg-indigo-500/10 rounded-t-[1px]" style={{ height: `${h}%` }} />
                     ))}
@@ -218,27 +220,28 @@ export default function SplitHero() {
                 </motion.div>
               </motion.div>
 
+              {/* Efficiency Card - Adjusted for Mobile */}
               <motion.div
                 initial={{ opacity: 0, x: 20, y: -20 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{ duration: 0.8, delay: 3.0 }}
-                className="absolute -right-6 top-1/2 -translate-y-1/2 z-20"
+                className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-20 scale-75 sm:scale-100 origin-right"
               >
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="bg-white/95 backdrop-blur-xl p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[170px]"
+                  className="bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[140px] sm:w-[170px]"
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
-                      <BarChart3 size={16} />
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+                      <BarChart3 size={14} className="sm:w-4 sm:h-4" />
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Efficiency</p>
-                      <h4 className="text-lg font-black text-slate-900">98%</h4>
+                      <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-widest">Efficiency</p>
+                      <h4 className="text-base sm:text-lg font-black text-slate-900">98%</h4>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-[10px]">
+                  <div className="flex items-center gap-1 text-emerald-500 font-bold text-[9px] sm:text-[10px]">
                     <TrendingUp size={10} />
                     12% increase
                   </div>
@@ -246,6 +249,7 @@ export default function SplitHero() {
               </motion.div>
             </motion.div>
           </div>
+
         </div>
       </div>
     </section>

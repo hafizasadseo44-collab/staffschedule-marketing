@@ -96,15 +96,15 @@ export default function DashboardShowcase() {
         </div>
 
         {/* Dashboard & Floating Features Container */}
-        <div className="relative max-w-[1200px] mx-auto min-h-[600px] flex items-center justify-center">
+        <div className="relative max-w-[1200px] mx-auto flex flex-col items-center">
           
           {/* Central Dashboard Image (Borderless & Blended) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 w-full lg:w-[75%]"
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as any }}
+            className="relative z-10 w-full lg:w-[75%] mb-12 lg:mb-0"
           >
             {/* Underlying Glow */}
             <div className="absolute inset-0 bg-indigo-500/10 blur-[80px] -z-10 opacity-40" />
@@ -114,13 +114,33 @@ export default function DashboardShowcase() {
               alt="StaffSchedule.io Dashboard Showcase"
               width={1600}
               height={1100}
-              className="w-full h-auto rounded-[1.5rem] shadow-[0_50px_100px_-30px_rgba(79,70,229,0.15)] [mask-image:linear-gradient(to_bottom,black_95%,transparent)]"
+              className="w-full h-auto rounded-[1.5rem] shadow-[0_30px_60px_-15px_rgba(79,70,229,0.15)] md:shadow-[0_50px_100px_-30px_rgba(79,70,229,0.15)] [mask-image:linear-gradient(to_bottom,black_95%,transparent)]"
               priority
               unoptimized
             />
           </motion.div>
 
-          {/* Floating Feature Cards */}
+          {/* Feature Cards Grid (Mobile/Tablet) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full xl:hidden">
+            {FEATURE_CARDS.map((card, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: i * 0.1 }}
+                className="bg-white p-6 rounded-3xl shadow-[0_15px_30px_-5px_rgba(0,0,0,0.05)] border border-slate-50 flex flex-col items-start text-left"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-5">
+                  {card.icon}
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-2 tracking-tight">{card.title}</h4>
+                <p className="text-sm text-slate-500 font-bold leading-relaxed">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Floating Feature Cards (Desktop Only) */}
           {FEATURE_CARDS.map((card, i) => (
             <motion.div
               key={i}
@@ -150,6 +170,7 @@ export default function DashboardShowcase() {
             </motion.div>
           ))}
         </div>
+
 
         {/* ── Logos Section ── */}
         <div className="mt-32 mb-20 text-center">
