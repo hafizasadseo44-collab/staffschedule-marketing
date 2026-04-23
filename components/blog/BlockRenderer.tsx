@@ -12,7 +12,9 @@ interface Block {
   attrs?: Record<string, any>;
   text?: string;
   marks?: any[];
+  content?: Block[];
 }
+
 
 const SEO_INTERNAL_LINKS = [
   { keywords: ["staff scheduling", "shift scheduling"], url: "/blog", category: "Scheduling" },

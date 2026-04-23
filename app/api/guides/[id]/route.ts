@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { sendNotificationEmails } from '@/lib/email';
+
+export const dynamic = 'force-dynamic';
+
+
 
 export async function GET(
   request: Request,
@@ -56,11 +61,17 @@ export async function PATCH(
 
     const { id } = await params;
     const body = await request.json();
+
+    // Check existing status to avoid duplicate emails
+    const existingRaw = await db.$queryRawUnsafe(`SELECT isPublished, title, slug, excerpt, description, coverImage FROM Guide WHERE id = ? LIMIT 1`, id) as any[];
+    const existing = existingRaw[0];
+
     const { 
       title, slug, description, content, excerpt, 
       coverImage, pdfUrl, categoryId, categoryName, isFeatured, isPublished,
       seoTitle, seoDescription
     } = body;
+
 
     if (body.incrementDownload) {
       await db.$executeRawUnsafe(`UPDATE Guide SET downloadCount = downloadCount + 1 WHERE id = ?`, id);
@@ -102,7 +113,23 @@ export async function PATCH(
     publishedVal, publishedVal,
     seoTitle || null, seoDescription || null, now, id);
 
+    // Automated Email Notification Trigger
+    // Only send if it's being published NOW (wasn't published before)
+    if (!!isPublished && (!existing || !existing.isPublished)) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
+      
+      // Fire and forget
+      sendNotificationEmails({
+        type: 'guide',
+        title: title || existing?.title,
+        description: excerpt || description || existing?.excerpt || existing?.description || "A new guide from StaffSchedule.io",
+        url: `${siteUrl}/guides/${slug || existing?.slug}`,
+        imageUrl: coverImage || existing?.coverImage || undefined
+      }).catch(err => console.error('[Notification Error]:', err));
+    }
+
     return NextResponse.json({ id, success: true });
+
   } catch (error: any) {
     console.error("PATCH Guide Error (Raw SQL):", error);
     return NextResponse.json({ error: 'Failed to update guide: ' + error.message }, { status: 500 });

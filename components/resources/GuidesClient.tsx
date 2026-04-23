@@ -14,6 +14,8 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import SubscribeForm from "../SubscribeForm";
+
 
 export default function GuidesClient() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -192,6 +194,20 @@ export default function GuidesClient() {
           </div>
         </div>
       </section>
+      {/* ── Newsletter Section ── */}
+      <section className="max-w-7xl mx-auto px-6">
+        <div className="bg-white rounded-[3rem] border border-slate-100 p-12 lg:p-20 text-center space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500" />
+          <div className="max-w-2xl mx-auto space-y-4">
+            <h2 className="text-4xl font-black text-slate-900 tracking-tight">Stay ahead of the curve</h2>
+            <p className="text-slate-500 font-bold">Get the latest labor cost reports and operational playbooks delivered directly to your inbox.</p>
+          </div>
+          <div className="flex justify-center">
+            <SubscribeForm type="guides" />
+          </div>
+        </div>
+      </section>
     </div>
+
   );
 }

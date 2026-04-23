@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { sendNotificationEmails } from '@/lib/email';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -102,7 +104,23 @@ export async function POST(request: Request) {
       }
     }
 
+    // Automated Email Notification Trigger
+    if (!!published) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
+      const postType = (type || 'ARTICLE') === 'NEWS' ? 'news' : 'blog';
+      
+      // Fire and forget (don't await to keep API fast)
+      sendNotificationEmails({
+        type: postType,
+        title: title,
+        description: excerpt || "A new update from StaffSchedule.io",
+        url: `${siteUrl}/${postType === 'news' ? 'news' : 'blog'}/${slug}`,
+        imageUrl: image || undefined
+      }).catch(err => console.error('[Notification Error]:', err));
+    }
+
     return NextResponse.json(post);
+
   } catch (error: any) {
     if (error?.code === 'P2002') {
       return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { sendNotificationEmails } from '@/lib/email';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -81,7 +83,22 @@ export async function POST(request: Request) {
        !!isFeatured ? 1 : 0, !!isPublished ? 1 : 0, 
        seoTitle || null, seoDescription || null, now, now);
 
+    // Automated Email Notification Trigger
+    if (!!isPublished) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
+      
+      // Fire and forget
+      sendNotificationEmails({
+        type: 'guide',
+        title: title,
+        description: excerpt || description || "A new guide from StaffSchedule.io",
+        url: `${siteUrl}/guides/${slug}`,
+        imageUrl: coverImage || undefined
+      }).catch(err => console.error('[Notification Error]:', err));
+    }
+
     return NextResponse.json({ id, title, slug });
+
   } catch (error: any) {
     console.error("POST Guide Error:", error);
     return NextResponse.json({ error: 'Failed to create guide' }, { status: 500 });

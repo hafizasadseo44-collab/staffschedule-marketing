@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { SpotlightCard } from "../ui/SpotlightCard";
 import AuraBackground from "@/components/blog/AuraBackground";
+import SubscribeForm from "../SubscribeForm";
+
 
 // --- ANIMATION VARIANTS ---
 const fadeUp = {
@@ -391,16 +393,10 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
                   No spam, just signal.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input 
-                  type="email" 
-                  placeholder="Enter your work email"
-                  className="flex-1 h-16 px-6 rounded-2xl bg-white/5 border border-white/10 text-white placeholder:text-slate-500 outline-none focus:border-indigo-500 focus:bg-white/10 transition-all font-medium"
-                />
-                <button className="h-16 px-10 rounded-2xl bg-indigo-600 text-white font-black uppercase tracking-widest text-xs hover:bg-indigo-500 hover:shadow-[0_0_40px_-5px_rgba(79,70,229,0.5)] transition-all">
-                  Subscribe
-                </button>
+              <div className="max-w-md">
+                <SubscribeForm variant="dark" type="blog" />
               </div>
+
             </div>
           </div>
         </section>

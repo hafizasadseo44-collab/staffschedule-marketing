@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import SubscribeForm from "./SubscribeForm";
+
 
 const Twitter = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
@@ -105,9 +107,17 @@ const PremiumFooter = () => {
                 StaffSchedule<span className="text-indigo-500">.io</span>
               </span>
             </Link>
-            <p className="text-lg text-slate-400 font-medium mb-10 leading-relaxed">
-              The world's most advanced workforce orchestration platform. Built for the modern enterprise, designed for the human experience.
+            <p className="text-lg text-slate-400 font-medium mb-8 leading-relaxed">
+              The world&apos;s most advanced workforce orchestration platform. Built for the modern enterprise, designed for the human experience.
             </p>
+
+            <div className="mb-10">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">
+                Join our Newsletter
+              </h4>
+              <SubscribeForm variant="dark" buttonText="Join" />
+            </div>
+
             
             <div className="flex gap-3">
               {socialLinks.map((social, i) => (

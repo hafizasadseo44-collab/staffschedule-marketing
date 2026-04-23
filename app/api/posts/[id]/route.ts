@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { sendNotificationEmails } from '@/lib/email';
+
+export const dynamic = 'force-dynamic';
+
+
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -10,6 +15,13 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     const { id } = await context.params;
     const body = await request.json();
     const { title, slug, content, excerpt, image, published, category, type, featured, authorId, focusKeyword, seoTitle, canonicalUrl } = body;
+
+    // Check existing status to avoid duplicate emails
+    const existingPost = await db.post.findUnique({
+      where: { id },
+      select: { published: true }
+    });
+
 
     if (featured) {
       await db.post.updateMany({
@@ -68,7 +80,24 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       post = { id, title, slug };
     }
 
+    // Automated Email Notification Trigger
+    // Only send if it's being published NOW (wasn't published before)
+    if (!!published && (!existingPost || !existingPost.published)) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
+      const postType = (type || 'ARTICLE') === 'NEWS' ? 'news' : 'blog';
+      
+      // Fire and forget
+      sendNotificationEmails({
+        type: postType,
+        title: title,
+        description: excerpt || "A new update from StaffSchedule.io",
+        url: `${siteUrl}/${postType === 'news' ? 'news' : 'blog'}/${slug}`,
+        imageUrl: image || undefined
+      }).catch(err => console.error('[Notification Error]:', err));
+    }
+
     return NextResponse.json(post);
+
   } catch (error: any) {
     if (error?.code === 'P2002') {
       return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });

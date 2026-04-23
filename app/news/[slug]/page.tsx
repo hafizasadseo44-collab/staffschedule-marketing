@@ -4,6 +4,8 @@ import PremiumNavbar from '@/components/PremiumNavbar';
 import PremiumFooter from '@/components/PremiumFooter';
 import { Calendar, Globe, Megaphone, Share2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import SubscribeForm from '@/components/SubscribeForm';
+
 
 // ─────────────────────────────────────────────────────
 // TIPTAP JSON TO HTML RENDERER (Server Side)
@@ -141,6 +143,12 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
            <p className="text-[11px] text-slate-400 font-medium leading-relaxed max-w-2xl">
              <strong>About StaffSchedule.io:</strong> StaffSchedule.io is a global leader in AI-driven workforce management and operational intelligence. Our platform empowers thousands of enterprises across healthcare, retail, and hospitality to optimize labor costs and enhance team performance through data-driven scheduling.
            </p>
+
+           <div className="mt-12 p-8 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 max-w-2xl">
+             <h4 className="text-lg font-black text-slate-900 dark:text-white mb-4">Stay updated with our latest news</h4>
+             <SubscribeForm type="news" />
+           </div>
+
         </div>
       </article>
 
