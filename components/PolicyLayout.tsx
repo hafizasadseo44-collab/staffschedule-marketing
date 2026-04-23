@@ -29,41 +29,43 @@ const PolicyLayout = ({ title, description, lastUpdated, children }: PolicyLayou
 
       <div className="relative z-10 pt-32 pb-32">
         {/* ═══ HERO HEADER ═══ */}
-        <header className="max-w-4xl mx-auto px-6 mb-20 text-center">
+        <header className="max-w-4xl mx-auto px-4 sm:px-6 mb-12 sm:mb-20 text-center">
            <motion.div 
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.8 }}
            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-indigo-100/50">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] mb-6 sm:mb-8 border border-indigo-100/50">
                  <Shield size={12} />
                  Legal Center
               </div>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 mb-8 leading-none">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-slate-900 mb-6 sm:mb-8 leading-[1.1] sm:leading-none">
                  {title.split(' ').map((word, i) => (
                    <span key={i} className={cn(i === 1 ? "text-brand-primary italic":"")}>
                      {word}{' '}
                    </span>
                  ))}
               </h1>
-              <p className="text-xl text-slate-500 font-medium leading-relaxed mb-8 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl text-slate-500 font-medium leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
                  {description}
               </p>
-              <div className="flex items-center justify-center gap-4 text-sm font-bold text-slate-400">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-[12px] sm:text-sm font-bold text-slate-400">
                  <div className="flex items-center gap-2">
                     <CheckCircle size={14} className="text-emerald-500" />
-                    Enterprise-Grade Security
+                    Security
                  </div>
-                 <div className="w-1 h-1 rounded-full bg-slate-300" />
-                 <span>Last Updated: {lastUpdated}</span>
+                 <div className="w-1 h-1 rounded-full bg-slate-300 hidden sm:block" />
+                 <span>Updated: {lastUpdated}</span>
               </div>
            </motion.div>
         </header>
 
+
         <div className="max-w-4xl mx-auto px-6">
            {/* ═══ MAIN CONTENT area ═══ */}
            <main className="space-y-12">
-              <div className="bg-white/60 backdrop-blur-xl rounded-[3rem] border border-white/50 p-8 md:p-20 shadow-2xl shadow-slate-200/50">
+                            <div className="bg-white/60 backdrop-blur-xl rounded-[2rem] sm:rounded-[3rem] border border-white/50 p-6 sm:p-12 md:p-20 shadow-2xl shadow-slate-200/50">
+
                  <div className="prose prose-slate prose-lg lg:prose-xl max-w-none 
                    prose-headings:text-indigo-700 prose-headings:font-black prose-headings:tracking-tight
                    prose-h2:text-indigo-600 prose-h2:text-4xl prose-h2:mb-8 prose-h2:mt-20 prose-h2:border-b prose-h2:border-indigo-50 prose-h2:pb-4

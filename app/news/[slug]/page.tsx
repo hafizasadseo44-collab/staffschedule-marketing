@@ -87,29 +87,30 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
       <PremiumNavbar />
       
       {/* Official Header */}
-      <div className="pt-40 pb-20 border-b border-slate-100 dark:border-slate-800/50 bg-[#FAFBFE] dark:bg-slate-900/30">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <Link href="/about/news" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-primary mb-12 hover:-translate-x-1 transition-transform w-fit">
+      <div className="pt-32 sm:pt-40 pb-12 sm:pb-20 border-b border-slate-100 dark:border-slate-800/50 bg-[#FAFBFE] dark:bg-slate-900/30">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-6">
+          <Link href="/about/news" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-primary mb-8 sm:mb-12 hover:-translate-x-1 transition-transform w-fit">
             <ArrowLeft size={14} /> Back to Newsroom
           </Link>
           
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 bg-brand-primary/10 rounded-2xl flex items-center justify-center text-brand-primary">
-              <Megaphone size={24} />
+          <div className="flex items-center gap-4 mb-6 sm:mb-8">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brand-primary/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-brand-primary shrink-0">
+              <Megaphone size={20} className="sm:w-6 sm:h-6" />
             </div>
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary block mb-1">Official Press Release</span>
-              <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
-                <span className="flex items-center gap-1.5"><Calendar size={13} /> {date}</span>
-                <span className="w-1 h-1 bg-slate-300 rounded-full" />
-                <span className="flex items-center gap-1.5"><Globe size={13} /> Worldwide Distribution</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-brand-primary block mb-1">Official Press Release</span>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-bold text-slate-400">
+                <span className="flex items-center gap-1.5"><Calendar size={12} /> {date}</span>
+                <span className="hidden sm:block w-1 h-1 bg-slate-300 rounded-full" />
+                <span className="flex items-center gap-1.5"><Globe size={12} /> Global Distribution</span>
               </div>
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-[1.1] mb-10">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-[1.2] sm:leading-[1.1] mb-8 sm:mb-10">
             {post.title}
           </h1>
+
 
           <div className="flex flex-wrap items-center gap-10 pt-10 border-t border-slate-200/60 dark:border-slate-800/60">
              <div>

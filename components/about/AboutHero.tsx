@@ -56,14 +56,15 @@ export default function AboutHero() {
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black text-slate-900 tracking-[-0.04em] leading-[0.98] mb-8 lg:max-w-[12ch]"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as any }}
+              className="text-4xl sm:text-6xl lg:text-8xl font-black text-slate-900 tracking-[-0.04em] leading-[1.1] sm:leading-[0.98] mb-6 sm:mb-8 lg:max-w-[12ch]"
             >
               Scaling <br className="hidden lg:block" />
-              <span className="text-transparent bg-clip-text inline-block pb-3" style={{ backgroundImage: "linear-gradient(135deg,#4F46E5 0%, #3B82F6 100%)" }}>
+              <span className="text-transparent bg-clip-text inline-block pb-1 sm:pb-3" style={{ backgroundImage: "linear-gradient(135deg,#4F46E5 0%, #3B82F6 100%)" }}>
                 Human Potential.
               </span>
             </motion.h1>
+
 
             {/* Subtext */}
             <motion.p

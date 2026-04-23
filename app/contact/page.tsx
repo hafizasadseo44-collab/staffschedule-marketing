@@ -108,24 +108,25 @@ export default function ContactPage() {
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
-        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-indigo-300 text-[11px] font-black uppercase tracking-[0.25em] mb-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+          <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-indigo-300 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.25em] mb-6 sm:mb-8">
             <MessageSquare className="w-3.5 h-3.5" />
             Contact Us
           </motion.div>
 
-          <motion.h1 {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05] mb-6 text-balance">
+          <motion.h1 {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="text-3xl sm:text-5xl lg:text-7xl font-black text-white tracking-tight leading-[1.2] sm:leading-[1.05] mb-6 text-balance px-2">
             Let's transform your{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-sky-400">
               workforce scheduling.
             </span>
           </motion.h1>
 
-          <motion.p {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.2 }} className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
+          <motion.p {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.2 }} className="text-base sm:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed px-4">
             Schedule a personalized demo, get enterprise pricing, or reach our 24/7 support team —
             we respond within 2 hours.
           </motion.p>
         </div>
+
 
         <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent z-20" />
       </section>

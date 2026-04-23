@@ -81,7 +81,7 @@ export default function SplitHero() {
               <motion.h1
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] font-black leading-[1.1] tracking-tight text-slate-900 mb-6 sm:mb-8"
+                className="text-3xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] font-black leading-[1.2] sm:leading-[1.1] tracking-tight text-slate-900 mb-6 sm:mb-8"
               >
                 AI-Powered Staff Scheduling. <br className="hidden sm:block" />
                 <motion.span 
@@ -94,6 +94,7 @@ export default function SplitHero() {
                 </motion.span>
               </motion.h1>
             </div>
+
 
             {/* SEO Description */}
             <motion.p

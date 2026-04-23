@@ -32,14 +32,15 @@ export default function FounderVision() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.05] mb-8 text-slate-900"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as any }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] sm:leading-[1.05] mb-8 text-slate-900"
             >
               Why we started <br />
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%)" }}>
                 StaffSchedule.io
               </span>
             </motion.h2>
+
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

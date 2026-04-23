@@ -159,18 +159,18 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
   return (
     <div className="min-h-screen bg-white pb-32">
       {/* ── Article Hero ── */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-slate-50/50 border-b border-slate-100">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden bg-slate-50/50 border-b border-slate-100 px-4">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[500px] bg-indigo-500/[0.04] rounded-full blur-[120px]" />
         </div>
 
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <Link href="/guides" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-colors mb-12 no-underline group">
+        <div className="max-w-4xl mx-auto relative z-10">
+          <Link href="/guides" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-colors mb-8 sm:mb-12 no-underline group">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
             Back to Library
           </Link>
           
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
             <div className="px-3 py-1.5 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg shadow-indigo-500/20">
               {guide.categoryName || "General"}
             </div>
@@ -180,13 +180,14 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
             </span>
           </div>
 
-          <h1 className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-8">
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.2] sm:leading-tight mb-6 sm:mb-8">
             {guide.title}
           </h1>
           
-          <p className="text-xl text-slate-500 font-medium leading-relaxed mb-12">
+          <p className="text-lg sm:text-xl text-slate-500 font-medium leading-relaxed mb-10 sm:mb-12">
             {guide.description}
           </p>
+
 
           <div className="flex flex-wrap items-center gap-8 pt-8 border-t border-slate-200">
             <div className="flex items-center gap-4">

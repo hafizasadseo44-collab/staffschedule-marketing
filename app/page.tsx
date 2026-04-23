@@ -184,10 +184,11 @@ export default async function Home() {
   try {
     const rawPosts = await db.$queryRaw`
       SELECT * FROM Post 
-      WHERE published = 1 AND type = 'ARTICLE'
+      WHERE published = 1 AND (type = 'ARTICLE' OR type = 'NEWS')
       ORDER BY createdAt DESC
       LIMIT 6
     ` as any[];
+
 
     latestBlogs = rawPosts.map(post => ({
       ...post,

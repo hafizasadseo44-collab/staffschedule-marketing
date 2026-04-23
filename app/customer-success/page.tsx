@@ -41,42 +41,43 @@ export default function CustomerSuccessPage() {
                 Global Enterprise Success Stories
              </div>
              
-             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[110px] font-black text-brand-dark dark:text-white mb-6 lg:mb-10 tracking-tighter leading-[1] lg:leading-[0.85]">
+             <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-[110px] font-black text-brand-dark dark:text-white mb-6 lg:mb-10 tracking-tighter leading-[1.1] sm:leading-[1] lg:leading-[0.85]">
                 Proven results for <br className="hidden md:block"/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-indigo-500 to-emerald-500 pb-2 inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-indigo-500 to-emerald-500 pb-1 sm:pb-2 inline-block">
                   modern enterprises.
                 </span>
              </h1>
              
-             <p className="text-lg md:text-xl lg:text-3xl font-medium text-brand-slate dark:text-slate-400 leading-relaxed max-w-3xl mx-auto px-2 lg:px-0">
+             <p className="text-base sm:text-xl lg:text-3xl font-medium text-brand-slate dark:text-slate-400 leading-relaxed max-w-3xl mx-auto px-4 lg:px-0">
                 Discover how 5,000+ operations leaders across 4 continents use StaffSchedule.io to eliminate labor waste.
              </p>
           </div>
         </div>
 
         {/* Dynamic Glass Metrics Strip */}
-        <div className="max-w-6xl mx-auto relative z-20">
-            <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-3xl border border-border rounded-[2rem] lg:rounded-[3rem] p-6 md:p-10 lg:p-14 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 lg:gap-12 md:divide-x divide-slate-200 dark:divide-slate-800/80">
+        <div className="max-w-6xl mx-auto relative z-20 px-2 sm:px-4">
+            <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-3xl border border-border rounded-[1.5rem] sm:rounded-[3rem] p-6 sm:p-10 lg:p-14 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-12 md:divide-x divide-slate-200 dark:divide-slate-800/80">
                     <div className="text-center">
-                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-2 lg:mb-4 tracking-tighter">12M<span className="text-brand-primary">+</span></div>
-                       <div className="text-[9px] sm:text-[10px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"><Zap className="w-3 h-3 lg:w-4 lg:h-4 text-brand-primary" /> Shifts Managed</div>
+                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-1 sm:mb-4 tracking-tighter">12M<span className="text-brand-primary">+</span></div>
+                       <div className="text-[9px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex items-center justify-center gap-1 sm:gap-2"><Zap className="w-3 h-3 lg:w-4 lg:h-4 text-brand-primary" /> Shifts</div>
                     </div>
                     <div className="text-center">
-                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-primary mb-2 lg:mb-4 tracking-tighter">99.8<span className="text-emerald-500">%</span></div>
-                       <div className="text-[9px] sm:text-[10px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"><ShieldCheck className="w-3 h-3 lg:w-4 lg:h-4 text-emerald-500" /> Roster Accuracy</div>
+                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-primary mb-1 sm:mb-4 tracking-tighter">99.8<span className="text-emerald-500">%</span></div>
+                       <div className="text-[9px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex items-center justify-center gap-1 sm:gap-2"><ShieldCheck className="w-3 h-3 lg:w-4 lg:h-4 text-emerald-500" /> Accuracy</div>
                     </div>
                     <div className="text-center">
-                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-2 lg:mb-4 tracking-tighter mt-2 sm:mt-4 md:mt-0"><span className="text-emerald-500">$</span>45M</div>
-                       <div className="text-[9px] sm:text-[10px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"><TrendingUp className="w-3 h-3 lg:w-4 lg:h-4 text-emerald-500" /> Client ROI</div>
+                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-1 sm:mb-4 tracking-tighter mt-0"><span className="text-emerald-500">$</span>45M</div>
+                       <div className="text-[9px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex items-center justify-center gap-1 sm:gap-2"><TrendingUp className="w-3 h-3 lg:w-4 lg:h-4 text-emerald-500" /> ROI</div>
                     </div>
                     <div className="text-center">
-                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-2 lg:mb-4 tracking-tighter mt-2 sm:mt-4 md:mt-0"><span className="text-brand-primary">-</span>85<span className="text-brand-primary">%</span></div>
-                       <div className="text-[9px] sm:text-[10px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"><Globe className="w-3 h-3 lg:w-4 lg:h-4 text-brand-primary" /> Risk Dropped</div>
+                       <div className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-1 sm:mb-4 tracking-tighter mt-0"><span className="text-brand-primary">-</span>85<span className="text-brand-primary">%</span></div>
+                       <div className="text-[9px] sm:text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest sm:tracking-[0.2em] flex items-center justify-center gap-1 sm:gap-2"><Globe className="w-3 h-3 lg:w-4 lg:h-4 text-brand-primary" /> Risk</div>
                     </div>
                 </div>
             </div>
         </div>
+
       </section>
 
       {/* 1.5 Authenticity Guarantee Banner */}

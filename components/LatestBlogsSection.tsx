@@ -78,8 +78,9 @@ export default function LatestBlogsSection({ posts = [] }: LatestBlogsSectionPro
               >
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-100/80 text-indigo-700 font-black text-[10px] uppercase tracking-widest mb-6 border border-indigo-200">
-                  <Sparkles size={12} /> From the Blog
+                  <Sparkles size={12} /> Latest Updates
                 </div>
+
 
                 {/* Massive Title */}
                 <h2 className="text-4xl md:text-5xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-6 leading-[1.1] line-clamp-3">
@@ -93,12 +94,13 @@ export default function LatestBlogsSection({ posts = [] }: LatestBlogsSectionPro
 
                 {/* CTA Button */}
                 <Link 
-                  href={`/blog/${activePost?.slug || ''}`}
+                  href={activePost?.type === 'NEWS' ? `/news/${activePost?.slug || ''}` : `/blog/${activePost?.slug || ''}`}
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-[1rem] font-black text-sm uppercase tracking-widest hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5 transition-all mb-8 group"
                 >
-                  Read Blog
+                  Read {activePost?.type === 'NEWS' ? 'Update' : 'Blog'}
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
+
 
                 {/* Meta */}
                 <div className="flex items-center gap-6 text-sm font-semibold text-slate-500">

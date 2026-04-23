@@ -247,45 +247,46 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
 
       <main className="relative pt-32 pb-32">
         {/* ═══ HERO SECTION (TWO COLUMNS) ═══ */}
-        <header className="max-w-7xl mx-auto px-6 mb-12 lg:mb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center text-left">
+        <header className="max-w-7xl mx-auto px-4 sm:px-6 mb-10 lg:mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center text-left">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
                 {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 mb-8 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
+                <div className="flex items-center gap-2 mb-6 sm:mb-8 text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase overflow-x-auto whitespace-nowrap pb-2 sm:pb-0 scrollbar-hide">
                    <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-                   <ChevronRight size={10} />
+                   <ChevronRight size={10} className="shrink-0" />
                    <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
-                   <ChevronRight size={10} />
-                   <span className="text-indigo-600/60 truncate max-w-[200px]">{post.category || "Intelligence"}</span>
+                   <ChevronRight size={10} className="shrink-0" />
+                   <span className="text-indigo-600/60 truncate max-w-[150px] sm:max-w-[200px]">{post.category || "Intelligence"}</span>
                 </div>
 
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[11px] font-black uppercase tracking-widest mb-6 border border-indigo-100/50">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] sm:text-[11px] font-black uppercase tracking-widest mb-4 sm:mb-6 border border-indigo-100/50">
                    {post.category || "Intelligence"}
                 </div>
-                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15] mb-8 text-balance bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.2] sm:leading-[1.15] mb-6 sm:mb-8 text-balance bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                    {post.title}
                 </h1>
-                <p className="text-lg text-slate-500 mb-10 leading-relaxed font-medium">
+                <p className="text-base sm:text-lg text-slate-500 mb-8 sm:mb-10 leading-relaxed font-medium">
                   {post.excerpt || "Explore the latest frameworks and strategies powering high-performance workforce management."}
                 </p>
                 
-                <div className="flex flex-wrap items-center gap-6 text-[13px] font-semibold text-slate-400 border-t border-slate-100 pt-8">
+                <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-slate-400 border-t border-slate-100 pt-6 sm:pt-8">
                    <Link href={`/blog/author/${post.author?.slug || 'staffschedule-team'}`} className="flex items-center gap-2 group cursor-pointer transition-colors">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 group-hover:border-indigo-300 transition-all">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 group-hover:border-indigo-300 transition-all">
                         <img src={getAuthorAvatar()} alt={post.author?.name || "Author"} />
                       </div>
                       <span className="text-slate-900 font-bold group-hover:text-indigo-600 transition-colors">{post.author?.name || "StaffSchedule Team"}</span>
                    </Link>
                    <div className="flex items-center gap-2">
-                      <Calendar size={14} />
+                      <Calendar size={13} />
                       {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                    </div>
                    <div className="flex items-center gap-2">
-                      <Clock size={14} />
+                      <Clock size={13} />
                       {readingTime} min read
                    </div>
                 </div>
              </motion.div>
+
 
              <motion.div 
                initial={{ opacity: 0, scale: 0.95 }} 
@@ -308,20 +309,21 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
           
           {/* LEFT: TOC SIDEBAR (Sticky on Desktop, Natural Flow on Mobile) */}
-          <aside className="lg:col-span-3 relative lg:sticky lg:top-32 h-fit mb-12 lg:mb-20 z-40 lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto custom-scrollbar pr-0 lg:pr-2">
-             <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+          <aside className="lg:col-span-3 relative lg:sticky lg:top-32 h-fit mb-8 lg:mb-20 z-40 lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto custom-scrollbar pr-0 lg:pr-2">
+             <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
                 <button 
                   onClick={() => setIsTocExpanded(!isTocExpanded)}
-                  className="w-full flex items-center justify-between p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white transition-all hover:opacity-95"
+                  className="w-full flex items-center justify-between p-4 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white transition-all hover:opacity-95"
                 >
-                   <span className="text-xs font-black uppercase tracking-[0.2em]">Table of Contents</span>
+                   <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em]">Table of Contents</span>
                    <motion.div
                      animate={{ rotate: isTocExpanded ? 180 : 0 }}
                      transition={{ duration: 0.3 }}
                    >
-                      <ChevronRight size={18} className="rotate-90" />
+                      <ChevronRight size={18} className="rotate-90 shrink-0" />
                    </motion.div>
                 </button>
+
 
                 <AnimatePresence>
                    {isTocExpanded && (
