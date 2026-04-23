@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -30,8 +28,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -43,3 +42,15 @@ next-env.d.ts
 # local npm cache
 .npm-local
 
+# scratch / temp files
+/scratch
+errors.txt
+errors_utf8.txt
+check-db.js
+find_slugs.js
+install-npm.js
+yarn.js
+
+# prisma local db (deploy separately)
+prisma/dev.db
+prisma/dev.db-journal

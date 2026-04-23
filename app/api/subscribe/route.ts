@@ -10,6 +10,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Valid email is required' }, { status: 400 });
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
     // Default preferences if not provided
     const blog = preferences?.blog ?? true;
     const news = preferences?.news ?? true;
@@ -17,7 +25,7 @@ export async function POST(request: Request) {
 
     // Upsert the subscriber: create new or update existing
     const subscriber = await db.subscriber.upsert({
-      where: { email },
+      where: { email: normalizedEmail },
       update: {
         blog,
         news,
@@ -25,7 +33,7 @@ export async function POST(request: Request) {
         active: true, // reactivate if they were unsubscribed
       },
       create: {
-        email,
+        email: normalizedEmail,
         blog,
         news,
         guides,
@@ -33,7 +41,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, subscriber });
+    return NextResponse.json({ success: true, id: subscriber.id });
   } catch (error: any) {
     console.error("Subscription Error:", error);
     return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 });
