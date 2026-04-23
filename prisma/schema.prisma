@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  content      String
+  excerpt      String?
+  image        String?
+  category     String?  @default("Scheduling")
+  type         String   @default("ARTICLE")
+  featured     Boolean  @default(false)
+  published    Boolean  @default(false)
+  focusKeyword String?
+  seoTitle     String?
+  canonicalUrl String?
+  authorId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  author       Author?  @relation(fields: [authorId], references: [id])
+}
+
+model Author {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  bio       String?
+  avatar    String?
+  gender    String?  @default("not_specified")
+  twitter   String?
+  linkedin  String?
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  facebook  String?
+  posts     Post[]
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  color     String   @default("#6366f1")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guide {
+  id             String         @id @default(cuid())
+  title          String
+  slug           String         @unique
+  description    String
+  content        String?
+  excerpt        String?
+  coverImage     String?
+  pdfUrl         String?
+  categoryId     String?
+  categoryName   String         @default("General")
+  isFeatured     Boolean        @default(false)
+  isPublished    Boolean        @default(true)
+  downloadCount  Int            @default(0)
+  viewCount      Int            @default(0)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  category       GuideCategory? @relation(fields: [categoryId], references: [id])
+}
+
+model GuideCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  description String?
+  guides      Guide[]
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  blog      Boolean  @default(true)
+  news      Boolean  @default(true)
+  guides    Boolean  @default(true)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

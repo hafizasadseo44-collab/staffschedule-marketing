@@ -1,0 +1,2 @@
+﻿components/simulation/scenes/SimulationSchedule.tsx(175,25): error TS2304: Cannot find name 'CalendarDays'.
+
