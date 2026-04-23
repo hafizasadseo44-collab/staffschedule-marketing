@@ -9,6 +9,7 @@ import GuideManager from "@/components/admin/GuideManager";
 import GuideCategoryManager from "@/components/admin/GuideCategoryManager";
 import CategoryManager from "@/components/admin/CategoryManager";
 import ProfileManager from "@/components/admin/ProfileManager";
+import AccountManager from "@/components/admin/AccountManager";
 import SettingsManager from "@/components/admin/SettingsManager";
 import { Loader2 } from "lucide-react";
 
@@ -234,6 +235,7 @@ export default function AdminDashboard() {
           profileForm={profileForm} setProfileForm={setProfileForm} 
           saveProfile={saveProfile} profileSaving={profileSaving} handleAvatarUpload={handleAvatarUpload} 
         />;
+      case "account": return <AccountManager />;
       case "settings": return <SettingsManager 
           settings={settings} onSave={saveSettings} 
           saving={settingsSaving} onUpdate={updateSettingField} 

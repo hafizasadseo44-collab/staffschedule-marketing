@@ -6,8 +6,9 @@ import {
   LayoutDashboard, FileText, Newspaper, 
   Tag, User, Globe, LogOut, ChevronRight,
   Sparkles, Settings, BarChart3, BookOpen,
-  LayoutGrid
+  LayoutGrid, Shield
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
@@ -49,9 +50,11 @@ export default function AdminSidebar({ activeView, onViewChange }: AdminSidebarP
     {
       label: "System",
       items: [
+        { id: "account", label: "Account Security", icon: Shield },
         { id: "settings", label: "Settings", icon: Settings, disabled: false },
       ]
     }
+
   ];
 
   return (
