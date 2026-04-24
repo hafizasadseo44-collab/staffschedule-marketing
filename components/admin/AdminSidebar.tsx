@@ -50,7 +50,6 @@ export default function AdminSidebar({ activeView, onViewChange }: AdminSidebarP
     {
       label: "System",
       items: [
-        { id: "account", label: "Account Security", icon: Shield },
         { id: "settings", label: "Settings", icon: Settings, disabled: false },
       ]
     }
