@@ -119,7 +119,7 @@ export default function DemoVideoSection() {
                   <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-white ml-1" />
                 </motion.div>
                 <p className="text-white font-bold mt-5 text-lg tracking-wide opacity-80">
-                  Watch 3-min demo
+                  Watch Platform Overview
                 </p>
               </div>
             )}

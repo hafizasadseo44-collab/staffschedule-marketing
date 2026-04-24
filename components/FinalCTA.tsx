@@ -95,7 +95,7 @@ const FinalCTA = () => {
                   href="/contact"
                   className="h-16 px-10 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-2xl text-base font-black hover:-translate-y-1 transition-all flex items-center justify-center"
                 >
-                  Book a Demo
+                  Contact Sales
                 </Link>
              </motion.div>
 

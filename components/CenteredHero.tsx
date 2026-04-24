@@ -115,7 +115,7 @@ export default function CenteredHero() {
           </div>
           <Link href="/contact">
             <button className="h-12 px-7 rounded-xl font-bold text-sm text-slate-600 hover:text-brand-primary border-2 border-slate-200 hover:border-brand-primary/40 bg-white transition-all hover:scale-105">
-              Book a Demo
+              Contact Sales
             </button>
           </Link>
         </motion.div>

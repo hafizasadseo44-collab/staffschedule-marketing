@@ -220,8 +220,8 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
                 <div>
                   <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Ready to implement this?</h3>
                   <p className="text-slate-400 font-medium mb-8">Get a personalized walkthrough of our scheduling engine and see the ROI for your specific workforce.</p>
-                  <Link href="/demo" className="inline-flex items-center gap-2 h-14 px-8 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all no-underline">
-                    Book Personalized Demo
+                  <Link href="/contact" className="inline-flex items-center gap-2 h-14 px-8 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all no-underline">
+                    Contact Sales
                     <ArrowRight size={16} />
                   </Link>
                 </div>

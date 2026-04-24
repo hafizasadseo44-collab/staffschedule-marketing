@@ -75,13 +75,13 @@ const UltimateHero = () => {
                  <ArrowRight className="w-6 h-6 ml-2" />
                </Link>
                <Link 
-                 href="#demo"
+                 href="/contact"
                  className={cn(
                    buttonVariants({ variant: "ghost" }),
                    "w-full sm:w-auto h-16 px-10 border border-border bg-white dark:bg-slate-800 rounded-2xl text-xl font-black hover:bg-slate-50 transition-all flex items-center justify-center pt-0 pb-0"
                  )}
                >
-                 Watch Demo
+                 Contact Sales
                </Link>
             </div>
 

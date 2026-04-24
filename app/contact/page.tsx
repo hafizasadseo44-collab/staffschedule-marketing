@@ -93,7 +93,7 @@ export default function ContactPage() {
   const [formType, setFormType] = useState<"demo" | "sales" | "support">("demo");
 
   const formTypes = [
-    { id: "demo" as const, label: "Request a Demo", icon: CalendarRange, description: "See StaffSchedule.io in action" },
+    { id: "demo" as const, label: "Contact Sales", icon: CalendarRange, description: "See StaffSchedule.io in action" },
     { id: "sales" as const, label: "Talk to Sales", icon: Building2, description: "Get custom enterprise pricing" },
     { id: "support" as const, label: "Get Support", icon: Headphones, description: "Technical help & questions" },
   ];
@@ -138,7 +138,7 @@ export default function ContactPage() {
             {[
               { icon: Mail, title: "Email Us", value: "hello@staffschedule.io", sub: "General & billing inquiries", href: "mailto:hello@staffschedule.io", color: "from-indigo-500 to-blue-500" },
               { icon: Phone, title: "Call Sales", value: "+1 (800) 555-0199", sub: "Mon–Fri, 9am–6pm EST", href: "tel:+18005550199", color: "from-emerald-500 to-teal-500" },
-              { icon: CalendarRange, title: "Book Demo", value: "30-min live walkthrough", sub: "See AI scheduling in action", href: "#contact-form", color: "from-purple-500 to-pink-500" },
+              { icon: CalendarRange, title: "Contact Sales", value: "30-min live walkthrough", sub: "See AI scheduling in action", href: "#contact-form", color: "from-purple-500 to-pink-500" },
             ].map((card, i) => (
               <motion.a key={card.title} href={card.href} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.08 }}
                 className="group bg-white rounded-3xl p-7 border border-slate-200 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
@@ -322,7 +322,7 @@ export default function ContactPage() {
                         type="submit"
                         className="w-full py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 group"
                       >
-                        {formType === "demo" ? "Request My Demo" : formType === "sales" ? "Get Enterprise Quote" : "Submit Support Ticket"}
+                        {formType === "demo" ? "Contact Sales" : formType === "sales" ? "Get Enterprise Quote" : "Submit Support Ticket"}
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </button>
 
@@ -366,7 +366,7 @@ export default function ContactPage() {
               <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-7 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl" />
                 <h3 className="text-base font-black mb-5 relative z-10 flex items-center gap-2">
-                  <Sparkles size={16} /> What You Get in a Demo
+                  <Sparkles size={16} /> What You Get with Sales
                 </h3>
                 <div className="space-y-4 relative z-10">
                   {[

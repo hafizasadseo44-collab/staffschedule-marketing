@@ -224,10 +224,12 @@ export default function DashboardShowcase() {
                     <ArrowRight size={18} className="inline-block ml-3 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </Link>
-                <button className="h-16 px-10 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black text-sm uppercase tracking-widest flex items-center gap-4 hover:bg-slate-50 transition-all active:scale-95 group">
-                  <Play size={20} className="fill-indigo-600 text-indigo-600" />
-                  Watch Demo
-                </button>
+                <Link href="/contact">
+                  <button className="h-16 px-10 rounded-2xl bg-white border border-slate-200 text-slate-900 font-black text-sm uppercase tracking-widest flex items-center gap-4 hover:bg-slate-50 transition-all active:scale-95 group">
+                    <Play size={20} className="fill-indigo-600 text-indigo-600" />
+                    Contact Sales
+                  </button>
+                </Link>
               </div>
 
               {/* Mini Trust Row */}

@@ -90,10 +90,10 @@ const HeroSection = () => {
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
-                href="#demo"
+                href="/contact"
                 className="px-8 py-4 bg-white dark:bg-brand-dark border border-border text-brand-dark dark:text-white rounded-2xl text-lg font-black hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center"
               >
-                Watch Demo
+                Contact Sales
               </Link>
             </div>
 

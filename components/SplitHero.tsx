@@ -119,10 +119,12 @@ export default function SplitHero() {
                   <ArrowRight size={18} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
-              <button className="h-14 px-8 rounded-2xl bg-white border border-slate-200 text-slate-600 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-95 group">
-                <Play size={18} className="fill-slate-400 group-hover:fill-slate-900 transition-colors" />
-                Watch Demo
-              </button>
+              <Link href="/contact">
+                <button className="h-14 px-8 rounded-2xl bg-white border border-slate-200 text-slate-600 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-95 group">
+                  <Play size={18} className="fill-slate-400 group-hover:fill-slate-900 transition-colors" />
+                  Contact Sales
+                </button>
+              </Link>
             </motion.div>
 
 

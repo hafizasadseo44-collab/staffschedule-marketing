@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, CheckCircle2, ShieldCheck, Zap, Bell } from "lucide-react";
+import { ArrowRight, Star, CheckCircle2, ShieldCheck, Zap, Bell, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import HeroDemoAnimation from "@/components/HeroDemoAnimation";
@@ -106,11 +106,10 @@ const EliteHero = () => {
                   </Button>
                </Link>
                
-               <Link href="#demo">
-                  <Button variant="ghost" className="w-full sm:w-auto h-16 px-10 bg-white/50 backdrop-blur-md border border-white dark:bg-slate-800 dark:border-white/10 rounded-2xl text-xl font-black hover:bg-white transition-all shadow-sm">
-                    Watch Demo
-                  </Button>
-               </Link>
+               <Link href="/contact" className="inline-flex h-12 md:h-14 px-8 items-center justify-center rounded-2xl border border-slate-200 bg-white/50 backdrop-blur-md text-sm font-black uppercase tracking-widest text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm group">
+                  <Play size={18} className="mr-2 text-indigo-500 group-hover:scale-110 transition-transform" />
+                  Contact Sales
+                </Link>
             </motion.div>
 
             {/* Trust Indicators */}

@@ -43,10 +43,10 @@ const PricingCTA = () => {
               </Link>
               
               <Link
-                href="/demo"
+                href="/contact"
                 className="w-full sm:w-auto h-16 px-10 bg-indigo-500/20 text-white border border-indigo-400/30 rounded-2xl text-lg font-bold flex items-center justify-center hover:bg-indigo-500/30 transition-all"
               >
-                Schedule Demo
+                Contact Sales
               </Link>
             </div>
 

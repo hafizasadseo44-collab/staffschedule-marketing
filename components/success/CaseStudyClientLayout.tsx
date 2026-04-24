@@ -455,7 +455,7 @@ export default function CaseStudyClientLayout({ study: safeStudy }: Props) {
                </Link>
                <Link href="/contact" className="w-full sm:w-auto">
                   <button className="w-full sm:w-auto h-16 sm:h-20 px-8 sm:px-12 bg-slate-50 dark:bg-slate-900 border border-border text-brand-dark dark:text-white rounded-full font-black text-lg sm:text-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-center">
-                     Request Custom Demo
+                     Contact Sales
                   </button>
                </Link>
             </div>
