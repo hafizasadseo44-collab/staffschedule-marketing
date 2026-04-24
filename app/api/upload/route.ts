@@ -4,6 +4,9 @@ import { writeFile } from 'fs/promises';
 import { join } from 'path';
 // v4 removed, using crypto.randomUUID instead
 import { getSession } from '@/lib/auth';
+ 
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(req: NextRequest) {
   try {

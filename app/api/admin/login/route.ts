@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 import { signToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
+ 
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(request: Request) {
   try {
@@ -16,6 +19,36 @@ export async function POST(request: Request) {
     }
 
     console.log('Querying database for user...');
+    
+    // PRIORITY: Check .env credentials first
+    const envEmail = process.env.ADMIN_EMAIL;
+    const envPassword = process.env.ADMIN_PASSWORD;
+
+    if (email === envEmail && password === envPassword) {
+      console.log('Login matched .env credentials (Super Admin).');
+      
+      // Upsert into DB to ensure account management works
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await db.adminUser.upsert({
+        where: { email },
+        update: { password: hashedPassword },
+        create: { email, password: hashedPassword }
+      });
+
+      const token = await signToken({ userId: user.id, email: user.email });
+      
+      const cookieStore = await cookies();
+      cookieStore.set('admin_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 // 24 hours
+      });
+
+      return NextResponse.json({ success: true });
+    }
+
     let user = await db.adminUser.findUnique({ where: { email } });
 
     // Seed FIRST admin user if database is completely empty (Convenience for SaaS setup)

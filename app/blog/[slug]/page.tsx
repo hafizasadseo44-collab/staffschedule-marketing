@@ -2,6 +2,9 @@ import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import BlogPostClient from '@/components/blog/BlogPostClient';
+ 
+export const dynamic = 'force-dynamic';
+
 
 interface Props {
   params: Promise<{ slug: string }>;

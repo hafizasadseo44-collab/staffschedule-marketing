@@ -5,6 +5,9 @@ import PremiumFooter from '@/components/PremiumFooter';
 import { Calendar, Globe, Megaphone, Share2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import SubscribeForm from '@/components/SubscribeForm';
+ 
+export const dynamic = 'force-dynamic';
+
 
 
 // ─────────────────────────────────────────────────────

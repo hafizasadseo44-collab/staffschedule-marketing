@@ -1,7 +1,9 @@
 import { Resend } from 'resend';
 import { db } from '@/lib/db';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize lazily to avoid build-time errors if ENV is missing
+const getResendClient = () => new Resend(process.env.RESEND_API_KEY || 'dummy_key_for_build');
+
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'StaffSchedule.io <hello@staffschedule.io>';
@@ -160,8 +162,10 @@ export async function sendNotificationEmails(content: EmailContent) {
       }));
 
       try {
+        const resend = getResendClient();
         await resend.batch.send(batchEmails);
         totalSent += batch.length;
+
       } catch (batchError: any) {
         console.error(`[Email] Batch ${i / BATCH_SIZE + 1} failed:`, batchError.message);
       }

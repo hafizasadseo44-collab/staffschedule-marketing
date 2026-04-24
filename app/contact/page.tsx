@@ -386,27 +386,6 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Offices */}
-              <div className="bg-white rounded-3xl p-7 border border-slate-200 shadow-sm">
-                <h3 className="text-base font-black text-slate-900 mb-5">Our Offices</h3>
-                <div className="space-y-4">
-                  {[
-                    { city: "San Francisco, US", address: "100 Market St, Suite 300", time: "9am–6pm PST" },
-                    { city: "London, UK", address: "1 Canada Square, Canary Wharf", time: "9am–6pm GMT" },
-                  ].map((office) => (
-                    <div key={office.city} className="flex gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
-                        <MapPin size={14} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-black text-slate-900">{office.city}</p>
-                        <p className="text-xs text-slate-400">{office.address}</p>
-                        <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5"><Clock size={10} /> {office.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
               {/* Trust Badges */}
               <div className="bg-slate-50 rounded-3xl p-7 border border-slate-100">

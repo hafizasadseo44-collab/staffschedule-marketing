@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/lib/db';
 
-const prisma = new PrismaClient();
+
+export const dynamic = 'force-dynamic';
+
 
 // GET all categories
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany({
+    const categories = await db.category.findMany({
       orderBy: { name: 'asc' },
     });
     return NextResponse.json(categories);
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
 
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-    const category = await prisma.category.create({
+    const category = await db.category.create({
       data: { name, slug, color: color || '#6366f1' },
     });
 

@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import GuideDetailClient from "@/components/resources/GuideDetailClient";
 import { db } from "@/lib/db";
+ 
+export const dynamic = 'force-dynamic';
+
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

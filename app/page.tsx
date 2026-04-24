@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
 import { db } from "@/lib/db";
+ 
+export const dynamic = 'force-dynamic';
+
 const BASE_URL = "https://staffschedule.io";
 
 export const metadata: Metadata = {
