@@ -20,22 +20,31 @@ export async function POST(request: Request) {
 
     console.log('Querying database for user...');
     
-    // PRIORITY: Check .env credentials first
-    const envEmail = process.env.ADMIN_EMAIL;
-    const envPassword = process.env.ADMIN_PASSWORD;
+    // PRIORITY: Check .env credentials first (or hardcoded fallback since .env is gitignored)
+    const envEmail = process.env.ADMIN_EMAIL || 'hafizasadullahseo@gmail.com';
+    const envPassword = process.env.ADMIN_PASSWORD || '@4499Asad';
+
 
     if (email === envEmail && password === envPassword) {
       console.log('Login matched .env credentials (Super Admin).');
       
-      // Upsert into DB to ensure account management works
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await db.adminUser.upsert({
-        where: { email },
-        update: { password: hashedPassword },
-        create: { email, password: hashedPassword }
-      });
+      let userId = 'env-admin';
+      
+      try {
+        // Attempt to upsert into DB to ensure account management works
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await db.adminUser.upsert({
+          where: { email },
+          update: { password: hashedPassword },
+          create: { email, password: hashedPassword }
+        });
+        userId = user.id;
+      } catch (dbError: any) {
+        console.warn('Super Admin DB Sync Failed (Continuing anyway):', dbError.message);
+        // We continue with userId = 'env-admin' so they can still log in
+      }
 
-      const token = await signToken({ userId: user.id, email: user.email });
+      const token = await signToken({ userId, email: envEmail });
       
       const cookieStore = await cookies();
       cookieStore.set('admin_token', token, {
@@ -47,6 +56,7 @@ export async function POST(request: Request) {
       });
 
       return NextResponse.json({ success: true });
+
     }
 
     let user = await db.adminUser.findUnique({ where: { email } });
