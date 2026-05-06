@@ -131,7 +131,7 @@ export default function SplitHero() {
                   Contact Sales
                 </button>
               </LinkPreview>
-              <LinkPreview url="https://app.staffschedule.io/signup.php">
+              <LinkPreview url="https://app.staffschedule.io/signup.php?start_trial=1">
                 <button className="h-12 px-8 rounded-full bg-indigo-600 text-white font-bold text-sm flex items-center gap-2 hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all active:scale-95 group">
                   Start Free Trial
                   <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" />
