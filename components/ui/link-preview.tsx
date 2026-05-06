@@ -76,20 +76,32 @@ export const LinkPreview = ({
   const translateX = useSpring(x, springConfig);
 
   React.useEffect(() => {
-    if (isOpen && !data) {
+    if (isOpen && (!data || isError)) {
       setLoading(true);
+      setError(false);
       fetch(`/api/preview?url=${encodeURIComponent(absoluteUrl)}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch');
+          return res.json();
+        })
         .then(json => {
+          if (json.error) throw new Error(json.error);
           setData(json);
           setLoading(false);
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('LinkPreview fetch error:', err);
           setError(true);
           setLoading(false);
+          // Set some fallback data so it's not blank
+          setData({
+            title: "StaffSchedule.io Intelligence",
+            description: "Empowering the future of workforce management with AI-driven scheduling.",
+            image: null
+          });
         });
     }
-  }, [isOpen, absoluteUrl, data]);
+  }, [isOpen, absoluteUrl]);
 
   const handleMouseMove = (event: any) => {
     const targetRect = event.target.getBoundingClientRect();
@@ -161,13 +173,14 @@ export const LinkPreview = ({
                         </div>
                       ) : (
                         <>
-                          {(data?.image || src) ? (
+                          {((data?.image || src) && !isError) ? (
                             <Image
                               src={data?.image || src}
                               fill
                               className="object-cover"
                               alt="preview"
                               unoptimized
+                              onError={() => setError(true)}
                             />
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center bg-indigo-50 text-indigo-200">

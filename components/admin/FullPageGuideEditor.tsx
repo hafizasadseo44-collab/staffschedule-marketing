@@ -141,6 +141,8 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
           if (isNew && data.length > 0 && !categoryId) {
             setCategoryId(data[0].id);
           }
+        } else {
+          console.warn('Guide categories not an array:', data);
         }
       }
     } catch (e) {
@@ -157,26 +159,35 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
       fetch(`/api/guides/${guideId}`)
         .then(res => res.json())
         .then(data => {
-          setTitle(data.title);
-          setSlug(data.slug);
-          setDescription(data.description || '');
-          setExcerpt(data.excerpt || '');
-          setCoverImage(data.coverImage || '');
-          setPdfUrl(data.pdfUrl || '');
-          setCategoryId(data.categoryId || '');
-          setIsFeatured(data.isFeatured);
-          setIsPublished(data.isPublished);
-          setSeoTitle(data.seoTitle || '');
-          setSeoDescription(data.seoDescription || '');
-          if (editor && data.content) {
-             try {
-               editor.commands.setContent(JSON.parse(data.content));
-             } catch(e) {
-               editor.commands.setContent(data.content);
-             }
+          if (data && !data.error) {
+            setTitle(data.title);
+            setSlug(data.slug);
+            setDescription(data.description || '');
+            setExcerpt(data.excerpt || '');
+            setCoverImage(data.coverImage || '');
+            setPdfUrl(data.pdfUrl || '');
+            setCategoryId(data.categoryId || '');
+            setIsFeatured(data.isFeatured);
+            setIsPublished(data.isPublished);
+            setSeoTitle(data.seoTitle || '');
+            setSeoDescription(data.seoDescription || '');
+            if (editor && data.content) {
+               try {
+                 editor.commands.setContent(JSON.parse(data.content));
+               } catch(e) {
+                 editor.commands.setContent(data.content);
+               }
+            }
+            setLoading(false);
+            setCurrentId(data.id);
+          } else {
+            console.error('Failed to load guide:', data);
+            setLoading(false);
           }
+        })
+        .catch(err => {
+          console.error('Error loading guide:', err);
           setLoading(false);
-          setCurrentId(data.id);
         });
     }
   }, [isNew, guideId, editor]);

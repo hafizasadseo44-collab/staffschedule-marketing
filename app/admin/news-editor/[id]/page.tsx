@@ -141,8 +141,14 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
 
   // Fetch categories and authors from API
   useEffect(() => {
-    fetch('/api/categories').then(r => r.json()).then(setDynamicCategories).catch(() => {});
-    fetch('/api/authors').then(r => r.json()).then(setAuthors).catch(() => {});
+    fetch('/api/categories')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) ? setDynamicCategories(data) : console.warn('Categories not an array:', data))
+      .catch(() => {});
+    fetch('/api/authors')
+      .then(r => r.json())
+      .then(data => Array.isArray(data) ? setAuthors(data) : console.warn('Authors not an array:', data))
+      .catch(() => {});
   }, []);
 
   // Debounced Link Search Effect
@@ -151,7 +157,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
       const timer = setTimeout(() => {
         fetch(`/api/posts/search?q=${encodeURIComponent(linkSearchQuery)}`)
           .then(res => res.json())
-          .then(setLinkSuggestions)
+          .then(data => Array.isArray(data) ? setLinkSuggestions(data) : setLinkSuggestions([]))
           .catch(() => setLinkSuggestions([]));
       }, 300);
       return () => clearTimeout(timer);
@@ -202,6 +208,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   useEffect(() => {
     if (!isNew) {
       fetch(`/api/posts`).then(res => res.json()).then(data => {
+        if (!Array.isArray(data)) return;
         const post = data.find((p: any) => p.id === id);
         if (post) {
           setTitle(post.title);
