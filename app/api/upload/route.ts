@@ -1,8 +1,8 @@
 // Trigger rebuild for uuid fix
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-// v4 removed, using crypto.randomUUID instead
+import { existsSync } from 'fs';
 import { getSession } from '@/lib/auth';
  
 export const dynamic = 'force-dynamic';
@@ -29,16 +29,56 @@ export async function POST(req: NextRequest) {
     const ext = file.name.split('.').pop();
     const filename = `${crypto.randomUUID()}.${ext}`;
     const relativePath = `/uploads/${filename}`;
-    const absolutePath = join(process.cwd(), 'public', 'uploads', filename);
 
-    // Ensure uploads directory exists
-    // (Handled by the setup command, but good to be safe)
+    // Try multiple possible upload directories (standalone build vs dev)
+    const possibleDirs = [
+      join(process.cwd(), 'public', 'uploads'),
+      join(process.cwd(), '.next', 'static', 'uploads'),
+      join(process.cwd(), 'uploads'),
+    ];
 
-    await writeFile(absolutePath, buffer);
+    let uploadDir = possibleDirs[0];
+    
+    // Ensure the uploads directory exists
+    try {
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+        console.log('[Upload] Created directory:', uploadDir);
+      }
+    } catch (mkdirErr: any) {
+      console.warn('[Upload] Could not create primary dir:', mkdirErr.message);
+      // Try fallback directories
+      for (const dir of possibleDirs.slice(1)) {
+        try {
+          if (!existsSync(dir)) {
+            await mkdir(dir, { recursive: true });
+          }
+          uploadDir = dir;
+          console.log('[Upload] Using fallback directory:', dir);
+          break;
+        } catch (e) {
+          continue;
+        }
+      }
+    }
+
+    const absolutePath = join(uploadDir, filename);
+    
+    try {
+      await writeFile(absolutePath, buffer);
+      console.log('[Upload] File written to:', absolutePath);
+    } catch (writeErr: any) {
+      console.error('[Upload] writeFile failed:', writeErr.message);
+      // If filesystem write fails entirely, return a helpful error
+      return NextResponse.json({ 
+        error: 'Upload failed: Server filesystem is read-only. Use an external image URL instead.',
+        details: writeErr.message
+      }, { status: 500 });
+    }
 
     return NextResponse.json({ url: relativePath });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Upload failed: ' + (error.message || 'Unknown error') }, { status: 500 });
   }
 }
