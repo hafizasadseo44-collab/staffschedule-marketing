@@ -6,7 +6,7 @@ import DashboardShowcase from "@/components/DashboardShowcase";
 import HowItWorks from "@/components/HowItWorks";
 import ComparisonSection from "@/components/ComparisonSection";
 import IntegrationsGrid from "@/components/IntegrationsGrid";
-import TestimonialsGrid from "@/components/TestimonialsGrid";
+import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 import PricingTable from "@/components/PricingTable";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
@@ -61,7 +61,7 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <IntegrationsGrid />
 
       {/* 10. Testimonials */}
-      <TestimonialsGrid />
+      <TestimonialsMarquee />
 
       {/* 11. Case Study */}
       <CaseStudySection />
