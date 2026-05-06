@@ -6,6 +6,7 @@ import {
   Info, AlertTriangle, Lightbulb, Quote,
   ExternalLink, ChevronRight, Sparkles
 } from 'lucide-react';
+import { LinkPreview } from '@/components/ui/link-preview';
 
 interface Block {
   type: string;
@@ -325,15 +326,13 @@ function renderContent(content?: Block[]): React.ReactNode {
             case 'link': {
               const relAttr = mark.attrs?.rel || (mark.attrs?.href?.startsWith('http') ? 'noopener noreferrer' : undefined);
               element = (
-                <a
+                <LinkPreview
                   key={`${i}-link`}
-                  href={mark.attrs?.href}
-                  target={mark.attrs?.target || (mark.attrs?.href?.startsWith('http') ? '_blank' : undefined)}
-                  rel={relAttr}
-                  className="text-indigo-600 font-semibold underline underline-offset-4 decoration-indigo-300 decoration-2 hover:text-indigo-900 transition-colors"
+                  url={mark.attrs?.href}
+                  className="text-indigo-600 font-semibold underline underline-offset-4 decoration-indigo-300 decoration-2 hover:text-indigo-900 transition-colors inline-block"
                 >
                   {element}
-                </a>
+                </LinkPreview>
               );
               break;
             }

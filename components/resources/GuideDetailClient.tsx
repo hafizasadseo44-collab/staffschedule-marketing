@@ -15,6 +15,7 @@ import {
   Loader2,
   ArrowRight
 } from "lucide-react";
+import { LinkPreview } from "@/components/ui/link-preview";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -44,15 +45,13 @@ const TiptapRenderer = ({ content }: { content: string }) => {
               if (mark.type === 'link') {
                 const relAttr = mark.attrs?.rel || (mark.attrs?.href?.startsWith('http') ? 'noopener noreferrer' : undefined);
                 text = (
-                  <a 
+                  <LinkPreview 
                     key={index} 
-                    href={mark.attrs.href} 
-                    target={mark.attrs.target || (mark.attrs?.href?.startsWith('http') ? '_blank' : undefined)} 
-                    rel={relAttr}
-                    className="text-indigo-600 underline font-bold"
+                    url={mark.attrs.href} 
+                    className="text-indigo-600 underline font-bold inline-block"
                   >
                     {text}
-                  </a>
+                  </LinkPreview>
                 );
               }
               if (mark.type === 'highlight') text = <mark key={index} style={{ backgroundColor: mark.attrs?.color || '#fbefb3' }}>{text}</mark>;
