@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Globe } from "lucide-react";
 
 type LinkPreviewProps = {
   children: React.ReactNode;
@@ -66,12 +67,29 @@ export const LinkPreview = ({
     src = imageSrc;
   }
   const [isOpen, setOpen] = React.useState(false);
+  const [data, setData] = React.useState<{ title?: string; description?: string; image?: string | null } | null>(null);
   const [isLoading, setLoading] = React.useState(true);
   const [isError, setError] = React.useState(false);
 
   const springConfig = { stiffness: 100, damping: 15 };
   const x = useMotionValue(0);
   const translateX = useSpring(x, springConfig);
+
+  React.useEffect(() => {
+    if (isOpen && !data) {
+      setLoading(true);
+      fetch(`/api/preview?url=${encodeURIComponent(absoluteUrl)}`)
+        .then(res => res.json())
+        .then(json => {
+          setData(json);
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+          setLoading(false);
+        });
+    }
+  }, [isOpen, absoluteUrl, data]);
 
   const handleMouseMove = (event: any) => {
     const targetRect = event.target.getBoundingClientRect();
@@ -89,20 +107,6 @@ export const LinkPreview = ({
 
   return (
     <>
-      {isMounted ? (
-        <div className="hidden">
-          <Image
-            src={src}
-            width={width}
-            height={height}
-            quality={quality}
-            priority={true}
-            alt="hidden image"
-            unoptimized
-          />
-        </div>
-      ) : null}
-
       <HoverCardPrimitive.Root
         openDelay={50}
         closeDelay={100}
@@ -139,62 +143,69 @@ export const LinkPreview = ({
                   },
                 }}
                 exit={{ opacity: 0, y: 20, scale: 0.6 }}
-                className="shadow-2xl rounded-[24px] bg-white p-1 overflow-hidden border border-neutral-200"
+                className="shadow-2xl rounded-[28px] bg-white p-1.5 overflow-hidden border border-neutral-200/50 w-[300px]"
                 style={{
                   x: translateX,
                 }}
               >
                 <Link
                   href={url}
-                  className="block p-1 rounded-[22px] no-underline"
-                  style={{ fontSize: 0 }}
+                  className="block rounded-[24px] no-underline overflow-hidden"
                 >
-                  <div className="bg-neutral-50 rounded-[20px] overflow-hidden">
-                    {/* Header Info */}
-                    <div className="px-4 py-2 border-b border-neutral-200/50 flex items-center gap-2 bg-white">
-                      <img 
-                        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
-                        className="w-4 h-4 rounded-sm"
-                        alt="favicon"
-                      />
-                      <span className="text-[10px] font-bold text-neutral-500 truncate max-w-[150px]">
-                        {domain}
-                      </span>
-                    </div>
-
-                    <div 
-                      className="relative bg-neutral-100"
-                      style={{ width, height }}
-                    >
-                      {isLoading && !isError && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-neutral-50 animate-pulse">
+                  <div className="bg-neutral-50 rounded-[22px] overflow-hidden flex flex-col">
+                    {/* Image Area */}
+                    <div className="relative aspect-[1.8/1] bg-neutral-200 overflow-hidden">
+                      {isLoading ? (
+                        <div className="absolute inset-0 flex items-center justify-center animate-pulse">
                            <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
                         </div>
+                      ) : (
+                        <>
+                          {(data?.image || src) ? (
+                            <Image
+                              src={data?.image || src}
+                              fill
+                              className="object-cover"
+                              alt="preview"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center bg-indigo-50 text-indigo-200">
+                               <Globe className="w-12 h-12 opacity-20" />
+                            </div>
+                          )}
+                        </>
                       )}
-                      
-                      {isError && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-50 p-4 text-center">
-                           <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
-                             Preview Not Available
-                           </span>
-                        </div>
-                      )}
+                    </div>
 
-                      <Image
-                        src={src}
-                        width={width}
-                        height={height}
-                        quality={quality}
-                        priority={true}
-                        className={cn(
-                          "rounded-b-lg transition-opacity duration-300",
-                          isLoading ? "opacity-0" : "opacity-100"
-                        )}
-                        alt="preview image"
-                        unoptimized
-                        onLoad={() => setLoading(false)}
-                        onError={() => setError(true)}
-                      />
+                    {/* Content Area */}
+                    <div className="p-4 bg-white flex flex-col gap-1.5">
+                       <div className="flex items-center gap-2 mb-1">
+                          <img 
+                            src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+                            className="w-3.5 h-3.5 rounded-sm"
+                            alt="favicon"
+                          />
+                          <span className="text-[9px] font-black text-neutral-400 uppercase tracking-widest truncate">
+                            {domain}
+                          </span>
+                       </div>
+                       
+                       {isLoading ? (
+                         <div className="space-y-2">
+                            <div className="h-4 bg-neutral-100 rounded w-3/4 animate-pulse" />
+                            <div className="h-3 bg-neutral-100 rounded w-full animate-pulse" />
+                         </div>
+                       ) : (
+                         <>
+                            <h4 className="text-[13px] font-black text-neutral-800 leading-tight line-clamp-1">
+                               {data?.title || "StaffSchedule.io Intelligence"}
+                            </h4>
+                            <p className="text-[11px] font-medium text-neutral-500 leading-relaxed line-clamp-2">
+                               {data?.description || "Empowering the future of workforce management with AI-driven scheduling."}
+                            </p>
+                         </>
+                       )}
                     </div>
                   </div>
                 </Link>
