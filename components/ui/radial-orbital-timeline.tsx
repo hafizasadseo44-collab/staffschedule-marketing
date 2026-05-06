@@ -83,7 +83,7 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    const radius = 220; // Slightly larger for cleaner look
     const radian = (angle * Math.PI) / 180;
     const x = radius * Math.cos(radian) + centerOffset.x;
     const y = radius * Math.sin(radian) + centerOffset.y;
@@ -115,14 +115,15 @@ export default function RadialOrbitalTimeline({
           style={{ perspective: "1000px", transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)` }}
         >
           {/* Central Nucleus */}
-          <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-600 animate-pulse flex items-center justify-center z-10">
-            <div className="absolute w-20 h-20 rounded-full border border-indigo-400/30 animate-ping opacity-70" />
-            <div className="absolute w-24 h-24 rounded-full border border-indigo-400/15 animate-ping opacity-50" style={{ animationDelay: "0.5s" }} />
-            <div className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md" />
+          <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-[#6C5CE7] to-[#8E7CFF] animate-pulse flex items-center justify-center z-10 shadow-[0_0_40px_rgba(108,92,231,0.4)]">
+            <div className="absolute w-20 h-20 rounded-full border border-[#6C5CE7]/30 animate-ping opacity-70" />
+            <div className="absolute w-24 h-24 rounded-full border border-[#8E7CFF]/20 animate-ping opacity-50" style={{ animationDelay: "0.5s" }} />
+            <div className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md shadow-sm" />
           </div>
 
           {/* Orbit Ring */}
-          <div className="absolute w-96 h-96 rounded-full border border-slate-700/30" />
+          <div className="absolute w-[440px] h-[440px] rounded-full border border-slate-200/60 border-dashed" />
+          <div className="absolute w-[440px] h-[440px] rounded-full border border-[#6C5CE7]/10" />
 
           {/* Nodes */}
           {timelineData.map((item, index) => {
@@ -148,7 +149,7 @@ export default function RadialOrbitalTimeline({
                 <div
                   className={`absolute rounded-full -inset-1 ${isPulsing ? "animate-pulse duration-1000" : ""}`}
                   style={{
-                    background: `radial-gradient(circle, rgba(79,70,229,0.25) 0%, rgba(79,70,229,0) 70%)`,
+                    background: `radial-gradient(circle, rgba(108,92,231,0.15) 0%, rgba(108,92,231,0) 70%)`,
                     width: `${item.energy * 0.5 + 40}px`,
                     height: `${item.energy * 0.5 + 40}px`,
                     left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
@@ -158,12 +159,12 @@ export default function RadialOrbitalTimeline({
 
                 {/* Node Circle */}
                 <div className={`
-                  w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform
+                  w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform shadow-sm
                   ${isExpanded
-                    ? "bg-indigo-600 text-white border-indigo-400 shadow-lg shadow-indigo-500/30 scale-150"
+                    ? "bg-[#6C5CE7] text-white border-[#8E7CFF] shadow-lg shadow-[#6C5CE7]/30 scale-150"
                     : isRelated
-                    ? "bg-indigo-500/50 text-white border-indigo-400 animate-pulse"
-                    : "bg-slate-900 text-white border-slate-600/50"
+                    ? "bg-purple-50 text-[#6C5CE7] border-[#8E7CFF] animate-pulse"
+                    : "bg-white text-slate-500 border-slate-200 hover:border-[#6C5CE7]/50 hover:text-[#6C5CE7]"
                   }
                 `}>
                   <Icon size={16} />
@@ -171,58 +172,58 @@ export default function RadialOrbitalTimeline({
 
                 {/* Label */}
                 <div className={`
-                  absolute top-12 whitespace-nowrap text-xs font-bold tracking-wider transition-all duration-300
-                  ${isExpanded ? "text-white scale-110" : "text-slate-400"}
+                  absolute top-12 whitespace-nowrap text-[11px] font-bold tracking-widest uppercase transition-all duration-300
+                  ${isExpanded ? "text-slate-900 scale-110" : "text-slate-400"}
                 `}>
                   {item.title}
                 </div>
 
-                {/* Expanded Card */}
+                {/* Expanded Card (SaaS Light Theme) */}
                 {isExpanded && (
-                  <div className="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-2xl shadow-indigo-500/10 overflow-visible p-4">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-indigo-500/50" />
-                    <div className="flex justify-between items-center mb-2">
-                      <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border ${
-                        item.status === "completed" ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" :
-                        item.status === "in-progress" ? "text-amber-400 border-amber-500/30 bg-amber-500/10" :
-                        "text-slate-400 border-slate-600/30 bg-slate-600/10"
+                  <div className="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-white/95 backdrop-blur-xl border border-slate-100 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-visible p-5">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-slate-200" />
+                    <div className="flex justify-between items-center mb-3">
+                      <span className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.2em] rounded-full border ${
+                        item.status === "completed" ? "text-emerald-600 border-emerald-100 bg-emerald-50" :
+                        item.status === "in-progress" ? "text-[#6C5CE7] border-[#6C5CE7]/20 bg-[#6C5CE7]/10" :
+                        "text-slate-500 border-slate-200 bg-slate-50"
                       }`}>
                         {item.status === "completed" ? "ACTIVE" : item.status === "in-progress" ? "POPULAR" : "COMING SOON"}
                       </span>
-                      <span className="text-[10px] font-mono text-slate-500">{item.date}</span>
+                      <span className="text-[10px] font-bold text-slate-400">{item.date}</span>
                     </div>
-                    <h4 className="text-sm font-black text-white mb-2">{item.title}</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed mb-3">{item.content}</p>
+                    <h4 className="text-base font-black text-slate-900 mb-2 tracking-tight">{item.title}</h4>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed mb-4">{item.content}</p>
 
-                    <div className="pt-3 border-t border-slate-700/50">
-                      <div className="flex justify-between items-center text-xs mb-1">
-                        <span className="flex items-center text-slate-400">
-                          <Zap size={10} className="mr-1 text-indigo-400" /> Adoption
+                    <div className="pt-4 border-t border-slate-100">
+                      <div className="flex justify-between items-center text-xs mb-2">
+                        <span className="flex items-center text-slate-500 font-bold">
+                          <Zap size={12} className="mr-1 text-[#6C5CE7]" /> Adoption
                         </span>
-                        <span className="font-mono text-indigo-400">{item.energy}%</span>
+                        <span className="font-bold text-[#6C5CE7]">{item.energy}%</span>
                       </div>
-                      <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full" style={{ width: `${item.energy}%` }} />
+                      <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] rounded-full" style={{ width: `${item.energy}%` }} />
                       </div>
                     </div>
 
                     {item.relatedIds.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-slate-700/50">
-                        <div className="flex items-center mb-2">
-                          <LinkIcon size={10} className="text-slate-500 mr-1" />
-                          <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">Related Features</span>
+                      <div className="mt-4 pt-4 border-t border-slate-100">
+                        <div className="flex items-center mb-3">
+                          <LinkIcon size={12} className="text-slate-400 mr-1.5" />
+                          <span className="text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Related Features</span>
                         </div>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-1.5">
                           {item.relatedIds.map((relatedId) => {
                             const related = timelineData.find((i) => i.id === relatedId);
                             return (
                               <button
                                 key={relatedId}
-                                className="flex items-center h-6 px-2 text-[10px] font-bold rounded border border-slate-700/50 bg-transparent hover:bg-indigo-500/10 text-slate-400 hover:text-indigo-400 transition-all"
+                                className="flex items-center h-7 px-2.5 text-[10px] font-bold rounded-lg border border-slate-200 bg-slate-50 hover:bg-[#6C5CE7]/5 hover:border-[#6C5CE7]/30 text-slate-600 hover:text-[#6C5CE7] transition-all"
                                 onClick={(e) => { e.stopPropagation(); toggleItem(relatedId); }}
                               >
                                 {related?.title}
-                                <ArrowRight size={8} className="ml-1" />
+                                <ArrowRight size={10} className="ml-1.5 opacity-50" />
                               </button>
                             );
                           })}

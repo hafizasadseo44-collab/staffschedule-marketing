@@ -4,21 +4,14 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   CalendarCheck2, Users2, RefreshCw, BarChart3,
-  ArrowRight, Star, ShieldCheck, Clock, Users, Zap,
   MessageSquare, MapPin, BellRing, Brain
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
-import { LinkPreview } from "@/components/ui/link-preview";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as any } }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
 };
 
 // --- Orbital Timeline Data (StaffSchedule.io Features) ---
@@ -113,138 +106,54 @@ const featureTimelineData = [
   },
 ];
 
-// --- Bottom Feature Cards ---
-const FEATURE_CARDS = [
-  {
-    icon: <CalendarCheck2 className="w-6 h-6" />,
-    title: "Smart Scheduling",
-    desc: "Create optimized schedules in minutes with drag-and-drop simplicity.",
-    color: "bg-indigo-50 text-indigo-600",
-  },
-  {
-    icon: <Users2 className="w-6 h-6" />,
-    title: "Team Management",
-    desc: "Manage your team, roles, permissions, and availability in one place.",
-    color: "bg-emerald-50 text-emerald-600",
-  },
-  {
-    icon: <RefreshCw className="w-6 h-6" />,
-    title: "Shift Swaps",
-    desc: "Let your team request and approve shift swaps effortlessly.",
-    color: "bg-orange-50 text-orange-600",
-  },
-  {
-    icon: <BarChart3 className="w-6 h-6" />,
-    title: "Reports & Analytics",
-    desc: "Get real-time insights and make better decisions with powerful reports.",
-    color: "bg-sky-50 text-sky-600",
-  },
-];
-
 export default function FeaturesGrid() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
     <section ref={containerRef} className="py-24 lg:py-40 bg-[#FAFBFE] overflow-hidden relative font-sans">
-      {/* Decorative Orbs */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
+      {/* Decorative Minimal Background Elements */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#6C5CE7]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#8E7CFF]/[0.02] rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+      {/* Grid Pattern overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNlNmU4ZjAiLz48L3N2Zz4=')] opacity-50" />
 
-        {/* TOP: Split Layout — Content + Orbital Timeline */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-24 lg:mb-40 items-center">
+      <div className="max-w-[1200px] mx-auto px-6 relative z-10 flex flex-col items-center">
 
-          {/* LEFT COLUMN: Content */}
-          <motion.div
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            variants={staggerContainer}
-            className="lg:col-span-5"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-600 font-black text-[10px] uppercase tracking-widest mb-8 border border-indigo-100">
-              <Star size={12} fill="currentColor" /> Powerful Features
-            </motion.div>
-
-            <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05]">
-              Everything you need to manage your <span className="text-indigo-600">workforce smarter</span>
-            </motion.h2>
-
-            <motion.p variants={fadeInUp} className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium leading-relaxed mb-8 sm:mb-10">
-              StaffSchedule.io comes packed with powerful features designed to simplify scheduling, reduce errors, and keep your team happy.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="mb-12">
-              <LinkPreview
-                url="/features"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:shadow-2xl hover:shadow-indigo-500/30 transition-all hover:-translate-y-1 group"
-              >
-                Explore All Features
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </LinkPreview>
-            </motion.div>
-
-            {/* Micro Highlights */}
-            <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-y-6 gap-x-8">
-              {[
-                { icon: <ShieldCheck size={18} />, label: "Easy to use" },
-                { icon: <Clock size={18} />, label: "Time saving" },
-                { icon: <Users size={18} />, label: "Built for teams" },
-                { icon: <Zap size={18} />, label: "Secure & Reliable" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm font-bold text-slate-500">
-                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-indigo-500 shadow-sm">
-                    {item.icon}
-                  </div>
-                  {item.label}
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT COLUMN: Radial Orbital Timeline */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="lg:col-span-7 relative"
-          >
-            <div className="bg-slate-950 rounded-[2rem] border border-slate-800/50 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden">
-              <RadialOrbitalTimeline timelineData={featureTimelineData} />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* BOTTOM: Feature Cards */}
+        {/* TOP: Centered Headers */}
         <motion.div
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          animate={isInView ? "visible" : "hidden"}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}
+          className="text-center max-w-3xl mx-auto mb-20"
         >
-          {FEATURE_CARDS.map((feature, i) => (
-            <motion.div
-              key={i}
-              variants={fadeInUp}
-              whileHover={{ y: -8 }}
-              className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] transition-all group"
-            >
-              <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500", feature.color)}>
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{feature.title}</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">{feature.desc}</p>
-              <LinkPreview
-                url="/features"
-                className="inline-flex items-center gap-2 text-indigo-600 text-xs font-black uppercase tracking-widest hover:gap-3 transition-all"
-              >
-                Learn More
-                <ArrowRight size={14} />
-              </LinkPreview>
-            </motion.div>
-          ))}
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#6C5CE7] font-black text-[10px] uppercase tracking-widest mb-6 border border-slate-200 shadow-sm">
+            Interactive Tour
+          </motion.div>
+
+          <motion.h2 variants={fadeInUp} className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter mb-6 leading-[1.1]">
+            Everything you need to manage your <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF]">workforce smarter</span>
+          </motion.h2>
+
+          <motion.p variants={fadeInUp} className="text-lg sm:text-xl text-slate-500 font-medium leading-relaxed">
+            Powerful features designed to simplify scheduling and team management. Explore our platform ecosystem below.
+          </motion.p>
+        </motion.div>
+
+        {/* CENTER: Radial Orbital Timeline */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+          transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full relative"
+        >
+          <div className="bg-white rounded-[3rem] border border-slate-200 shadow-[0_40px_100px_-20px_rgba(108,92,231,0.08)] overflow-hidden">
+            <RadialOrbitalTimeline timelineData={featureTimelineData} />
+          </div>
         </motion.div>
 
       </div>
