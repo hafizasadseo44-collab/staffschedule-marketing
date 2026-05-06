@@ -5,9 +5,10 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       className={cn(
-        'bg-card relative w-full max-w-[320px] rounded-2xl dark:bg-transparent',
-        'p-1.5 shadow-2xl backdrop-blur-xl',
-        'dark:border-border/80 border border-slate-200/60 dark:border-slate-800',
+        'bg-white relative w-full rounded-2xl dark:bg-transparent',
+        'p-1.5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl',
+        'dark:border-border/80 border border-slate-100 dark:border-slate-800',
+        'flex flex-col h-full',
         className,
       )}
       {...props}
@@ -123,11 +124,11 @@ function OriginalPrice({ className, ...props }: React.ComponentProps<'span'>) {
 }
 
 function Body({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div className={cn('space-y-6 p-4', className)} {...props} />;
+  return <div className={cn('space-y-6 p-4 flex-1 flex flex-col', className)} {...props} />;
 }
 
 function List({ className, ...props }: React.ComponentProps<'ul'>) {
-  return <ul className={cn('space-y-4', className)} {...props} />;
+  return <ul className={cn('space-y-4 flex-1', className)} {...props} />;
 }
 
 function ListItem({ className, ...props }: React.ComponentProps<'li'>) {
