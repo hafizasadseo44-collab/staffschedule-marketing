@@ -17,7 +17,6 @@ const staffSchedulePlans: [PriceTier, PriceTier, PriceTier] = [
     name: "Team",
     description: "Great for small teams starting out with a single location.",
     priceMonthly: 29,
-    priceAnnually: 23, // Per month billed annually
     isPopular: false,
     buttonLabel: "Start 15-Day Free Trial",
     priceId: STRIPE_PRICES.team_monthly,
@@ -42,7 +41,6 @@ const staffSchedulePlans: [PriceTier, PriceTier, PriceTier] = [
     name: "Business",
     description: "Advanced tools for growing companies with multiple sites.",
     priceMonthly: 50,
-    priceAnnually: 40,
     isPopular: true,
     buttonLabel: "Start 15-Day Free Trial",
     priceId: STRIPE_PRICES.business_monthly,
@@ -67,7 +65,6 @@ const staffSchedulePlans: [PriceTier, PriceTier, PriceTier] = [
     name: "Company",
     description: "Full control and priority support for large operations.",
     priceMonthly: 99,
-    priceAnnually: 79,
     isPopular: false,
     buttonLabel: "Contact Sales",
     priceId: STRIPE_PRICES.company_monthly,
@@ -90,10 +87,9 @@ const staffSchedulePlans: [PriceTier, PriceTier, PriceTier] = [
 ];
 
 const PricingCards = () => {
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>("monthly");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePlanSelect = async (planId: string, currentCycle: BillingCycle) => {
+  const handlePlanSelect = async (planId: string) => {
     // Determine which plan was clicked
     const selectedPlan = staffSchedulePlans.find(p => p.id === planId);
     
@@ -110,7 +106,7 @@ const PricingCards = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
-            priceId: selectedPlan.priceId, // Note: You'd ideally swap priceId based on currentCycle here if you had annual stripe IDs
+            priceId: selectedPlan.priceId,
             planName: selectedPlan.name 
           }),
         });
@@ -135,8 +131,6 @@ const PricingCards = () => {
     <div className="relative z-20 -mt-20">
       <PricingComponent
         plans={staffSchedulePlans}
-        billingCycle={billingCycle}
-        onCycleChange={setBillingCycle}
         onPlanSelect={handlePlanSelect}
         isLoading={isLoading}
       />

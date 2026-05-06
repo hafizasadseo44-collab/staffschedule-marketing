@@ -9,12 +9,10 @@ import { Check, X } from "lucide-react";
 
 // --- 1. Typescript Interfaces (API) ---
 
-export type BillingCycle = 'monthly' | 'annually';
-
 export interface Feature {
   name: string;
   isIncluded: boolean;
-  value?: string; // Optional string value for table (e.g. "Up to 20", "Unlimited")
+  value?: string;
 }
 
 export interface PriceTier {
@@ -22,7 +20,6 @@ export interface PriceTier {
   name: string;
   description: string;
   priceMonthly: number;
-  priceAnnually: number;
   isPopular: boolean;
   buttonLabel: string;
   features: Feature[];
@@ -31,9 +28,7 @@ export interface PriceTier {
 
 interface PricingComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   plans: [PriceTier, PriceTier, PriceTier];
-  billingCycle: BillingCycle;
-  onCycleChange: (cycle: BillingCycle) => void;
-  onPlanSelect: (planId: string, cycle: BillingCycle) => void;
+  onPlanSelect: (planId: string) => void;
   isLoading?: boolean;
 }
 
@@ -57,8 +52,6 @@ const FeatureItem: React.FC<{ feature: Feature }> = ({ feature }) => {
 
 export const PricingComponent: React.FC<PricingComponentProps> = ({
   plans,
-  billingCycle,
-  onCycleChange,
   onPlanSelect,
   isLoading,
   className,
@@ -69,46 +62,7 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
     return null;
   }
 
-  const annualDiscountPercent = 20;
-
-  // --- 3.1. Billing Toggle ---
-  const CycleToggle = (
-    <div className="flex justify-center mb-12 mt-4 relative z-10">
-      <ToggleGroup
-        type="single"
-        value={billingCycle}
-        onValueChange={(value) => {
-          if (value && (value === 'monthly' || value === 'annually')) {
-            onCycleChange(value);
-          }
-        }}
-        aria-label="Select billing cycle"
-        className="border border-slate-200 rounded-xl p-1 bg-white shadow-sm"
-      >
-        <ToggleGroupItem
-          value="monthly"
-          aria-label="Monthly Billing"
-          className="px-8 py-2.5 text-sm font-bold text-slate-500 data-[state=on]:text-[#6C5CE7] data-[state=on]:bg-indigo-50 data-[state=on]:shadow-sm rounded-lg transition-all"
-        >
-          Monthly
-        </ToggleGroupItem>
-        <ToggleGroupItem
-          value="annually"
-          aria-label="Annual Billing"
-          className="px-8 py-2.5 text-sm font-bold text-slate-500 data-[state=on]:text-[#6C5CE7] data-[state=on]:bg-indigo-50 data-[state=on]:shadow-sm rounded-lg transition-all relative"
-        >
-          Annually
-          <span className="absolute -top-3 -right-2 text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] px-2 py-0.5 rounded-full whitespace-nowrap shadow-md shadow-[#6C5CE7]/30">
-            Save {annualDiscountPercent}%
-          </span>
-        </ToggleGroupItem>
-      </ToggleGroup>
-    </div>
-  );
-
-  // --- 3.2. Pricing Cards & Comparison Table Data ---
-
-  // Order features based on their appearance in the first plan, then add any remaining unique ones
+  // Extract all unique feature names across all plans for the comparison table header
   const allFeaturesSet = new Set<string>();
   plans.forEach(p => p.features.forEach(f => allFeaturesSet.add(f.name)));
   const allFeatures = Array.from(allFeaturesSet);
@@ -117,9 +71,8 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
     <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8 relative z-10">
       {plans.map((plan) => {
         const isFeatured = plan.isPopular;
-        const currentPrice = billingCycle === 'monthly' ? plan.priceMonthly : plan.priceAnnually;
-        const originalMonthlyPrice = plan.priceMonthly;
-        const priceSuffix = billingCycle === 'monthly' ? '/mo' : '/mo';
+        const currentPrice = plan.priceMonthly;
+        const priceSuffix = '/mo';
 
         return (
           <Card
@@ -149,21 +102,6 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
                   </span>
                   <span className="text-sm font-bold text-slate-400 ml-1">{priceSuffix}</span>
                 </div>
-                {billingCycle === 'annually' && (
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs font-semibold text-slate-400 line-through">
-                      ${originalMonthlyPrice}/mo
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                      Billed ${(currentPrice * 12).toLocaleString()} yearly
-                    </span>
-                  </div>
-                )}
-                {billingCycle === 'monthly' && (
-                  <div className="flex items-center gap-2 mt-2 opacity-0">
-                    <span className="text-xs">placeholder</span>
-                  </div>
-                )}
               </div>
             </CardHeader>
             <CardContent className="flex-grow p-8 pt-0">
@@ -176,7 +114,7 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
             </CardContent>
             <CardFooter className="p-8 pt-0">
               <Button
-                onClick={() => onPlanSelect(plan.id, billingCycle)}
+                onClick={() => onPlanSelect(plan.id)}
                 disabled={isLoading}
                 className={cn(
                   "w-full transition-all duration-300 py-6 text-sm font-bold rounded-xl",
@@ -270,7 +208,7 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNlNmU4ZjAiLz48L3N2Zz4=')] opacity-50 mix-blend-multiply" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <header className="text-center mb-12 max-w-3xl mx-auto">
+        <header className="text-center mb-16 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#6C5CE7] font-black text-[10px] uppercase tracking-widest mb-6 border border-slate-200 shadow-sm">
             Simple Pricing
           </div>
@@ -281,8 +219,6 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
             Scale effortlessly with features designed for growth. Start free, upgrade when you need more power.
           </p>
         </header>
-        
-        {CycleToggle}
         
         <section aria-labelledby="pricing-plans">
           {PricingCards}
