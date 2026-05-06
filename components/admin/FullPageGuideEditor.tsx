@@ -347,11 +347,20 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
             </div>
             
             <button 
+              onClick={() => handleSave(false)}
+              disabled={saving}
+              className="h-12 px-6 bg-white text-slate-700 border border-slate-200 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center gap-3 disabled:opacity-50"
+            >
+              {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+              {isPublished ? 'Update' : 'Save Draft'}
+            </button>
+
+            <button 
               onClick={() => handleSave(true)}
               disabled={saving}
               className="h-12 px-8 bg-indigo-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-3 disabled:opacity-50"
             >
-              {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+              {saving ? <Loader2 size={18} className="animate-spin" /> : <Globe size={18} />}
               {isPublished ? 'Update Published' : 'Deploy & Publish'}
             </button>
           </div>
