@@ -309,8 +309,9 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   const doSave = async (shouldPublish: boolean) => {
     if (!title || !slug || !editor) return alert('Title, slug, and content are required.');
     if (shouldPublish) setPublishing(true); else setSaving(true);
+    const safeSlug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const payload = {
-      title, slug, excerpt, image, published: shouldPublish || published, category, type: 'ARTICLE',
+      title, slug: safeSlug, excerpt, image, published: shouldPublish || published, category, type: 'ARTICLE',
       authorId: authorId || null,
       featured,
       focusKeyword,

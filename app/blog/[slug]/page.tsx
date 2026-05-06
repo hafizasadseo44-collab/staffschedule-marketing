@@ -12,12 +12,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
   let post: any;
   try {
     const results = await db.$queryRaw`
       SELECT title, excerpt, image, published, seoTitle, focusKeyword, canonicalUrl, type 
       FROM Post 
-      WHERE slug = ${slug} AND published = 1
+      WHERE (slug = ${slug} OR slug = ${decodedSlug}) AND published = 1
       LIMIT 1
     ` as any[];
     post = results[0];
@@ -70,7 +71,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  console.log('DEBUG: Visiting blog post with slug:', slug);
+  const decodedSlug = decodeURIComponent(slug);
+  console.log('DEBUG: Visiting blog post with slug:', slug, 'decoded:', decodedSlug);
   
   let post: any;
   try {
@@ -78,7 +80,7 @@ export default async function BlogPostPage({ params }: Props) {
       SELECT p.*, a.name as authorName, a.avatar as authorAvatar, a.bio as authorBio, a.slug as authorSlug, a.gender as authorGender
       FROM Post p
       LEFT JOIN Author a ON p.authorId = a.id
-      WHERE p.slug = ${slug} AND p.published = 1
+      WHERE (p.slug = ${slug} OR p.slug = ${decodedSlug}) AND p.published = 1
       LIMIT 1
     ` as any[];
     
