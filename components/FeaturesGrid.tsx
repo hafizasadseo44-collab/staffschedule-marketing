@@ -111,10 +111,11 @@ export default function FeaturesGrid() {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={containerRef} className="py-24 lg:py-40 bg-[#FAFBFE] overflow-hidden relative font-sans">
-      {/* Decorative Minimal Background Elements */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#6C5CE7]/[0.02] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#8E7CFF]/[0.02] rounded-full blur-[100px] pointer-events-none" />
+    <section ref={containerRef} className="py-24 lg:py-40 bg-gradient-to-b from-[#FAFBFE] to-white overflow-hidden relative font-sans">
+      {/* Decorative Minimal Background Elements - Enhanced Vibrancy */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#6C5CE7]/[0.06] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#8E7CFF]/[0.05] rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#6C5CE7]/[0.03] rounded-full blur-[150px] pointer-events-none" />
 
       {/* Grid Pattern overlay */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNlNmU4ZjAiLz48L3N2Zz4=')] opacity-50" />
@@ -131,7 +132,7 @@ export default function FeaturesGrid() {
           }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#6C5CE7] font-black text-[10px] uppercase tracking-widest mb-6 border border-slate-200 shadow-sm">
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-[#6C5CE7] font-black text-[10px] uppercase tracking-[0.2em] mb-8 border border-slate-200 shadow-sm">
             Interactive Tour
           </motion.div>
 
@@ -151,7 +152,8 @@ export default function FeaturesGrid() {
           transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="w-full relative"
         >
-          <div className="bg-white rounded-[3rem] border border-slate-200 shadow-[0_40px_100px_-20px_rgba(108,92,231,0.08)] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#FAFBFE] pointer-events-none z-10 h-32 bottom-0 top-auto" />
+          <div className="bg-white/80 backdrop-blur-2xl rounded-[3rem] border border-white shadow-[0_40px_100px_-20px_rgba(108,92,231,0.12)] overflow-hidden">
             <RadialOrbitalTimeline timelineData={featureTimelineData} />
           </div>
         </motion.div>
