@@ -27,7 +27,7 @@ export interface PriceTier {
 }
 
 interface PricingComponentProps extends React.HTMLAttributes<HTMLDivElement> {
-  plans: [PriceTier, PriceTier, PriceTier];
+  plans: [PriceTier, PriceTier, PriceTier, PriceTier];
   onPlanSelect: (planId: string) => void;
   isLoading?: boolean;
 }
@@ -36,13 +36,18 @@ interface PricingComponentProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const FeatureItem: React.FC<{ feature: Feature }> = ({ feature }) => {
   const Icon = feature.isIncluded ? Check : X;
-  const iconColor = feature.isIncluded ? "text-[#6C5CE7]" : "text-slate-300";
+  const iconColor = feature.isIncluded ? "text-[#6C5CE7]" : "text-slate-200";
 
   return (
-    <li className="flex items-start space-x-3 py-2.5">
-      <Icon className={cn("h-4 w-4 flex-shrink-0 mt-0.5", iconColor)} aria-hidden="true" />
-      <span className={cn("text-sm font-medium", feature.isIncluded ? "text-slate-700" : "text-slate-400")}>
-        {feature.value ? `${feature.value} ${feature.name}` : feature.name}
+    <li className="flex items-start space-x-3 py-2">
+      <Icon className={cn("h-3.5 w-3.5 flex-shrink-0 mt-0.5", iconColor)} aria-hidden="true" />
+      <span className={cn("text-[13px] font-semibold leading-snug", feature.isIncluded ? "text-slate-600" : "text-slate-300")}>
+        {feature.value ? (
+          <>
+            <span className="text-slate-900 font-black mr-1">{feature.value}</span>
+            {feature.name}
+          </>
+        ) : feature.name}
       </span>
     </li>
   );
@@ -57,8 +62,8 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
   className,
   ...props
 }) => {
-  if (plans.length !== 3) {
-    console.error("PricingComponent requires exactly 3 pricing tiers.");
+  if (plans.length !== 4) {
+    console.error("PricingComponent requires exactly 4 pricing tiers.");
     return null;
   }
 
@@ -68,7 +73,7 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
   const allFeatures = Array.from(allFeaturesSet);
   
   const PricingCards = (
-    <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8 relative z-10">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 relative z-10">
       {plans.map((plan) => {
         const isFeatured = plan.isPopular;
         const currentPrice = plan.priceMonthly;
@@ -78,49 +83,55 @@ export const PricingComponent: React.FC<PricingComponentProps> = ({
           <Card
             key={plan.id}
             className={cn(
-              "flex flex-col transition-all duration-300 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border-slate-100 bg-white relative overflow-hidden",
-              isFeatured && "ring-2 ring-[#6C5CE7] border-transparent shadow-[0_20px_50px_-15px_rgba(108,92,231,0.2)] transform md:-translate-y-2"
+              "flex flex-col transition-all duration-500 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_-20px_rgba(108,92,231,0.15)] border-slate-100 bg-white relative overflow-hidden group",
+              isFeatured && "ring-2 ring-[#6C5CE7] border-transparent shadow-[0_30px_60px_-15px_rgba(108,92,231,0.25)]"
             )}
           >
             {isFeatured && (
               <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF]" />
             )}
-            <CardHeader className="p-8 pb-6">
+            <CardHeader className="p-6 pb-4">
               <div className="flex justify-between items-start mb-2">
-                <CardTitle className="text-2xl font-black text-slate-900">{plan.name}</CardTitle>
+                <CardTitle className="text-xl font-black text-slate-900 tracking-tight">{plan.name}</CardTitle>
                 {isFeatured && (
-                  <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-indigo-50 text-[#6C5CE7] rounded-full">
+                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 bg-[#6C5CE7] text-white rounded-lg shadow-sm">
                     Most Popular
                   </span>
                 )}
               </div>
-              <CardDescription className="text-sm font-medium text-slate-500 min-h-[40px]">{plan.description}</CardDescription>
+              <CardDescription className="text-xs font-bold text-slate-400 min-h-[32px] leading-relaxed line-clamp-2">
+                {plan.description}
+              </CardDescription>
               <div className="mt-6 mb-2">
-                <div className="flex items-baseline">
-                  <span className="text-5xl font-black text-slate-900 tracking-tight">
-                    ${currentPrice}
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-slate-900 tracking-tighter">
+                    {currentPrice === 0 ? "Free" : `$${currentPrice}`}
                   </span>
-                  <span className="text-sm font-bold text-slate-400 ml-1">{priceSuffix}</span>
+                  {currentPrice > 0 && (
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{priceSuffix}</span>
+                  )}
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="flex-grow p-8 pt-0">
-              <div className="h-px w-full bg-slate-100 mb-6" />
-              <ul className="list-none space-y-0">
-                {plan.features.slice(0, 7).map((feature) => (
+            <CardContent className="flex-grow p-6 pt-0">
+              <div className="h-px w-full bg-slate-50 mb-6" />
+              <ul className="list-none space-y-1">
+                {plan.features.map((feature) => (
                   <FeatureItem key={feature.name} feature={feature} />
                 ))}
               </ul>
             </CardContent>
-            <CardFooter className="p-8 pt-0">
+            <CardFooter className="p-6 pt-0">
               <Button
                 onClick={() => onPlanSelect(plan.id)}
                 disabled={isLoading}
                 className={cn(
-                  "w-full transition-all duration-300 py-6 text-sm font-bold rounded-xl",
+                  "w-full transition-all duration-300 h-14 text-xs font-black uppercase tracking-widest rounded-xl",
                   isFeatured
-                    ? "bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] hover:opacity-90 text-white shadow-lg shadow-[#6C5CE7]/30"
-                    : "bg-slate-50 text-slate-900 hover:bg-slate-100 border border-slate-200"
+                    ? "bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] hover:scale-[1.02] active:scale-[0.98] text-white shadow-xl shadow-[#6C5CE7]/30"
+                    : (plan.priceMonthly === 0 
+                        ? "bg-slate-900 text-white hover:bg-slate-800" 
+                        : "bg-white text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-sm")
                 )}
               >
                 {isLoading ? "Processing..." : plan.buttonLabel}

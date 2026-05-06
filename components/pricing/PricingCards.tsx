@@ -11,77 +11,80 @@ const STRIPE_PRICES = {
   // Note: Add annual price IDs here if they exist in your Stripe account
 };
 
-const staffSchedulePlans: [PriceTier, PriceTier, PriceTier] = [
+const staffSchedulePlans: [PriceTier, PriceTier, PriceTier, PriceTier] = [
+  {
+    id: "trial",
+    name: "Free Trial",
+    description: "Experience the full power of StaffSchedule.io with all premium features unlocked.",
+    priceMonthly: 0,
+    isPopular: false,
+    buttonLabel: "Start 15-Day Trial",
+    features: [
+      { name: "Enterprise Suite Access", isIncluded: true },
+      { name: "Unlimited Scale & Growth", isIncluded: true },
+      { name: "Smart AI Scheduling", isIncluded: true },
+      { name: "Open Shift Marketplace", isIncluded: true },
+      { name: "Team Communication Hub", isIncluded: true },
+      { name: "Dedicated Mobile Apps", isIncluded: true },
+      { name: "Advanced Labor Analytics", isIncluded: true },
+      { name: "No Credit Card Required", isIncluded: true },
+    ],
+  },
   {
     id: "team",
     name: "Team",
-    description: "Great for small teams starting out with a single location.",
+    description: "Essential scheduling tools for smaller teams and single locations.",
     priceMonthly: 29,
     isPopular: false,
-    buttonLabel: "Start 15-Day Free Trial",
+    buttonLabel: "Get Started",
     priceId: STRIPE_PRICES.team_monthly,
     features: [
-      { name: "Team Members", isIncluded: true, value: "Up to 20" },
-      { name: "Office Locations", isIncluded: true, value: "1 Location" },
-      { name: "Departments", isIncluded: true, value: "5 Departments" },
-      { name: "Manager Accounts", isIncluded: true, value: "1 Account" },
-      { name: "Weekly Schedule Builder", isIncluded: true },
-      { name: "Calendar View", isIncluded: true },
-      { name: "Time-Off Management", isIncluded: true },
-      { name: "Team Chat & Messages", isIncluded: false },
-      { name: "Shift Trading & Swaps", isIncluded: false },
-      { name: "Business Analytics", isIncluded: false },
-      { name: "Open Shift Job Board", isIncluded: false },
-      { name: "24/7 Priority Support", isIncluded: false },
-      { name: "Security Audit Logs", isIncluded: false },
+      { name: "Verified Members", isIncluded: true, value: "10" },
+      { name: "Operating Location", isIncluded: true, value: "1" },
+      { name: "Department Cluster", isIncluded: true, value: "1" },
+      { name: "Smart Weekly Scheduler", isIncluded: true },
+      { name: "Employee Self-Service", isIncluded: true },
+      { name: "Basic Leave Management", isIncluded: true },
+      { name: "Mobile Web Access", isIncluded: true },
+      { name: "Standard Support", isIncluded: true },
     ],
   },
   {
     id: "business",
     name: "Business",
-    description: "Advanced tools for growing companies with multiple sites.",
-    priceMonthly: 50,
+    description: "The complete toolkit for scaling multi-location operations and growing teams.",
+    priceMonthly: 79,
     isPopular: true,
-    buttonLabel: "Start 15-Day Free Trial",
+    buttonLabel: "Scale Now",
     priceId: STRIPE_PRICES.business_monthly,
     features: [
-      { name: "Team Members", isIncluded: true, value: "Up to 50" },
-      { name: "Office Locations", isIncluded: true, value: "10 Locations" },
-      { name: "Departments", isIncluded: true, value: "25 Departments" },
-      { name: "Manager Accounts", isIncluded: true, value: "Unlimited" },
-      { name: "Weekly Schedule Builder", isIncluded: true },
-      { name: "Calendar View", isIncluded: true },
-      { name: "Time-Off Management", isIncluded: true },
-      { name: "Team Chat & Messages", isIncluded: true },
-      { name: "Shift Trading & Swaps", isIncluded: true },
-      { name: "Business Analytics", isIncluded: true },
-      { name: "Open Shift Job Board", isIncluded: false },
-      { name: "24/7 Priority Support", isIncluded: false },
-      { name: "Security Audit Logs", isIncluded: false },
+      { name: "Verified Members", isIncluded: true, value: "50" },
+      { name: "Operating Locations", isIncluded: true, value: "5" },
+      { name: "Department Clusters", isIncluded: true, value: "5" },
+      { name: "Native iOS & Android Apps", isIncluded: true },
+      { name: "Team Communication Chat", isIncluded: true },
+      { name: "Company Announcements", isIncluded: true },
+      { name: "Advanced Labor Analytics", isIncluded: true },
+      { name: "Priority 24/7 Support", isIncluded: true },
     ],
   },
   {
     id: "company",
     name: "Company",
-    description: "Full control and priority support for large operations.",
-    priceMonthly: 99,
+    description: "Enterprise-grade control, compliance, and unlimited scale for large organizations.",
+    priceMonthly: 199,
     isPopular: false,
-    buttonLabel: "Contact Sales",
+    buttonLabel: "Enterprise Pilot",
     priceId: STRIPE_PRICES.company_monthly,
     features: [
-      { name: "Team Members", isIncluded: true, value: "Up to 100" },
-      { name: "Office Locations", isIncluded: true, value: "25 Locations" },
-      { name: "Departments", isIncluded: true, value: "50 Departments" },
-      { name: "Manager Accounts", isIncluded: true, value: "Unlimited" },
-      { name: "Weekly Schedule Builder", isIncluded: true },
-      { name: "Calendar View", isIncluded: true },
-      { name: "Time-Off Management", isIncluded: true },
-      { name: "Team Chat & Messages", isIncluded: true },
-      { name: "Shift Trading & Swaps", isIncluded: true },
-      { name: "Business Analytics", isIncluded: true },
+      { name: "Verified Members", isIncluded: true, value: "Unlimited" },
+      { name: "Operating Locations", isIncluded: true, value: "Unlimited" },
+      { name: "Department Clusters", isIncluded: true, value: "Unlimited" },
       { name: "Open Shift Job Board", isIncluded: true },
-      { name: "24/7 Priority Support", isIncluded: true },
-      { name: "Security Audit Logs", isIncluded: true },
+      { name: "Employee Shift Trading", isIncluded: true },
+      { name: "Bulk Workforce Import", isIncluded: true },
+      { name: "Full Compliance Audit Logs", isIncluded: true },
+      { name: "Dedicated Success Manager", isIncluded: true },
     ],
   },
 ];
@@ -90,11 +93,10 @@ const PricingCards = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePlanSelect = async (planId: string) => {
-    // Determine which plan was clicked
     const selectedPlan = staffSchedulePlans.find(p => p.id === planId);
-    
-    // For Company/Enterprise tier, we might want to direct to contact
-    if (planId === "company") {
+
+    // For Trial and Company/Enterprise tier, we might want to direct to signup
+    if (planId === "trial" || planId === "company") {
       window.location.href = "https://app.staffschedule.io/signup.php?start_trial=1";
       return;
     }
