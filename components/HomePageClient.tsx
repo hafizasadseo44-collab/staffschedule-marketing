@@ -18,7 +18,6 @@ import CaseStudySection from "@/components/CaseStudySection";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-const LogosMarquee = dynamic(() => import("@/components/LogosMarquee"), { ssr: false });
 const UseCases = dynamic(() => import("@/components/UseCases"), { ssr: false });
 
 export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any[] }) {
