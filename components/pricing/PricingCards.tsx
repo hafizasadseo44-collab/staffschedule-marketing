@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { PricingComponent, PriceTier, BillingCycle } from "@/components/ui/pricing-card";
+import { PricingComponent, PriceTier } from "@/components/ui/pricing-card";
 
 // Ensure exact stripe IDs are kept
 const STRIPE_PRICES = {

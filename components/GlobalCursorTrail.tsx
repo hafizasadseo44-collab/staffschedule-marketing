@@ -160,7 +160,7 @@ class TrailFollower {
 export default function GlobalCursorTrail() {
   const svgRef = useRef<SVGSVGElement>(null);
   const followersRef = useRef<TrailFollower[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   const animate = useCallback(() => {
     followersRef.current.forEach((f) => f.trim());

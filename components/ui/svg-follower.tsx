@@ -36,7 +36,7 @@ export function SVGFollower({
   const containerRef = useRef<HTMLDivElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const followersRef = useRef<Follower[]>([])
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const [isRecording, setIsRecording] = useState(false)
   const recordingRef = useRef<Position[]>([])
 
