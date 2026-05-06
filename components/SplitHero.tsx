@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon, Zap, CheckCircle2, Star, PhoneCallIcon, TrendingUp, BarChart3 } from "lucide-react";
-import Link from "next/link";
+import { LinkPreview } from "@/components/ui/link-preview";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { motion } from "framer-motion";
 
@@ -75,24 +75,23 @@ export default function SplitHero() {
               <div className="absolute inset-y-0 right-8 w-px bg-gradient-to-b from-transparent via-slate-200/50 to-slate-200/50 md:right-12" />
             </div>
 
-            {/* Badge Pill */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <Link
+              <LinkPreview
                 className={cn(
                   "group mx-auto flex w-fit items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-1.5 shadow-sm",
                   "hover:shadow-md transition-all"
                 )}
-                href="/features"
+                url="/features"
               >
                 <Zap className="size-3 text-indigo-500 fill-indigo-500" />
                 <span className="text-xs font-semibold text-slate-600">#1 AI-Powered Scheduler</span>
                 <span className="block h-4 border-l border-slate-200" />
                 <ArrowRightIcon className="size-3 text-slate-400 duration-150 ease-out group-hover:translate-x-1" />
-              </Link>
+              </LinkPreview>
             </motion.div>
 
             {/* Hero Headline */}
@@ -126,18 +125,18 @@ export default function SplitHero() {
               transition={{ duration: 0.6, delay: 1.1 }}
               className="flex flex-row flex-wrap items-center justify-center gap-3 pt-2"
             >
-              <Link href="/contact">
+              <LinkPreview url="/contact">
                 <button className="h-12 px-6 rounded-full bg-slate-100 text-slate-700 font-bold text-sm flex items-center gap-2 hover:bg-slate-200 transition-all active:scale-95">
                   <PhoneCallIcon className="size-4" />
                   Contact Sales
                 </button>
-              </Link>
-              <Link href="https://app.staffschedule.io/signup.php">
+              </LinkPreview>
+              <LinkPreview url="https://app.staffschedule.io/signup.php">
                 <button className="h-12 px-8 rounded-full bg-indigo-600 text-white font-bold text-sm flex items-center gap-2 hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all active:scale-95 group">
                   Start Free Trial
                   <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" />
                 </button>
-              </Link>
+              </LinkPreview>
             </motion.div>
 
             {/* Trust Indicators */}

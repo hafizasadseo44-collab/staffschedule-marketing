@@ -5,6 +5,7 @@ import { motion, Variants } from "framer-motion";
 import { NavItemType } from "./nav-data";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles, TrendingUp, HelpCircle } from "lucide-react";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 interface MegaMenuProps {
   items: NavItemType[];
@@ -92,8 +93,8 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
       >
         {items.map((item) => (
           <motion.div key={item.title} variants={itemVariants}>
-            <Link
-              href={item.href}
+            <LinkPreview
+              url={item.href}
               className="group flex items-start gap-5 p-4 rounded-3xl hover:bg-white hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] transition-all duration-500 outline-none no-underline group/link"
             >
               <motion.div 
@@ -120,15 +121,15 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
                   )}
                 </div>
               </motion.div>
-            </Link>
+            </LinkPreview>
           </motion.div>
         ))}
 
         {/* View All CTA for Platform */}
         {type === 'platform' && (
           <motion.div variants={itemVariants} className="col-span-2 mt-4 px-4">
-            <Link 
-              href="/features"
+            <LinkPreview 
+              url="/features"
               className="group flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-brand-primary/5 transition-all duration-500 no-underline"
             >
               <div className="flex items-center gap-3">
@@ -140,7 +141,7 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
                 </span>
               </div>
               <Sparkles size={16} className="text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
+            </LinkPreview>
           </motion.div>
         )}
       </motion.div>
@@ -168,12 +169,12 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
               </p>
            </div>
 
-           <Link 
-             href={spotlight.href}
+           <LinkPreview 
+             url={spotlight.href}
              className="relative z-10 flex items-center gap-2 text-xs font-black text-brand-primary uppercase tracking-widest no-underline group-hover/card:translate-x-1 transition-transform"
            >
               {spotlight.cta} <ArrowRight size={14} className="stroke-[3]" />
-           </Link>
+           </LinkPreview>
         </motion.div>
       )}
 

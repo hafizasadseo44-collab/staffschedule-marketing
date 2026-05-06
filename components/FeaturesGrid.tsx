@@ -7,9 +7,9 @@ import {
   ArrowRight, Star, ShieldCheck, Clock, Users, Zap,
   MessageSquare, MapPin, BellRing, Brain
 } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -176,13 +176,13 @@ export default function FeaturesGrid() {
             </motion.p>
 
             <motion.div variants={fadeInUp} className="mb-12">
-              <Link
-                href="/features"
+              <LinkPreview
+                url="/features"
                 className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:shadow-2xl hover:shadow-indigo-500/30 transition-all hover:-translate-y-1 group"
               >
                 Explore All Features
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </LinkPreview>
             </motion.div>
 
             {/* Micro Highlights */}
@@ -236,13 +236,13 @@ export default function FeaturesGrid() {
               </div>
               <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{feature.title}</h3>
               <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">{feature.desc}</p>
-              <Link
-                href="/features"
+              <LinkPreview
+                url="/features"
                 className="inline-flex items-center gap-2 text-indigo-600 text-xs font-black uppercase tracking-widest hover:gap-3 transition-all"
               >
                 Learn More
                 <ArrowRight size={14} />
-              </Link>
+              </LinkPreview>
             </motion.div>
           ))}
         </motion.div>

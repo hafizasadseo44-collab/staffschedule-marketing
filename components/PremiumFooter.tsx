@@ -11,6 +11,7 @@ import {
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import SubscribeForm from "./SubscribeForm";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 
 const Twitter = ({ size = 20 }: { size?: number }) => (
@@ -152,13 +153,13 @@ const PremiumFooter = () => {
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <Link 
-                        href={link.href}
+                      <LinkPreview 
+                        url={link.href}
                         className="text-sm text-slate-400 hover:text-white font-bold transition-colors flex items-center justify-center sm:justify-start group"
                       >
                         <span className="hidden sm:block w-0 h-0.5 bg-indigo-500 mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300" />
                         {link.name}
-                      </Link>
+                      </LinkPreview>
                     </li>
                   ))}
                 </ul>
