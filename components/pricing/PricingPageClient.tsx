@@ -7,7 +7,6 @@ import PricingCards from "@/components/pricing/PricingCards";
 import PricingROI from "@/components/pricing/PricingROI";
 import PricingTrust from "@/components/pricing/PricingTrust";
 import PricingSocial from "@/components/pricing/PricingSocial";
-import PricingComparison from "@/components/pricing/PricingComparison";
 import PricingSteps from "@/components/pricing/PricingSteps";
 import PricingSecurity from "@/components/pricing/PricingSecurity";
 import PricingCTA from "@/components/pricing/PricingCTA";
@@ -31,8 +30,6 @@ export default function PricingPageClient() {
       <PricingTrust />
 
       <PricingSocial />
-
-      <PricingComparison />
 
       <div className="bg-slate-50 dark:bg-slate-900/50">
         <FAQ />
