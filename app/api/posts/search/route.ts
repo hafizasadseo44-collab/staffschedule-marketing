@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { ensureDatabase } from '@/lib/db-init';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,6 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    await ensureDatabase();
     const posts = await db.post.findMany({
       where: {
         published: true,

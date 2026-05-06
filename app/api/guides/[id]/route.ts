@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { sendNotificationEmails } from '@/lib/email';
+import { ensureDatabase } from '@/lib/db-init';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -14,6 +15,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabase();
     const { id: idOrSlug } = await params;
     console.log("GET Guide (Raw SQL) Request for:", idOrSlug);
 
@@ -58,6 +60,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -143,6 +146,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

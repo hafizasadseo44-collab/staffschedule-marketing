@@ -3,12 +3,14 @@ import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 import { signToken } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import { ensureDatabase } from '@/lib/db-init';
  
 export const dynamic = 'force-dynamic';
 
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     console.log('--- LOGIN ATTEMPT START ---');
     const body = await request.json();
     const { email, password } = body;

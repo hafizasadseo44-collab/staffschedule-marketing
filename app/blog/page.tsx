@@ -1,4 +1,5 @@
 import { db } from '@/lib/db';
+import { ensureDatabase } from '@/lib/db-init';
 import BlogClientPage from '@/components/blog/BlogClientPage';
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default async function BlogListing() {
   let posts: any[] = [];
   
   try {
+    await ensureDatabase();
     const rawPosts = await db.$queryRaw`
       SELECT * FROM Post 
       WHERE published = 1

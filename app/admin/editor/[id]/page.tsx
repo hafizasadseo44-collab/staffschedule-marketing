@@ -326,7 +326,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
     }
 
     const payload = {
-      title, slug, excerpt, image, published: shouldPublish || published, category,
+      title, slug, excerpt, image, published: shouldPublish || published, category, type: 'ARTICLE',
       authorId: authorId || null,
       featured,
       focusKeyword,

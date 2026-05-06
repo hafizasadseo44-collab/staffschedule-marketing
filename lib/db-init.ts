@@ -1,0 +1,204 @@
+import { db } from './db';
+
+let initialized = false;
+
+/**
+ * Ensures the SQLite database has all required tables.
+ * Called once per server lifecycle. Safe to call multiple times.
+ */
+export async function ensureDatabase() {
+  if (initialized) return;
+  
+  try {
+    // Quick health check — if this works, tables exist
+    await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
+    initialized = true;
+    return;
+  } catch (e) {
+    // Tables don't exist yet — create them
+    console.log("[DB-INIT] Tables missing. Creating schema...");
+  }
+
+  try {
+    // AdminUser
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "AdminUser" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "email" TEXT NOT NULL,
+        "password" TEXT NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "AdminUser_email_key" ON "AdminUser"("email")`);
+
+    // Post
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Post" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "title" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "content" TEXT NOT NULL,
+        "excerpt" TEXT,
+        "image" TEXT,
+        "category" TEXT DEFAULT 'Scheduling',
+        "type" TEXT DEFAULT 'ARTICLE',
+        "featured" INTEGER NOT NULL DEFAULT 0,
+        "published" INTEGER NOT NULL DEFAULT 0,
+        "focusKeyword" TEXT,
+        "seoTitle" TEXT,
+        "canonicalUrl" TEXT,
+        "authorId" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Post_slug_key" ON "Post"("slug")`);
+
+    // Author
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Author" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "bio" TEXT,
+        "avatar" TEXT,
+        "gender" TEXT DEFAULT 'not_specified',
+        "twitter" TEXT,
+        "linkedin" TEXT,
+        "facebook" TEXT,
+        "website" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Author_slug_key" ON "Author"("slug")`);
+
+    // Category
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Category" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "color" TEXT NOT NULL DEFAULT '#6366f1',
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Category_name_key" ON "Category"("name")`);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Category_slug_key" ON "Category"("slug")`);
+
+    // Guide
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Guide" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "title" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "description" TEXT NOT NULL DEFAULT '',
+        "content" TEXT,
+        "excerpt" TEXT,
+        "coverImage" TEXT,
+        "pdfUrl" TEXT,
+        "categoryId" TEXT,
+        "categoryName" TEXT DEFAULT 'General',
+        "isFeatured" INTEGER NOT NULL DEFAULT 0,
+        "isPublished" INTEGER NOT NULL DEFAULT 1,
+        "downloadCount" INTEGER NOT NULL DEFAULT 0,
+        "viewCount" INTEGER NOT NULL DEFAULT 0,
+        "seoTitle" TEXT,
+        "seoDescription" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Guide_slug_key" ON "Guide"("slug")`);
+
+    // GuideCategory
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "GuideCategory" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "description" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "GuideCategory_name_key" ON "GuideCategory"("name")`);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "GuideCategory_slug_key" ON "GuideCategory"("slug")`);
+
+    // Subscriber
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Subscriber" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "email" TEXT NOT NULL,
+        "blog" INTEGER NOT NULL DEFAULT 1,
+        "news" INTEGER NOT NULL DEFAULT 1,
+        "guides" INTEGER NOT NULL DEFAULT 1,
+        "active" INTEGER NOT NULL DEFAULT 1,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Subscriber_email_key" ON "Subscriber"("email")`);
+
+    // Prisma migrations table (so Prisma doesn't complain)
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "checksum" TEXT NOT NULL,
+        "finished_at" DATETIME,
+        "migration_name" TEXT NOT NULL,
+        "logs" TEXT,
+        "rolled_back_at" DATETIME,
+        "started_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "applied_steps_count" INTEGER NOT NULL DEFAULT 0
+      )
+    `);
+
+    // Seed default admin user if empty
+    const adminCount = await db.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM AdminUser`) as any[];
+    if (adminCount[0]?.cnt === 0) {
+      // We need to create a hashed password. Use a pre-computed bcrypt hash for the default password.
+      // This matches @4499Asad using bcryptjs with 10 rounds
+      const bcrypt = require('bcryptjs');
+      const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD || '@4499Asad', 10);
+      const now = new Date().toISOString();
+      await db.$executeRawUnsafe(
+        `INSERT INTO AdminUser (id, email, password, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)`,
+        'admin-default-001',
+        process.env.ADMIN_EMAIL || 'hafizasadullahseo@gmail.com',
+        hash,
+        now, now
+      );
+      console.log("[DB-INIT] Default admin user created.");
+    }
+
+    // Seed default categories if empty
+    const catCount = await db.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM Category`) as any[];
+    if (catCount[0]?.cnt === 0) {
+      const now = new Date().toISOString();
+      const cats = [
+        { name: 'Scheduling', color: '#6366f1' },
+        { name: 'AI Intelligence', color: '#8b5cf6' },
+        { name: 'Workforce Management', color: '#06b6d4' },
+        { name: 'Product Updates', color: '#10b981' },
+        { name: 'Industry Insights', color: '#f59e0b' },
+      ];
+      for (const cat of cats) {
+        const id = Math.random().toString(36).substring(2, 15);
+        const slug = cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        await db.$executeRawUnsafe(
+          `INSERT INTO Category (id, name, slug, color, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)`,
+          id, cat.name, slug, cat.color, now, now
+        );
+      }
+      console.log("[DB-INIT] Default categories seeded.");
+    }
+
+    initialized = true;
+    console.log("[DB-INIT] Database schema created successfully.");
+  } catch (error) {
+    console.error("[DB-INIT] Failed to initialize database:", error);
+    throw error;
+  }
+}

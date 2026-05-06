@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { ensureDatabase } from '@/lib/db-init';
 
 
 export const dynamic = 'force-dynamic';
@@ -8,6 +9,7 @@ export const dynamic = 'force-dynamic';
 // GET all categories
 export async function GET() {
   try {
+    await ensureDatabase();
     const categories = await db.category.findMany({
       orderBy: { name: 'asc' },
     });

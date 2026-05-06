@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { ensureDatabase } from '@/lib/db-init';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+    await ensureDatabase();
     // Using Raw SQL to avoid Prisma Client generation issues on Windows
     const categories = await db.$queryRawUnsafe(`
       SELECT 
@@ -30,6 +32,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

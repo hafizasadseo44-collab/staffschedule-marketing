@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
+import { ensureDatabase } from '@/lib/db-init';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+    await ensureDatabase();
     const authors = await db.author.findMany({
       orderBy: { name: 'asc' },
     });
@@ -17,6 +19,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -42,6 +45,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

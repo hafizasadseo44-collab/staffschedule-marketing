@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { sendNotificationEmails } from '@/lib/email';
+import { ensureDatabase } from '@/lib/db-init';
 
 
 export const dynamic = 'force-dynamic';
@@ -10,6 +11,7 @@ export const revalidate = 0;
 
 export async function GET(request: Request) {
   try {
+    await ensureDatabase();
     const { searchParams } = new URL(request.url);
     const publishedOnly = searchParams.get('published') === 'true';
     const featuredOnly = searchParams.get('featured') === 'true';
@@ -52,6 +54,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
