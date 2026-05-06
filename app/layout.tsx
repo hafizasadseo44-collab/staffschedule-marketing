@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar/Navbar";
 import PremiumFooter from "@/components/PremiumFooter";
+import CursorTrailProvider from "@/components/CursorTrailProvider";
 import { cn } from "@/lib/utils";
 import { headers } from "next/headers";
 
@@ -53,6 +54,7 @@ export default async function RootLayout({
         <meta name="color-scheme" content="light" />
       </head>
       <body className="min-h-full flex flex-col antialiased selection:bg-brand-primary/20" suppressHydrationWarning>
+        <CursorTrailProvider />
         {!isAdmin && <Navbar />}
         <main className="flex-1" role="main">
           {children}

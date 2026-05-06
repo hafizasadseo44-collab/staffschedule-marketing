@@ -7,7 +7,6 @@ import { ArrowRightIcon, Zap, CheckCircle2, Star, PhoneCallIcon, TrendingUp, Bar
 import Link from "next/link";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { motion } from "framer-motion";
-import { SVGFollower } from "@/components/ui/svg-follower";
 
 // --- Trust Avatars ---
 const AVATARS = [
@@ -26,15 +25,6 @@ const logos = [
   { src: "https://storage.efferd.com/logo/github-wordmark.svg", alt: "GitHub" },
   { src: "https://storage.efferd.com/logo/claude-wordmark.svg", alt: "Claude AI" },
   { src: "https://storage.efferd.com/logo/clerk-wordmark.svg", alt: "Clerk" },
-];
-
-// --- Brand-themed SVG follower colors (semi-transparent for subtlety) ---
-const FOLLOWER_COLORS = [
-  "rgba(79, 70, 229, 0.15)",   // indigo
-  "rgba(124, 58, 237, 0.12)",  // purple
-  "rgba(99, 102, 241, 0.10)",  // indigo-lighter
-  "rgba(139, 92, 246, 0.08)",  // violet
-  "rgba(79, 70, 229, 0.06)",   // indigo-ghost
 ];
 
 export default function SplitHero() {
@@ -68,19 +58,8 @@ export default function SplitHero() {
           />
         </div>
 
-        {/* ── Interactive SVG Mouse Trail (Background Layer) ── */}
-        <div className="absolute inset-0 z-[1] pointer-events-auto">
-          <SVGFollower
-            width={1920}
-            height={1200}
-            colors={FOLLOWER_COLORS}
-            removeDelay={600}
-            className="w-full h-full !absolute inset-0"
-          />
-        </div>
-
         {/* ── Faded Side Borders ── */}
-        <div aria-hidden="true" className="absolute inset-0 mx-auto hidden min-h-screen w-full max-w-5xl lg:block pointer-events-none z-[2]">
+        <div aria-hidden="true" className="absolute inset-0 mx-auto hidden min-h-screen w-full max-w-5xl lg:block pointer-events-none">
           <div className="absolute inset-y-0 left-0 z-10 h-full w-px bg-foreground/10" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }} />
           <div className="absolute inset-y-0 right-0 z-10 h-full w-px bg-foreground/10" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }} />
         </div>
