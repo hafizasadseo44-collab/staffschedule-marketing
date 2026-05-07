@@ -2,6 +2,8 @@ import { db } from '@/lib/db';
 import { ensureDatabase } from '@/lib/db-init';
 import BlogClientPage from '@/components/blog/BlogClientPage';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Blog | StaffSchedule.io',
   description: 'Latest news, tips, and insights on AI staffing and schedule optimization.',

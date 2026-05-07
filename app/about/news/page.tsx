@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import { db } from '@/lib/db';
 import NewsroomClient from '@/components/news/NewsroomClient';
+import { ensureDatabase } from '@/lib/db-init';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Newsroom | StaffSchedule.io Press & Announcements',
@@ -17,6 +20,7 @@ export default async function NewsroomPage() {
   
   try {
     // Fetch posts and normalize
+    await ensureDatabase();
     // Use raw query to ensure we get ALL columns even if Prisma client is out of sync
     const rawPosts = await db.$queryRaw`
       SELECT * FROM Post 
