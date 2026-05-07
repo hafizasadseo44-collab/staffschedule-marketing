@@ -34,50 +34,161 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const author = await db.author.findUnique({ where: { slug } });
+  const decodedSlug = decodeURIComponent(slug);
   
-  if (!author) return { title: 'Author Not Found' };
+  let author = await db.author.findUnique({ where: { slug } });
+  if (!author && decodedSlug !== slug) {
+    author = await db.author.findUnique({ where: { slug: decodedSlug } });
+  }
+
+  // Handle default StaffSchedule team
+  if (!author && (slug === 'staffschedule-team' || decodedSlug === 'staffschedule-team' || slug === 'team')) {
+    return {
+      title: 'StaffSchedule Team | Editorial Profile',
+      description: 'The official editorial team at StaffSchedule.io bringing you the latest insights on workforce optimization.',
+      alternates: { canonical: `https://staffschedule.io/blog/author/staffschedule-team` }
+    };
+  }
+  
+  if (!author) {
+    return { title: 'Author Not Found | StaffSchedule.io' };
+  }
+
+  const title = `${author.name} | Editorial Team | StaffSchedule.io`;
+  const description = author.bio || `Articles and insights by ${author.name} on StaffSchedule.io.`;
+  const url = `https://staffschedule.io/blog/author/${author.slug}`;
+  const image = author.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${author.name}&backgroundColor=f8fafc`;
 
   return {
-    title: `${author.name} | Editorial Team | StaffSchedule.io`,
-    description: author.bio || `Articles and insights by ${author.name} on StaffSchedule.io.`,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'profile',
+      images: [{ url: image }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    }
   };
 }
 
 export default async function AuthorProfilePage({ params }: Props) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
 
-  const author = await db.author.findUnique({
+  let author = await db.author.findUnique({
     where: { slug },
     include: {
       posts: {
         where: { published: true },
         orderBy: { createdAt: 'desc' },
         select: {
-          id: true,
-          title: true,
-          slug: true,
-          excerpt: true,
-          image: true,
-          category: true,
-          createdAt: true,
+          id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true,
         }
       }
     }
   });
 
-  if (!author) notFound();
+  // Try decoded slug if not found
+  if (!author && decodedSlug !== slug) {
+    author = await db.author.findUnique({
+      where: { slug: decodedSlug },
+      include: {
+        posts: {
+          where: { published: true },
+          orderBy: { createdAt: 'desc' },
+          select: { id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true }
+        }
+      }
+    });
+  }
+
+  // Fallback for default team if missing from DB
+  let isDefaultTeam = false;
+  if (!author && (slug === 'staffschedule-team' || decodedSlug === 'staffschedule-team' || slug === 'team')) {
+    isDefaultTeam = true;
+    
+    // Fetch all posts with no author assigned
+    const orphanedPosts = await db.post.findMany({
+      where: { authorId: null, published: true },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true }
+    });
+
+    author = {
+      id: 'default-team',
+      name: 'StaffSchedule Team',
+      slug: 'staffschedule-team',
+      bio: 'The official editorial team at StaffSchedule.io bringing you the latest insights on workforce optimization and AI scheduling.',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=StaffSchedule&backgroundColor=f8fafc',
+      gender: 'not_specified',
+      twitter: 'staffschedule',
+      linkedin: 'https://linkedin.com/company/staffschedule',
+      facebook: null,
+      website: 'https://staffschedule.io',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      posts: orphanedPosts as any
+    } as any;
+  }
+
+  // ─── AUTHOR NOT FOUND CUSTOM UI ───
+  if (!author) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-24 h-24 bg-white rounded-[2rem] shadow-xl border border-slate-100 flex items-center justify-center mb-8 rotate-3">
+          <User size={40} className="text-slate-300" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4">Author Not Found</h1>
+        <p className="text-slate-500 font-medium max-w-md mx-auto mb-10 leading-relaxed">
+          We couldn't find an editorial profile for that URL. They may have moved or the link might be broken.
+        </p>
+        <div className="flex items-center gap-4">
+          <Link href="/blog" className="px-8 py-4 rounded-2xl bg-indigo-600 text-white font-black uppercase tracking-widest text-xs hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center gap-2">
+            <ArrowLeft size={16} /> Return to Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const getAuthorAvatar = () => {
-    if (author.avatar) return author.avatar;
-    const gender = author.gender || "not_specified";
-    if (gender === 'male') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author.name}&gender=male&backgroundColor=f8fafc`;
-    if (gender === 'female') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author.name}&gender=female&backgroundColor=f8fafc`;
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author.name}&backgroundColor=f8fafc`;
+    if (author?.avatar) return author.avatar;
+    const gender = author?.gender || "not_specified";
+    if (gender === 'male') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author?.name}&gender=male&backgroundColor=f8fafc`;
+    if (gender === 'female') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author?.name}&gender=female&backgroundColor=f8fafc`;
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${author?.name}&backgroundColor=f8fafc`;
+  };
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": author.name,
+      "description": author.bio || `Articles by ${author.name}`,
+      "image": getAuthorAvatar(),
+      "url": `https://staffschedule.io/blog/author/${author.slug}`,
+      "sameAs": [
+        author.twitter ? `https://twitter.com/${author.twitter.replace('@', '')}` : null,
+        author.linkedin,
+        author.facebook,
+        author.website
+      ].filter(Boolean)
+    }
   };
 
   return (
     <div className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
+      
       {/* ─── CINEMATIC HERO ─── */}
       <section className="relative pt-40 pb-24 overflow-hidden border-b border-slate-100">
         <div className="absolute inset-0 bg-slate-50/50" />
@@ -101,7 +212,7 @@ export default async function AuthorProfilePage({ params }: Props) {
               </div>
               <div className="md:col-span-9">
                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-indigo-100/50">
-                    <Sparkles size={10} /> Verified Author
+                    <Sparkles size={10} /> Verified {isDefaultTeam ? 'Team' : 'Author'}
                  </div>
                  <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter">
                     {author.name}
@@ -156,7 +267,7 @@ export default async function AuthorProfilePage({ params }: Props) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-             {author.posts.map((post) => (
+             {author.posts.map((post: any) => (
                <Link key={post.id} href={`/blog/${post.slug}`} className="group flex flex-col h-full bg-white rounded-3xl border border-slate-100 p-4 hover:shadow-2xl hover:shadow-indigo-900/5 transition-all duration-500 hover:-translate-y-2">
                   <div className="aspect-[16/10] rounded-2xl overflow-hidden mb-6 relative">
                      <img 

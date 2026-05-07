@@ -270,7 +270,10 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                 </p>
                 
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-slate-400 border-t border-slate-100 pt-6 sm:pt-8">
-                   <Link href={`/blog/author/${post.author?.slug || 'staffschedule-team'}`} className="flex items-center gap-2 group cursor-pointer transition-colors">
+                   <Link 
+                     href={`/blog/author/${(post.author?.slug || post.author?.name || 'staffschedule-team').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} 
+                     className="flex items-center gap-2 group cursor-pointer transition-colors"
+                   >
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 group-hover:border-indigo-300 transition-all">
                         <img src={getAuthorAvatar()} alt={post.author?.name || "Author"} />
                       </div>
