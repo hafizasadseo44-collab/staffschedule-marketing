@@ -156,7 +156,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 whileTap={{ scale: 0.98 }}
               >
                 <Link 
-                  href="https://app.staffschedule.io/signup.php" 
+                  href="https://app.staffschedule.io/onboarding.php" 
                   onClick={onClose} 
                   className={cn(
                     "flex items-center justify-center gap-2 h-16 w-full rounded-[2rem] bg-gradient-to-r from-brand-primary to-indigo-600 text-white font-black text-sm uppercase tracking-[0.2em] shadow-2xl shadow-brand-primary/30 ring-1 ring-white/20 active:scale-95 transition-all no-underline"

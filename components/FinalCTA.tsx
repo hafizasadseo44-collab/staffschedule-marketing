@@ -85,7 +85,7 @@ const FinalCTA = () => {
                 className="flex flex-col sm:flex-row gap-5 justify-center w-full sm:w-auto"
              >
                 <Link 
-                  href="https://app.staffschedule.io/signup.php?start_trial=1"
+                  href="https://app.staffschedule.io/onboarding.php?start_trial=1"
                   className="h-16 px-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-base font-black transition-all shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)] hover:shadow-[0_25px_50px_-10px_rgba(79,70,229,0.5)] hover:-translate-y-1 flex items-center justify-center gap-3 group"
                 >
                   Get Started Free

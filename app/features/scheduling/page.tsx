@@ -108,7 +108,7 @@ export default function SchedulingPage() {
                      Join over 2,500 managers who chose StaffSchedule.io to simplify their workforce.
                   </p>
                </div>
-               <Link href="https://app.staffschedule.io/signup.php">
+               <Link href="https://app.staffschedule.io/onboarding.php">
                   <button className="h-16 px-10 bg-white text-brand-primary rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
                      Get Started Now
                      <ArrowRight className="w-6 h-6" />

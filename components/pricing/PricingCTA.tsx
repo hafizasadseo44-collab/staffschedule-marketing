@@ -35,7 +35,7 @@ const PricingCTA = () => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="https://app.staffschedule.io/signup.php?start_trial=1"
+                href="https://app.staffschedule.io/onboarding.php?start_trial=1"
                 className="w-full sm:w-auto h-16 px-10 bg-white text-indigo-600 rounded-2xl text-lg font-bold flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
               >
                 Start Your 15-Day Trial

@@ -65,7 +65,7 @@ const UltimateHero = () => {
 
             <div className="flex flex-col sm:flex-row gap-5 mb-12">
                <Link 
-                 href="https://app.staffschedule.io/signup.php"
+                 href="https://app.staffschedule.io/onboarding.php"
                  className={cn(
                    buttonVariants({ variant: "default" }),
                    "w-full sm:w-auto h-16 px-10 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-2xl text-xl font-black shadow-2xl shadow-brand-primary/30 transition-all hover:scale-[1.05] active:scale-[0.98] flex items-center justify-center pt-0 pb-0"

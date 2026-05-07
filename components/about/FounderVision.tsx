@@ -96,7 +96,7 @@ export default function FounderVision() {
                 <p className="text-slate-500 text-sm">Join 10,000+ managers who trust our vision.</p>
               </div>
               <Link 
-                href="https://app.staffschedule.io/signup.php"
+                href="https://app.staffschedule.io/onboarding.php"
                 className="h-14 px-8 rounded-2xl bg-brand-primary hover:bg-brand-primary/90 text-white font-black text-sm transition-all flex items-center gap-3 shadow-lg shadow-brand-primary/20"
               >
                 Start Your Journey

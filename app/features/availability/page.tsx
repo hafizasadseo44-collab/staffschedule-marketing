@@ -192,7 +192,7 @@ export default function AvailabilityPage() {
                   StaffSchedule.io availability tools helped us reduce scheduling errors by 90% and improved our staff satisfaction score overnight.
                </p>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="https://app.staffschedule.io/signup.php">
+                  <Link href="https://app.staffschedule.io/onboarding.php">
                      <button className="h-16 px-10 bg-brand-primary text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-4">
                         Join the Revolution
                         <ArrowRight className="w-6 h-6" />

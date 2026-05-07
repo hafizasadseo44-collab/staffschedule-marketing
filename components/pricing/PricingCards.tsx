@@ -97,7 +97,7 @@ const PricingCards = () => {
 
     // For Trial and Company/Enterprise tier, we might want to direct to signup
     if (planId === "trial" || planId === "company") {
-      window.location.href = "https://app.staffschedule.io/signup.php?start_trial=1";
+      window.location.href = "https://app.staffschedule.io/onboarding.php?start_trial=1";
       return;
     }
 
@@ -125,7 +125,7 @@ const PricingCards = () => {
       }
     } else {
       // Fallback
-      window.location.href = "https://app.staffschedule.io/signup.php?start_trial=1";
+      window.location.href = "https://app.staffschedule.io/onboarding.php?start_trial=1";
     }
   };
 

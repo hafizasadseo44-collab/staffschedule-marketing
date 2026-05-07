@@ -66,7 +66,7 @@ const Navbar = () => {
               Log in
             </Link>
             <Link
-              href="https://app.staffschedule.io/signup.php"
+              href="https://app.staffschedule.io/onboarding.php"
               className="px-6 py-2.5 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               Start Free Trial
@@ -113,7 +113,7 @@ const Navbar = () => {
                 Log in
               </Link>
               <Link
-                href="https://app.staffschedule.io/signup.php"
+                href="https://app.staffschedule.io/onboarding.php"
                 className="w-full py-4 bg-brand-primary text-white rounded-2xl text-center font-bold"
               >
                 Start Free Trial

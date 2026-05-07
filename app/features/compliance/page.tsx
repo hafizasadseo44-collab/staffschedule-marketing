@@ -177,7 +177,7 @@ export default function CompliancePage() {
             <p className="text-xl text-slate-400 font-medium max-w-2xl mx-auto mb-12">
                Don't wait for an inspection to find your errors. Invest in automated compliance and protect your operations history today.
             </p>
-            <Link href="https://app.staffschedule.io/signup.php">
+            <Link href="https://app.staffschedule.io/onboarding.php">
                <button className="h-20 px-12 bg-rose-600 text-white rounded-[2rem] font-black text-2xl shadow-2xl shadow-rose-600/40 hover:scale-105 active:scale-95 transition-all flex items-center gap-4 mx-auto">
                   Audit My Roster Free
                   <ArrowRight className="w-8 h-8" />

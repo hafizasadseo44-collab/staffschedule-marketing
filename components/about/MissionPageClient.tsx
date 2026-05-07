@@ -92,7 +92,7 @@ function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <Link
-            href="https://app.staffschedule.io/signup.php"
+            href="https://app.staffschedule.io/onboarding.php"
             className="h-14 px-10 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-sm uppercase tracking-widest flex items-center gap-3 hover:shadow-[0_0_40px_-10px_rgba(124,58,237,0.6)] transition-all hover:scale-[1.02] active:scale-95 group"
           >
             Start Free Trial
@@ -618,7 +618,7 @@ function FinalCTA() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="https://app.staffschedule.io/signup.php"
+              href="https://app.staffschedule.io/onboarding.php"
               className="h-16 px-12 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-base uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_0_60px_-10px_rgba(124,58,237,0.7)] transition-all hover:scale-[1.02] active:scale-95 group"
             >
               Start Free Trial

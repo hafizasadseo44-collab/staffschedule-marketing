@@ -97,7 +97,7 @@ const PricingTable = () => {
   const handlePlanSelect = async (planName: string, priceId: string) => {
     setIsLoading(planName);
     if (planName === "Company" || priceId === "free_trial") {
-      window.location.href = "https://app.staffschedule.io/signup.php?start_trial=1";
+      window.location.href = "https://app.staffschedule.io/onboarding.php?start_trial=1";
       setIsLoading(null);
       return;
     }

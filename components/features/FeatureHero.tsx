@@ -23,7 +23,7 @@ export default function FeatureHero({
   title,
   description,
   ctaText = "Start Free Trial",
-  ctaLink = "https://app.staffschedule.io/signup.php",
+  ctaLink = "https://app.staffschedule.io/onboarding.php",
   secondaryCtaText = "Contact Sales",
   secondaryCtaLink = "/contact",
   visual

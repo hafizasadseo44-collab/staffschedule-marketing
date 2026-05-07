@@ -218,7 +218,7 @@ export default function DashboardShowcase() {
 
             <div className="flex flex-col items-center lg:items-end gap-8">
               <div className="flex flex-wrap items-center justify-center lg:justify-end gap-5">
-                <Link href="https://app.staffschedule.io/signup.php">
+                <Link href="https://app.staffschedule.io/onboarding.php">
                   <button className="h-16 px-12 rounded-2xl bg-indigo-600 text-white font-black text-sm uppercase tracking-widest hover:shadow-2xl hover:shadow-indigo-500/30 transition-all active:scale-95 group">
                     Start Free Trial
                     <ArrowRight size={18} className="inline-block ml-3 group-hover:translate-x-1 transition-transform" />

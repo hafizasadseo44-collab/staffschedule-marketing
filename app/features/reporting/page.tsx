@@ -192,7 +192,7 @@ export default function ReportingPage() {
                      Automate your weekly data sync and cut payroll admin time by 75% starting today.
                   </p>
                </div>
-               <Link href="https://app.staffschedule.io/signup.php">
+               <Link href="https://app.staffschedule.io/onboarding.php">
                   <button className="h-20 px-12 bg-white text-indigo-600 rounded-[2rem] font-black text-2xl shadow-2xl hover:scale-105 transition-all flex items-center gap-4">
                      Claim Your Data
                      <ArrowRight className="w-8 h-8" />

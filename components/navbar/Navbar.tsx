@@ -162,7 +162,7 @@ export const Navbar = () => {
                  whileTap={{ scale: 0.98 }}
               >
                 <Link 
-                  href="https://app.staffschedule.io/signup.php" 
+                  href="https://app.staffschedule.io/onboarding.php" 
                   className={cn(
                     "hidden sm:flex items-center justify-center gap-3 h-12 px-8 rounded-2xl bg-gradient-to-r from-brand-primary to-indigo-600 text-white font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 no-underline",
                     "shadow-[0_15px_30px_-10px_rgba(79,70,229,0.5)] hover:shadow-[0_20px_40px_-15px_rgba(79,70,229,0.7)] ring-1 ring-white/20 relative overflow-hidden group/btn hover:brightness-110"

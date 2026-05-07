@@ -100,7 +100,7 @@ export default function CenteredHero() {
               placeholder="Enter your work email…"
               className="h-12 px-5 rounded-xl text-slate-800 text-sm font-medium outline-none w-full sm:w-64 bg-transparent placeholder:text-slate-400 focus:placeholder:text-slate-300"
             />
-            <Link href="https://app.staffschedule.io/signup.php">
+            <Link href="https://app.staffschedule.io/onboarding.php">
               <button
                 className="w-full sm:w-auto h-12 px-6 rounded-xl text-white font-black text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2 group whitespace-nowrap"
                 style={{

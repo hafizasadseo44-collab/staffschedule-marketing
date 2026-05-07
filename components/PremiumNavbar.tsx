@@ -252,7 +252,7 @@ const PremiumNavbar = () => {
           >
             <Link href="https://app.staffschedule.io/login.php" className="text-xs font-black uppercase tracking-widest text-brand-slate dark:text-slate-400 hover:text-brand-primary transition-colors">Sign In</Link>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="https://app.staffschedule.io/signup.php" className="h-16 px-10 bg-brand-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[0_15px_30px_-5px_rgba(79,70,229,0.4)] group/btn">
+              <Link href="https://app.staffschedule.io/onboarding.php" className="h-16 px-10 bg-brand-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-3 shadow-[0_15px_30px_-5px_rgba(79,70,229,0.4)] group/btn">
                 Start Free Trial <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
               </Link>
             </motion.div>
@@ -314,7 +314,7 @@ const PremiumNavbar = () => {
                   </div>
 
                   <div className="p-10 border-t border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
-                    <Link href="https://app.staffschedule.io/signup.php" className="w-full h-24 bg-brand-primary text-white rounded-[2.5rem] text-2xl font-black flex items-center justify-center shadow-2xl shadow-brand-primary/40">Start Free Trial</Link>
+                    <Link href="https://app.staffschedule.io/onboarding.php" className="w-full h-24 bg-brand-primary text-white rounded-[2.5rem] text-2xl font-black flex items-center justify-center shadow-2xl shadow-brand-primary/40">Start Free Trial</Link>
                   </div>
                 </div>
               </SheetContent>

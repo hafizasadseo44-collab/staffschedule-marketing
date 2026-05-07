@@ -84,7 +84,7 @@ export default function AboutHero() {
               className="flex flex-col sm:flex-row gap-5 items-center justify-center lg:justify-start mb-12"
             >
               <Link 
-                href="https://app.staffschedule.io/signup.php"
+                href="https://app.staffschedule.io/onboarding.php"
                 className={cn(
                   buttonVariants({ variant: "default" }),
                   "h-16 px-10 rounded-2xl text-white font-black text-lg transition-all hover:scale-105 active:scale-95 group flex items-center gap-3 relative overflow-hidden pt-0 pb-0"

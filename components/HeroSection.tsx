@@ -83,7 +83,7 @@ const HeroSection = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link
-                href="https://app.staffschedule.io/signup.php"
+                href="https://app.staffschedule.io/onboarding.php"
                 className="px-8 py-4 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-2xl text-lg font-black flex items-center justify-center gap-2 shadow-xl shadow-brand-primary/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
               >
                 Start Free Trial

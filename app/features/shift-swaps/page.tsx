@@ -189,7 +189,7 @@ export default function ShiftSwapsPage() {
              <p className="text-xl text-indigo-50 font-medium max-w-2xl mx-auto mb-12">
                 Join 2,500+ managers who delegated the headache of shift swaps to StaffSchedule.io.
              </p>
-             <Link href="https://app.staffschedule.io/signup.php">
+             <Link href="https://app.staffschedule.io/onboarding.php">
                 <button className="h-16 px-10 bg-white text-brand-secondary rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 mx-auto">
                    Get Started Now
                    <ArrowRight className="w-6 h-6" />

@@ -448,7 +448,7 @@ export default function CaseStudyClientLayout({ study: safeStudy }: Props) {
                Automate your shift management. Deploy StaffSchedule.io in 4 weeks.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-               <Link href="https://app.staffschedule.io/signup.php" className="w-full sm:w-auto">
+               <Link href="https://app.staffschedule.io/onboarding.php" className="w-full sm:w-auto">
                   <button className="w-full sm:w-auto h-16 sm:h-20 px-8 sm:px-12 bg-brand-primary text-white rounded-full font-black text-lg sm:text-xl shadow-[0_0_40px_rgba(79,70,229,0.3)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 sm:gap-4 group">
                      Deploy Platform <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
                   </button>

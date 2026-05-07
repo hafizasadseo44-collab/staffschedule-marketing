@@ -10,6 +10,7 @@ import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 import PricingTable from "@/components/PricingTable";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
+import EliteFinalCTA from "@/components/EliteFinalCTA";
 import ROIBanner from "@/components/ROIBanner";
 import LatestBlogsSection from "@/components/LatestBlogsSection";
 import FeaturesGrid from "@/components/FeaturesGrid";
@@ -83,8 +84,8 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       {/* 13. FAQ */}
       <FAQSection />
 
-      {/* 14. Final CTA */}
-      <FinalCTA />
+      {/* 14. Elite Final CTA */}
+      <EliteFinalCTA />
       </div>
     </div>
   );

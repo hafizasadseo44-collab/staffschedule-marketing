@@ -171,7 +171,7 @@ export default function CustomerSuccessPage() {
                Join the fastest growing enterprise operations platform. Start your premium pilot today.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6">
-               <Link href="https://app.staffschedule.io/signup.php" className="w-full sm:w-auto">
+               <Link href="https://app.staffschedule.io/onboarding.php" className="w-full sm:w-auto">
                  <button className="w-full sm:w-auto h-16 lg:h-20 px-8 lg:px-14 bg-white text-brand-dark rounded-full font-black text-lg lg:text-xl shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 group">
                     Claim Your ROI
                     <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 text-brand-primary group-hover:translate-x-1 transition-transform" />

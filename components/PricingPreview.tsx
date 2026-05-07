@@ -118,7 +118,7 @@ const PricingPreview = () => {
               </ul>
 
               <Link
-                href="https://app.staffschedule.io/signup.php"
+                href="https://app.staffschedule.io/onboarding.php"
                 className={`block w-full py-4 rounded-2xl text-center font-black text-lg transition-all active:scale-95 ${
                   plan.popular 
                     ? "bg-brand-primary text-white hover:shadow-xl hover:shadow-brand-primary/30" 

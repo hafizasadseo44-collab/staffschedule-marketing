@@ -198,7 +198,7 @@ export default function AnnouncementsPage() {
                      Join thousands of operations that choosing digital noticeboards over messy group chats.
                   </p>
                </div>
-               <Link href="https://app.staffschedule.io/signup.php">
+               <Link href="https://app.staffschedule.io/onboarding.php">
                   <button className="h-16 px-10 bg-brand-primary text-white rounded-2xl font-black text-xl shadow-2xl shadow-brand-primary/40 hover:scale-105 transition-all flex items-center gap-3">
                      Get Started Now
                      <ArrowRight className="w-6 h-6" />

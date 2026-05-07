@@ -1,489 +1,461 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { 
-  ArrowLeft, Calendar, User, Clock, Share2, 
-  Link as LinkIcon, Sparkles, CheckCircle, ArrowRight, Zap, Play,
-  ChevronRight, Quote, Info, AlertTriangle, Lightbulb
+import {
+  ArrowLeft, Calendar, Clock, CheckCircle,
+  Link as LinkIcon, ChevronRight,
+  Sparkles, BookOpen, ArrowRight, Zap,
 } from "lucide-react";
-import AuraBackground from "./AuraBackground";
 import BlockRenderer from "./BlockRenderer";
 
-/* ─── CUSTOM SOCIAL ICONS ─── */
-const XIcon = ({ size = 18, className }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+/* ─── TYPES ─── */
+interface Author { name: string; slug: string; avatar?: string | null; gender?: string | null; bio?: string | null; }
+interface Post { id: string; title: string; slug: string; content: string; excerpt?: string | null; image?: string | null; category?: string | null; createdAt: string; author?: Author; }
+
+/* ─── ICONS ─── */
+const XIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
   </svg>
 );
-
-const LinkedinIcon = ({ size = 18, className }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect width="4" height="12" x="2" y="9" />
-    <circle cx="4" cy="4" r="2" />
-  </svg>
-);
-
-const FacebookIcon = ({ size = 18 }: { size?: number }) => (
+const FacebookIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
   </svg>
 );
+const LinkedInIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
+  </svg>
+);
 
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
-};
-
-interface Author {
-  name: string;
-  slug: string;
-  avatar: string | null;
-  gender: string | null;
-  bio: string | null;
-  facebook?: string | null;
+function formatDate(d: string) {
+  return new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+function getAvatar(author?: Author) {
+  if (author?.avatar) return author.avatar;
+  const seed = author?.name || "Team";
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=f8fafc`;
 }
 
-interface Post {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt: string | null;
-  image: string | null;
-  category: string | null;
-  createdAt: string;
-  author?: Author;
-}
-
-interface BlogPostClientProps {
-  post: Post;
-  relatedPosts: any[];
-}
-
-export default function BlogPostClient({ post, relatedPosts }: BlogPostClientProps) {
+/* ─── READING PROGRESS ─── */
+function ReadingProgress() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  return <motion.div className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-violet-600 to-purple-600 origin-left z-[100]" style={{ scaleX }} />;
+}
 
-  const [readingTime, setReadingTime] = useState(0);
+/* ─── TOC ─── */
+function useHeadings(content: string) {
   const [headings, setHeadings] = useState<{ id: string; text: string; level: number }[]>([]);
-  const [activeId, setActiveId] = useState<string>("");
+  useEffect(() => {
+    try {
+      const json = JSON.parse(content);
+      const found: typeof headings = [];
+      const walk = (nodes: any[]) => nodes?.forEach(n => {
+        if (n.type === "heading") {
+          const text = n.content?.map((c: any) => c.text).join("") || "";
+          const id = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+          if (text) found.push({ id, text, level: n.attrs?.level || 2 });
+        }
+        if (n.content) walk(n.content);
+      });
+      walk(json.content || []);
+      setHeadings(found);
+    } catch { setHeadings([]); }
+  }, [content]);
+  return headings;
+}
+
+/* ─── SIDEBAR ─── */
+function Sidebar({ post, relatedPosts, headings, activeId }: { post: Post; relatedPosts: any[]; headings: any[]; activeId: string; }) {
+  return (
+    <aside className="hidden lg:block lg:w-[300px] xl:w-[320px] shrink-0">
+      <div className="sticky top-28 space-y-5">
+
+        {/* TOC */}
+        {headings.length > 0 && (
+          <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+            <div className="px-5 py-4 bg-gradient-to-r from-violet-600 to-purple-700">
+              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white/80 flex items-center gap-2">
+                <BookOpen size={11} /> Table of Contents
+              </span>
+            </div>
+            <nav className="p-3 space-y-0.5 max-h-64 overflow-y-auto">
+              {headings.map(h => (
+                <button
+                  key={h.id}
+                  onClick={() => document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className={`block w-full text-left py-2 px-3 rounded-xl text-[12px] font-semibold transition-all ${h.level === 3 ? "pl-6 text-[11px]" : ""} ${activeId === h.id ? "bg-violet-50 text-violet-700" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
+                >
+                  <span className="line-clamp-1">{h.text}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        {/* About Card */}
+        <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+          <div className="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-violet-600/20">
+            <Sparkles size={18} className="text-white" />
+          </div>
+          <h3 className="font-black text-lg text-slate-900 mb-2">About StaffSchedule.io</h3>
+          <p className="text-slate-500 text-sm leading-relaxed mb-5 font-medium">
+            AI-powered workforce management for modern teams. Schedule. Communicate. Succeed.
+          </p>
+          <Link
+            href="https://app.staffschedule.io/onboarding.php"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-violet-700 transition-all shadow-md shadow-violet-600/10"
+          >
+            Explore Product <ArrowRight size={12} />
+          </Link>
+        </div>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+            <div className="px-5 py-4 border-b border-slate-50">
+              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">You Might Also Like</span>
+            </div>
+            <div className="p-3 space-y-1">
+              {relatedPosts.map((rel: any) => (
+                <Link key={rel.id} href={`/blog/${rel.slug}`} className="group flex items-start gap-3 p-3 rounded-xl hover:bg-violet-50 transition-all">
+                  <div className="w-16 h-14 rounded-xl overflow-hidden shrink-0">
+                    <img src={rel.image || "/saas_blog_3d_laptop_hero_1776734582759.png"} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[12px] font-bold text-slate-800 line-clamp-2 leading-snug group-hover:text-violet-700 transition-colors">{rel.title}</h4>
+                    <span className="text-[10px] text-slate-400 font-medium mt-1 block">{new Date(rel.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="px-5 py-3 border-t border-slate-50">
+              <Link href="/blog" className="text-[11px] font-black uppercase tracking-widest text-violet-600 hover:text-violet-800 transition-colors flex items-center gap-1.5">
+                View All Articles <ArrowRight size={11} />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* CTA */}
+        <div className="bg-gradient-to-br from-violet-600 to-purple-700 rounded-2xl p-6 text-white shadow-xl shadow-violet-600/20">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap size={13} className="text-violet-200" />
+            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-violet-200">Free Trial</span>
+          </div>
+          <h3 className="font-black text-base leading-snug mb-3">Ready to transform your scheduling?</h3>
+          <p className="text-violet-100 text-xs font-medium leading-relaxed mb-5">Join 10,000+ teams using StaffSchedule.io to work smarter.</p>
+          <Link href="https://app.staffschedule.io/onboarding.php" className="block text-center px-5 py-2.5 bg-white text-violet-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-violet-50 transition-colors">
+            Start for Free →
+          </Link>
+        </div>
+
+      </div>
+    </aside>
+  );
+}
+
+/* ─── FLOATING SHARE BAR (DESKTOP) ─── */
+function FloatingShareBar({ post }: { post: Post }) {
   const [copied, setCopied] = useState(false);
-  const [isTocExpanded, setIsTocExpanded] = useState(true);
-
-  const handleShare = (platform: "x" | "linkedin" | "facebook") => {
+  const share = (platform: string) => {
     const url = typeof window !== "undefined" ? window.location.href : "";
-    const title = post.title;
-    
-    const links = {
-      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+    const text = `Check out this article: ${post.title} via @StaffSchedule`;
+    const links: Record<string, string> = {
+      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     };
-    
-    window.open(links[platform], "_blank", "width=600,height=400");
+    window.open(links[platform], "_blank", "width=600,height=500,menubar=no,toolbar=no");
+  };
+  const copyLink = () => { 
+    navigator.clipboard.writeText(window.location.href); 
+    setCopied(true); 
+    setTimeout(() => setCopied(false), 2000); 
   };
 
-  // SEO Schema Calculation (Article)
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://staffschedule.io/blog/${post.slug}`
-    },
-    "headline": post.title,
-    "image": post.image ? [post.image] : ["https://staffschedule.io/saas_blog_3d_laptop_hero_1776734582759.png"],
-    "datePublished": post.createdAt,
-    "dateModified": post.createdAt, // Ideally use updatedAt if available
-    "author": {
-        "@type": "Person",
-        "name": post.author?.name || "StaffSchedule Team",
-        "url": `https://staffschedule.io/blog/author/${post.author?.slug || 'team'}`
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "StaffSchedule.io",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://staffschedule.io/logo.png"
-      }
-    },
-    "description": post.excerpt || "Insightful editorial on workforce management and AI scheduling."
+  return (
+    <div className="flex flex-col items-center gap-4 sticky top-[35vh]">
+      <div className="flex flex-col items-center gap-1.5 mb-2">
+        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 rotate-0">Share</span>
+        <div className="w-px h-10 bg-gradient-to-b from-slate-200 to-transparent" />
+      </div>
+      
+      <button 
+        onClick={() => share("x")} 
+        className="group relative w-12 h-12 flex items-center justify-center bg-white border border-slate-100 rounded-2xl shadow-sm hover:bg-slate-900 hover:border-slate-900 hover:text-white transition-all duration-300 hover:-translate-y-1"
+        title="Share on X"
+      >
+        <XIcon size={18} />
+      </button>
+
+      <button 
+        onClick={() => share("facebook")} 
+        className="group relative w-12 h-12 flex items-center justify-center bg-white border border-slate-100 rounded-2xl shadow-sm hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white transition-all duration-300 hover:-translate-y-1"
+        title="Share on Facebook"
+      >
+        <FacebookIcon size={18} />
+      </button>
+
+      <button 
+        onClick={() => share("linkedin")} 
+        className="group relative w-12 h-12 flex items-center justify-center bg-white border border-slate-100 rounded-2xl shadow-sm hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white transition-all duration-300 hover:-translate-y-1"
+        title="Share on LinkedIn"
+      >
+        <LinkedInIcon size={18} />
+      </button>
+
+      <button 
+        onClick={copyLink} 
+        className={`w-12 h-12 flex items-center justify-center border rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 ${copied ? "bg-emerald-500 border-emerald-500 text-white" : "bg-white border-slate-100 text-slate-600 hover:bg-violet-600 hover:border-violet-600 hover:text-white"}`}
+        title="Copy Link"
+      >
+        {copied ? <CheckCircle size={18} /> : <LinkIcon size={18} />}
+      </button>
+    </div>
+  );
+}
+
+/* ─── MOBILE SHARE BAR ─── */
+function MobileShareBar({ post }: { post: Post }) {
+  const [copied, setCopied] = useState(false);
+  const share = (platform: string) => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    const text = `Check out this article: ${post.title} via @StaffSchedule`;
+    const links: Record<string, string> = {
+      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    };
+    window.open(links[platform], "_blank", "width=600,height=500");
+  };
+  const copyLink = () => { 
+    navigator.clipboard.writeText(window.location.href); 
+    setCopied(true); 
+    setTimeout(() => setCopied(false), 2000); 
   };
 
-  const [faqSchema, setFaqSchema] = useState<any>(null);
+  return (
+    <div className="lg:hidden flex items-center gap-3 flex-wrap mt-8 pt-8 border-t border-slate-100">
+      <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 mr-2">Share Article:</span>
+      <button onClick={() => share("x")} className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><XIcon size={16} /></button>
+      <button onClick={() => share("facebook")} className="w-10 h-10 rounded-xl bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all"><FacebookIcon size={16} /></button>
+      <button onClick={() => share("linkedin")} className="w-10 h-10 rounded-xl bg-[#0A66C2]/10 text-[#0A66C2] flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-all"><LinkedInIcon size={16} /></button>
+      <button onClick={copyLink} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${copied ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-600 hover:bg-violet-600 hover:text-white"}`}>
+        {copied ? <CheckCircle size={16} /> : <LinkIcon size={16} />}
+      </button>
+    </div>
+  );
+}
+
+/* ─── MAIN COMPONENT ─── */
+export default function BlogPostClient({ post, relatedPosts }: { post: Post; relatedPosts: any[] }) {
+  const headings = useHeadings(post.content);
+  const [activeId, setActiveId] = useState("");
+  const [readingTime, setReadingTime] = useState(5);
 
   useEffect(() => {
-    let contentText = "";
-    let foundHeadings: { id: string; text: string; level: number }[] = [];
-
     try {
       const json = JSON.parse(post.content);
-      const foundFaqs: { question: string; answer: string }[] = [];
-      
-      const extractData = (nodes: any[]) => {
-        nodes.forEach((node: any, index: number) => {
-          if (node.type === 'text') contentText += node.text + " ";
-          
-          if (node.type === 'heading') {
-            const text = node.content?.map((c: any) => c.text).join('') || "";
-            const id = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-            foundHeadings.push({ id, text, level: node.attrs?.level || 2 });
-            
-            // FAQ Detection: Heading ending with ? followed by paragraph
-            if (text.trim().endsWith('?') && nodes[index + 1]?.type === 'paragraph') {
-               const answer = nodes[index + 1].content?.map((c: any) => c.text).join('') || "";
-               if (answer) foundFaqs.push({ question: text, answer });
-            }
-          }
-          if (node.content) extractData(node.content);
-        });
-      };
-      extractData(json.content || []);
-
-      if (foundFaqs.length > 0) {
-        setFaqSchema({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": foundFaqs.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
-        });
-      }
-    } catch (e) {
-      contentText = post.content.replace(/<[^>]*>/g, "");
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(post.content, "text/html");
-      foundHeadings = Array.from(doc.querySelectorAll("h2, h3")).map((h, i) => {
-        const text = h.textContent || "";
-        const id = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") + "-" + i;
-        return { id, text, level: parseInt(h.tagName[1]) };
-      });
-    }
-
-    const words = contentText.split(/\s+/).length;
-    setReadingTime(Math.ceil(words / 225));
-    setHeadings(foundHeadings);
+      let text = "";
+      const walk = (nodes: any[]) => nodes?.forEach(n => { if (n.text) text += n.text + " "; if (n.content) walk(n.content); });
+      walk(json.content || []);
+      setReadingTime(Math.max(1, Math.ceil(text.split(/\s+/).length / 225)));
+    } catch { setReadingTime(5); }
   }, [post.content]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const headingElements = headings.map(h => document.getElementById(h.id)).filter(Boolean);
-      const scrollPosition = window.scrollY + 100;
-      for (let i = headingElements.length - 1; i >= 0; i--) {
-        const el = headingElements[i];
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveId(headings[i].id);
-          break;
-        }
-      }
+      const scrollY = window.scrollY + 120;
+      let current = "";
+      headings.forEach(h => {
+        const el = document.getElementById(h.id);
+        if (el && el.offsetTop <= scrollY) current = h.id;
+      });
+      setActiveId(current);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headings]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const getAuthorAvatar = () => {
-    if (post.author?.avatar) return post.author.avatar;
-    const seed = post.author?.name || "Team";
-    const gender = post.author?.gender || "not_specified";
-    if (gender === 'male') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&gender=male&backgroundColor=f8fafc`;
-    if (gender === 'female') return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&gender=female&backgroundColor=f8fafc`;
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=f8fafc`;
-  };
+  const authorSlug = post.author?.slug || (post.author?.name || "staffschedule-team").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
   return (
-    <div className="bg-white selection:bg-indigo-100 selection:text-indigo-900 scroll-smooth font-sans">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
-      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-indigo-600 origin-left z-[100]" style={{ scaleX }} />
+    <div className="min-h-screen bg-[#FAFAF9] selection:bg-violet-100 selection:text-violet-900">
+      <ReadingProgress />
 
-      {/* ═══ NAVIGATION BAR (BACK) ═══ */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-           <Link href="/blog" className="flex items-center gap-2 group text-slate-500 hover:text-slate-900 transition-colors text-sm font-semibold">
-              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-              Back to Blog
-           </Link>
-           <div className="flex items-center gap-4">
-              <button 
-                onClick={copyToClipboard}
-                className="p-2 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-indigo-600 transition-all flex items-center gap-2 text-xs font-bold"
-              >
-                {copied ? <><CheckCircle size={14} className="text-emerald-500" /> Link Copied</> : <><LinkIcon size={14} /> Copy Link</>}
-              </button>
-           </div>
+      {/* ═══ STICKY NAV ═══ */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+          <Link href="/blog" className="flex items-center gap-2 text-slate-500 hover:text-violet-700 transition-colors text-sm font-semibold group shrink-0">
+            <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" /> Back to Blog
+          </Link>
+          <div className="hidden sm:block flex-1 min-w-0 text-center">
+            <span className="text-xs font-semibold text-slate-400 line-clamp-1">{post.title}</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="hidden sm:flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <Clock size={12} /> {readingTime} min read
+            </span>
+          </div>
         </div>
       </nav>
 
-      <main className="relative pt-32 pb-32">
-        {/* ═══ HERO SECTION (TWO COLUMNS) ═══ */}
-        <header className="max-w-7xl mx-auto px-4 sm:px-6 mb-10 lg:mb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center text-left">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-                {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 mb-6 sm:mb-8 text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase overflow-x-auto whitespace-nowrap pb-2 sm:pb-0 scrollbar-hide">
-                   <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
-                   <ChevronRight size={10} className="shrink-0" />
-                   <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
-                   <ChevronRight size={10} className="shrink-0" />
-                   <span className="text-indigo-600/60 truncate max-w-[150px] sm:max-w-[200px]">{post.category || "Intelligence"}</span>
-                </div>
-
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] sm:text-[11px] font-black uppercase tracking-widest mb-4 sm:mb-6 border border-indigo-100/50">
-                   {post.category || "Intelligence"}
-                </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.2] sm:leading-[1.15] mb-6 sm:mb-8 text-balance bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                   {post.title}
-                </h1>
-                <p className="text-base sm:text-lg text-slate-500 mb-8 sm:mb-10 leading-relaxed font-medium">
-                  {post.excerpt || "Explore the latest frameworks and strategies powering high-performance workforce management."}
-                </p>
-                
-                <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-slate-400 border-t border-slate-100 pt-6 sm:pt-8">
-                   <Link 
-                     href={`/blog/author/${(post.author?.slug || post.author?.name || 'staffschedule-team').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`} 
-                     className="flex items-center gap-2 group cursor-pointer transition-colors"
-                   >
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 group-hover:border-indigo-300 transition-all">
-                        <img src={getAuthorAvatar()} alt={post.author?.name || "Author"} />
-                      </div>
-                      <span className="text-slate-900 font-bold group-hover:text-indigo-600 transition-colors">{post.author?.name || "StaffSchedule Team"}</span>
-                   </Link>
-                   <div className="flex items-center gap-2">
-                      <Calendar size={13} />
-                      {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                   </div>
-                   <div className="flex items-center gap-2">
-                      <Clock size={13} />
-                      {readingTime} min read
-                   </div>
-                </div>
-             </motion.div>
-
-
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }} 
-               animate={{ opacity: 1, scale: 1 }} 
-               transition={{ duration: 0.8, delay: 0.2 }}
-               className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl shadow-indigo-900/10 border border-slate-100"
-             >
-                <img 
-                  src={post.image || "/saas_blog_3d_laptop_hero_1776734582759.png"} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover"
-                  fetchPriority="high"
-                />
-                <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-3xl" />
-             </motion.div>
-          </div>
-        </header>
-
-        {/* ═══ MAIN LAYOUT GRID (TWO COLUMN) ═══ */}
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
-          
-          {/* LEFT: TOC SIDEBAR (Sticky on Desktop, Natural Flow on Mobile) */}
-          <aside className="lg:col-span-3 relative lg:sticky lg:top-32 h-fit mb-8 lg:mb-20 z-40 lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto custom-scrollbar pr-0 lg:pr-2">
-             <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
-                <button 
-                  onClick={() => setIsTocExpanded(!isTocExpanded)}
-                  className="w-full flex items-center justify-between p-4 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white transition-all hover:opacity-95"
-                >
-                   <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em]">Table of Contents</span>
-                   <motion.div
-                     animate={{ rotate: isTocExpanded ? 180 : 0 }}
-                     transition={{ duration: 0.3 }}
-                   >
-                      <ChevronRight size={18} className="rotate-90 shrink-0" />
-                   </motion.div>
-                </button>
-
-
-                <AnimatePresence>
-                   {isTocExpanded && (
-                     <motion.div
-                       initial={{ height: 0, opacity: 0 }}
-                       animate={{ height: "auto", opacity: 1 }}
-                       exit={{ height: 0, opacity: 0 }}
-                       className="overflow-hidden"
-                     >
-                        <nav className="p-4 py-6 space-y-1">
-                           {headings.map(h => (
-                             <button
-                               key={h.id}
-                               onClick={() => document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                               className={`block w-full text-left py-2.5 px-4 rounded-xl text-[13px] font-semibold transition-all group relative ${
-                                 activeId === h.id 
-                                   ? "text-indigo-600 bg-indigo-50/50" 
-                                   : "text-slate-400 hover:text-slate-800 hover:bg-slate-50"
-                               } ${h.level === 3 ? "pl-8 text-[12px]" : ""}`}
-                             >
-                               {activeId === h.id && (
-                                 <motion.div 
-                                   layoutId="toc-indicator" 
-                                   className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-indigo-600 rounded-r-full" 
-                                 />
-                               )}
-                               <span className="line-clamp-2">{h.text}</span>
-                             </button>
-                           ))}
-                        </nav>
-                     </motion.div>
-                   )}
-                </AnimatePresence>
-             </div>
-             
-              {/* Enhanced Social Share (Side) */}
-              <div className="mt-8 lg:mt-12 p-8 rounded-3xl bg-white/40 backdrop-blur-xl border border-white shadow-[0_8px_32px_rgba(0,0,0,0.03)] relative overflow-hidden group/share">
-                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover/share:opacity-100 transition-opacity duration-500" />
-                 <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-800 mb-6 block text-center">Fuel the Discussion</span>
-                 <div className="relative z-10 flex justify-center gap-5">
-                    <button 
-                      onClick={() => handleShare("linkedin")}
-                      className="w-12 h-12 rounded-2xl bg-white shadow-sm text-slate-400 hover:text-white hover:bg-gradient-to-br hover:from-[#0077b5] hover:to-blue-400 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1 transition-all flex items-center justify-center group"
-                      title="Share on LinkedIn"
-                    >
-                       <LinkedinIcon size={20} className="group-hover:scale-110 transition-transform" />
-                    </button>
-                    <button 
-                      onClick={() => handleShare("x")}
-                      className="w-12 h-12 rounded-2xl bg-white shadow-sm text-slate-400 hover:text-white hover:bg-slate-900 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-1 transition-all flex items-center justify-center group"
-                      title="Share on X"
-                    >
-                       <XIcon size={20} className="group-hover:scale-110 transition-transform" />
-                    </button>
-                    <button 
-                      onClick={() => handleShare("facebook")}
-                      className="w-12 h-12 rounded-2xl bg-white shadow-sm text-slate-400 hover:text-white hover:bg-[#1877F2] hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1 transition-all flex items-center justify-center group"
-                      title="Share on Facebook"
-                    >
-                       <FacebookIcon size={20} />
-                    </button>
-                 </div>
-              </div>
-          </aside>
-
-          {/* CENTER: ARTICLE CONTENT (Expanded) */}
-          <div className="lg:col-span-9 max-w-4xl">
-             <div className="bg-white min-h-[500px]">
-                <BlockRenderer content={post.content} />
-             </div>
-
-              {/* COMPACT AUTHOR BOX BELOW CONTENT */}
-              <div className="mt-16 pt-12 border-t border-slate-100 flex items-start gap-6 group/author">
-                 <div className="w-16 h-16 rounded-2xl bg-white shrink-0 overflow-hidden shadow-lg border border-slate-100 group-hover/author:border-indigo-200 transition-colors p-1">
-                    <img src={getAuthorAvatar()} alt={post.author?.name || "StaffSchedule"} className="w-full h-full object-cover rounded-xl" />
-                 </div>
-                 <div>
-                    <h4 className="text-lg font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-1">
-                       {post.author?.name || "StaffSchedule.io Intelligence"}
-                    </h4>
-                    <p className="text-[15px] text-slate-500 leading-relaxed mb-4 max-w-2xl font-medium">
-                       {post.author?.bio || "Insights from our editorial team on workforce optimization and AI strategy."}
-                    </p>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-indigo-600/60">Contributed to StaffSchedule.io</div>
-                 </div>
-              </div>
-
-             {/* BOTTOM SOCIAL & TAGS */}
-             <div className="mt-12 py-8 border-y border-slate-50 flex flex-wrap items-center justify-between gap-6">
-                <div className="flex items-center gap-4">
-                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Syndicate:</span>
-                   <div className="flex gap-3">
-                       <button onClick={() => handleShare("linkedin")} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#0077b5] to-blue-500 text-white text-[11px] font-black uppercase tracking-widest hover:shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2">
-                         <LinkedinIcon size={14} /> LinkedIn
-                       </button>
-                       <button onClick={() => handleShare("x")} className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest hover:shadow-lg transition-all flex items-center gap-2">
-                         <XIcon size={14} /> X
-                       </button>
-                       <button onClick={() => handleShare("facebook")} className="px-5 py-2.5 rounded-xl bg-[#1877F2] text-white text-[11px] font-black uppercase tracking-widest hover:shadow-lg hover:shadow-blue-500/20 transition-all flex items-center gap-2">
-                         <FacebookIcon size={14} /> Facebook
-                       </button>
-                   </div>
-                </div>
-                <div className="flex gap-2">
-                   {["AI-POWERED", "EFFICIENCY"].map(tag => (
-                     <span key={tag} className="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-[0.1em] border border-indigo-100/50">{tag}</span>
-                   ))}
-                </div>
-             </div>
+      {/* ═══ HERO ═══ */}
+      <section className="pt-24 sm:pt-28 pb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          {/* Breadcrumbs */}
+          <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-6 overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
+            <Link href="/" className="hover:text-violet-600 transition-colors">Home</Link>
+            <ChevronRight size={10} className="shrink-0" />
+            <Link href="/blog" className="hover:text-violet-600 transition-colors">Blog</Link>
+            <ChevronRight size={10} className="shrink-0" />
+            <span className="text-violet-500 truncate max-w-[200px]">{post.category || "Article"}</span>
           </div>
 
-        </div>
-      </main>
-
-      {/* ═══ READ NEXT SECTION ═══ */}
-      <section className="py-24 bg-slate-50 border-t border-slate-100">
-         <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-2xl font-extrabold text-slate-900 mb-12 tracking-tight">Expand Your Knowledge</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-               {relatedPosts.map(rel => (
-                 <Link key={rel.id} href={`/blog/${rel.slug}`} className="group h-full flex flex-col">
-                    <div className="aspect-video rounded-3xl overflow-hidden mb-6 shadow-md border border-slate-200 relative">
-                       <img src={rel.image || "/saas_blog_3d_laptop_hero_1776734582759.png"} alt={rel.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors mb-3 line-clamp-2">{rel.title}</h3>
-                    <div className="mt-auto flex items-center gap-3 text-[11px] font-black text-slate-400 uppercase tracking-widest">
-                       <div className="w-6 h-px bg-slate-200" />
-                       {new Date(rel.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </div>
-                 </Link>
-               ))}
+          {/* Category + Title */}
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 text-violet-700 text-[10px] font-black uppercase tracking-widest mb-5 border border-violet-200/60">
+              <Sparkles size={9} /> {post.category || "Insight"}
             </div>
-         </div>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.15] mb-5 text-balance bg-gradient-to-br from-violet-700 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              {post.title}
+            </h1>
+            {post.excerpt && (
+              <p className="text-base sm:text-lg text-slate-500 font-medium leading-relaxed mb-7 max-w-3xl">
+                {post.excerpt}
+              </p>
+            )}
+            {/* Meta row */}
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-slate-500 border-t border-slate-100 pt-5 pb-8">
+              <Link href={`/blog/author/${authorSlug}`} className="flex items-center gap-2.5 group">
+                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-violet-200 group-hover:border-violet-400 transition-colors">
+                  <img src={getAvatar(post.author)} alt={post.author?.name || "Author"} className="w-full h-full object-cover" />
+                </div>
+                <span className="text-slate-800 font-bold group-hover:text-violet-700 transition-colors">{post.author?.name || "StaffSchedule Team"}</span>
+              </Link>
+              <span className="flex items-center gap-1.5 text-slate-400"><Calendar size={13} />{formatDate(post.createdAt)}</span>
+              <span className="flex items-center gap-1.5 text-slate-400"><Clock size={13} />{readingTime} min read</span>
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          {post.image && (
+            <div className="relative w-full aspect-video sm:aspect-[21/9] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-violet-900/10 border border-slate-100 mb-0">
+              <img src={post.image} alt={post.title} className="w-full h-full object-cover" fetchPriority="high" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+            </div>
+          )}
+        </div>
       </section>
 
-      {/* ═══ FOOTER CTA ═══ */}
-      <section className="py-24 bg-indigo-600 text-white text-center rounded-[4rem] mx-6 mb-12 shadow-2xl relative overflow-hidden">
-         <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -ml-48 -mt-48" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-48 -mb-48" />
-         </div>
-         <div className="max-w-3xl mx-auto px-6 relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-white/10 backdrop-blur-md">
-               The Future of Staffing
+      {/* ═══ CONTENT + SIDEBAR ═══ */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14 relative">
+        {/* Floating Share (Desktop) - Moves within this container boundary */}
+        <div className="hidden xl:block absolute -left-20 top-14 bottom-14 w-12">
+           <FloatingShareBar post={post} />
+        </div>
+
+        <div className="flex gap-10 xl:gap-14 items-start">
+
+          {/* Article Content */}
+          <main className="flex-1 min-w-0">
+            <article className="prose-article">
+              <BlockRenderer content={post.content} />
+            </article>
+
+            {/* Mobile share */}
+            <MobileShareBar post={post} />
+
+            {/* Author Card */}
+            <div className="mt-12 p-6 sm:p-8 bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm flex gap-5 sm:gap-6 items-start">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-violet-200 shrink-0">
+                <img src={getAvatar(post.author)} alt={post.author?.name || "Author"} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-black text-slate-900 text-base">{post.author?.name || "StaffSchedule Team"}</h4>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 text-[9px] font-black uppercase tracking-widest">
+                    <Sparkles size={8} /> Verified
+                  </span>
+                </div>
+                <p className="text-sm text-slate-500 leading-relaxed font-medium mb-3">
+                  {post.author?.bio || "Insights from our editorial team on workforce optimization and AI strategy."}
+                </p>
+                <Link href={`/blog/author/${authorSlug}`} className="text-[11px] font-black uppercase tracking-widest text-violet-600 hover:text-violet-800 transition-colors flex items-center gap-1.5">
+                  View All Articles <ArrowRight size={11} />
+                </Link>
+              </div>
             </div>
-            <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tighter leading-[1.1]">Shift into the future of scheduling.</h2>
-            <p className="text-indigo-100 mb-12 text-lg opacity-90 font-medium max-w-xl mx-auto">The most advanced AI logic for complex workforce operations. Join high-performance teams today.</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-               <Link href="https://app.staffschedule.io/signup.php" className="px-10 py-5 rounded-[2rem] bg-white text-indigo-600 font-black uppercase tracking-widest text-xs hover:bg-slate-50 hover:shadow-xl hover:-translate-y-1 transition-all">
-                 Start Free Trial
-               </Link>
-               <Link href="/contact" className="px-10 py-5 rounded-[2rem] bg-white/10 text-white border border-white/20 font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all">
-                 Contact Sales
-               </Link>
+
+            {/* Related Posts Section */}
+            {relatedPosts.length > 0 && (
+              <div className="mt-16 sm:mt-24">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">You Might Also Like</h2>
+                  <Link href="/blog" className="text-[11px] font-black uppercase tracking-widest text-violet-600 hover:text-violet-800 transition-colors flex items-center gap-1.5 group">
+                    Explore Blog <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {relatedPosts.slice(0, 3).map((rel: any) => (
+                    <Link key={rel.id} href={`/blog/${rel.slug}`} className="group flex flex-col bg-white rounded-2xl border border-slate-100 overflow-hidden hover:border-violet-200 hover:shadow-xl hover:shadow-violet-900/5 transition-all duration-300">
+                      <div className="aspect-[16/10] relative overflow-hidden">
+                        <img src={rel.image || "/saas_blog_3d_laptop_hero_1776734582759.png"} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute top-3 left-3">
+                          <span className="px-2 py-1 rounded-lg bg-white/90 backdrop-blur-md text-violet-600 text-[9px] font-black uppercase tracking-widest shadow-sm">
+                            {rel.category || "Insight"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-5 flex flex-col flex-1">
+                        <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug mb-3 line-clamp-2 group-hover:text-violet-700 transition-colors">{rel.title}</h4>
+                        <div className="mt-auto flex items-center justify-between text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                          <span className="flex items-center gap-1.5"><Calendar size={11} />{new Date(rel.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                          <span className="text-violet-600 font-black group-hover:translate-x-1 transition-transform">Read →</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* Sticky Sidebar (desktop only) */}
+          <Sidebar post={post} relatedPosts={relatedPosts} headings={headings} activeId={activeId} />
+        </div>
+      </div>
+
+      {/* ═══ BOTTOM CTA ═══ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+        <div className="relative bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl p-8 sm:p-12 text-center">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute -top-1/2 -right-1/4 w-[500px] h-[500px] bg-gradient-to-br from-violet-600/30 to-purple-600/20 rounded-full blur-[100px]" />
+          </div>
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 text-violet-400 text-[10px] font-black uppercase tracking-[0.15em] mb-6 border border-violet-500/20">
+              <Zap size={10} /> Transform Your Workforce
             </div>
-         </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-[1.15] mb-5">
+              Ready to schedule smarter?
+            </h2>
+            <p className="text-slate-400 font-medium mb-8 leading-relaxed">
+              Join 10,000+ teams using StaffSchedule.io to cut scheduling time by 80% and reduce labor costs.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="https://app.staffschedule.io/onboarding.php" className="px-8 py-4 bg-violet-600 text-white rounded-xl font-black uppercase tracking-widest text-xs hover:bg-violet-500 hover:shadow-xl hover:shadow-violet-600/25 hover:-translate-y-0.5 transition-all">
+                Start Free Trial
+              </Link>
+              <Link href="/contact" className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all">
+                Talk to Sales
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
     </div>

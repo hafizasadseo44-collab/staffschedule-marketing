@@ -98,7 +98,7 @@ const EliteHero = () => {
                transition={{ duration: 0.8, delay: 0.6 }}
                className="flex flex-col sm:flex-row gap-5 mb-14"
             >
-               <Link href="https://app.staffschedule.io/signup.php" className="group relative">
+               <Link href="https://app.staffschedule.io/onboarding.php" className="group relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-300"></div>
                   <Button className="relative w-full sm:w-auto h-16 px-10 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-2xl text-xl font-black transition-all hover:scale-[1.03] active:scale-[0.97] shadow-xl">
                     Start Free Trial

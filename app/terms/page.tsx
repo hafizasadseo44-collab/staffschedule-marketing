@@ -21,7 +21,7 @@ export default function TermsPage() {
       <section id="accounts">
         <h2>2. Registration & Eligibility</h2>
         <p>
-          To access certain features of the Service, you must <Link href="https://app.staffschedule.io/signup.php">register for an account</Link>. You agree to:
+          To access certain features of the Service, you must <Link href="https://app.staffschedule.io/onboarding.php">register for an account</Link>. You agree to:
         </p>
         <ul>
           <li>Provide accurate, current, and complete information during the registration process.</li>

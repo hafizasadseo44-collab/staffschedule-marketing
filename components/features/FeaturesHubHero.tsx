@@ -51,7 +51,7 @@ export default function FeaturesHubHero() {
             className="flex flex-wrap justify-center gap-6"
           >
              <a 
-                href="https://app.staffschedule.io/signup.php" 
+                href="https://app.staffschedule.io/onboarding.php" 
                 className="px-10 py-5 bg-brand-dark dark:bg-brand-primary text-white rounded-2xl font-black text-lg shadow-2xl flex items-center gap-3 hover:scale-105 transition-all"
              >
                 Start for Free <Zap className="w-5 h-5 fill-white" />

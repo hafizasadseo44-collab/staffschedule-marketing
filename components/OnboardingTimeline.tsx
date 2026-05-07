@@ -192,7 +192,7 @@ export default function OnboardingTimeline() {
           className="mt-32 lg:mt-48 text-center"
         >
           <div className="inline-block p-1 rounded-[2rem] bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 shadow-2xl shadow-indigo-500/20">
-            <Link href="https://app.staffschedule.io/signup.php">
+            <Link href="https://app.staffschedule.io/onboarding.php">
               <button className="bg-white text-slate-900 px-12 py-6 rounded-[1.8rem] font-black text-xl flex items-center gap-4 hover:bg-transparent hover:text-white transition-all duration-300 group">
                 Start Your Journey Now
                 <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />

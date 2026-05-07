@@ -194,7 +194,7 @@ export default function LeaveManagementPage() {
                   Take the headache out of time-off. Join 2,500+ managers who trust StaffSchedule.io for their operational clarity.
                </p>
                <div className="flex flex-col sm:flex-row gap-6">
-                  <Link href="https://app.staffschedule.io/signup.php">
+                  <Link href="https://app.staffschedule.io/onboarding.php">
                      <button className="h-16 px-10 bg-brand-primary text-white rounded-2xl font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-4">
                         Get Started Now
                         <ArrowRight className="w-6 h-6" />

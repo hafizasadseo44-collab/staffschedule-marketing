@@ -447,7 +447,7 @@ export default function ContactPage() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Try it free.</span>
             </h2>
             <p className="text-lg text-slate-400 mb-10 max-w-lg mx-auto">No credit card. No commitment. Full access for 14 days.</p>
-            <Link href="https://app.staffschedule.io/signup.php" className="inline-flex h-16 px-12 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-base uppercase tracking-widest items-center gap-3 hover:shadow-[0_0_50px_-10px_rgba(124,58,237,0.6)] transition-all hover:scale-[1.02] active:scale-95 group">
+            <Link href="https://app.staffschedule.io/onboarding.php" className="inline-flex h-16 px-12 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-base uppercase tracking-widest items-center gap-3 hover:shadow-[0_0_50px_-10px_rgba(124,58,237,0.6)] transition-all hover:scale-[1.02] active:scale-95 group">
               Start Free Trial <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
