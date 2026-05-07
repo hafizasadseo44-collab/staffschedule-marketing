@@ -36,9 +36,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
   
-  let author = await db.author.findUnique({ where: { slug } });
+  let authorRaw = await db.$queryRaw`SELECT * FROM Author WHERE slug = ${slug} LIMIT 1` as any[];
+  let author = authorRaw[0] || null;
+
   if (!author && decodedSlug !== slug) {
-    author = await db.author.findUnique({ where: { slug: decodedSlug } });
+    let decodedAuthorRaw = await db.$queryRaw`SELECT * FROM Author WHERE slug = ${decodedSlug} LIMIT 1` as any[];
+    author = decodedAuthorRaw[0] || null;
   }
 
   // Handle default StaffSchedule team
@@ -83,31 +86,24 @@ export default async function AuthorProfilePage({ params }: Props) {
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
 
-  let author = await db.author.findUnique({
-    where: { slug },
-    include: {
-      posts: {
-        where: { published: true },
-        orderBy: { createdAt: 'desc' },
-        select: {
-          id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true,
-        }
-      }
-    }
-  });
+  let authorRaw = await db.$queryRaw`SELECT * FROM Author WHERE slug = ${slug} LIMIT 1` as any[];
+  let author = authorRaw[0] || null;
 
   // Try decoded slug if not found
   if (!author && decodedSlug !== slug) {
-    author = await db.author.findUnique({
-      where: { slug: decodedSlug },
-      include: {
-        posts: {
-          where: { published: true },
-          orderBy: { createdAt: 'desc' },
-          select: { id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true }
-        }
-      }
-    });
+    let decodedAuthorRaw = await db.$queryRaw`SELECT * FROM Author WHERE slug = ${decodedSlug} LIMIT 1` as any[];
+    author = decodedAuthorRaw[0] || null;
+  }
+
+  if (author) {
+    // Fetch posts for this author using raw query
+    const posts = await db.$queryRaw`
+      SELECT id, title, slug, excerpt, image, category, createdAt 
+      FROM Post 
+      WHERE authorId = ${author.id} AND published = 1
+      ORDER BY createdAt DESC
+    ` as any[];
+    author.posts = posts;
   }
 
   // Fallback for default team if missing from DB
@@ -116,11 +112,12 @@ export default async function AuthorProfilePage({ params }: Props) {
     isDefaultTeam = true;
     
     // Fetch all posts with no author assigned
-    const orphanedPosts = await db.post.findMany({
-      where: { authorId: null, published: true },
-      orderBy: { createdAt: 'desc' },
-      select: { id: true, title: true, slug: true, excerpt: true, image: true, category: true, createdAt: true }
-    });
+    const orphanedPosts = await db.$queryRaw`
+      SELECT id, title, slug, excerpt, image, category, createdAt 
+      FROM Post 
+      WHERE (authorId IS NULL OR authorId = '') AND published = 1
+      ORDER BY createdAt DESC
+    ` as any[];
 
     author = {
       id: 'default-team',
