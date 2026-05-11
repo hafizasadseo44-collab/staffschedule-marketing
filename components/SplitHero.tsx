@@ -80,18 +80,15 @@ export default function SplitHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <LinkPreview
-                className={cn(
-                  "group mx-auto flex w-fit items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-1.5 shadow-sm",
-                  "hover:shadow-md transition-all"
-                )}
-                url="/features"
-              >
-                <Zap className="size-3 text-indigo-500 fill-indigo-500" />
-                <span className="text-xs font-semibold text-slate-600">#1 AI-Powered Scheduler</span>
-                <span className="block h-4 border-l border-slate-200" />
-                <ArrowRightIcon className="size-3 text-slate-400 duration-150 ease-out group-hover:translate-x-1" />
-              </LinkPreview>
+              <div className={cn(
+                "group mx-auto flex w-fit items-center gap-3 rounded-full border border-indigo-100 bg-indigo-50/30 px-4 py-2 shadow-[0_2px_10px_-3px_rgba(79,70,229,0.1)]",
+                "hover:shadow-indigo-500/10 transition-all border-dashed"
+              )}>
+                <Zap className="size-3 text-indigo-600 fill-indigo-600 animate-pulse" />
+                <span className="text-[11px] font-black uppercase tracking-widest text-indigo-700">Everything Your Team Needs for Better Staff Scheduling</span>
+                <span className="block h-4 border-l border-indigo-200" />
+                <ArrowRightIcon className="size-3 text-indigo-400" />
+              </div>
             </motion.div>
 
             {/* Hero Headline */}
@@ -100,11 +97,15 @@ export default function SplitHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.7 }}
               className={cn(
-                "text-balance text-center text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl text-slate-900"
+                "text-balance text-center text-4xl font-black tracking-tight sm:text-5xl lg:text-7xl text-slate-900 leading-[1.05]"
               )}
             >
-              AI-Powered Staff Scheduling. <br className="hidden sm:block" />
-              <span className="text-indigo-600">Effortless, Anytime.</span>
+              Still Wasting Hours Managing <span className="relative inline-block text-indigo-600">
+                Staff Scheduling
+                <svg className="absolute -bottom-2 left-0 w-full h-2 text-indigo-200/60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
+                </svg>
+              </span> and <span className="text-indigo-600">Employee Shifts</span> <span className="italic text-slate-400 font-medium">Manually?</span>
             </motion.h1>
 
             {/* Subheading */}
@@ -112,10 +113,9 @@ export default function SplitHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.9 }}
-              className="mx-auto max-w-xl text-center text-base text-slate-500 font-medium tracking-wide sm:text-lg md:text-xl leading-relaxed"
+              className="mx-auto max-w-3xl text-center text-lg sm:text-xl text-slate-500 font-medium leading-relaxed"
             >
-              The all-in-one workforce platform to automate schedules, <br className="hidden md:block" />
-              cut labor costs by 18%, and keep your entire team in sync.
+              StaffSchedule helps businesses create employee schedules in minutes, eliminate shift confusion, reduce scheduling errors, and keep teams connected with one easy-to-use workforce scheduling platform built to save time and reduce daily stress.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -123,20 +123,22 @@ export default function SplitHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.1 }}
-              className="flex flex-row flex-wrap items-center justify-center gap-3 pt-2"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 w-full sm:w-auto"
             >
-              <LinkPreview url="/contact">
-                <button className="h-12 px-6 rounded-full bg-slate-100 text-slate-700 font-bold text-sm flex items-center gap-2 hover:bg-slate-200 transition-all active:scale-95">
-                  <PhoneCallIcon className="size-4" />
-                  Contact Sales
-                </button>
-              </LinkPreview>
               <LinkPreview url="https://app.staffschedule.io/onboarding.php?start_trial=1">
-                <button className="h-12 px-8 rounded-full bg-indigo-600 text-white font-bold text-sm flex items-center gap-2 hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all active:scale-95 group">
-                  Start Free Trial
+                <button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:scale-[1.03] shadow-[0_20px_40px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(79,70,229,0.5)] transition-all active:scale-95 group relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                  Start Free Scheduling Trial
                   <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </LinkPreview>
+              
+              <a href="#how-it-works" className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-white text-slate-900 border-2 border-slate-200 font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-95 group">
+                  See How It Works
+                  <TrendingUp className="size-4 opacity-50 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all" />
+                </button>
+              </a>
             </motion.div>
 
             {/* Trust Indicators */}
@@ -144,32 +146,39 @@ export default function SplitHero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.3 }}
-              className="flex flex-col items-center gap-6 pt-6"
+              className="flex flex-col items-center gap-8 pt-10"
             >
-              <div className="flex flex-wrap items-center justify-center gap-5">
-                {["No Credit Card", "14-Day Free Trial", "Cancel Anytime"].map((label, i) => (
-                  <div key={i} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    <CheckCircle2 size={12} className="text-indigo-400" />
+              <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-4 gap-x-10">
+                {[
+                  "Start Scheduling Your Team in Minutes",
+                  "14-Day Free Staff Scheduling Trial",
+                  "No Contracts or Setup Hassles"
+                ].map((label, i) => (
+                  <div key={i} className="flex items-center gap-2.5 text-[11px] font-black text-slate-700 uppercase tracking-widest">
+                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center border border-emerald-200 shadow-sm">
+                      <CheckCircle2 size={12} className="text-emerald-600" />
+                    </div>
                     {label}
                   </div>
                 ))}
               </div>
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2.5">
+
+              <div className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-100/50 backdrop-blur-sm">
+                <div className="flex -space-x-3">
                   {AVATARS.map((url, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow-sm">
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-md">
                       <img src={url} alt="User" className="w-full h-full object-cover" />
                     </div>
                   ))}
                 </div>
                 <div className="flex flex-col">
-                  <div className="flex items-center gap-0.5 mb-0.5">
+                  <div className="flex items-center gap-0.5 mb-1">
                     {[1, 2, 3, 4, 5].map(s => (
-                      <Star key={s} size={10} className="fill-yellow-400 text-yellow-400" />
+                      <Star key={s} size={12} className="fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-[10px] text-slate-400 font-bold">
-                    Trusted by <span className="text-slate-600">10,000+</span> managers
+                  <p className="text-[11px] text-slate-500 font-bold">
+                    Trusted by <span className="text-indigo-600 font-black">10,000+</span> Managers Worldwide
                   </p>
                 </div>
               </div>
