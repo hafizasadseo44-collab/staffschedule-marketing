@@ -15,6 +15,7 @@ import LatestBlogsSection from "@/components/LatestBlogsSection";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import OnboardingTimeline from "@/components/OnboardingTimeline";
 import CaseStudySection from "@/components/CaseStudySection";
+import TrustBento from "@/components/TrustBento";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -32,6 +33,9 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <div className="relative z-10">
       {/* 1. Hero */}
       <SplitHero />
+
+      {/* 2. Trust Bento */}
+      <TrustBento />
 
 
       {/* 3. Hard ROI numbers */}
