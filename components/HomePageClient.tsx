@@ -2,24 +2,24 @@
 
 import dynamic from "next/dynamic";
 import SplitHero from "@/components/SplitHero";
-import DashboardShowcase from "@/components/DashboardShowcase";
 import HowItWorks from "@/components/HowItWorks";
 import ComparisonSection from "@/components/ComparisonSection";
 import IntegrationsGrid from "@/components/IntegrationsGrid";
 import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 import PricingTable from "@/components/PricingTable";
 import FAQSection from "@/components/FAQSection";
+import FinalCTA from "@/components/FinalCTA";
 import EliteFinalCTA from "@/components/EliteFinalCTA";
 import ROIBanner from "@/components/ROIBanner";
+import LatestBlogsSection from "@/components/LatestBlogsSection";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import OnboardingTimeline from "@/components/OnboardingTimeline";
 import CaseStudySection from "@/components/CaseStudySection";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-const UseCases = dynamic(() => import("@/components/UseCases"), { ssr: false });
 
-export default function HomePageClient() {
+export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any[] }) {
   return (
     <div className="bg-[#FAF9FF] relative overflow-hidden">
       {/* ── Global Atmosphere Background ── */}
@@ -33,8 +33,6 @@ export default function HomePageClient() {
       {/* 1. Hero */}
       <SplitHero />
 
-      {/* 2. Dashboard Showcase (Everything in One Dashboard) */}
-      <DashboardShowcase />
 
       {/* 3. Hard ROI numbers */}
       <ROIBanner />
@@ -48,8 +46,6 @@ export default function HomePageClient() {
       {/* 6. Onboarding timeline */}
       <OnboardingTimeline />
 
-      {/* 7. Use cases + link to page */}
-      <UseCases />
 
 
       {/* 8. Competitor comparison */}
@@ -64,8 +60,20 @@ export default function HomePageClient() {
       {/* 11. Case Study */}
       <CaseStudySection />
 
-      {/* 12. Pricing */}
+      {/* 12. Pricing + link to page */}
       <PricingTable />
+      <div className="flex justify-center py-12 bg-background">
+        <Link
+          href="/pricing"
+          className="inline-flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all group"
+        >
+          View Full Pricing Details
+          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </div>
+
+      {/* 12. Latest Blogs */}
+      <LatestBlogsSection posts={latestBlogs} />
 
       {/* 13. FAQ */}
       <FAQSection />

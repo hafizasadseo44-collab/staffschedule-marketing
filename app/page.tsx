@@ -182,13 +182,32 @@ const jsonLd = {
 };
 
 export default async function Home() {
+  let latestBlogs: any[] = [];
+  
+  try {
+    const rawPosts = await db.$queryRaw`
+      SELECT * FROM Post 
+      WHERE published = 1 AND (type = 'ARTICLE' OR type = 'NEWS')
+      ORDER BY createdAt DESC
+      LIMIT 6
+    ` as any[];
+
+
+    latestBlogs = rawPosts.map(post => ({
+      ...post,
+      createdAt: typeof post.createdAt === 'string' ? post.createdAt : post.createdAt.toISOString(),
+    }));
+  } catch (e) {
+    console.error('Failed to fetch latest blogs for home page:', e);
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HomePageClient />
+      <HomePageClient latestBlogs={latestBlogs} />
     </>
   );
 }
