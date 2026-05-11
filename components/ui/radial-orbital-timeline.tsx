@@ -30,6 +30,19 @@ export default function RadialOrbitalTimeline({
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const [radius, setRadius] = useState(220);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 480) setRadius(100);
+      else if (window.innerWidth < 640) setRadius(140);
+      else if (window.innerWidth < 1024) setRadius(180);
+      else setRadius(220);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -83,10 +96,10 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 220; 
+    const currentRadius = radius; 
     const radian = (angle * Math.PI) / 180;
-    const x = radius * Math.cos(radian) + centerOffset.x;
-    const y = radius * Math.sin(radian) + centerOffset.y;
+    const x = currentRadius * Math.cos(radian) + centerOffset.x;
+    const y = currentRadius * Math.sin(radian) + centerOffset.y;
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     // Make the opacity floor much higher so the back nodes don't vanish completely
     const opacity = Math.max(0.6, Math.min(1, 0.6 + 0.4 * ((1 + Math.sin(radian)) / 2)));
@@ -125,9 +138,15 @@ export default function RadialOrbitalTimeline({
             </div>
           </div>
 
-          {/* Orbit Rings - More pronounced */}
-          <div className="absolute w-[440px] h-[440px] rounded-full border-[1.5px] border-[#6C5CE7]/20 border-dashed" />
-          <div className="absolute w-[440px] h-[440px] rounded-full border border-[#6C5CE7]/10" />
+          {/* Orbit Rings - Dynamic size */}
+          <div 
+            className="absolute rounded-full border-[1.5px] border-[#6C5CE7]/20 border-dashed transition-all duration-500" 
+            style={{ width: radius * 2, height: radius * 2 }}
+          />
+          <div 
+            className="absolute rounded-full border border-[#6C5CE7]/10 transition-all duration-500" 
+            style={{ width: radius * 2, height: radius * 2 }}
+          />
 
           {/* Nodes */}
           {timelineData.map((item, index) => {
@@ -184,7 +203,7 @@ export default function RadialOrbitalTimeline({
 
                 {/* Expanded Card (SaaS Premium Light Theme) */}
                 {isExpanded && (
-                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)] overflow-visible p-6">
+                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-72 sm:w-80 bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)] overflow-visible p-6 sm:p-7 max-w-[calc(100vw-48px)]">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-[#6C5CE7] to-transparent" />
                     
                     <div className="flex justify-between items-center mb-4">
