@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ArrowRightIcon, Zap, CheckCircle2, Star, PhoneCallIcon, TrendingUp, BarChart3 } from "lucide-react";
+import { ArrowRightIcon, Zap, CheckCircle2, Star, TrendingUp, BarChart3, MousePointer2 } from "lucide-react";
 import { LinkPreview } from "@/components/ui/link-preview";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { motion } from "framer-motion";
@@ -30,249 +30,218 @@ const logos = [
 export default function SplitHero() {
   return (
     <>
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white font-sans">
-        {/* ── Premium Background System ── */}
+      <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden bg-white font-sans selection:bg-indigo-100 selection:text-indigo-900">
+        
+        {/* ── Ambient Background System (Linear/Stripe Style) ── */}
         <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          {/* Radial Top Shade */}
-          <div className="absolute inset-0 -top-14 isolate -z-10 bg-[radial-gradient(35%_80%_at_49%_0%,rgba(79,70,229,0.06),transparent)]" />
+          {/* Main Glow */}
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-indigo-500/[0.08] to-transparent rounded-full blur-[120px]" />
+          
+          {/* Subtle Grid */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzYzNjZmMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1Ii8+PC9zdmc+')] opacity-40" />
 
-          {/* Dot Grid Pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage: `radial-gradient(#4F46E5 0.5px, transparent 0.5px)`,
-              backgroundSize: '24px 24px',
-            }}
+          {/* Floating Accents */}
+          <motion.div 
+            animate={{ y: [0, -20, 0], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[20%] left-[10%] w-64 h-64 bg-violet-400/10 rounded-full blur-[80px]" 
           />
-
-          {/* Animated Mesh Orbs */}
-          <motion.div
-            animate={{ scale: [1, 1.1, 1], x: [0, 30, 0], y: [0, -20, 0] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-indigo-500/[0.05] rounded-full blur-[120px]"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], x: [0, -40, 0], y: [0, 30, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute bottom-[-20%] left-[-10%] w-[700px] h-[700px] bg-purple-500/[0.04] rounded-full blur-[100px]"
+          <motion.div 
+            animate={{ y: [0, 20, 0], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-[20%] right-[10%] w-80 h-80 bg-indigo-400/10 rounded-full blur-[100px]" 
           />
         </div>
 
-        {/* ── Faded Side Borders ── */}
-        <div aria-hidden="true" className="absolute inset-0 mx-auto hidden min-h-screen w-full max-w-5xl lg:block pointer-events-none">
-          <div className="absolute inset-y-0 left-0 z-10 h-full w-px bg-foreground/10" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }} />
-          <div className="absolute inset-y-0 right-0 z-10 h-full w-px bg-foreground/10" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }} />
-        </div>
-
-        {/* ── Main Content ── */}
-        <div className="mx-auto w-full max-w-5xl relative z-10">
-          <div className="relative flex flex-col items-center justify-center gap-5 pt-32 pb-16 lg:pb-24 px-4 sm:px-6">
-            {/* Inner Content Borders */}
-            <div aria-hidden="true" className="absolute inset-0 -z-[1] size-full overflow-hidden pointer-events-none hidden md:block">
-              <div className="absolute inset-y-0 left-4 w-px bg-gradient-to-b from-transparent via-slate-200 to-slate-200 md:left-8" />
-              <div className="absolute inset-y-0 right-4 w-px bg-gradient-to-b from-transparent via-slate-200 to-slate-200 md:right-8" />
-              <div className="absolute inset-y-0 left-8 w-px bg-gradient-to-b from-transparent via-slate-200/50 to-slate-200/50 md:left-12" />
-              <div className="absolute inset-y-0 right-8 w-px bg-gradient-to-b from-transparent via-slate-200/50 to-slate-200/50 md:right-12" />
-            </div>
-
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col items-center max-w-5xl mx-auto text-center">
+            
+            {/* Top Badge - Soft & Modern */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.6 }}
+              className="mb-8"
             >
-              <div className={cn(
-                "group mx-auto flex w-fit items-center gap-3 rounded-full border border-indigo-100 bg-indigo-50/30 px-4 py-2 shadow-[0_2px_10px_-3px_rgba(79,70,229,0.1)]",
-                "hover:shadow-indigo-500/10 transition-all border-dashed"
-              )}>
-                <Zap className="size-3 text-indigo-600 fill-indigo-600 animate-pulse" />
-                <span className="text-[11px] font-black uppercase tracking-widest text-indigo-700">Everything Your Team Needs for Better Staff Scheduling</span>
-                <span className="block h-4 border-l border-indigo-200" />
-                <ArrowRightIcon className="size-3 text-indigo-400" />
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 shadow-sm backdrop-blur-sm group cursor-default transition-all hover:border-indigo-200 hover:bg-white">
+                <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                  Everything You Need for <span className="text-indigo-600">Better Staff Scheduling</span>
+                </span>
+                <ArrowRightIcon className="size-3 text-slate-300 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </motion.div>
 
-            {/* Hero Headline */}
+            {/* Headline - Refined & Balanced */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-              className={cn(
-                "text-balance text-center text-4xl font-black tracking-tight sm:text-5xl lg:text-7xl text-slate-900 leading-[1.05]"
-              )}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 mb-6 leading-[1.1]"
             >
-              Still Wasting Hours Managing <span className="relative inline-block text-indigo-600">
-                Staff Scheduling
-                <svg className="absolute -bottom-2 left-0 w-full h-2 text-indigo-200/60" viewBox="0 0 100 10" preserveAspectRatio="none">
-                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
-                </svg>
-              </span> and <span className="text-indigo-600">Employee Shifts</span> <span className="italic text-slate-400 font-medium">Manually?</span>
+              Still Wasting Hours Managing <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 animate-gradient">
+                Employee Shifts
+              </span> Manually?
             </motion.h1>
 
-            {/* Subheading */}
+            {/* Subheading - Human & Readable */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.9 }}
-              className="mx-auto max-w-3xl text-center text-lg sm:text-xl text-slate-500 font-medium leading-relaxed"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="max-w-2xl text-lg sm:text-xl text-slate-500 font-medium leading-relaxed mb-10"
             >
-              StaffSchedule helps businesses create employee schedules in minutes, eliminate shift confusion, reduce scheduling errors, and keep teams connected with one easy-to-use workforce scheduling platform built to save time and reduce daily stress.
+              StaffSchedule simplifies workforce management by creating error-free schedules in minutes. 
+              Reduce daily stress, eliminate confusion, and keep your entire team connected with one easy platform.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTAs - Attractive & Interactive */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.1 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 w-full sm:w-auto"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center gap-4 mb-8"
             >
               <LinkPreview url="https://app.staffschedule.io/onboarding.php?start_trial=1">
-                <button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:scale-[1.03] shadow-[0_20px_40px_-10px_rgba(79,70,229,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(79,70,229,0.5)] transition-all active:scale-95 group relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                  Start Free Scheduling Trial
+                <button className="h-14 px-10 rounded-2xl bg-slate-900 text-white font-bold text-sm tracking-wide flex items-center gap-3 hover:bg-indigo-600 shadow-xl shadow-slate-900/10 hover:shadow-indigo-500/30 transition-all active:scale-95 group relative overflow-hidden">
+                  Start Your Free Trial
                   <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </LinkPreview>
               
-              <a href="#how-it-works" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto h-14 px-10 rounded-2xl bg-white text-slate-900 border-2 border-slate-200 font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:border-indigo-600 hover:text-indigo-600 transition-all active:scale-95 group">
+              <a href="#how-it-works">
+                <button className="h-14 px-10 rounded-2xl bg-white text-slate-600 border border-slate-200 font-bold text-sm tracking-wide flex items-center gap-2 hover:bg-slate-50 hover:text-indigo-600 hover:border-indigo-100 transition-all active:scale-95">
                   See How It Works
-                  <TrendingUp className="size-4 opacity-50 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all" />
+                  <TrendingUp className="size-4 opacity-40" />
                 </button>
               </a>
             </motion.div>
 
-            {/* Trust Indicators */}
+            {/* Trust Badges - Minimal & Clean */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.3 }}
-              className="flex flex-col items-center gap-8 pt-10"
+              transition={{ duration: 1, delay: 0.5 }}
+              className="flex flex-col items-center gap-8"
             >
-              <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-4 gap-x-10">
+              <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
                 {[
-                  "Start Scheduling Your Team in Minutes",
-                  "14-Day Free Staff Scheduling Trial",
-                  "No Contracts or Setup Hassles"
-                ].map((label, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-[11px] font-black text-slate-700 uppercase tracking-widest">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center border border-emerald-200 shadow-sm">
-                      <CheckCircle2 size={12} className="text-emerald-600" />
-                    </div>
-                    {label}
+                  "14-Day Free Trial",
+                  "No Credit Card Required",
+                  "Setup in Minutes"
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                    <CheckCircle2 size={12} className="text-emerald-500" />
+                    {item}
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-100/50 backdrop-blur-sm">
+              {/* Social Proof */}
+              <div className="flex items-center gap-4 py-2 px-6 bg-slate-50/50 rounded-full border border-slate-100 backdrop-blur-sm">
                 <div className="flex -space-x-3">
                   {AVATARS.map((url, i) => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-md">
-                      <img src={url} alt="User" className="w-full h-full object-cover" />
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow-sm">
+                      <Image src={url} alt="User" width={32} height={32} className="w-full h-full object-cover" />
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-0.5 mb-1">
+                <div className="h-4 w-px bg-slate-200 mx-1" />
+                <div className="flex flex-col items-start">
+                  <div className="flex items-center gap-0.5">
                     {[1, 2, 3, 4, 5].map(s => (
-                      <Star key={s} size={12} className="fill-yellow-400 text-yellow-400" />
+                      <Star key={s} size={10} className="fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-[11px] text-slate-500 font-bold">
-                    Trusted by <span className="text-indigo-600 font-black">10,000+</span> Managers Worldwide
+                  <p className="text-[10px] text-slate-500 font-bold">
+                    Trusted by <span className="text-slate-900">10,000+</span> Managers
                   </p>
                 </div>
               </div>
             </motion.div>
+
+            {/* ── Product Preview - Floating Card Effect ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-20 w-full relative group"
+            >
+              {/* Background Glow */}
+              <div className="absolute -inset-10 bg-indigo-500/10 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              
+              <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] bg-white">
+                {/* Browser Header Decor */}
+                <div className="h-10 bg-slate-50/50 border-b border-slate-200 flex items-center px-4 gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                </div>
+                
+                <Image
+                  src="/hero-master.png"
+                  alt="StaffSchedule.io Dashboard"
+                  width={1400}
+                  height={1000}
+                  className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.01]"
+                  priority
+                  unoptimized
+                />
+
+                {/* Floating Micro-UI 1 */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-10 left-10 hidden lg:block"
+                >
+                  <div className="bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-white/50 w-[200px]">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <TrendingUp size={16} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-400 uppercase">Efficiency</p>
+                        <h4 className="text-base font-black text-slate-900">+24.5%</h4>
+                      </div>
+                    </div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="w-[75%] h-full bg-emerald-500 rounded-full" />
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Floating Micro-UI 2 */}
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute top-20 right-10 hidden lg:block"
+                >
+                  <div className="bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-white/50 w-[180px]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                        <Zap size={16} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-400 uppercase">Scheduling</p>
+                        <h4 className="text-base font-black text-slate-900">3 Min Setup</h4>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+
           </div>
-
-          {/* ── Dashboard Mockup ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.5, ease: [0.22, 1, 0.36, 1] as any }}
-            className="relative px-4 sm:px-8 pb-16"
-          >
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-500/[0.03] rounded-full blur-[120px] -z-10" />
-
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
-            >
-              <Image
-                src="/hero-master.png"
-                alt="AI Staff Scheduling Dashboard — StaffSchedule.io"
-                width={1400}
-                height={1000}
-                className="w-full h-auto rounded-2xl shadow-[0_40px_80px_-20px_rgba(79,70,229,0.15)] [mask-image:linear-gradient(to_bottom,black_92%,transparent)]"
-                priority
-                unoptimized
-              />
-            </motion.div>
-
-            {/* Floating Cost Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -20, y: 20 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 2.0 }}
-              className="absolute -left-2 sm:-left-6 bottom-20 z-20 scale-75 sm:scale-100 origin-bottom-left"
-            >
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="bg-white/95 backdrop-blur-xl p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[220px]"
-              >
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Labor Cost This Week</p>
-                <div className="flex items-end justify-between gap-4 mb-3">
-                  <h4 className="text-xl font-black text-slate-900">$16,450</h4>
-                  <div className="flex items-center gap-1 text-emerald-500 font-bold text-xs">
-                    <TrendingUp size={12} /> 8%
-                  </div>
-                </div>
-                <div className="h-8 w-full flex items-end gap-1">
-                  {[30, 50, 40, 60, 45, 75, 50, 85].map((h, i) => (
-                    <div key={i} className="flex-1 bg-indigo-500/10 rounded-t-[1px]" style={{ height: `${h}%` }} />
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Floating Efficiency Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 20, y: -20 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 2.2 }}
-              className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 scale-75 sm:scale-100 origin-right"
-            >
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="bg-white/95 backdrop-blur-xl p-5 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] border border-white/50 w-[170px]"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
-                    <BarChart3 size={16} />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Efficiency</p>
-                    <h4 className="text-lg font-black text-slate-900">98%</h4>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 text-emerald-500 font-bold text-[10px]">
-                  <TrendingUp size={10} /> 12% increase
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
-      {/* ── Logos Section ── */}
-      <section className="relative border-t border-slate-100 pt-6 pb-10 bg-white">
-        <h2 className="text-center font-medium text-lg text-slate-400 tracking-tight md:text-xl mb-2">
-          Trusted by <span className="text-slate-600 font-semibold">industry leaders</span>
-        </h2>
-        <div className="relative z-10 mx-auto max-w-4xl">
+      {/* ── Partner Logos Section ── */}
+      <section className="relative py-12 bg-white border-y border-slate-100">
+        <div className="container mx-auto px-6">
+          <p className="text-center text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-10">
+            Trusted by modern teams worldwide
+          </p>
           <LogoCloud logos={logos} />
         </div>
       </section>
