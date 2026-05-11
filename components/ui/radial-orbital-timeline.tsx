@@ -34,9 +34,9 @@ export default function RadialOrbitalTimeline({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 480) setRadius(100);
-      else if (window.innerWidth < 640) setRadius(140);
-      else if (window.innerWidth < 1024) setRadius(180);
+      if (window.innerWidth < 480) setRadius(110);
+      else if (window.innerWidth < 640) setRadius(150);
+      else if (window.innerWidth < 1024) setRadius(190);
       else setRadius(220);
     };
     handleResize();
@@ -193,17 +193,17 @@ export default function RadialOrbitalTimeline({
                   <Icon size={18} className="transition-colors duration-300" />
                 </div>
 
-                {/* Label - Darker, more legible */}
+                {/* Label - Hide on mobile if not expanded to avoid clutter */}
                 <div className={`
-                  absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-black tracking-[0.1em] uppercase transition-all duration-300 drop-shadow-sm
-                  ${isExpanded ? "text-slate-900 scale-110" : "text-[#5546C7] group-hover:text-[#6C5CE7]"}
+                  absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-[11px] font-black tracking-[0.1em] uppercase transition-all duration-300 drop-shadow-sm
+                  ${isExpanded ? "text-slate-900 scale-110 opacity-100" : "text-[#5546C7] group-hover:text-[#6C5CE7] hidden sm:block"}
                 `}>
                   {item.title}
                 </div>
 
                 {/* Expanded Card (SaaS Premium Light Theme) */}
                 {isExpanded && (
-                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-72 sm:w-80 bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)] overflow-visible p-6 sm:p-7 max-w-[calc(100vw-48px)]">
+                  <div className="absolute top-28 sm:top-24 left-1/2 -translate-x-1/2 w-[85vw] sm:w-80 bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)] overflow-visible p-5 sm:p-7 z-[300]">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-[#6C5CE7] to-transparent" />
                     
                     <div className="flex justify-between items-center mb-4">
