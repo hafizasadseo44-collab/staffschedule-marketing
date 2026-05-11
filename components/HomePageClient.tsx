@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import SplitHero from "@/components/SplitHero";
+import IndustryShowcase from "@/components/IndustryShowcase";
 import HowItWorks from "@/components/HowItWorks";
 import ComparisonSection from "@/components/ComparisonSection";
 import IntegrationsGrid from "@/components/IntegrationsGrid";
@@ -15,7 +16,6 @@ import LatestBlogsSection from "@/components/LatestBlogsSection";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import OnboardingTimeline from "@/components/OnboardingTimeline";
 import CaseStudySection from "@/components/CaseStudySection";
-import TrustBento from "@/components/TrustBento";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -33,9 +33,7 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <div className="relative z-10">
       {/* 1. Hero */}
       <SplitHero />
-
-      {/* 2. Trust Bento */}
-      <TrustBento />
+      <IndustryShowcase />
 
 
       {/* 3. Hard ROI numbers */}
