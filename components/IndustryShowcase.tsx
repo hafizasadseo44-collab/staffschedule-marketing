@@ -1,239 +1,332 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Utensils, ShoppingBag, HeartPulse, Building2, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { motion } from "framer-motion";
+import { Users, Calendar, Clock, ChevronLeft, ChevronRight, Quote, Utensils, HeartPulse, ShoppingBag, Truck, Building2, Sun } from "lucide-react";
 import Image from "next/image";
 
+// Data
 const INDUSTRIES = [
   {
-    title: "Restaurants",
-    description: "Handle shift scheduling, weekend rushes, and last-minute changes with less stress and zero confusion.",
-    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1200&auto=format&fit=crop",
-    icon: Utensils,
-    color: "#F59E0B",
-    stats: "98% Fill Rate",
-    benefit: "Eliminate No-Shows"
+    id: 1,
+    name: "UrbanBite Restaurant",
+    locations: "3 Locations",
+    employees: "45 Employees",
+    image: "https://images.unsplash.com/photo-1541592102481-6453915bc62b?q=80&w=800&auto=format&fit=crop",
+    statIcon: "↑",
+    statValue: "70%",
+    statText: "Reduction in scheduling time",
+    logoText: "URBANBITE",
+    LogoIcon: Utensils
   },
   {
-    title: "Retail Teams",
-    description: "Keep staff schedules organized during busy business hours and changing shift rotations without manual work.",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
-    icon: ShoppingBag,
-    color: "#6366F1",
-    stats: "24/7 Sync",
-    benefit: "Auto-Rotation"
+    id: 2,
+    name: "PrimeCare Clinic",
+    locations: "4 Locations",
+    employees: "82 Employees",
+    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+    statIcon: "↑",
+    statValue: "3X",
+    statText: "Faster leave approvals",
+    logoText: "PRIMECARE",
+    LogoIcon: HeartPulse
   },
   {
-    title: "Healthcare",
-    description: "Improve employee shift scheduling and manage team availability more efficiently for patient-first care.",
-    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop",
-    icon: HeartPulse,
-    color: "#EF4444",
-    stats: "HIPAA Ready",
-    benefit: "Cert Tracking"
+    id: 3,
+    name: "TrendyMart Retail",
+    locations: "6 Locations",
+    employees: "120 Employees",
+    image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?q=80&w=800&auto=format&fit=crop",
+    statIcon: "↓",
+    statValue: "60%",
+    statText: "Fewer schedule conflicts",
+    logoText: "TRENDY MART",
+    LogoIcon: ShoppingBag
   },
   {
-    title: "Hospitality",
-    description: "Coordinate workforce scheduling and employee communication across multiple locations from one dashboard.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
-    icon: Building2,
-    color: "#10B981",
-    stats: "Multi-Site",
-    benefit: "Labor Control"
+    id: 4,
+    name: "FastWave Logistics",
+    locations: "10 Locations",
+    employees: "200 Employees",
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800&auto=format&fit=crop",
+    statIcon: "↑",
+    statValue: "40%",
+    statText: "Increase in workforce productivity",
+    logoText: "FASTWAVE",
+    LogoIcon: Truck
+  },
+  {
+    id: 5,
+    name: "Luxe Hospitality",
+    locations: "2 Locations",
+    employees: "150 Employees",
+    image: "https://images.unsplash.com/photo-1556745753-b2904692b3cd?q=80&w=800&auto=format&fit=crop",
+    statIcon: "↑",
+    statValue: "50%",
+    statText: "Better shift coverage",
+    logoText: "LUXE",
+    LogoIcon: Building2
   }
 ];
 
-function IndustryCard({ industry, index }: { industry: typeof INDUSTRIES[0], index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  
-  // 3D Tilt Effect
-  const x = useSpring(0, { stiffness: 100, damping: 30 });
-  const y = useSpring(0, { stiffness: 100, damping: 30 });
-  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = (mouseX / rect.width) - 0.5;
-    const yPct = (mouseY / rect.height) - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  }
-
-  function handleMouseLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.1 }}
-      style={{ rotateX, rotateY, perspective: 1000 }}
-      className="relative group w-full h-[450px] lg:h-[550px] rounded-[2.5rem] overflow-hidden bg-slate-900 cursor-pointer"
-    >
-      {/* Background Image with Parallax-ready scale */}
-      <motion.div className="absolute inset-0 z-0">
-        <Image
-          src={industry.image}
-          alt={industry.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-60"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/20 to-slate-900/90" />
-      </div>
-
-      {/* Floating Glass Content */}
-      <div className="absolute inset-0 z-10 p-8 flex flex-col justify-between">
-        <div className="flex justify-between items-start">
-          <div 
-            className="w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-xl border border-white/20 shadow-2xl"
-            style={{ backgroundColor: `${industry.color}33` }}
-          >
-            <industry.icon size={28} style={{ color: industry.color }} />
-          </div>
-          
-          <motion.div 
-            whileHover={{ scale: 1.1, rotate: 45 }}
-            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white"
-          >
-            <ArrowUpRight size={20} />
-          </motion.div>
-        </div>
-
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/80">
-              {industry.stats}
-            </span>
-            <span className="px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest text-emerald-400">
-              {industry.benefit}
-            </span>
-          </div>
-          
-          <h3 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight">
-            {industry.title}
-          </h3>
-          
-          <p className="text-slate-300 text-sm lg:text-base font-medium leading-relaxed max-w-[280px] lg:max-w-xs transition-colors group-hover:text-white">
-            {industry.description}
-          </p>
-
-          <div className="mt-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="w-6 h-6 rounded-full border border-white/20 bg-slate-800" />
-              ))}
-            </div>
-            <span className="text-[10px] font-bold text-white uppercase tracking-wider">Join 2k+ {industry.title}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Glossy Overlay */}
-      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-    </motion.div>
-  );
-}
-
 export default function IndustryShowcase() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  const [isHovered, setIsHovered] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -360, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = useCallback(() => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 360, behavior: "smooth" });
+    }
+  }, []);
+
+  // Auto-scroll logic
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+       if (carouselRef.current) {
+         const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+         // If we reached the end, snap back to start
+         if (scrollLeft + clientWidth >= scrollWidth - 10) {
+           carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
+         } else {
+           scrollRight();
+         }
+       }
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [isHovered, scrollRight]);
 
   return (
-    <section 
-      ref={containerRef}
-      className="relative py-24 lg:py-40 bg-white overflow-hidden"
-      id="industries"
-    >
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
+    <section className="relative py-20 lg:py-32 bg-[#FAF9FF] overflow-hidden" id="industries">
+      {/* Container */}
+      <div className="container mx-auto px-4 md:px-8 relative z-10">
         
-        {/* Section Header */}
-        <div className="max-w-4xl mb-20">
+        {/* Header */}
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-16">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-2 mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-2 bg-[#f0ecf9] px-4 py-1.5 rounded-full mb-6 border border-[#e5e0f1]"
           >
-            <div className="w-10 h-px bg-indigo-600" />
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-indigo-600">Built for Real Teams</span>
+            <Users size={14} className="text-[#8b5cf6]" />
+            <span className="text-[10px] md:text-xs font-black tracking-[0.15em] uppercase text-[#8b5cf6]">
+              Trusted by the Best Teams
+            </span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-8"
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1c1236] tracking-tight leading-[1.1] mb-6"
           >
-            Trusted by Teams That Need <br className="hidden lg:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">Faster and Easier</span> Scheduling.
+            Powering teams across <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9]">industries</span>
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-lg lg:text-xl text-slate-500 font-medium leading-relaxed max-w-2xl"
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-base md:text-lg text-[#5b4f7a] font-medium leading-relaxed max-w-2xl"
           >
-            Managing employee schedules shouldn’t feel confusing, stressful, or time consuming. 
-            From restaurants to healthcare, teams trust StaffSchedule to organize shifts instantly.
+            From small businesses to large enterprises, teams trust StaffSchedule.io to streamline scheduling, improve communication, and save hours every week.
           </motion.p>
         </div>
 
-        {/* 3D Perspective Grid */}
-        <motion.div 
-          style={{ y }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+        {/* Carousel Section */}
+        <div 
+          className="relative w-full max-w-[1400px] mx-auto flex items-center mb-20"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          {INDUSTRIES.map((industry, i) => (
-            <IndustryCard key={i} industry={industry} index={i} />
-          ))}
+          {/* Navigation Buttons */}
+          <button 
+            onClick={scrollLeft}
+            className="absolute left-0 md:-left-5 z-30 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-[#e5e0f1] flex items-center justify-center text-[#8b5cf6] hover:scale-110 transition-transform hidden sm:flex"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          {/* Cards Track */}
+          <div 
+            ref={carouselRef}
+            className="overflow-x-auto flex gap-4 md:gap-6 px-4 md:px-10 py-6 snap-x snap-mandatory hide-scrollbar"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {INDUSTRIES.map((industry) => (
+              <motion.div 
+                key={industry.id} 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="min-w-[300px] md:min-w-[360px] lg:min-w-[400px] h-[450px] md:h-[500px] relative rounded-[2rem] overflow-hidden group cursor-pointer snap-center flex-shrink-0 shadow-xl shadow-[#1c1236]/5"
+              >
+                <Image
+                  src={industry.image}
+                  alt={industry.name}
+                  fill
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  unoptimized
+                />
+                {/* Gradients */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1c1236]/90 via-[#1c1236]/20 to-transparent transition-opacity duration-500" />
+                
+                {/* Top Logo */}
+                <div className="absolute top-6 right-6 flex items-center gap-1.5 opacity-90 drop-shadow-md">
+                  <industry.LogoIcon size={16} className="text-white" />
+                  <span className="text-white text-[10px] md:text-xs font-black uppercase tracking-widest">{industry.logoText}</span>
+                </div>
+
+                {/* Bottom Content */}
+                <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-5">
+                  <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                    <h3 className="text-white text-xl md:text-2xl font-bold mb-1.5 drop-shadow-sm">{industry.name}</h3>
+                    <p className="text-[#d7d3e0] text-xs md:text-sm font-semibold tracking-wide drop-shadow-sm">{industry.locations} • {industry.employees}</p>
+                  </div>
+
+                  {/* KPI Box */}
+                  <div className="flex items-center gap-3 bg-[#ffffff]/10 backdrop-blur-xl border border-[#ffffff]/20 p-2.5 md:p-3 rounded-2xl w-max shadow-lg transform transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-[#ffffff]/15">
+                    <div className="bg-[#1c1236]/90 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-[10px] flex items-center gap-1.5 font-black text-sm md:text-lg border border-[#ffffff]/10 shadow-inner">
+                      {industry.statIcon} {industry.statValue}
+                    </div>
+                    <p className="text-white text-[10px] md:text-xs font-semibold leading-tight max-w-[130px] drop-shadow-sm">
+                      {industry.statText}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <button 
+            onClick={scrollRight}
+            className="absolute right-0 md:-right-5 z-30 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-[#e5e0f1] flex items-center justify-center text-[#8b5cf6] hover:scale-110 transition-transform hidden sm:flex"
+            aria-label="Next"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        {/* KPI / Stats Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-6xl mx-auto bg-white/70 backdrop-blur-3xl border border-white/50 rounded-[2.5rem] p-6 md:p-10 shadow-[0_20px_80px_-20px_rgba(139,92,246,0.15)] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 relative overflow-hidden"
+        >
+          {/* Subtle inner glow */}
+          <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-purple-400/10 blur-[50px] rounded-full pointer-events-none" />
+
+          {/* Quote */}
+          <div className="flex items-start gap-4 md:gap-6 flex-1 w-full relative z-10">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-[1.25rem] bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] flex-shrink-0 flex items-center justify-center shadow-lg shadow-purple-500/25">
+               <Quote className="text-white w-6 h-6 md:w-8 md:h-8" />
+            </div>
+            <p className="text-[#1c1236] text-sm md:text-base font-semibold leading-relaxed pt-1">
+              "StaffSchedule.io transformed how we manage our team. It's like having a <span className="text-[#8b5cf6] font-black bg-purple-50 px-1.5 py-0.5 rounded-md">co-pilot</span> for our daily operations."
+            </p>
+          </div>
+
+          <div className="w-full lg:w-px h-px lg:h-16 bg-gradient-to-b from-transparent via-[#e5e0f1] to-transparent relative z-10" />
+
+          {/* Stats */}
+          <div className="flex flex-row flex-wrap md:flex-nowrap justify-between flex-1 w-full gap-4 md:gap-6 relative z-10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                <Users size={18} className="text-[#8b5cf6]" />
+              </div>
+              <div>
+                <p className="text-xl md:text-3xl font-black text-[#1c1236]">2,000+</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Teams Trust Us</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                <Calendar size={18} className="text-indigo-600" />
+              </div>
+              <div>
+                <p className="text-xl md:text-3xl font-black text-[#1c1236]">500K+</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Shifts Scheduled</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#f0ecf9] flex items-center justify-center">
+                <Clock size={18} className="text-[#8b5cf6]" />
+              </div>
+              <div>
+                <p className="text-xl md:text-3xl font-black text-[#1c1236]">1M+</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Hours Saved</p>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Floating Trust Point */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-20 flex flex-wrap justify-center gap-8 lg:gap-16 border-t border-slate-100 pt-16"
+        {/* Brand Logos Row */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="mt-20 max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-8 md:gap-14 lg:gap-20"
         >
-          {[
-            { label: "Faster Employee Scheduling", text: "Create schedules in minutes, not hours." },
-            { label: "Better Shift Management", text: "Reduce conflicts and missed shifts." },
-            { label: "Simple Team Coordination", text: "Keep everyone updated in real-time." }
-          ].map((point, i) => (
-            <div key={i} className="max-w-[280px]">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center">
-                  <CheckCircle2 size={14} className="text-indigo-600" />
-                </div>
-                <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-wider">{point.label}</h4>
-              </div>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed pl-9">
-                {point.text}
-              </p>
+          {/* Logo 1 */}
+          <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer">
+            <Utensils size={24} className="text-[#1c1236]" />
+            <div className="flex flex-col">
+              <span className="font-black text-[#1c1236] text-xs md:text-sm uppercase tracking-widest leading-none">UrbanBite</span>
+              <span className="text-[8px] font-bold text-[#8f86a8] uppercase tracking-[0.2em]">Restaurant</span>
             </div>
-          ))}
+          </div>
+
+          {/* Logo 2 */}
+          <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer">
+            <HeartPulse size={24} className="text-[#1c1236]" />
+            <div className="flex flex-col">
+              <span className="font-black text-[#1c1236] text-xs md:text-sm uppercase tracking-widest leading-none">PrimeCare</span>
+              <span className="text-[8px] font-bold text-[#8f86a8] uppercase tracking-[0.2em]">Clinic</span>
+            </div>
+          </div>
+
+          {/* Logo 3 */}
+          <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer">
+            <ShoppingBag size={24} className="text-[#1c1236]" />
+            <div className="flex flex-col">
+              <span className="font-black text-[#1c1236] text-xs md:text-sm uppercase tracking-widest leading-none">Trendy Mart</span>
+              <span className="text-[8px] font-bold text-[#8f86a8] uppercase tracking-[0.2em]">Retail</span>
+            </div>
+          </div>
+
+          {/* Logo 4 */}
+          <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer">
+            <Truck size={24} className="text-[#1c1236]" />
+            <div className="flex flex-col">
+              <span className="font-black text-[#1c1236] text-xs md:text-sm uppercase tracking-widest leading-none">FastWave</span>
+              <span className="text-[8px] font-bold text-[#8f86a8] uppercase tracking-[0.2em]">Logistics</span>
+            </div>
+          </div>
+
+          {/* Logo 5 */}
+          <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-pointer">
+            <Sun size={24} className="text-[#1c1236]" />
+            <div className="flex flex-col">
+              <span className="font-black text-[#1c1236] text-xs md:text-sm uppercase tracking-widest leading-none">BrightPath</span>
+              <span className="text-[8px] font-bold text-[#8f86a8] uppercase tracking-[0.2em]">Services</span>
+            </div>
+          </div>
         </motion.div>
 
       </div>
