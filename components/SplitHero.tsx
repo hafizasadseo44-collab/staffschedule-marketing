@@ -98,7 +98,7 @@ export default function SplitHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-4xl sm:text-5xl lg:text-5xl xl:text-7xl font-black tracking-tight text-[#0f172a] mb-10 leading-[1.1] drop-shadow-sm px-4"
+              className="text-3xl sm:text-5xl lg:text-5xl xl:text-7xl font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
             >
               Still Wasting Hours on <br className="hidden md:block" />
               Staff Scheduling Manually? <br />

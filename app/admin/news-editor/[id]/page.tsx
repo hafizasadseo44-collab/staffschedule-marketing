@@ -345,16 +345,21 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
         if (currentId === 'new' && data.id) {
           setCurrentId(data.id);
         }
+        
         if (shouldPublish) setPublished(true);
         hasChanges.current = false;
-        
+
         if (!isAutoSave) {
+          alert(currentId === 'new' ? 'News Release Created Successfully!' : 'News Release Updated Successfully!');
           router.push('/admin');
           router.refresh();
         }
+      } else {
+        const data = await res.json();
+        if (!isAutoSave) alert(data.error || 'Failed to save news release');
       }
-    } catch (e) {
-      if (!isAutoSave) alert('Network error');
+    } catch (e: any) {
+      if (!isAutoSave) alert('Network error: ' + e.message);
     } finally {
       setSaving(false);
       setPublishing(false);

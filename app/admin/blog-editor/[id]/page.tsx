@@ -327,14 +327,15 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
       });
       if (res.ok) {
         if (shouldPublish) setPublished(true);
+        alert(isNew ? 'Post Created Successfully!' : 'Post Updated Successfully!');
         router.push('/admin');
         router.refresh();
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to save post');
       }
-    } catch (e) {
-      alert('Network error');
+    } catch (e: any) {
+      alert('Network error: ' + e.message);
     } finally {
       setSaving(false);
       setPublishing(false);

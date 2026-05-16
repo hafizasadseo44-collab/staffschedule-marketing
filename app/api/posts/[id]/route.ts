@@ -10,13 +10,16 @@ export const revalidate = 0;
 
 
 
-export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     await ensureDatabase();
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { id } = await context.params;
+    const { id } = await params;
     const body = await request.json();
     const { title, slug, content, excerpt, image, published, category, type, featured, authorId, focusKeyword, seoTitle, canonicalUrl } = body;
 
@@ -103,10 +106,11 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     return NextResponse.json(post);
 
   } catch (error: any) {
+    console.error("PUT Post Error (Raw SQL):", error);
     if (error?.code === 'P2002') {
       return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to update post: ' + (error.message || String(error)) }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update post: ' + error.message }, { status: 500 });
   }
 }
 

@@ -347,15 +347,19 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
           setCurrentId(data.id);
         }
         if (shouldPublish) setPublished(true);
+        alert(currentId === 'new' ? 'Post Created Successfully!' : 'Post Updated Successfully!');
         hasChanges.current = false;
         
         if (!isAutoSave) {
           router.push('/admin');
           router.refresh();
         }
+      } else {
+        const data = await res.json();
+        if (!isAutoSave) alert(data.error || 'Failed to save post');
       }
-    } catch (e) {
-      if (!isAutoSave) alert('Network error');
+    } catch (e: any) {
+      if (!isAutoSave) alert('Network error: ' + e.message);
     } finally {
       setSaving(false);
       setPublishing(false);

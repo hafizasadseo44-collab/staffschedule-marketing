@@ -137,11 +137,11 @@ export default function FeaturesGrid() {
             Interactive Tour
           </motion.div>
 
-          <motion.h2 variants={fadeInUp} className="text-4xl sm:text-5xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-6 leading-[1.1]">
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-5xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-6 leading-[1.1]">
             Everything you need to manage your <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF]">workforce smarter</span>
           </motion.h2>
 
-          <motion.p variants={fadeInUp} className="text-lg sm:text-xl text-slate-500 font-medium leading-relaxed">
+          <motion.p variants={fadeInUp} className="text-base sm:text-xl text-slate-500 font-medium leading-relaxed">
             Powerful features designed to simplify scheduling and team management. Explore our platform ecosystem below.
           </motion.p>
         </motion.div>

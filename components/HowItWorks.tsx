@@ -78,10 +78,10 @@ export default function HowItWorks() {
         
         {/* Main Header */}
         <div className="text-center mb-12 lg:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight px-4">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-6 tracking-tight px-4">
              How <span className="text-brand-primary">StaffSchedule.io</span> Works
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium max-w-2xl mx-auto px-4">
+          <p className="text-sm sm:text-lg lg:text-xl text-slate-500 font-medium max-w-2xl mx-auto px-4">
              Centralize your workforce, eliminate scheduling chaos, and scale operations seamlessly in 6 simple steps.
           </p>
         </div>

@@ -11,8 +11,12 @@ export async function ensureDatabase() {
   if (initialized) return;
   
   try {
-    // Quick health check — if this works, tables exist
+    // Check for Post table
     await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
+    
+    // If it exists, we still need to check for newer columns (migration)
+    await migrateSchema();
+    
     initialized = true;
     return;
   } catch (e) {
@@ -201,4 +205,60 @@ export async function ensureDatabase() {
     console.error("[DB-INIT] Failed to initialize database:", error);
     throw error;
   }
+}
+
+/**
+ * Adds missing columns to existing tables for lightweight migrations.
+ */
+async function migrateSchema() {
+  console.log("[DB-INIT] Running lightweight migrations...");
+  
+  // Post Table Migrations
+  const postInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Post)`) as any[];
+  const postCols = postInfo.map(c => c.name);
+  
+  const postMigrations = [
+    { name: "focusKeyword", type: "TEXT" },
+    { name: "seoTitle", type: "TEXT" },
+    { name: "canonicalUrl", type: "TEXT" },
+    { name: "authorId", type: "TEXT" },
+    { name: "type", type: "TEXT DEFAULT 'ARTICLE'" },
+    { name: "category", type: "TEXT DEFAULT 'Scheduling'" }
+  ];
+
+  for (const col of postMigrations) {
+    if (!postCols.includes(col.name)) {
+      console.log(`[DB-INIT] Adding missing column ${col.name} to Post table...`);
+      try {
+        await db.$executeRawUnsafe(`ALTER TABLE "Post" ADD COLUMN "${col.name}" ${col.type}`);
+      } catch (err) {
+        console.error(`[DB-INIT] Failed to add column ${col.name}:`, err);
+      }
+    }
+  }
+
+  // Guide Table Migrations
+  const guideInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Guide)`) as any[];
+  const guideCols = guideInfo.map(c => c.name);
+
+  const guideMigrations = [
+    { name: "seoTitle", type: "TEXT" },
+    { name: "seoDescription", type: "TEXT" },
+    { name: "description", type: "TEXT NOT NULL DEFAULT ''" },
+    { name: "content", type: "TEXT" },
+    { name: "excerpt", type: "TEXT" }
+  ];
+
+  for (const col of guideMigrations) {
+    if (!guideCols.includes(col.name)) {
+      console.log(`[DB-INIT] Adding missing column ${col.name} to Guide table...`);
+      try {
+        await db.$executeRawUnsafe(`ALTER TABLE "Guide" ADD COLUMN "${col.name}" ${col.type}`);
+      } catch (err) {
+        console.error(`[DB-INIT] Failed to add column ${col.name}:`, err);
+      }
+    }
+  }
+
+  console.log("[DB-INIT] Migrations complete.");
 }

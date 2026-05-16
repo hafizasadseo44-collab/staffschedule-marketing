@@ -198,7 +198,7 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
     }
   }, [title, isNew, slug]);
 
-  const handleSave = async (forcePublished?: boolean) => {
+  const handleSave = async (forcePublished?: boolean, isSilent: boolean = false) => {
     // Only require title/slug for manual saves, not necessarily for auto-drafts
     const targetTitle = title || "Untitled Progress";
     const targetSlug = slug || `draft-${Date.now()}`;
@@ -231,14 +231,28 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
         if (currentId === 'new' && data.id) {
           setCurrentId(data.id);
         }
-        if (forcePublished !== undefined) {
-          setIsPublished(forcePublished);
+        if (!isSilent) {
+          if (forcePublished !== undefined) {
+            setIsPublished(forcePublished);
+            alert(forcePublished ? "Guide Published Successfully!" : "Draft Saved Successfully!");
+          } else {
+            alert("Guide Updated Successfully!");
+          }
+          
+          // Navigate back to dashboard after manual save
+          router.push('/admin');
+          router.refresh();
         }
+        
         hasChanges.current = false;
         return true;
+      } else {
+        const data = await res.json();
+        if (!isSilent) alert(data.error || 'Failed to save guide');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      if (!isSilent) alert('Network error: ' + e.message);
     } finally {
       setSaving(false);
     }
@@ -251,7 +265,7 @@ export default function FullPageGuideEditor({ guideId }: { guideId?: string }) {
       if (hasChanges.current && title) {
         console.log("Auto-saving draft...");
         setAutoSaving(true);
-        handleSave().then(() => setAutoSaving(false));
+        handleSave(undefined, true).then(() => setAutoSaving(false));
       }
     }, 15000); // Auto-save every 15 seconds if changes exist
     return () => clearInterval(timer);
