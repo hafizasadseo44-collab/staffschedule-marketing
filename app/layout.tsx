@@ -34,12 +34,14 @@ export const metadata: Metadata = {
     images: ["/hero-mockup.png"],
   },
   keywords: ["staff scheduling", "employee scheduling", "workforce management", "shift planner", "labor cost optimization", "team communication"],
-  ...(process.env.SITE_PRIVATE_MODE === 'true' && {
-    robots: {
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
       index: false,
       follow: false,
     },
-  }),
+  },
 };
 
 

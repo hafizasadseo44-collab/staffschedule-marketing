@@ -15,9 +15,11 @@ export async function ensureDatabase() {
     await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
     
     // If it exists, we still need to check for newer columns (migration)
+    console.log("[DB-INIT] Table exists. Checking for updates...");
     await migrateSchema();
     
     initialized = true;
+    console.log("[DB-INIT] Database ready.");
     return;
   } catch (e) {
     // Tables don't exist yet — create them
@@ -260,5 +262,9 @@ async function migrateSchema() {
     }
   }
 
-  console.log("[DB-INIT] Migrations complete.");
+  } catch (err: any) {
+    console.error("[DB-INIT] Critical failure in migrateSchema:", err);
+    // Don't rethrow, let the app try to run anyway
+  }
+  console.log("[DB-INIT] Migrations sequence finished.");
 }

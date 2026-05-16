@@ -185,6 +185,9 @@ export default async function Home() {
   let latestBlogs: any[] = [];
   
   try {
+    const { ensureDatabase } = await import("@/lib/db-init");
+    await ensureDatabase();
+
     const rawPosts = await db.$queryRaw`
       SELECT * FROM Post 
       WHERE published = 1 AND (type = 'ARTICLE' OR type = 'NEWS')
