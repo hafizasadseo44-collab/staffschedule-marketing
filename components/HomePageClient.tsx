@@ -3,21 +3,19 @@
 import dynamic from "next/dynamic";
 import SplitHero from "@/components/SplitHero";
 import IndustryShowcase from "@/components/IndustryShowcase";
-import HowItWorks from "@/components/HowItWorks";
-import ComparisonSection from "@/components/ComparisonSection";
-import IntegrationsGrid from "@/components/IntegrationsGrid";
-import TestimonialsMarquee from "@/components/TestimonialsMarquee";
-import PricingTable from "@/components/PricingTable";
-import FAQSection from "@/components/FAQSection";
-import FinalCTA from "@/components/FinalCTA";
-import EliteFinalCTA from "@/components/EliteFinalCTA";
-import ROIBanner from "@/components/ROIBanner";
-import LatestBlogsSection from "@/components/LatestBlogsSection";
-import FeaturesGrid from "@/components/FeaturesGrid";
-import OnboardingTimeline from "@/components/OnboardingTimeline";
-import CaseStudySection from "@/components/CaseStudySection";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { LazySection } from "@/components/ui/lazy-section";
+
+// --- Dynamically Imported Components (Below the fold) ---
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
+const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: true });
+const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: true });
+const CaseStudySection = dynamic(() => import("@/components/CaseStudySection"), { ssr: true });
+const PricingTable = dynamic(() => import("@/components/PricingTable"), { ssr: true });
+const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"), { ssr: true });
+const FAQSection = dynamic(() => import("@/components/FAQSection"), { ssr: true });
+const EliteFinalCTA = dynamic(() => import("@/components/EliteFinalCTA"), { ssr: true });
 
 
 export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any[] }) {
@@ -37,20 +35,30 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
 
 
       {/* 4. How it works */}
-      <HowItWorks />
+      <LazySection>
+        <HowItWorks />
+      </LazySection>
 
       {/* 5. Feature highlights */}
-      <FeaturesGrid />
-
+      <LazySection>
+        <FeaturesGrid />
+      </LazySection>
 
       {/* 10. Testimonials */}
-      <TestimonialsMarquee />
+      <LazySection>
+        <TestimonialsMarquee />
+      </LazySection>
 
       {/* 11. Case Study */}
-      <CaseStudySection />
+      <LazySection>
+        <CaseStudySection />
+      </LazySection>
 
       {/* 12. Pricing + link to page */}
-      <PricingTable />
+      <LazySection>
+        <PricingTable />
+      </LazySection>
+      
       <div className="flex justify-center py-12 bg-background">
         <Link
           href="/pricing"
@@ -62,13 +70,19 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       </div>
 
       {/* 12. Latest Blogs */}
-      <LatestBlogsSection posts={latestBlogs} />
+      <LazySection>
+        <LatestBlogsSection posts={latestBlogs} />
+      </LazySection>
 
       {/* 13. FAQ */}
-      <FAQSection />
+      <LazySection>
+        <FAQSection />
+      </LazySection>
 
       {/* 14. Elite Final CTA */}
-      <EliteFinalCTA />
+      <LazySection>
+        <EliteFinalCTA />
+      </LazySection>
       </div>
     </div>
   );

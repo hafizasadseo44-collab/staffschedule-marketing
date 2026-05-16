@@ -88,7 +88,7 @@ const PremiumFooter = () => {
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
         <div className="absolute -top-24 left-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute top-1/2 -right-24 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px]" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+        <div className="absolute inset-0 opacity-[0.06] z-10 mix-blend-overlay bg-grain" />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
@@ -153,13 +153,13 @@ const PremiumFooter = () => {
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <LinkPreview 
-                        url={link.href}
+                      <Link 
+                        href={link.href}
                         className="text-sm text-slate-400 hover:text-white font-bold transition-colors flex items-center justify-center sm:justify-start group"
                       >
                         <span className="hidden sm:block w-0 h-0.5 bg-indigo-500 mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300" />
                         {link.name}
-                      </LinkPreview>
+                      </Link>
                     </li>
                   ))}
                 </ul>

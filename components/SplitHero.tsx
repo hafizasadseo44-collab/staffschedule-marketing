@@ -48,30 +48,28 @@ export default function SplitHero() {
           <div className="absolute top-0 left-0 w-full h-[60%] bg-gradient-to-b from-[#F5EEFF] to-transparent opacity-80" />
           
           {/* Grain Texture */}
-          <div className="absolute inset-0 opacity-[0.06] z-10 mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+          <div className="absolute inset-0 opacity-[0.06] z-10 mix-blend-overlay bg-grain" />
           
           {/* Vibrant Wavy Band using overlapping blurred SVG and Divs */}
-          <motion.div style={{ y: waveY }} className="absolute top-[30%] w-[120%] -left-[10%] h-[600px] z-0">
-            <svg className="w-full h-full" viewBox="0 0 1440 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <defs>
-                <filter id="extreme-blur" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="90" />
-                </filter>
-                <linearGradient id="wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#6366f1" />     {/* Indigo-500 */}
-                  <stop offset="25%" stopColor="#8b5cf6" />    {/* Violet-500 */}
-                  <stop offset="50%" stopColor="#ec4899" />    {/* Pink-500 */}
-                  <stop offset="75%" stopColor="#3b82f6" />    {/* Blue-500 */}
-                  <stop offset="100%" stopColor="#818cf8" />   {/* Indigo-400 */}
-                </linearGradient>
-              </defs>
-              <path 
-                d="M0,150 C240,350 480,50 720,200 C960,350 1200,50 1440,150 L1440,500 L0,500 Z" 
-                fill="url(#wave-grad)" 
-                filter="url(#extreme-blur)" 
-                className="opacity-60"
-              />
-            </svg>
+          <motion.div style={{ y: waveY }} className="absolute top-[35%] w-[140%] -left-[20%] h-[500px] z-0 overflow-visible">
+            {/* Optimized CSS-based blurred wave */}
+            <div className="absolute inset-0 opacity-40 blur-[100px] transform-gpu">
+              <svg className="w-full h-full" viewBox="0 0 1440 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path 
+                  d="M0,150 C240,350 480,50 720,200 C960,350 1200,50 1440,150 L1440,500 L0,500 Z" 
+                  fill="url(#wave-grad-new)" 
+                />
+                <defs>
+                  <linearGradient id="wave-grad-new" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="25%" stopColor="#8b5cf6" />
+                    <stop offset="50%" stopColor="#ec4899" />
+                    <stop offset="75%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#818cf8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
           </motion.div>
 
           {/* Additional vibrant orbs to enhance the wave peaks */}
@@ -100,7 +98,7 @@ export default function SplitHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-[5.5rem] font-black tracking-[-0.03em] text-[#0f172a] mb-10 leading-[1.05] drop-shadow-sm px-4"
+              className="text-4xl sm:text-5xl lg:text-5xl xl:text-7xl font-black tracking-tight text-[#0f172a] mb-10 leading-[1.1] drop-shadow-sm px-4"
             >
               Still Wasting Hours on <br className="hidden md:block" />
               Staff Scheduling Manually? <br />
@@ -221,7 +219,7 @@ export default function SplitHero() {
                   height={800}
                   className="w-full h-auto object-cover object-top"
                   priority
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1400px"
                 />
               </div>
             </div>
@@ -264,8 +262,13 @@ export default function SplitHero() {
                     <p className="text-[8px] md:text-xs text-[#8f86a8] font-semibold">Good morning,</p>
                     <p className="text-[10px] md:text-sm font-black text-[#1c1236]">Sarah Jenkins</p>
                   </div>
-                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-purple-100 overflow-hidden border-2 border-white shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-purple-100 overflow-hidden border-2 border-white shadow-sm relative">
+                    <Image 
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" 
+                      alt="Profile" 
+                      fill
+                      className="object-cover" 
+                    />
                   </div>
                 </div>
 
@@ -290,8 +293,10 @@ export default function SplitHero() {
                     { name: "Emma W.", role: "Barista", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop" },
                     { name: "David L.", role: "Cashier", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop" }
                   ].map((user, i) => (
-                    <div key={i} className="flex items-center gap-2 md:gap-3 bg-white p-1.5 md:p-2 rounded-lg md:rounded-xl border border-[#f0ecf9] shadow-sm">
-                      <img src={user.img} alt={user.name} className="w-6 h-6 md:w-8 md:h-8 rounded-full object-cover" />
+                    <div key={i} className="flex items-center gap-2 md:gap-3 bg-white p-1.5 md:p-2 rounded-lg md:rounded-xl border border-[#f0ecf9] shadow-sm relative">
+                      <div className="w-6 h-6 md:w-8 md:h-8 rounded-full overflow-hidden relative flex-shrink-0">
+                        <Image src={user.img} alt={user.name} fill className="object-cover" />
+                      </div>
                       <div>
                         <p className="text-[8px] md:text-[11px] font-bold text-[#1c1236] leading-tight">{user.name}</p>
                         <p className="text-[7px] md:text-[9px] text-[#8f86a8] font-medium leading-tight mt-0.5">{user.role}</p>

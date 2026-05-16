@@ -197,7 +197,7 @@ export default function IndustryShowcase() {
                   alt={industry.businessName}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  unoptimized
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 400px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 

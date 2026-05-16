@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
 import { db } from "@/lib/db";
  
-export const dynamic = 'force-dynamic';
+export const revalidate = 600; // revalidate every 10 minutes
 
 const BASE_URL = "https://staffschedule.io";
 

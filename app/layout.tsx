@@ -15,24 +15,40 @@ export const metadata: Metadata = {
     default: "StaffSchedule.io | #1 Staff Scheduling Software for Teams",
     template: "%s | StaffSchedule.io",
   },
-  description:
-    "The all-in-one workforce management platform. Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
+  description: "The all-in-one workforce management platform. Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
+  openGraph: {
+    type: "website",
+    siteName: "StaffSchedule.io",
+    title: "StaffSchedule.io | #1 Staff Scheduling Software for Teams",
+    description: "The all-in-one workforce management platform. Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
+    images: [{ url: "/hero-mockup.png", width: 1200, height: 630, alt: "StaffSchedule.io" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StaffSchedule.io | #1 Staff Scheduling Software for Teams",
+    description: "Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
+    images: ["/hero-mockup.png"],
+  },
+  keywords: ["staff scheduling", "employee scheduling", "workforce management", "shift planner", "labor cost optimization", "team communication"],
   ...(process.env.SITE_PRIVATE_MODE === 'true' && {
     robots: {
       index: false,
       follow: false,
-      googleBot: {
-        index: false,
-        follow: false,
-      },
     },
   }),
 };
 
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#4F46E5",
+};
 
 export default async function RootLayout({
   children,

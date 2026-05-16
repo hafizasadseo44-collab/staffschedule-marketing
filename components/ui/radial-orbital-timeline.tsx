@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Link as LinkIcon, Zap } from "lucide-react";
 
 interface TimelineItem {
@@ -140,11 +141,11 @@ export default function RadialOrbitalTimeline({
 
           {/* Orbit Rings - Dynamic size */}
           <div 
-            className="absolute rounded-full border-[1.5px] border-[#6C5CE7]/20 border-dashed transition-all duration-500" 
-            style={{ width: radius * 2, height: radius * 2 }}
+            className="absolute rounded-full border-[1.5px] border-[#6C5CE7]/10 border-dashed transition-all duration-500 opacity-30 sm:opacity-50" 
+            style={{ width: radius * 1.5, height: radius * 1.5 }}
           />
           <div 
-            className="absolute rounded-full border border-[#6C5CE7]/10 transition-all duration-500" 
+            className="absolute rounded-full border border-[#6C5CE7]/5 transition-all duration-500" 
             style={{ width: radius * 2, height: radius * 2 }}
           />
 
@@ -202,63 +203,100 @@ export default function RadialOrbitalTimeline({
                 </div>
 
                 {/* Expanded Card (SaaS Premium Light Theme) */}
-                {isExpanded && (
-                  <div className="absolute top-28 sm:top-24 left-1/2 -translate-x-1/2 w-[85vw] sm:w-80 bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)] overflow-visible p-5 sm:p-7 z-[300]">
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-[#6C5CE7] to-transparent" />
-                    
-                    <div className="flex justify-between items-center mb-4">
-                      <span className={`px-3 py-1 text-[9px] font-black uppercase tracking-[0.2em] rounded-full border ${
-                        item.status === "completed" ? "text-emerald-600 border-emerald-200 bg-emerald-50" :
-                        item.status === "in-progress" ? "text-[#6C5CE7] border-[#6C5CE7]/30 bg-[#6C5CE7]/10" :
-                        "text-slate-500 border-slate-200 bg-slate-50"
-                      }`}>
-                        {item.status === "completed" ? "ACTIVE" : item.status === "in-progress" ? "POPULAR" : "COMING SOON"}
-                      </span>
-                      <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">{item.date}</span>
-                    </div>
-                    
-                    <h4 className="text-lg font-black text-slate-900 mb-2 tracking-tight">{item.title}</h4>
-                    <p className="text-sm text-slate-500 font-medium leading-relaxed mb-5">{item.content}</p>
+                <AnimatePresence>
+                  {isExpanded && (
+                    <>
+                      {/* Mobile Backdrop Overlay */}
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[299] sm:hidden"
+                        onClick={(e: React.MouseEvent) => { e.stopPropagation(); toggleItem(item.id); }}
+                      />
+                      
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                        className={`
+                          fixed sm:absolute z-[300] 
+                          top-1/2 sm:top-24 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:translate-y-0
+                          w-[90vw] sm:w-80 
+                          bg-white/95 backdrop-blur-2xl border-2 border-[#6C5CE7]/10 rounded-2xl 
+                          shadow-[0_40px_100px_-15px_rgba(108,92,231,0.2)] sm:shadow-[0_30px_80px_-15px_rgba(108,92,231,0.15)]
+                          p-6 sm:p-7 overflow-visible
+                        `}
+                      >
+                        {/* Connecting Line - Desktop Only */}
+                        <div className="hidden sm:block absolute -top-4 left-1/2 -translate-x-1/2 w-px h-4 bg-gradient-to-b from-[#6C5CE7] to-transparent" />
+                        
+                        <div className="flex justify-between items-center mb-5">
+                          <span className={`px-3 py-1 text-[9px] font-black uppercase tracking-[0.2em] rounded-full border ${
+                            item.status === "completed" ? "text-emerald-600 border-emerald-200 bg-emerald-50" :
+                            item.status === "in-progress" ? "text-[#6C5CE7] border-[#6C5CE7]/30 bg-[#6C5CE7]/10" :
+                            "text-slate-500 border-slate-200 bg-slate-50"
+                          }`}>
+                            {item.status === "completed" ? "ACTIVE" : item.status === "in-progress" ? "POPULAR" : "COMING SOON"}
+                          </span>
+                          <button 
+                            onClick={(e: React.MouseEvent) => { e.stopPropagation(); toggleItem(item.id); }}
+                            className="sm:hidden w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400"
+                          >
+                            <Zap size={14} className="rotate-45" />
+                          </button>
+                          <span className="hidden sm:block text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">{item.date}</span>
+                        </div>
+                        
+                        <h4 className="text-xl sm:text-lg font-black text-slate-900 mb-2 tracking-tight">{item.title}</h4>
+                        <p className="text-sm sm:text-sm text-slate-500 font-medium leading-relaxed mb-6">{item.content}</p>
 
-                    <div className="pt-4 border-t border-slate-100">
-                      <div className="flex justify-between items-center text-xs mb-2">
-                        <span className="flex items-center text-slate-600 font-bold">
-                          <Zap size={14} className="mr-1.5 text-[#6C5CE7]" fill="currentColor" /> Adoption Energy
-                        </span>
-                        <span className="font-black text-[#6C5CE7] bg-[#6C5CE7]/10 px-2 py-0.5 rounded-md">{item.energy}%</span>
-                      </div>
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                        <div className="h-full bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] rounded-full relative">
-                          <div className="absolute inset-0 bg-white/20 w-full h-full animate-pulse" />
+                        <div className="pt-5 border-t border-slate-100">
+                          <div className="flex justify-between items-center text-xs mb-3">
+                            <span className="flex items-center text-slate-600 font-bold">
+                              <Zap size={14} className="mr-1.5 text-[#6C5CE7]" fill="currentColor" /> Adoption Energy
+                            </span>
+                            <span className="font-black text-[#6C5CE7] bg-[#6C5CE7]/10 px-2 py-0.5 rounded-md">{item.energy}%</span>
+                          </div>
+                          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: `${item.energy}%` }}
+                              transition={{ duration: 1, ease: "easeOut" }}
+                              className="h-full bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF] rounded-full relative"
+                            >
+                              <div className="absolute inset-0 bg-white/20 w-full h-full animate-pulse" />
+                            </motion.div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    {item.relatedIds.length > 0 && (
-                      <div className="mt-5 pt-4 border-t border-slate-100">
-                        <div className="flex items-center mb-3">
-                          <LinkIcon size={12} className="text-[#8E7CFF] mr-1.5" />
-                          <span className="text-[9px] uppercase tracking-[0.2em] font-black text-slate-500">Related Features</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {item.relatedIds.map((relatedId) => {
-                            const related = timelineData.find((i) => i.id === relatedId);
-                            return (
-                              <button
-                                key={relatedId}
-                                className="flex items-center h-7 px-3 text-[10px] font-bold rounded-lg border border-[#6C5CE7]/20 bg-[#6C5CE7]/5 hover:bg-[#6C5CE7] hover:border-[#6C5CE7] text-[#6C5CE7] hover:text-white shadow-sm transition-all duration-300"
-                                onClick={(e) => { e.stopPropagation(); toggleItem(relatedId); }}
-                              >
-                                {related?.title}
-                                <ArrowRight size={10} className="ml-1.5 opacity-70" />
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                        {item.relatedIds.length > 0 && (
+                          <div className="mt-6 pt-5 border-t border-slate-100">
+                            <div className="flex items-center mb-4">
+                              <LinkIcon size={12} className="text-[#8E7CFF] mr-1.5" />
+                              <span className="text-[9px] uppercase tracking-[0.2em] font-black text-slate-500">Related Features</span>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {item.relatedIds.map((relatedId) => {
+                                const related = timelineData.find((i) => i.id === relatedId);
+                                return (
+                                  <button
+                                    key={relatedId}
+                                    className="flex items-center h-8 px-4 text-[10px] font-bold rounded-lg border border-[#6C5CE7]/20 bg-[#6C5CE7]/5 hover:bg-[#6C5CE7] hover:border-[#6C5CE7] text-[#6C5CE7] hover:text-white shadow-sm transition-all duration-300"
+                                    onClick={(e: React.MouseEvent) => { e.stopPropagation(); toggleItem(relatedId); }}
+                                  >
+                                    {related?.title}
+                                    <ArrowRight size={10} className="ml-1.5 opacity-70" />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

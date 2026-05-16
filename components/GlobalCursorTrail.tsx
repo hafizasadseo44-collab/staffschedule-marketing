@@ -52,6 +52,17 @@ class TrailFollower {
   }
 
   public add(position: Position) {
+    // Prevent long glitchy lines on sudden jumps (e.g. window focus, touch jump)
+    if (this.points[0]) {
+      const dist = Math.hypot(
+        position.x - this.points[0].position.x,
+        position.y - this.points[0].position.y
+      );
+      if (dist > 300) {
+        this.points = [];
+      }
+    }
+
     const direction = { x: 0, y: 0 };
     if (this.points[0]) {
       direction.x = (position.x - this.points[0].position.x) * 0.2;
@@ -168,7 +179,12 @@ export default function GlobalCursorTrail() {
   }, []);
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (typeof window === "undefined" || !svgRef.current) return;
+
+    // Strict detection for desktop/laptop with fine pointer (mouse/trackpad)
+    // Disables completely on mobile, tablet, and touch-only devices
+    const isDesktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (!isDesktop) return;
 
     // Initialize trail followers with brand colors
     followersRef.current = TRAIL_COLORS.map(
@@ -177,26 +193,17 @@ export default function GlobalCursorTrail() {
 
     // Global mouse handler
     const handleMove = (e: MouseEvent) => {
-      followersRef.current.forEach((f) => f.add({ x: e.clientX, y: e.clientY }));
-    };
-
-    // Global touch handler
-    const handleTouch = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (touch) {
-        followersRef.current.forEach((f) => f.add({ x: touch.clientX, y: touch.clientY }));
-      }
+      const pos = { x: e.clientX, y: e.clientY };
+      followersRef.current.forEach((f) => f.add(pos));
     };
 
     window.addEventListener("mousemove", handleMove, { passive: true });
-    window.addEventListener("touchmove", handleTouch, { passive: true });
 
     // Start animation loop
     animate();
 
     return () => {
       window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("touchmove", handleTouch);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
   }, [animate]);
