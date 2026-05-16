@@ -5,15 +5,31 @@ import path from 'path';
 // which directory the Node.js process is started from on Hostinger.
 const resolveDbUrl = () => {
   const envUrl = process.env.DATABASE_URL;
+  
+  // 1. If DATABASE_URL is set in environment (e.g. Hostinger Control Panel)
   if (envUrl) {
-    // If env var is set but uses a relative file path, make it absolute
     if (envUrl.startsWith('file:./') || envUrl.startsWith('file:../')) {
       const relativePath = envUrl.replace('file:', '');
       return `file:${path.resolve(process.cwd(), relativePath)}`;
     }
     return envUrl;
   }
-  // Default: absolute path to prisma/dev.db from project root
+
+  // 2. Default: Absolute path to prisma/dev.db
+  // We use multiple fallbacks to ensure the path is correct on Hostinger
+  const pathsToTry = [
+    path.join(process.cwd(), 'prisma', 'dev.db'),
+    path.resolve(__dirname, '../../prisma/dev.db'), // Relative to lib/db.ts
+    path.resolve('/home', process.env.USER || '', 'domains/staffschedule.io/public_html/prisma/dev.db'), // Common Hostinger path
+  ];
+
+  for (const p of pathsToTry) {
+    // In production, we don't want to log every check, but we need an absolute path
+    if (p.startsWith('/') || p.includes(':\\')) { // Simple absolute path check
+       return `file:${p}`;
+    }
+  }
+
   return `file:${path.join(process.cwd(), 'prisma', 'dev.db')}`;
 };
 

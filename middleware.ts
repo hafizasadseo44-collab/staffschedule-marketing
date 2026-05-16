@@ -8,35 +8,7 @@ const key = new TextEncoder().encode(JWT_SECRET);
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. GLOBAL PRIVATE MODE PROTECTION
-  if (process.env.SITE_PRIVATE_MODE === 'true') {
-    const authHeader = request.headers.get('authorization');
-
-    if (!authHeader) {
-      return new NextResponse('Authentication required', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Secure Area"',
-        },
-      });
-    }
-
-    const auth = authHeader.split(' ')[1];
-    const [user, pwd] = atob(auth).split(':');
-
-    // Default username: 'admin', Password from ENV
-    const validUser = 'admin';
-    const validPass = process.env.SITE_PASSWORD || 'staff2026';
-
-    if (user !== validUser || pwd !== validPass) {
-      return new NextResponse('Authentication failed', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Secure Area"',
-        },
-      });
-    }
-  }
+  // 1. GLOBAL PRIVATE MODE PROTECTION REMOVED
 
   // 2. PATHNAME TRACKING
   // Set x-pathname header on the REQUEST so Server Components can read it

@@ -1,7 +1,10 @@
 import { db } from './db';
 import bcrypt from 'bcryptjs';
+import fs from 'fs';
+import path from 'path';
 
 let initialized = false;
+let initializationPromise: Promise<void> | null = null;
 
 /**
  * Ensures the SQLite database has all required tables.
@@ -9,8 +12,36 @@ let initialized = false;
  */
 export async function ensureDatabase() {
   if (initialized) return;
-  
-  try {
+  if (initializationPromise) return initializationPromise;
+
+  initializationPromise = (async () => {
+    try {
+    // 1. Try to find the DB path from the connection string
+    let dbPath = '';
+    const dbUrl = (db as any)._previewFeatures ? '' : (db as any)._config?.datasources?.db?.url || '';
+    if (dbUrl.startsWith('file:')) {
+      dbPath = dbUrl.replace('file:', '');
+    }
+
+    if (dbPath && fs.existsSync(dbPath)) {
+       // Check if writable
+       try {
+         fs.accessSync(dbPath, fs.constants.W_OK);
+       } catch (err) {
+         console.warn(`[DB-INIT] DB file not writable, attempting to fix permissions: ${dbPath}`);
+         try { fs.chmodSync(dbPath, 0o666); } catch (e) {}
+       }
+       
+       // Check if parent directory is writable (needed for SQLite journal files)
+       const dbDir = path.dirname(dbPath);
+       try {
+         fs.accessSync(dbDir, fs.constants.W_OK);
+       } catch (err) {
+         console.warn(`[DB-INIT] DB directory not writable, attempting to fix permissions: ${dbDir}`);
+         try { fs.chmodSync(dbDir, 0o777); } catch (e) {}
+       }
+    }
+
     // Check for Post table
     await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
     
@@ -21,9 +52,13 @@ export async function ensureDatabase() {
     initialized = true;
     console.log("[DB-INIT] Database initialized and verified.");
     return;
-  } catch (e) {
+  } catch (e: any) {
+    // If it's a "Unable to open" error, provide more context
+    if (e.message?.includes('Unable to open the database file') || e.message?.includes('Error code 14')) {
+      console.error("[DB-INIT] CRITICAL: SQLite cannot open the database file. Path might be incorrect or permissions denied.");
+    }
     // Tables don't exist yet — create them
-    console.log("[DB-INIT] Tables missing. Creating schema...");
+    console.log("[DB-INIT] Tables missing or inaccessible. Attempting initialization...");
   }
 
   try {
@@ -205,8 +240,14 @@ export async function ensureDatabase() {
     console.log("[DB-INIT] Database schema created successfully.");
   } catch (error) {
     console.error("[DB-INIT] Failed to initialize database:", error);
+    initializationPromise = null; // Reset to allow retry
     throw error;
+  } finally {
+    initializationPromise = null;
   }
+})();
+
+  return initializationPromise;
 }
 
 /**
