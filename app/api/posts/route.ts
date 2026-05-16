@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { db, dbUrl } from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { sendNotificationEmails } from '@/lib/email';
 import { ensureDatabase } from '@/lib/db-init';
@@ -32,7 +32,10 @@ export async function GET(request: Request) {
     return NextResponse.json(posts);
   } catch (error: any) {
     console.error("GET Posts Error:", error);
-    return NextResponse.json({ error: 'Failed to fetch posts: ' + error.message }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Failed to fetch posts: ' + error.message,
+      debug: { dbUrl } 
+    }, { status: 500 });
   }
 }
 
@@ -128,6 +131,9 @@ export async function POST(request: Request) {
     if (error?.code === 'P2002') {
       return NextResponse.json({ error: 'Slug already exists' }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to create post: ' + error.message }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Failed to create post: ' + error.message,
+      debug: { dbUrl }
+    }, { status: 500 });
   }
 }
