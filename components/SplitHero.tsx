@@ -321,10 +321,9 @@ export default function SplitHero() {
                 </div>
                 <div className="w-full h-1.5 bg-[#f5f3f9] rounded-full overflow-hidden">
                   <div className="w-[85%] h-full bg-emerald-500 rounded-full" />
+                </div>
               </div>
             </div>
-
-          </motion.div>
 
           </motion.div>
 
