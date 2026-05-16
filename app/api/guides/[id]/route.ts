@@ -29,6 +29,7 @@ export async function GET(
     
     const guide = rawGuides[0];
 
+    if (!guide) {
       return NextResponse.json({ error: 'Guide not found' }, { status: 404 });
     }
 
