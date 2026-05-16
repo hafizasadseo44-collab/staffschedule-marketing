@@ -213,7 +213,8 @@ export async function ensureDatabase() {
  * Adds missing columns to existing tables for lightweight migrations.
  */
 async function migrateSchema() {
-  console.log("[DB-INIT] Running lightweight migrations...");
+  try {
+    console.log("[DB-INIT] Running lightweight migrations...");
   
   // Post Table Migrations
   const postInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Post)`) as any[];
