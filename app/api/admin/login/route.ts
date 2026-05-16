@@ -10,7 +10,12 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    await ensureDatabase();
+    try {
+      await ensureDatabase();
+    } catch (dbInitError: any) {
+      console.warn('--- DB INIT FAILED (Continuing Login Process) ---', dbInitError.message);
+    }
+    
     console.log('--- LOGIN ATTEMPT START ---');
     const body = await request.json();
     const { email, password } = body;

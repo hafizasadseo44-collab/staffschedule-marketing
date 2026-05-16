@@ -1,4 +1,5 @@
 import { db } from './db';
+import bcrypt from 'bcryptjs';
 
 let initialized = false;
 
@@ -160,7 +161,6 @@ export async function ensureDatabase() {
     if (adminCount[0]?.cnt === 0) {
       // We need to create a hashed password. Use a pre-computed bcrypt hash for the default password.
       // This matches @4499Asad using bcryptjs with 10 rounds
-      const bcrypt = require('bcryptjs');
       const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD || '@4499Asad', 10);
       const now = new Date().toISOString();
       await db.$executeRawUnsafe(

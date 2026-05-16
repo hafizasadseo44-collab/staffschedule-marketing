@@ -131,6 +131,19 @@
   }
 }
 
+@keyframes industry-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: industry-marquee 40s linear infinite;
+}
+
 
 /* Premium Layout Utilities */
 .glass {

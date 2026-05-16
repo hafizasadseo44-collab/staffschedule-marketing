@@ -36,25 +36,12 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <IndustryShowcase />
 
 
-      {/* 3. Hard ROI numbers */}
-      <ROIBanner />
-
       {/* 4. How it works */}
       <HowItWorks />
 
       {/* 5. Feature highlights */}
       <FeaturesGrid />
 
-      {/* 6. Onboarding timeline */}
-      <OnboardingTimeline />
-
-
-
-      {/* 8. Competitor comparison */}
-      <ComparisonSection />
-
-      {/* 9. Integrations */}
-      <IntegrationsGrid />
 
       {/* 10. Testimonials */}
       <TestimonialsMarquee />
