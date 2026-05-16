@@ -18,27 +18,31 @@ export async function ensureDatabase() {
     try {
     // 1. Try to find the DB path from the connection string
     let dbPath = '';
-    const dbUrl = (db as any)._previewFeatures ? '' : (db as any)._config?.datasources?.db?.url || '';
-    if (dbUrl.startsWith('file:')) {
-      dbPath = dbUrl.replace('file:', '');
-    }
+    try {
+      // In Next.js App Router / Prisma Client, this is a more reliable way to get the URL
+      const resolvedUrl = (db as any)._activeDatasources?.db?.url || '';
+      if (resolvedUrl.startsWith('file:')) {
+        dbPath = resolvedUrl.replace('file:', '');
+      }
+    } catch (e) {}
 
     if (dbPath && fs.existsSync(dbPath)) {
        // Check if writable
        try {
          fs.accessSync(dbPath, fs.constants.W_OK);
        } catch (err) {
-         console.warn(`[DB-INIT] DB file not writable, attempting to fix permissions: ${dbPath}`);
          try { fs.chmodSync(dbPath, 0o666); } catch (e) {}
        }
        
        // Check if parent directory is writable (needed for SQLite journal files)
-       const dbDir = path.dirname(dbPath);
        try {
+         const dbDir = path.dirname(dbPath);
          fs.accessSync(dbDir, fs.constants.W_OK);
        } catch (err) {
-         console.warn(`[DB-INIT] DB directory not writable, attempting to fix permissions: ${dbDir}`);
-         try { fs.chmodSync(dbDir, 0o777); } catch (e) {}
+         try { 
+           const dbDir = path.dirname(dbPath);
+           fs.chmodSync(dbDir, 0o777); 
+         } catch (e) {}
        }
     }
 
@@ -46,19 +50,13 @@ export async function ensureDatabase() {
     await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
     
     // If it exists, we still need to check for newer columns (migration)
-    // In production, we assume schema is stable after first successful initialization
     await migrateSchema();
     
     initialized = true;
     console.log("[DB-INIT] Database initialized and verified.");
-    return;
   } catch (e: any) {
-    // If it's a "Unable to open" error, provide more context
-    if (e.message?.includes('Unable to open the database file') || e.message?.includes('Error code 14')) {
-      console.error("[DB-INIT] CRITICAL: SQLite cannot open the database file. Path might be incorrect or permissions denied.");
-    }
-    // Tables don't exist yet — create them
-    console.log("[DB-INIT] Tables missing or inaccessible. Attempting initialization...");
+    console.error("[DB-INIT] Error during init:", e.message);
+    // Continue anyway - the app might still work for reading
   }
 
   try {
