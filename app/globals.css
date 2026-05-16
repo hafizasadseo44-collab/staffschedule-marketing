@@ -131,6 +131,17 @@
   }
 }
 
+/* Lightweight float animations — run on GPU compositor, zero JS cost */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(12px); }
+}
+
 @keyframes industry-marquee {
   0% {
     transform: translateX(0);

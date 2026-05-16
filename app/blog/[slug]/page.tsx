@@ -72,7 +72,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
-  console.log('DEBUG: Visiting blog post with slug:', slug, 'decoded:', decodedSlug);
   
   let post: any;
   try {

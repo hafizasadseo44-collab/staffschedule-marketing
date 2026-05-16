@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
     try {
       if (!existsSync(uploadDir)) {
         await mkdir(uploadDir, { recursive: true });
-        console.log('[Upload] Created directory:', uploadDir);
       }
     } catch (mkdirErr: any) {
       console.warn('[Upload] Could not create primary dir:', mkdirErr.message);
@@ -54,7 +53,6 @@ export async function POST(req: NextRequest) {
             await mkdir(dir, { recursive: true });
           }
           uploadDir = dir;
-          console.log('[Upload] Using fallback directory:', dir);
           break;
         } catch (e) {
           continue;
@@ -66,7 +64,6 @@ export async function POST(req: NextRequest) {
     
     try {
       await writeFile(absolutePath, buffer);
-      console.log('[Upload] File written to:', absolutePath);
     } catch (writeErr: any) {
       console.error('[Upload] writeFile failed:', writeErr.message);
       // If filesystem write fails entirely, return a helpful error

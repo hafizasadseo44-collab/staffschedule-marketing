@@ -15,11 +15,11 @@ export async function ensureDatabase() {
     await db.$queryRawUnsafe(`SELECT 1 FROM Post LIMIT 1`);
     
     // If it exists, we still need to check for newer columns (migration)
-    console.log("[DB-INIT] Table exists. Checking for updates...");
+    // In production, we assume schema is stable after first successful initialization
     await migrateSchema();
     
     initialized = true;
-    console.log("[DB-INIT] Database ready.");
+    console.log("[DB-INIT] Database initialized and verified.");
     return;
   } catch (e) {
     // Tables don't exist yet — create them

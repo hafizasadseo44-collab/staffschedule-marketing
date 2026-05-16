@@ -17,7 +17,6 @@ export async function GET(
   try {
     await ensureDatabase();
     const { id: idOrSlug } = await params;
-    console.log("GET Guide (Raw SQL) Request for:", idOrSlug);
 
     // Use Raw SQL to bypass out-of-sync Prisma Client types
     const rawGuides = await db.$queryRawUnsafe(`
@@ -30,8 +29,6 @@ export async function GET(
     
     const guide = rawGuides[0];
 
-    if (!guide) {
-      console.log("Guide NOT FOUND in DB (Raw SQL) for:", idOrSlug);
       return NextResponse.json({ error: 'Guide not found' }, { status: 404 });
     }
 
@@ -151,12 +148,7 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { id } = await params;
-    console.log("DELETING GUIDE ID (Raw SQL):", id);
-
     const result = await db.$executeRawUnsafe(`DELETE FROM Guide WHERE id = ?`, id);
-    
-    console.log("DELETE RESULT (rows affected):", result);
-
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error("DELETE Guide Error (Raw SQL):", error);

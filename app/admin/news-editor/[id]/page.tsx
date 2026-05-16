@@ -371,7 +371,6 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   useEffect(() => {
     const timer = setInterval(() => {
       if (hasChanges.current && title) {
-        console.log("Auto-saving news draft...");
         doSave(false, true);
       }
     }, 15000); 

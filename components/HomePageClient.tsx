@@ -7,15 +7,15 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LazySection } from "@/components/ui/lazy-section";
 
-// --- Dynamically Imported Components (Below the fold) ---
-const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: true });
-const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: true });
-const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: true });
-const CaseStudySection = dynamic(() => import("@/components/CaseStudySection"), { ssr: true });
-const PricingTable = dynamic(() => import("@/components/PricingTable"), { ssr: true });
-const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"), { ssr: true });
-const FAQSection = dynamic(() => import("@/components/FAQSection"), { ssr: true });
-const EliteFinalCTA = dynamic(() => import("@/components/EliteFinalCTA"), { ssr: true });
+// --- Dynamically Imported Components (Below the fold — ssr:false saves server CPU) ---
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: false });
+const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: false });
+const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: false });
+const CaseStudySection = dynamic(() => import("@/components/CaseStudySection"), { ssr: false });
+const PricingTable = dynamic(() => import("@/components/PricingTable"), { ssr: false });
+const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"), { ssr: false });
+const FAQSection = dynamic(() => import("@/components/FAQSection"), { ssr: false });
+const EliteFinalCTA = dynamic(() => import("@/components/EliteFinalCTA"), { ssr: false });
 
 
 export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any[] }) {

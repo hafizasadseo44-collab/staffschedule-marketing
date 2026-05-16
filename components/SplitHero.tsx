@@ -51,9 +51,9 @@ export default function SplitHero() {
           <div className="absolute inset-0 opacity-[0.06] z-10 mix-blend-overlay bg-grain" />
           
           {/* Vibrant Wavy Band using overlapping blurred SVG and Divs */}
-          <motion.div style={{ y: waveY }} className="absolute top-[35%] w-[140%] -left-[20%] h-[500px] z-0 overflow-visible">
+          <motion.div style={{ y: waveY }} className="absolute top-[35%] w-[140%] -left-[20%] h-[500px] z-0 overflow-visible transform-gpu">
             {/* Optimized CSS-based blurred wave */}
-            <div className="absolute inset-0 opacity-40 blur-[100px] transform-gpu">
+            <div className="absolute inset-0 opacity-40 blur-[80px] transform-gpu">
               <svg className="w-full h-full" viewBox="0 0 1440 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <path 
                   d="M0,150 C240,350 480,50 720,200 C960,350 1200,50 1440,150 L1440,500 L0,500 Z" 
@@ -72,16 +72,14 @@ export default function SplitHero() {
             </div>
           </motion.div>
 
-          {/* Additional vibrant orbs to enhance the wave peaks */}
-          <motion.div 
-            animate={{ y: [0, -30, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[40%] left-[15%] w-[400px] h-[200px] bg-indigo-500/20 rounded-full blur-[90px]" 
+          {/* Background orbs — CSS animation instead of Framer Motion for zero JS thread cost */}
+          <div 
+            className="absolute top-[40%] left-[15%] w-[400px] h-[200px] bg-indigo-500/20 rounded-full blur-[70px] transform-gpu animate-[float_10s_ease-in-out_infinite]" 
+            aria-hidden="true"
           />
-          <motion.div 
-            animate={{ y: [0, 40, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute top-[35%] right-[15%] w-[500px] h-[250px] bg-blue-500/20 rounded-full blur-[100px]" 
+          <div 
+            className="absolute top-[35%] right-[15%] w-[500px] h-[250px] bg-blue-500/20 rounded-full blur-[80px] transform-gpu animate-[floatReverse_12s_ease-in-out_infinite]" 
+            aria-hidden="true"
           />
 
           {/* Bottom Solid White Cover (sharpens the bottom edge of the fade) */}
@@ -224,11 +222,9 @@ export default function SplitHero() {
               </div>
             </div>
 
-            {/* Floating Mobile Mockup (iOS Frame) */}
-            <motion.div 
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-16 -right-4 md:-right-12 w-[140px] md:w-[260px] aspect-[9/19] rounded-[2rem] md:rounded-[2.5rem] border-4 md:border-8 border-[#1c1236] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-50"
+              {/* Floating Mobile Mockup (iOS Frame) — CSS animation for zero JS cost */}
+              <div 
+                className="absolute -bottom-16 -right-4 md:-right-12 w-[140px] md:w-[260px] aspect-[9/19] rounded-[2rem] md:rounded-[2.5rem] border-4 md:border-8 border-[#1c1236] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-50 animate-[float_6s_ease-in-out_infinite]"
             >
               {/* iPhone Dynamic Island */}
               <div className="absolute top-2 md:top-3 left-1/2 -translate-x-1/2 w-[35%] h-4 md:h-6 bg-[#1c1236] rounded-full z-30" />
@@ -307,13 +303,11 @@ export default function SplitHero() {
                   <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-[#fdfcff] to-transparent pointer-events-none" />
                 </div>
               </div>
-            </motion.div>
-            
-            {/* Floating Stats Card (Left Side) */}
-            <motion.div 
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute top-20 -left-6 md:-left-16 z-50 hidden sm:block"
+            </div>
+
+            {/* Floating Stats Card (Left Side) — CSS animation for zero JS cost */}
+            <div 
+              className="absolute top-20 -left-6 md:-left-16 z-50 hidden sm:block animate-[floatReverse_5s_ease-in-out_infinite]"
             >
               <div className="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl shadow-2xl border border-white/50 w-[180px] md:w-[220px]">
                 <div className="flex items-center gap-3 mb-3">
@@ -327,9 +321,10 @@ export default function SplitHero() {
                 </div>
                 <div className="w-full h-1.5 bg-[#f5f3f9] rounded-full overflow-hidden">
                   <div className="w-[85%] h-full bg-emerald-500 rounded-full" />
-                </div>
               </div>
-            </motion.div>
+            </div>
+
+          </motion.div>
 
           </motion.div>
 
