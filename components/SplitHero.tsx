@@ -91,16 +91,14 @@ export default function SplitHero() {
       <div className="container mx-auto px-6 relative z-30 flex flex-col items-center flex-1">
 
         {/* Top Section: Headline (Positioned over the wave) */}
-        <motion.div style={{ y: textY }} className="flex flex-col items-center max-w-5xl mx-auto text-center mt-4 sm:mt-12 w-full">
+        <motion.div style={{ y: textY }} className="flex flex-col items-center max-w-6xl mx-auto text-center mt-4 sm:mt-12 w-full">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-5xl lg:text-5xl xl:text-7xl font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
           >
-            Still Wasting Hours on <br className="hidden md:block" />
-            Staff Scheduling Manually? <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">It’s Time to Automate & Save Time</span>
+            What If Staff Scheduling Took <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">Minutes, Not Hours?</span>
           </motion.h1>
         </motion.div>
 
@@ -113,7 +111,7 @@ export default function SplitHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg sm:text-xl text-[#475569] font-medium leading-[1.8] mb-12 px-6 drop-shadow-sm"
           >
-            Managing your team's schedule shouldn't feel like a second job. StaffSchedule.io is the employee scheduling software that takes the chaos out of shift planning — so your managers spend less time on spreadsheets and more time running the business. From work scheduling to real-time updates, our shift tracker app keeps every team member on the same page, every single day.
+            Your time is too valuable for spreadsheets. StaffSchedule.io is the work scheduling and employee <strong className="text-[#8b5cf6] font-bold">staff scheduling</strong> software that automates your shifts, eliminates confusion, and keeps your whole team connected — in one place.
           </motion.p>
 
           {/* CTAs */}
