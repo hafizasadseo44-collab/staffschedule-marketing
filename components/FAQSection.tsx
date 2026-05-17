@@ -2,28 +2,48 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, CheckCircle2 } from "lucide-react";
+import { Plus, Minus, CheckCircle2, HelpCircle } from "lucide-react";
 
 const faqs = [
   {
-    question: "How do you handle last-minute call-outs?",
-    answer: "Our system lets you instantly broadcast open shifts to all available, qualified employees. Staff can claim the shift right from their phone, updating the master schedule automatically—no more frantic phone trees."
+    question: "What is staff scheduling software and do I actually need it?",
+    answer: "If you're still building weekly rosters on spreadsheets, WhatsApp groups, or sticky notes — yes, you need it. Staff scheduling software is a digital tool that automates how you create, manage, and share employee shifts. Instead of spending hours every week figuring out who's available and who's on leave, the software handles it in minutes. For any business with more than 5 employees and rotating shifts, it's not a luxury — it's a time-saver you'll wonder how you lived without."
   },
   {
-    question: "Does StaffSchedule.io prevent accidental overtime?",
-    answer: "Yes. We track live weekly hours and labor costs. If a manager schedules someone into overtime—or if a shift swap pushes an employee over their limit—the system immediately flags it for management approval."
+    question: "How is StaffSchedule.io different from other employee scheduling software?",
+    answer: "Most employee scheduling software gives you a calendar and calls it a day. StaffSchedule.io goes further — combining smart shift scheduling, real-time team chat, AI-powered forecasting, multi-location management, and live analytics in one platform. You don't need five different tools. You need one that actually works end-to-end. That's what we built."
   },
   {
-    question: "Can we sync sales data from our POS to forecast labor?",
-    answer: "Absolutely. We integrate directly with leading POS systems (like Square, Toast, and Clover) to pull historical sales data, helping you generate schedules perfectly tuned to expected foot traffic."
+    question: "Is there a free plan? Can I try it before paying?",
+    answer: "Yes — StaffSchedule.io offers a free trial so you can explore the platform with your actual team before committing to anything. No credit card required to get started. If you're looking for a free employee scheduling software option to test the waters, our trial gives you full access to core features so you can see the difference firsthand."
   },
   {
-    question: "How hard is it to onboard a new franchise location?",
-    answer: "You can launch a location in minutes. Simply duplicate an existing department template, invite your General Manager, and have your employees join via a single SMS link. Zero IT setup required."
+    question: "How long does it take to set up and onboard my team?",
+    answer: "Most teams are fully set up within a day. You import your roster or invite staff via magic links, assign roles and locations, and your employee scheduling app is ready to go. There's no steep learning curve — if your team can use a smartphone, they can use StaffSchedule.io."
   },
   {
-    question: "Do my employees have to pay for the mobile app?",
-    answer: "Never. The iOS and Android tracking apps are completely free for all your staff, giving them 24/7 access to manage their availability, swap shifts, and request time off effortlessly."
+    question: "Can I manage multiple locations from one account?",
+    answer: "Absolutely. Whether you're running 2 branches or 200, our workforce scheduling software lets you switch between locations instantly, share staff across sites, and monitor every team from a single dashboard. No logging in and out. No confusion. Just complete visibility across your entire operation."
+  },
+  {
+    question: "What happens when an employee can't make their shift?",
+    answer: "With our built-in shift swap feature, employees can request a swap directly through the staff scheduling app — and managers approve it in one click. No frantic group texts. No scrambling for last-minute cover. The right person shows up, every time."
+  },
+  {
+    question: "Does StaffSchedule.io work for my industry?",
+    answer: "If your business runs on shifts, it works for you. Our team scheduling app is used across healthcare, retail, hospitality, logistics, cafés, clinics, and more. The platform adapts to how your industry actually schedules — not the other way around."
+  },
+  {
+    question: "Can employees see their own schedules on their phones?",
+    answer: "Yes. Your team gets instant access to their shifts through our employee scheduling app — directly on their phone. When schedules are published or updated, they get notified immediately. No more \"I didn't know I was working\" excuses."
+  },
+  {
+    question: "How does StaffSchedule.io help reduce overtime and labor costs?",
+    answer: "Our shift management software automatically flags overtime risks before you publish a schedule. Pair that with AI forecasting and real-time labor cost tracking, and you'll always know exactly what your workforce is costing you — and where you can trim without hurting coverage."
+  },
+  {
+    question: "Is my data secure? What if I want to cancel?",
+    answer: "Your data is encrypted and stored securely — we take privacy seriously. And if you ever decide to leave (though our users rarely do), cancelling is simple with no hidden fees or long-term contracts. We believe in earning your business every single month, not locking you in."
   }
 ];
 
@@ -41,11 +61,20 @@ const FAQSection = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-brand-primary font-black text-[10px] uppercase tracking-[0.2em] mb-6 border border-slate-200 dark:border-slate-700 shadow-sm"
+          >
+            <HelpCircle size={12} className="text-brand-primary" /> Common FAQs
+          </motion.div>
+          
           <h2 className="text-4xl lg:text-6xl font-black text-brand-dark dark:text-white mb-6 tracking-tight">
-            Common <span className="text-brand-primary">questions.</span>
+            Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-purple-600">We've Got Honest Answers.</span>
           </h2>
-          <p className="text-lg lg:text-xl text-brand-slate dark:text-slate-400 font-medium max-w-2xl mx-auto">
-            Everything you need to know about setting up, scaling, and optimizing your workforce with StaffSchedule.io.
+          <p className="text-lg lg:text-xl text-brand-slate dark:text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed">
+            Everything you want to know about StaffSchedule.io — before you sign up, try it out, or switch from your current tool.
           </p>
         </motion.div>
 
@@ -59,7 +88,7 @@ const FAQSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: Math.min(index * 0.05, 0.4) }}
                 className={`group border rounded-3xl overflow-hidden transition-all duration-300 ${
                   isActive 
                     ? "bg-white dark:bg-slate-800 border-brand-primary/30 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]" 
@@ -70,7 +99,7 @@ const FAQSection = () => {
                   onClick={() => setActiveIndex(isActive ? null : index)}
                   className="w-full px-6 py-6 lg:px-8 lg:py-8 text-left flex justify-between items-center gap-6"
                 >
-                  <span className={`text-lg lg:text-xl font-black transition-colors ${
+                  <span className={`text-base lg:text-lg font-black transition-colors leading-snug ${
                     isActive ? "text-brand-primary" : "text-brand-dark dark:text-white group-hover:text-brand-primary/80"
                   }`}>
                     {faq.question}
@@ -93,8 +122,8 @@ const FAQSection = () => {
                     >
                       <div className="px-6 pb-8 lg:px-8 lg:pb-8 pt-0">
                         <div className="h-px w-full bg-slate-100 dark:bg-slate-700 mb-6" />
-                        <div className="text-brand-slate dark:text-slate-300 font-medium text-base lg:text-lg leading-relaxed flex items-start gap-4">
-                          <CheckCircle2 className="w-6 h-6 text-brand-success flex-shrink-0 mt-1" />
+                        <div className="text-brand-slate dark:text-slate-300 font-medium text-sm lg:text-base leading-relaxed flex items-start gap-4">
+                          <CheckCircle2 className="w-5 h-5 text-brand-primary flex-shrink-0 mt-1" />
                           <p>{faq.answer}</p>
                         </div>
                       </div>
