@@ -95,13 +95,18 @@ const AUTO_ADVANCE_DURATION = 8000;
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  // manuallyPaused: user explicitly clicked pause — stays paused until they click play
+  const [manuallyPaused, setManuallyPaused] = useState(false);
+  // isHovering: mouse is over the step list — briefly pauses, resumes on mouse-leave
+  const [isHovering, setIsHovering] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const progressRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, margin: "-200px" });
 
   const step = STEPS[activeStep];
+  // Combined pause — either manually stopped OR hovering over tabs
+  const isPaused = manuallyPaused || isHovering;
 
   // Auto-advance logic
   useEffect(() => {
@@ -130,11 +135,20 @@ export default function HowItWorks() {
     };
   }, [activeStep, isInView, isPaused]);
 
+  // When section comes back into view after user scrolled away, auto-resume
+  useEffect(() => {
+    if (isInView && !manuallyPaused) {
+      setManuallyPaused(false);
+    }
+  }, [isInView]);
+
   const selectStep = (index: number) => {
     if (intervalRef.current) clearTimeout(intervalRef.current);
     if (progressRef.current) clearTimeout(progressRef.current);
     setActiveStep(index);
     setProgress(0);
+    // Clicking a step resumes auto-advance from that step
+    setManuallyPaused(false);
   };
 
   const headerRef = useRef(null);
@@ -206,8 +220,8 @@ export default function HowItWorks() {
                 <button
                   key={s.id}
                   onClick={() => selectStep(i)}
-                  onMouseEnter={() => setIsPaused(true)}
-                  onMouseLeave={() => setIsPaused(false)}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
                   className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden ${
                     isActive
                       ? "bg-white shadow-xl ring-1 " + s.ringColor
@@ -316,8 +330,8 @@ export default function HowItWorks() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
             className="flex-1 w-full"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
           >
             {/* Browser window frame */}
             <div
@@ -410,14 +424,14 @@ export default function HowItWorks() {
                 {/* Replay / pause hint bottom-right */}
                 <div className="absolute bottom-4 right-4 z-20">
                   <button
-                    onClick={() => setIsPaused(p => !p)}
+                    onClick={() => setManuallyPaused(p => !p)}
                     className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 hover:bg-black/70 transition-all"
                   >
-                    {isPaused
+                    {manuallyPaused
                       ? <Play size={12} className="text-white fill-white" />
                       : <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                     }
-                    <span className="text-[10px] font-bold">{isPaused ? "Play" : "Pause"}</span>
+                    <span className="text-[10px] font-bold">{manuallyPaused ? "Play" : "Pause"}</span>
                   </button>
                 </div>
               </div>
@@ -460,27 +474,107 @@ export default function HowItWorks() {
 
         {/* ── Bottom CTA ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mt-20 text-center"
+          transition={{ duration: 0.8 }}
+          className="mt-24 relative"
         >
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4">
-            <a
-              href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-              className="inline-flex items-center gap-3 h-14 px-9 rounded-2xl text-white font-black text-sm uppercase tracking-[0.1em] transition-all hover:scale-[1.03] active:scale-95"
+          {/* Outer glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1]/20 via-[#8b5cf6]/15 to-[#ec4899]/20 rounded-3xl blur-3xl" />
+
+          <div
+            className="relative rounded-3xl overflow-hidden"
+            style={{
+              background: "linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.12) 50%, rgba(236,72,153,0.08) 100%)",
+              border: "1px solid rgba(139,92,246,0.2)",
+              backdropFilter: "blur(24px)",
+            }}
+          >
+            {/* Shimmer sweep */}
+            <motion.div
+              className="absolute inset-0 opacity-30"
               style={{
-                background: `linear-gradient(135deg, #6366f1, #8b5cf6)`,
-                boxShadow: "0 10px 30px rgba(139,92,246,0.4)",
+                background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)",
+                backgroundSize: "200% 100%",
               }}
-            >
-              Start Your Free Trial
-              <ChevronRight size={16} />
-            </a>
-            <p className="text-sm text-[#94a3b8] font-medium">
-              No credit card required · 14-day free trial
-            </p>
+              animate={{ backgroundPosition: ["200% 0", "-200% 0"] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+            />
+
+            {/* Top gradient accent bar */}
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-[#8b5cf6]/60 to-transparent" />
+
+            <div className="px-8 py-10 md:px-14 md:py-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+              {/* Left: Text */}
+              <div className="flex-1 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6] animate-pulse" />
+                  <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#8b5cf6]">No Setup Fee · Cancel Anytime</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-black text-[#0f172a] leading-tight mb-2">
+                  Ready to simplify your
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#ec4899]"> staff scheduling</span>?
+                </h3>
+                <p className="text-[#64748b] font-medium text-base">
+                  Join 2,000+ growing teams who've already made the switch.
+                </p>
+
+                {/* Mini trust row */}
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-5">
+                  {[
+                    { icon: "✓", label: "14-Day Free Trial" },
+                    { icon: "✓", label: "No Credit Card" },
+                    { icon: "✓", label: "Setup in Minutes" },
+                  ].map((t, i) => (
+                    <div key={i} className="flex items-center gap-1.5 text-xs font-bold text-[#475569]">
+                      <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-black">{t.icon}</span>
+                      {t.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: CTA Button */}
+              <div className="flex flex-col items-center gap-4 flex-shrink-0">
+                <motion.a
+                  href="https://app.staffschedule.io/onboarding.php?start_trial=1"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="relative group inline-flex items-center gap-3 px-10 py-4 rounded-2xl text-white font-black text-sm uppercase tracking-[0.12em] overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%)", boxShadow: "0 20px 50px -10px rgba(139,92,246,0.55), 0 0 0 1px rgba(255,255,255,0.15) inset" }}
+                >
+                  {/* Inner shimmer on hover */}
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.15), transparent)" }} />
+                  <span className="relative z-10">Start Your Free Trial</span>
+                  <motion.span
+                    className="relative z-10 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0"
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <ChevronRight size={14} className="text-white" />
+                  </motion.span>
+                </motion.a>
+
+                {/* Social proof */}
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {["#6366f1","#8b5cf6","#ec4899","#10b981"].map((c, i) => (
+                      <div key={i} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-black text-white" style={{ background: c }}>
+                        {["JD","SC","MR","KL"][i]}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-[#94a3b8] font-semibold">
+                    <strong className="text-[#475569]">2,000+</strong> teams already onboard
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom accent bar */}
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-[#8b5cf6]/40 to-transparent" />
           </div>
         </motion.div>
 
