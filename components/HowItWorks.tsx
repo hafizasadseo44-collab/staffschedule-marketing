@@ -1,316 +1,486 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   UserPlus, CalendarCheck2, LayoutDashboard,
-  MessageSquare, MapPin, BarChart3,
-  CheckCircle, Zap, Clock, Shield, TrendingUp, Users
+  MessageSquare, MapPin, BarChart3, Play, ChevronRight
 } from "lucide-react";
+import InteractiveAppViewer from "./simulation/InteractiveAppViewer";
+import ScaleWrapper from "./simulation/ScaleWrapper";
 
 const STEPS = [
   {
     num: "01",
     id: "team",
-    title: "Onboard Your Staff in Minutes",
     shortTitle: "Onboard Your Staff",
+    title: "Onboard Your Staff in Minutes",
     desc: "Getting started takes less time than your morning coffee. Import your existing roster, invite team members via magic links, assign roles, set wages, and define locations — all from one clean dashboard. Your employee scheduling software is ready before your next shift begins.",
     Icon: UserPlus,
+    color: "#6366f1",
     gradient: "from-[#6366f1] to-[#4338ca]",
-    glow: "rgba(99,102,241,0.15)",
-    lightBg: "bg-indigo-50",
-    lightText: "text-indigo-600",
-    badge: "bg-indigo-100 text-indigo-700",
-    stats: [{ icon: Clock, label: "Setup in < 5 min" }, { icon: Users, label: "Unlimited Staff" }, { icon: Zap, label: "Magic Link Invite" }],
+    bgLight: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    ringColor: "ring-indigo-500/30",
   },
   {
     num: "02",
     id: "schedule",
-    title: "Build Shifts That Actually Work",
     shortTitle: "Build Perfect Shifts",
+    title: "Build Shifts That Actually Work",
     desc: "Drag, drop, done. Our shift scheduling software lets you build weekly schedules in minutes — not hours. It automatically flags overtime risks, availability conflicts, and time-off requests before you hit publish. No more last-minute surprises.",
     Icon: CalendarCheck2,
+    color: "#8b5cf6",
     gradient: "from-[#8b5cf6] to-[#6d28d9]",
-    glow: "rgba(139,92,246,0.15)",
-    lightBg: "bg-purple-50",
-    lightText: "text-purple-600",
-    badge: "bg-purple-100 text-purple-700",
-    stats: [{ icon: Zap, label: "Drag & Drop" }, { icon: Shield, label: "Conflict Detection" }, { icon: Clock, label: "Minutes, Not Hours" }],
+    bgLight: "bg-purple-50",
+    textColor: "text-purple-600",
+    ringColor: "ring-purple-500/30",
   },
   {
     num: "03",
     id: "dashboard",
-    title: "See Everything. Miss Nothing.",
     shortTitle: "Monitor in Real Time",
+    title: "See Everything. Miss Nothing.",
     desc: "Your live dashboard shows who's clocked in, who's running late, open shifts, and daily labor spend — all updated in real time. It's the shift tracker app your managers didn't know they needed, until now.",
     Icon: LayoutDashboard,
+    color: "#0ea5e9",
     gradient: "from-[#0ea5e9] to-[#0284c7]",
-    glow: "rgba(14,165,233,0.15)",
-    lightBg: "bg-sky-50",
-    lightText: "text-sky-600",
-    badge: "bg-sky-100 text-sky-700",
-    stats: [{ icon: TrendingUp, label: "Live Updates" }, { icon: Clock, label: "Attendance Tracking" }, { icon: BarChart3, label: "Labor Cost View" }],
+    bgLight: "bg-sky-50",
+    textColor: "text-sky-600",
+    ringColor: "ring-sky-500/30",
   },
   {
     num: "04",
     id: "chat",
-    title: "Keep Your Team on the Same Page",
     shortTitle: "Communicate Instantly",
+    title: "Keep Your Team on the Same Page",
     desc: "No more scattered group chats or missed messages. Built-in team messaging lets managers broadcast announcements, confirm shift covers, and connect with any team member directly — all inside your staff scheduling app. Everyone stays informed, always.",
     Icon: MessageSquare,
+    color: "#10b981",
     gradient: "from-[#10b981] to-[#059669]",
-    glow: "rgba(16,185,129,0.15)",
-    lightBg: "bg-emerald-50",
-    lightText: "text-emerald-600",
-    badge: "bg-emerald-100 text-emerald-700",
-    stats: [{ icon: Users, label: "Team Messaging" }, { icon: Zap, label: "Instant Alerts" }, { icon: CheckCircle, label: "Read Receipts" }],
+    bgLight: "bg-emerald-50",
+    textColor: "text-emerald-600",
+    ringColor: "ring-emerald-500/30",
   },
   {
     num: "05",
     id: "locations",
+    shortTitle: "Scale Every Location",
     title: "One Platform. Every Location.",
-    shortTitle: "Scale Across Locations",
     desc: "Running more than one branch? No problem. Switch between locations instantly, share staff across sites, and manage every team from a single dashboard. Whether you have 3 stores or 300 — our workforce scheduling software scales with you, without the chaos.",
     Icon: MapPin,
+    color: "#f59e0b",
     gradient: "from-[#f59e0b] to-[#d97706]",
-    glow: "rgba(245,158,11,0.15)",
-    lightBg: "bg-amber-50",
-    lightText: "text-amber-600",
-    badge: "bg-amber-100 text-amber-700",
-    stats: [{ icon: MapPin, label: "Multi-Location" }, { icon: Users, label: "Cross-Site Sharing" }, { icon: Shield, label: "Centralized Control" }],
+    bgLight: "bg-amber-50",
+    textColor: "text-amber-600",
+    ringColor: "ring-amber-500/30",
   },
   {
     num: "06",
     id: "analytics",
-    title: "Schedule Smarter, Spend Less",
     shortTitle: "Analyze & Optimize",
+    title: "Schedule Smarter, Spend Less",
     desc: "Turn your scheduling data into real decisions. Track labor costs, spot overtime patterns, measure shift fill rates, and fine-tune your work scheduling strategy — week after week. Because great businesses don't just run schedules, they improve them.",
     Icon: BarChart3,
+    color: "#ec4899",
     gradient: "from-[#ec4899] to-[#db2777]",
-    glow: "rgba(236,72,153,0.15)",
-    lightBg: "bg-pink-50",
-    lightText: "text-pink-600",
-    badge: "bg-pink-100 text-pink-700",
-    stats: [{ icon: TrendingUp, label: "Labor Insights" }, { icon: BarChart3, label: "Shift Fill Rates" }, { icon: CheckCircle, label: "Weekly Reports" }],
+    bgLight: "bg-pink-50",
+    textColor: "text-pink-600",
+    ringColor: "ring-pink-500/30",
   },
 ];
 
-function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const isEven = index % 2 === 0;
-  const Icon = step.Icon;
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 48 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center"
-    >
-      {/* ── Number Column ── */}
-      <div className={`flex flex-col gap-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-        {/* Step badge */}
-        <div className="flex items-center gap-4">
-          <div className={`relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${step.gradient} shadow-lg flex-shrink-0`}
-            style={{ boxShadow: `0 8px 32px ${step.glow}` }}
-          >
-            <span className="text-white font-black text-xl leading-none">{step.num}</span>
-            <div className={`absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow`}>
-              <Icon size={12} className="text-white" />
-            </div>
-          </div>
-          <div>
-            <span className={`text-xs font-black uppercase tracking-[0.2em] ${step.lightText}`}>Step {step.num}</span>
-            <h3 className="text-2xl md:text-3xl font-black text-[#0f172a] leading-tight mt-0.5">
-              {step.title}
-            </h3>
-          </div>
-        </div>
-
-        {/* Description */}
-        <p className="text-base md:text-lg text-[#64748b] leading-relaxed font-medium">
-          {step.desc}
-        </p>
-
-        {/* Mini stat badges */}
-        <div className="flex flex-wrap gap-2">
-          {step.stats.map((s, i) => (
-            <span key={i} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${step.badge}`}>
-              <s.icon size={12} />
-              {s.label}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Visual Card Column ── */}
-      <div className={`${isEven ? "lg:order-2" : "lg:order-1"}`}>
-        <div
-          className="relative rounded-3xl overflow-hidden border border-white/80 shadow-2xl"
-          style={{ background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", boxShadow: `0 25px 60px ${step.glow}, 0 0 0 1px rgba(255,255,255,0.6)` }}
-        >
-          {/* Top gradient band */}
-          <div className={`h-2 w-full bg-gradient-to-r ${step.gradient}`} />
-
-          <div className="p-6 md:p-8">
-            {/* Icon header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className={`flex items-center gap-3 px-4 py-2 rounded-xl ${step.lightBg}`}>
-                <Icon size={18} className={step.lightText} />
-                <span className={`font-black text-sm ${step.lightText}`}>{step.shortTitle}</span>
-              </div>
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
-              </div>
-            </div>
-
-            {/* Simulated UI content */}
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: index * 0.08 + i * 0.1 + 0.3 }}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-white/80 border border-white shadow-sm"
-                >
-                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center flex-shrink-0 opacity-${100 - i * 20}`}>
-                    <CheckCircle size={14} className="text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className={`h-2.5 rounded-full bg-gradient-to-r ${step.gradient} opacity-${90 - i * 20}`} style={{ width: `${85 - i * 12}%` }} />
-                    <div className="h-2 rounded-full bg-slate-100 mt-1.5" style={{ width: `${60 - i * 10}%` }} />
-                  </div>
-                  <div className={`text-xs font-bold ${step.lightText} ${step.lightBg} px-2 py-0.5 rounded-md`}>
-                    {["Done", "Active", "Ready"][i - 1]}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Bottom metric bar */}
-            <div className={`mt-5 p-4 rounded-xl bg-gradient-to-r ${step.gradient} bg-opacity-10`}
-              style={{ background: step.glow.replace("0.15", "0.08") }}
-            >
-              <div className="flex items-center justify-between">
-                <span className={`text-xs font-bold uppercase tracking-wider ${step.lightText}`}>Progress</span>
-                <span className={`text-xs font-black ${step.lightText}`}>100%</span>
-              </div>
-              <div className="mt-2 h-2 rounded-full bg-white/50 overflow-hidden">
-                <motion.div
-                  className={`h-full rounded-full bg-gradient-to-r ${step.gradient}`}
-                  initial={{ width: "0%" }}
-                  animate={isInView ? { width: "100%" } : { width: "0%" }}
-                  transition={{ duration: 1.2, delay: index * 0.08 + 0.6, ease: "easeOut" }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating glow orb */}
-        <div
-          className="absolute -bottom-6 -right-6 w-40 h-40 rounded-full blur-3xl opacity-30 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${step.glow.replace("0.15", "0.8")}, transparent)` }}
-        />
-      </div>
-    </motion.div>
-  );
-}
+const AUTO_ADVANCE_DURATION = 8000;
 
 export default function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const progressRef = useRef<NodeJS.Timeout | null>(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, margin: "-200px" });
+
+  const step = STEPS[activeStep];
+
+  // Auto-advance logic
+  useEffect(() => {
+    if (!isInView || isPaused) return;
+
+    setProgress(0);
+    const startTime = Date.now();
+
+    const tick = () => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min((elapsed / AUTO_ADVANCE_DURATION) * 100, 100);
+      setProgress(pct);
+      if (pct < 100) {
+        progressRef.current = setTimeout(tick, 50);
+      }
+    };
+    progressRef.current = setTimeout(tick, 50);
+
+    intervalRef.current = setTimeout(() => {
+      setActiveStep((prev) => (prev + 1) % STEPS.length);
+    }, AUTO_ADVANCE_DURATION);
+
+    return () => {
+      if (intervalRef.current) clearTimeout(intervalRef.current);
+      if (progressRef.current) clearTimeout(progressRef.current);
+    };
+  }, [activeStep, isInView, isPaused]);
+
+  const selectStep = (index: number) => {
+    if (intervalRef.current) clearTimeout(intervalRef.current);
+    if (progressRef.current) clearTimeout(progressRef.current);
+    setActiveStep(index);
+    setProgress(0);
+  };
+
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true });
 
   return (
-    <section className="relative py-28 lg:py-40 overflow-hidden bg-[#FAFBFF]" id="how-it-works">
-
-      {/* ── Premium Mesh Background ── */}
+    <section
+      ref={sectionRef}
+      className="relative py-24 lg:py-36 overflow-hidden"
+      id="how-it-works"
+      style={{
+        background: "linear-gradient(180deg, #f8f7ff 0%, #ffffff 40%, #f8f7ff 100%)",
+      }}
+    >
+      {/* ── Ambient Background ── */}
       <div aria-hidden className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-indigo-500/5 rounded-full blur-[130px] -mr-60 -mt-60" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] -ml-40 -mb-40" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-sky-500/3 rounded-full blur-[100px]" />
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] [background-size:36px_36px]" />
-        <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-[#FAFBFF] to-transparent" />
-        <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-[#FAFBFF] to-transparent" />
+        <div className="absolute top-0 right-0 w-[900px] h-[900px] rounded-full opacity-40 blur-[150px]"
+          style={{ background: `radial-gradient(circle, ${step.color}18, transparent 70%)`, transition: "background 0.8s ease" }} />
+        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] rounded-full opacity-30 blur-[130px]"
+          style={{ background: `radial-gradient(circle, ${step.color}12, transparent 70%)`, transition: "background 0.8s ease" }} />
+        <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] [background-size:32px_32px]" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* ── Section Header ── */}
         <motion.div
           ref={headerRef}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center max-w-4xl mx-auto mb-24"
+          className="text-center max-w-4xl mx-auto mb-16 lg:mb-20"
         >
-          {/* Trust pill */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={headerInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-purple-100 shadow-sm mb-8"
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6] animate-pulse" />
-            <span className="text-xs font-black tracking-[0.2em] uppercase text-[#8b5cf6]">
-              Simple · Powerful · Proven
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-purple-100 shadow-sm mb-6">
+            <Play size={11} className="text-[#8b5cf6] fill-[#8b5cf6]" />
+            <span className="text-[10px] font-black tracking-[0.25em] uppercase text-[#8b5cf6]">
+              Live Product Demo
             </span>
-          </motion.div>
+          </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight leading-[1.1] mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.1] mb-5">
             <span className="text-[#0f172a]">How </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">StaffSchedule.io</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">
+              StaffSchedule.io
+            </span>
             <span className="text-[#0f172a]"> Works</span>
           </h2>
 
-          <p className="text-lg md:text-xl text-[#64748b] font-medium leading-relaxed max-w-3xl mx-auto">
-            From your first hire to your fiftieth shift — our staff scheduling platform is built to make workforce management feel effortless, not exhausting. <strong className="text-[#0f172a] font-bold">Six simple steps. Zero confusion.</strong>
+          <p className="text-lg md:text-xl text-[#64748b] font-medium leading-relaxed">
+            From your first hire to your fiftieth shift — our staff scheduling platform is built to make workforce management feel effortless, not exhausting.{" "}
+            <strong className="text-[#0f172a] font-bold">Six simple steps. Zero confusion.</strong>
           </p>
-
-          {/* Decorative step count strip */}
-          <div className="mt-10 flex items-center justify-center gap-2">
-            {STEPS.map((s, i) => (
-              <div key={i} className={`h-1 rounded-full bg-gradient-to-r ${s.gradient} transition-all duration-300`}
-                style={{ width: `${100 / STEPS.length}%`, maxWidth: "64px" }}
-              />
-            ))}
-          </div>
         </motion.div>
 
-        {/* ── Steps ── */}
-        <div className="flex flex-col gap-20 lg:gap-28">
-          {STEPS.map((step, i) => (
-            <StepCard key={step.id} step={step} index={i} />
-          ))}
+        {/* ── Main Two-Column Layout ── */}
+        <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
+
+          {/* ── LEFT: Step List ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            className="w-full xl:w-[400px] flex-shrink-0 flex flex-col gap-2"
+          >
+            {STEPS.map((s, i) => {
+              const isActive = i === activeStep;
+              const Icon = s.Icon;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => selectStep(i)}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                  className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden ${
+                    isActive
+                      ? "bg-white shadow-xl ring-1 " + s.ringColor
+                      : "bg-white/40 hover:bg-white/70 hover:shadow-md"
+                  }`}
+                  style={{
+                    transform: isActive ? "translateX(6px)" : "translateX(0px)",
+                    transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                  }}
+                >
+                  {/* Active progress bar at top */}
+                  {isActive && (
+                    <div className="absolute top-0 left-0 h-0.5 rounded-t-2xl bg-gray-100 w-full overflow-hidden">
+                      <motion.div
+                        className={`h-full bg-gradient-to-r ${s.gradient}`}
+                        style={{ width: `${progress}%` }}
+                        transition={{ ease: "linear" }}
+                      />
+                    </div>
+                  )}
+
+                  <div className="p-4 lg:p-5">
+                    <div className="flex items-center gap-4">
+                      {/* Step number + icon badge */}
+                      <div
+                        className={`relative w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-400 ${
+                          isActive
+                            ? `bg-gradient-to-br ${s.gradient} shadow-lg`
+                            : "bg-slate-100"
+                        }`}
+                        style={isActive ? { boxShadow: `0 6px 20px ${s.color}35` } : {}}
+                      >
+                        <Icon size={18} className={isActive ? "text-white" : "text-slate-400"} />
+                        <div className={`absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full text-[8px] font-black flex items-center justify-center transition-all ${
+                          isActive ? "bg-white text-slate-800 shadow-sm" : "bg-slate-200 text-slate-500"
+                        }`}
+                          style={{ width: "18px", height: "18px" }}
+                        >
+                          {s.num}
+                        </div>
+                      </div>
+
+                      {/* Title */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`font-black text-base leading-snug transition-colors ${
+                          isActive ? "text-[#0f172a]" : "text-[#64748b]"
+                        }`}>
+                          {s.shortTitle}
+                        </h3>
+                        {isActive && (
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className={`text-xs font-semibold mt-0.5 ${s.textColor}`}
+                          >
+                            Step {s.num} of {STEPS.length}
+                          </motion.p>
+                        )}
+                      </div>
+
+                      <ChevronRight size={16} className={`flex-shrink-0 transition-all ${
+                        isActive ? s.textColor + " opacity-100" : "text-slate-300 opacity-0 group-hover:opacity-100"
+                      }`} />
+                    </div>
+
+                    {/* Expanding description */}
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-[#64748b] font-medium text-sm leading-relaxed mt-3 pl-[3.75rem]">
+                            {s.desc}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </button>
+              );
+            })}
+
+            {/* Navigation dots */}
+            <div className="flex items-center justify-center gap-2 pt-2">
+              {STEPS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => selectStep(i)}
+                  className={`rounded-full transition-all duration-300 ${
+                    i === activeStep
+                      ? "w-6 h-2 bg-gradient-to-r " + step.gradient
+                      : "w-2 h-2 bg-slate-200 hover:bg-slate-300"
+                  }`}
+                />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ── RIGHT: Live App Simulation (Video-like) ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="flex-1 w-full"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Browser window frame */}
+            <div
+              className="relative rounded-2xl overflow-hidden"
+              style={{
+                boxShadow: `0 40px 100px -20px ${step.color}25, 0 0 0 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.04)`,
+                transition: "box-shadow 0.6s ease",
+              }}
+            >
+              {/* Active color top bar */}
+              <motion.div
+                className={`h-1 w-full bg-gradient-to-r ${step.gradient}`}
+                layoutId="active-bar"
+                transition={{ duration: 0.5 }}
+              />
+
+              {/* Browser chrome bar */}
+              <div className="h-11 bg-[#f8f8f8] border-b border-slate-200 flex items-center px-4 gap-3">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+                  <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+                  <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-md px-3 py-1 shadow-sm max-w-xs w-full">
+                    <svg className="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={step.id}
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-[11px] font-medium text-slate-500 truncate"
+                      >
+                        app.staffschedule.io/{step.id === "team" ? "team.php" : step.id === "schedule" ? "schedule.php" : step.id === "chat" ? "team-chat.php" : step.id === "locations" ? "locations.php" : step.id === "analytics" ? "analytics.php" : "dashboard.php"}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                </div>
+                {/* Live indicator */}
+                <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full flex-shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Live</span>
+                </div>
+              </div>
+
+              {/* The animated simulation — video-like */}
+              <div className="relative bg-white">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, filter: "blur(8px) brightness(1.05)" }}
+                    animate={{ opacity: 1, filter: "blur(0px) brightness(1)" }}
+                    exit={{ opacity: 0, filter: "blur(4px) brightness(0.98)" }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  >
+                    <ScaleWrapper targetWidth={1100} targetHeight={660}>
+                      <InteractiveAppViewer activeTab={step.id} isActive={isInView && !isPaused} />
+                    </ScaleWrapper>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Step label overlay bottom-left */}
+                <div className="absolute bottom-4 left-4 z-20">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={step.id}
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                      transition={{ duration: 0.35 }}
+                      className="flex items-center gap-2.5 bg-black/60 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 shadow-lg"
+                    >
+                      <div
+                        className={`w-6 h-6 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center flex-shrink-0`}
+                      >
+                        <step.Icon size={12} className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest opacity-60">Step {step.num}</p>
+                        <p className="text-xs font-black leading-tight">{step.shortTitle}</p>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* Replay / pause hint bottom-right */}
+                <div className="absolute bottom-4 right-4 z-20">
+                  <button
+                    onClick={() => setIsPaused(p => !p)}
+                    className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 hover:bg-black/70 transition-all"
+                  >
+                    {isPaused
+                      ? <Play size={12} className="text-white fill-white" />
+                      : <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                    }
+                    <span className="text-[10px] font-bold">{isPaused ? "Play" : "Pause"}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Bottom progress bar showing auto-advance */}
+              <div className="h-1 bg-slate-100">
+                <motion.div
+                  className={`h-full bg-gradient-to-r ${step.gradient}`}
+                  style={{ width: isPaused ? `${progress}%` : `${progress}%` }}
+                  transition={{ ease: "linear" }}
+                />
+              </div>
+            </div>
+
+            {/* Step quick-jump thumbnails below the viewer */}
+            <div className="mt-4 hidden lg:flex items-center justify-center gap-2">
+              {STEPS.map((s, i) => {
+                const SIcon = s.Icon;
+                const isActive = i === activeStep;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => selectStep(i)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${
+                      isActive
+                        ? `bg-gradient-to-r ${s.gradient} text-white shadow-md`
+                        : "bg-white text-slate-500 hover:text-slate-800 border border-slate-200 hover:border-slate-300"
+                    }`}
+                    style={isActive ? { boxShadow: `0 4px 14px ${s.color}40` } : {}}
+                  >
+                    <SIcon size={11} />
+                    {s.shortTitle}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+
         </div>
 
-        {/* ── Bottom CTA Strip ── */}
+        {/* ── Bottom CTA ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mt-24 text-center"
+          transition={{ duration: 0.7 }}
+          className="mt-20 text-center"
         >
-          <div className="inline-flex flex-col items-center gap-5 bg-white/70 backdrop-blur-xl border border-white/80 shadow-xl rounded-3xl px-10 py-8"
-            style={{ boxShadow: "0 20px 60px rgba(139,92,246,0.1), 0 0 0 1px rgba(255,255,255,0.8)" }}
-          >
-            <p className="text-xl font-black text-[#0f172a]">Ready to simplify your staff scheduling?</p>
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4">
             <a
               href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-              className="inline-flex items-center gap-3 h-14 px-10 rounded-2xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white font-black text-sm uppercase tracking-[0.1em] shadow-lg hover:shadow-purple-500/30 hover:scale-[1.03] transition-all active:scale-95"
-              style={{ boxShadow: "0 10px 30px rgba(139,92,246,0.35)" }}
+              className="inline-flex items-center gap-3 h-14 px-9 rounded-2xl text-white font-black text-sm uppercase tracking-[0.1em] transition-all hover:scale-[1.03] active:scale-95"
+              style={{
+                background: `linear-gradient(135deg, #6366f1, #8b5cf6)`,
+                boxShadow: "0 10px 30px rgba(139,92,246,0.4)",
+              }}
             >
               Start Your Free Trial
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <ChevronRight size={16} />
             </a>
-            <p className="text-xs text-[#94a3b8] font-medium">No credit card required · 14-day free trial · Cancel anytime</p>
+            <p className="text-sm text-[#94a3b8] font-medium">
+              No credit card required · 14-day free trial
+            </p>
           </div>
         </motion.div>
 
