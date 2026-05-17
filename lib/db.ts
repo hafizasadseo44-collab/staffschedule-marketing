@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import path from 'path';
+import fs from 'fs';
+import { execSync } from 'child_process';
 
 // Build an absolute path so the DB is always found regardless of
 // which directory the Node.js process is started from on Hostinger.
@@ -13,8 +15,69 @@ const resolveDbUrl = () => {
   }
 
   // 2. Default: Absolute path to prisma/dev.db from project root
-  const projectRoot = process.cwd();
-  const dbPath = path.join(projectRoot, 'prisma', 'dev.db');
+  let projectRoot = process.cwd();
+  
+  // Standalone mode detection & correction
+  if (projectRoot.endsWith('standalone')) {
+    projectRoot = path.join(projectRoot, '..', '..');
+  } else if (projectRoot.includes('.next' + path.sep + 'standalone')) {
+    projectRoot = projectRoot.split('.next' + path.sep + 'standalone')[0];
+  } else if (projectRoot.includes('.next/standalone')) {
+    projectRoot = projectRoot.split('.next/standalone')[0];
+  }
+
+  const dbDir = path.resolve(projectRoot, 'prisma');
+  const dbPath = path.resolve(dbDir, 'dev.db');
+  
+  // CRITICAL: Ensure the directory exists so SQLite can create/access the file!
+  if (!fs.existsSync(dbDir)) {
+    try {
+      fs.mkdirSync(dbDir, { recursive: true });
+      console.log('[DATABASE] Created prisma directory at:', dbDir);
+    } catch (e) {
+      console.error('[DATABASE] Failed to create prisma directory:', e);
+    }
+  }
+
+  // CRITICAL AUTO-REPAIR: If the database is missing or empty, push the schema
+  const dbFileExists = fs.existsSync(dbPath);
+  const dbIsEmpty = dbFileExists ? fs.statSync(dbPath).size === 0 : true;
+
+  if (dbIsEmpty) {
+    console.log('[DATABASE] Fresh/empty database detected. Running prisma db push...');
+    try {
+      // Execute prisma db push programmatically to create tables out of the box
+      execSync('npx prisma db push --accept-data-loss', {
+        cwd: projectRoot,
+        env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
+        stdio: 'inherit'
+      });
+      console.log('[DATABASE] Schema pushed successfully!');
+      
+      // Auto-seed if seed files are present
+      const seedCategories = path.resolve(projectRoot, 'prisma', 'seed-categories.js');
+      if (fs.existsSync(seedCategories)) {
+        console.log('[DATABASE] Seeding categories...');
+        execSync('node prisma/seed-categories.js', {
+          cwd: projectRoot,
+          env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
+          stdio: 'inherit'
+        });
+      }
+
+      const seedBlog = path.resolve(projectRoot, 'prisma', 'seed_blog.js');
+      if (fs.existsSync(seedBlog)) {
+        console.log('[DATABASE] Seeding blog articles...');
+        execSync('node prisma/seed_blog.js', {
+          cwd: projectRoot,
+          env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
+          stdio: 'inherit'
+        });
+      }
+    } catch (err) {
+      console.error('[DATABASE] Auto-initialization failed:', err);
+    }
+  }
   
   return `file:${dbPath}`;
 };
