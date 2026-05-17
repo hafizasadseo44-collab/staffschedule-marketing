@@ -143,16 +143,16 @@ export default function IndustryShowcase() {
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-20">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-20">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full mb-8 border border-purple-100 shadow-sm"
+            className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-5 py-2 rounded-full mb-8 border border-purple-100 shadow-sm"
           >
             <Users size={14} className="text-[#8b5cf6]" />
             <span className="text-[10px] md:text-xs font-black tracking-[0.2em] uppercase text-[#8b5cf6]">
-              Trusted by the Best Teams
+              TRUSTED BY GROWING TEAMS WORLDWIDE
             </span>
           </motion.div>
 
@@ -161,9 +161,9 @@ export default function IndustryShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1c1236] tracking-tight leading-[1.1] mb-6"
+            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 w-full text-transparent bg-clip-text bg-gradient-to-r from-[#1c1236] via-[#4c1d95] to-[#8b5cf6]"
           >
-            Powering teams across <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9]">industries</span>
+            Powering Teams Across Every Industry
           </motion.h2>
 
           <motion.p
@@ -171,9 +171,9 @@ export default function IndustryShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-[#5b4f7a] font-medium leading-relaxed max-w-2xl"
+            className="text-base md:text-lg text-[#5b4f7a] font-medium leading-relaxed max-w-4xl"
           >
-            From small businesses to large enterprises, teams trust StaffSchedule.io to streamline scheduling, improve communication, and save hours every week.
+            Whether you run a clinic, a retail store, a café, or a logistics fleet — messy spreadsheets and last-minute shift confusion cost you more than just time. StaffSchedule.io is the employee scheduling software built to fit how your industry actually works. Smarter staff scheduling, fewer mistakes, and a team that always knows where to be.
           </motion.p>
         </div>
 
@@ -245,9 +245,12 @@ export default function IndustryShowcase() {
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-[1.25rem] bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] flex-shrink-0 flex items-center justify-center shadow-lg shadow-purple-500/25">
                <Quote className="text-white w-6 h-6 md:w-8 md:h-8" />
             </div>
-            <p className="text-[#1c1236] text-sm md:text-base font-semibold leading-relaxed pt-1">
-              "StaffSchedule.io transformed how we manage our team. It's like having a <span className="text-[#8b5cf6] font-black bg-purple-50 px-1.5 py-0.5 rounded-md">co-pilot</span> for our daily operations."
-            </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-[#1c1236] text-sm md:text-base font-semibold leading-relaxed pt-1">
+                "We tried everything — spreadsheets, WhatsApp groups, even sticky notes. Nothing worked until we found StaffSchedule.io. Now our entire <span className="text-[#8b5cf6] font-black bg-purple-50 px-1.5 py-0.5 rounded-md">staff scheduling</span> runs on autopilot."
+              </p>
+              <p className="text-xs font-bold text-[#5b4f7a]">— Sarah M., Operations Manager</p>
+            </div>
           </div>
 
           <div className="w-full lg:w-px h-px lg:h-16 bg-gradient-to-b from-transparent via-[#e5e0f1] to-transparent relative z-10" />
@@ -260,7 +263,7 @@ export default function IndustryShowcase() {
               </div>
               <div>
                 <p className="text-xl md:text-3xl font-black text-[#1c1236]">2,000+</p>
-                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Teams Trust Us</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Teams Scheduling Smarter</p>
               </div>
             </div>
             
@@ -270,7 +273,7 @@ export default function IndustryShowcase() {
               </div>
               <div>
                 <p className="text-xl md:text-3xl font-black text-[#1c1236]">500K+</p>
-                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Shifts Scheduled</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Shifts Managed Without Chaos</p>
               </div>
             </div>
 
@@ -280,7 +283,7 @@ export default function IndustryShowcase() {
               </div>
               <div>
                 <p className="text-xl md:text-3xl font-black text-[#1c1236]">1M+</p>
-                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Hours Saved</p>
+                <p className="text-[9px] md:text-[11px] text-[#5b4f7a] font-bold uppercase tracking-widest mt-0.5">Hours Saved & Counting</p>
               </div>
             </div>
           </div>

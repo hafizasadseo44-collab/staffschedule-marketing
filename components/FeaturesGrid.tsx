@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   CalendarCheck2, Users2, RefreshCw, BarChart3,
-  MessageSquare, MapPin, BellRing, Brain
+  MessageSquare, MapPin, BellRing, Brain, Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
@@ -18,91 +18,91 @@ const fadeInUp = {
 const featureTimelineData = [
   {
     id: 1,
-    title: "Smart Scheduling",
-    date: "Core Feature",
-    content: "AI-powered scheduling engine that creates optimized shift plans in seconds. Drag-and-drop simplicity meets intelligent automation.",
-    category: "Scheduling",
-    icon: CalendarCheck2,
-    relatedIds: [2, 8],
+    title: "Team Management",
+    date: "Core Feature · Workforce",
+    content: "Add staff, assign roles, set permissions, and manage your entire workforce from one place. Whether you have 10 employees or 500, keeping your team organized has never been this straightforward.",
+    category: "Management",
+    icon: Users2,
+    relatedIds: [8, 2],
     status: "completed" as const,
     energy: 98,
   },
   {
     id: 2,
-    title: "Team Management",
-    date: "Core Feature",
-    content: "Manage your entire workforce — roles, departments, skills, certifications, and availability — all from one centralized hub.",
-    category: "Management",
-    icon: Users2,
-    relatedIds: [1, 3],
+    title: "Shift Swaps",
+    date: "Active · Flexibility",
+    content: "Life happens. When someone can't make their shift, our staff scheduling app lets employees request swaps instantly — and managers approve them in one click. No group chats. No confusion. No no-shows.",
+    category: "Operations",
+    icon: RefreshCw,
+    relatedIds: [5, 4],
     status: "completed" as const,
     energy: 95,
   },
   {
     id: 3,
-    title: "Shift Swaps",
-    date: "Core Feature",
-    content: "Empower your staff to request and approve shift swaps instantly. Eliminate late-night texts and phone tag forever.",
-    category: "Operations",
-    icon: RefreshCw,
-    relatedIds: [2, 4],
+    title: "Multi-Location Management",
+    date: "Active · Scale",
+    content: "Managing more than one branch? Switch between locations in seconds, share staff across sites, and keep every team running smoothly — all from a single dashboard. Your workforce scheduling software grows with your business.",
+    category: "Enterprise",
+    icon: MapPin,
+    relatedIds: [6, 1],
     status: "completed" as const,
     energy: 90,
   },
   {
     id: 4,
-    title: "Real-Time Analytics",
-    date: "Core Feature",
-    content: "Track labor costs, overtime, attendance patterns, and team efficiency with beautiful, actionable dashboards.",
-    category: "Analytics",
-    icon: BarChart3,
-    relatedIds: [3, 5],
+    title: "Team Chat",
+    date: "Active · Communication",
+    content: "Stop hunting through WhatsApp threads and missed calls. Built-in messaging lets you send shift announcements, handle 1:1 conversations, and broadcast updates to your entire team — right inside your employee scheduling app.",
+    category: "Communication",
+    icon: MessageSquare,
+    relatedIds: [6, 3],
     status: "completed" as const,
     energy: 92,
   },
   {
     id: 5,
-    title: "Team Chat",
-    date: "Communication",
-    content: "Built-in messaging for shift announcements, 1:1 conversations, and team-wide broadcasts. No more scattered group chats.",
-    category: "Communication",
-    icon: MessageSquare,
-    relatedIds: [4, 6],
+    title: "Smart Alerts",
+    date: "Active · Automation",
+    content: "Never get blindsided again. StaffSchedule.io automatically notifies managers about open shifts, late clock-ins, overtime risks, and availability conflicts — before they turn into real problems. Stay one step ahead, always.",
+    category: "Automation",
+    icon: BellRing,
+    relatedIds: [2, 8],
     status: "completed" as const,
     energy: 85,
   },
   {
     id: 6,
-    title: "Multi-Location",
-    date: "Enterprise",
-    content: "Manage unlimited locations with shared staff pools, per-site analytics, and cross-location scheduling flexibility.",
-    category: "Enterprise",
-    icon: MapPin,
-    relatedIds: [5, 7],
+    title: "Real-Time Analytics",
+    date: "Active · Insights",
+    content: "See exactly what's happening across your workforce — right now. Track labor costs, monitor scheduled vs actual hours, and spot inefficiencies before they hurt your bottom line. Data-driven work scheduling starts here.",
+    category: "Analytics",
+    icon: BarChart3,
+    relatedIds: [7, 3],
     status: "completed" as const,
     energy: 80,
   },
   {
     id: 7,
-    title: "Smart Alerts",
-    date: "Automation",
-    content: "Automated notifications for schedule changes, no-shows, overtime warnings, and shift reminders via push, SMS, and email.",
-    category: "Automation",
-    icon: BellRing,
+    title: "AI Forecasting",
+    date: "Active · Intelligence",
+    content: "Stop guessing how many people you need next Friday. Our AI studies your historical data, peak hours, and seasonal trends to recommend the right staffing levels — so your shift scheduling software works smarter, not harder.",
+    category: "AI",
+    icon: Brain,
     relatedIds: [6, 8],
-    status: "in-progress" as const,
+    status: "completed" as const,
     energy: 75,
   },
   {
     id: 8,
-    title: "AI Forecasting",
-    date: "Coming Soon",
-    content: "Predict staffing needs based on historical data, seasonal trends, and real-time demand signals. Always be perfectly staffed.",
-    category: "AI",
-    icon: Brain,
+    title: "Smart Scheduling",
+    date: "Core Feature · Automation",
+    content: "Building a weekly schedule used to take hours. Now it takes minutes. Our online employee scheduling engine auto-fills shifts based on availability, roles, and labor rules — then flags anything that needs your attention. You stay in control. The platform does the heavy lifting.",
+    category: "Scheduling",
+    icon: CalendarCheck2,
     relatedIds: [7, 1],
-    status: "pending" as const,
-    energy: 45,
+    status: "completed" as const,
+    energy: 99,
   },
 ];
 
@@ -131,18 +131,25 @@ export default function FeaturesGrid() {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
           }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          className="text-center max-w-4xl mx-auto mb-20 relative"
         >
-          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-[#6C5CE7] font-black text-[10px] uppercase tracking-[0.2em] mb-8 border border-slate-200 shadow-sm">
+          {/* Subtle glow behind the heading */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[100px] bg-indigo-500/20 blur-[80px] pointer-events-none rounded-full" />
+
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50/80 backdrop-blur-sm text-indigo-600 font-black text-[10px] uppercase tracking-[0.2em] mb-8 border border-indigo-100 shadow-[0_4px_20px_-10px_rgba(99,102,241,0.4)]">
+            <Sparkles size={14} className="text-indigo-500" />
             Interactive Tour
           </motion.div>
 
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-5xl lg:text-5xl font-black text-slate-900 tracking-tighter mb-6 leading-[1.1]">
-            Everything you need to manage your <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C5CE7] to-[#8E7CFF]">workforce smarter</span>
+          <motion.h2 variants={fadeInUp} className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[1.05] drop-shadow-sm">
+            Everything Your Team Needs for <br className="hidden lg:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 drop-shadow-md">
+              Smarter Staff Scheduling
+            </span>
           </motion.h2>
 
-          <motion.p variants={fadeInUp} className="text-base sm:text-xl text-slate-500 font-medium leading-relaxed">
-            Powerful features designed to simplify scheduling and team management. Explore our platform ecosystem below.
+          <motion.p variants={fadeInUp} className="text-lg sm:text-xl lg:text-2xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto">
+            Most scheduling tools make you work around them. We built ours around you. From shift management to real-time insights — every feature in StaffSchedule.io solves a real problem your team faces every single week.
           </motion.p>
         </motion.div>
 

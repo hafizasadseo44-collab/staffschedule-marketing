@@ -114,25 +114,26 @@ export default function TestimonialsMarquee() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 mb-6"
           >
             <Star className="size-4 text-brand-primary fill-brand-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary">Trusted by 10,000+ Managers</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary">10,000+ MANAGERS CAN'T BE WRONG</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-6"
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-6 leading-[1.1] max-w-4xl mx-auto"
           >
-            Loved by Teams <span className="text-brand-primary">Worldwide.</span>
+            Real Teams. Real Results. <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-purple-500">Real Staff Scheduling Wins.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-slate-500 font-medium max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-slate-500 font-medium max-w-3xl mx-auto leading-relaxed"
           >
-            Join thousands of modern businesses that have transformed their workforce management with StaffSchedule.io.
+            We don't just promise better scheduling — our users live it every day. From retail floors to hospital wards, thousands of managers switched to StaffSchedule.io and never looked back. Here's what they're saying.
           </motion.p>
         </div>
 

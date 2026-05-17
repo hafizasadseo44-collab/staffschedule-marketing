@@ -343,11 +343,19 @@ export default function HowItWorks() {
               const Icon = s.Icon;
               return (
                 <div key={s.id} className="flex flex-col gap-2">
-                  <button
+                  <div
+                    role="button"
+                    tabIndex={0}
                     onClick={() => selectStep(i)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        selectStep(i);
+                      }
+                    }}
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
-                    className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden ${
+                    className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden block w-full cursor-pointer ${
                       isActive
                         ? "bg-white shadow-xl ring-1 " + s.ringColor
                         : "bg-white/40 hover:bg-white/70 hover:shadow-md"
@@ -444,7 +452,7 @@ export default function HowItWorks() {
                         )}
                       </AnimatePresence>
                     </div>
-                  </button>
+                  </div>
                 </div>
               );
             })}
