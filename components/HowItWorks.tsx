@@ -92,6 +92,131 @@ const STEPS = [
 
 const AUTO_ADVANCE_DURATION = 8000;
 
+interface SimulationVideoPlayerProps {
+  step: typeof STEPS[0];
+  isInView: boolean;
+  isPaused: boolean;
+  progress: number;
+  manuallyPaused: boolean;
+  setManuallyPaused: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function SimulationVideoPlayer({ step, isInView, isPaused, progress, manuallyPaused, setManuallyPaused }: SimulationVideoPlayerProps) {
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden"
+      style={{
+        boxShadow: `0 40px 100px -20px ${step.color}25, 0 0 0 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.04)`,
+        transition: "box-shadow 0.6s ease",
+      }}
+    >
+      {/* Active color top bar */}
+      <motion.div
+        className={`h-1 w-full bg-gradient-to-r ${step.gradient}`}
+        layoutId="active-bar"
+        transition={{ duration: 0.5 }}
+      />
+
+      {/* Browser chrome bar */}
+      <div className="h-11 bg-[#f8f8f8] border-b border-slate-200 flex items-center px-4 gap-3">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-md px-3 py-1 shadow-sm max-w-xs w-full">
+            <svg className="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={step.id}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="text-[11px] font-medium text-slate-500 truncate"
+              >
+                app.staffschedule.io/{step.id === "team" ? "team.php" : step.id === "schedule" ? "schedule.php" : step.id === "chat" ? "team-chat.php" : step.id === "locations" ? "locations.php" : step.id === "analytics" ? "analytics.php" : "dashboard.php"}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+        </div>
+        {/* Live indicator */}
+        <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full flex-shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide hidden sm:inline-block">Live</span>
+        </div>
+      </div>
+
+      {/* The animated simulation — video-like */}
+      <div className="relative bg-white min-h-[300px] sm:min-h-[400px] xl:min-h-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step.id}
+            initial={{ opacity: 0, filter: "blur(8px) brightness(1.05)" }}
+            animate={{ opacity: 1, filter: "blur(0px) brightness(1)" }}
+            exit={{ opacity: 0, filter: "blur(4px) brightness(0.98)" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <ScaleWrapper targetWidth={1100} targetHeight={660}>
+              <InteractiveAppViewer activeTab={step.id} isActive={isInView && !isPaused} />
+            </ScaleWrapper>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Step label overlay bottom-left */}
+        <div className="absolute bottom-4 left-4 z-20">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step.id}
+              initial={{ opacity: 0, y: 8, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.95 }}
+              transition={{ duration: 0.35 }}
+              className="flex items-center gap-2.5 bg-black/60 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 shadow-lg"
+            >
+              <div
+                className={`w-6 h-6 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center flex-shrink-0`}
+              >
+                <step.Icon size={12} className="text-white" />
+              </div>
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-widest opacity-60">Step {step.num}</p>
+                <p className="text-xs font-black leading-tight hidden sm:block">{step.shortTitle}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Replay / pause hint bottom-right */}
+        <div className="absolute bottom-4 right-4 z-20">
+          <button
+            onClick={() => setManuallyPaused(p => !p)}
+            className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 hover:bg-black/70 transition-all"
+          >
+            {manuallyPaused
+              ? <Play size={12} className="text-white fill-white" />
+              : <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            }
+            <span className="text-[10px] font-bold">{manuallyPaused ? "Play" : "Pause"}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom progress bar showing auto-advance */}
+      <div className="h-1 bg-slate-100">
+        <motion.div
+          className={`h-full bg-gradient-to-r ${step.gradient}`}
+          style={{ width: isPaused ? `${progress}%` : `${progress}%` }}
+          transition={{ ease: "linear" }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -206,7 +331,7 @@ export default function HowItWorks() {
         {/* ── Main Two-Column Layout ── */}
         <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-start">
 
-          {/* ── LEFT: Step List ── */}
+          {/* ── LEFT: Step List (Mobile Accordion) ── */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -217,94 +342,110 @@ export default function HowItWorks() {
               const isActive = i === activeStep;
               const Icon = s.Icon;
               return (
-                <button
-                  key={s.id}
-                  onClick={() => selectStep(i)}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden ${
-                    isActive
-                      ? "bg-white shadow-xl ring-1 " + s.ringColor
-                      : "bg-white/40 hover:bg-white/70 hover:shadow-md"
-                  }`}
-                  style={{
-                    transform: isActive ? "translateX(6px)" : "translateX(0px)",
-                    transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-                  }}
-                >
-                  {/* Active progress bar at top */}
-                  {isActive && (
-                    <div className="absolute top-0 left-0 h-0.5 rounded-t-2xl bg-gray-100 w-full overflow-hidden">
-                      <motion.div
-                        className={`h-full bg-gradient-to-r ${s.gradient}`}
-                        style={{ width: `${progress}%` }}
-                        transition={{ ease: "linear" }}
-                      />
-                    </div>
-                  )}
-
-                  <div className="p-4 lg:p-5">
-                    <div className="flex items-center gap-4">
-                      {/* Step number + icon badge */}
-                      <div
-                        className={`relative w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-400 ${
-                          isActive
-                            ? `bg-gradient-to-br ${s.gradient} shadow-lg`
-                            : "bg-slate-100"
-                        }`}
-                        style={isActive ? { boxShadow: `0 6px 20px ${s.color}35` } : {}}
-                      >
-                        <Icon size={18} className={isActive ? "text-white" : "text-slate-400"} />
-                        <div className={`absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full text-[8px] font-black flex items-center justify-center transition-all ${
-                          isActive ? "bg-white text-slate-800 shadow-sm" : "bg-slate-200 text-slate-500"
-                        }`}
-                          style={{ width: "18px", height: "18px" }}
-                        >
-                          {s.num}
-                        </div>
-                      </div>
-
-                      {/* Title */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`font-black text-base leading-snug transition-colors ${
-                          isActive ? "text-[#0f172a]" : "text-[#64748b]"
-                        }`}>
-                          {s.shortTitle}
-                        </h3>
-                        {isActive && (
-                          <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className={`text-xs font-semibold mt-0.5 ${s.textColor}`}
-                          >
-                            Step {s.num} of {STEPS.length}
-                          </motion.p>
-                        )}
-                      </div>
-
-                      <ChevronRight size={16} className={`flex-shrink-0 transition-all ${
-                        isActive ? s.textColor + " opacity-100" : "text-slate-300 opacity-0 group-hover:opacity-100"
-                      }`} />
-                    </div>
-
-                    {/* Expanding description */}
-                    <AnimatePresence>
-                      {isActive && (
+                <div key={s.id} className="flex flex-col gap-2">
+                  <button
+                    onClick={() => selectStep(i)}
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                    className={`group relative text-left rounded-2xl transition-all duration-400 outline-none overflow-hidden ${
+                      isActive
+                        ? "bg-white shadow-xl ring-1 " + s.ringColor
+                        : "bg-white/40 hover:bg-white/70 hover:shadow-md"
+                    }`}
+                    style={{
+                      transform: isActive ? "translateX(6px)" : "translateX(0px)",
+                      transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                    }}
+                  >
+                    {/* Active progress bar at top */}
+                    {isActive && (
+                      <div className="absolute top-0 left-0 h-0.5 rounded-t-2xl bg-gray-100 w-full overflow-hidden">
                         <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                          className="overflow-hidden"
+                          className={`h-full bg-gradient-to-r ${s.gradient}`}
+                          style={{ width: `${progress}%` }}
+                          transition={{ ease: "linear" }}
+                        />
+                      </div>
+                    )}
+
+                    <div className="p-4 lg:p-5">
+                      <div className="flex items-center gap-4">
+                        {/* Step number + icon badge */}
+                        <div
+                          className={`relative w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-400 ${
+                            isActive
+                              ? `bg-gradient-to-br ${s.gradient} shadow-lg`
+                              : "bg-slate-100"
+                          }`}
+                          style={isActive ? { boxShadow: `0 6px 20px ${s.color}35` } : {}}
                         >
-                          <p className="text-[#64748b] font-medium text-sm leading-relaxed mt-3 pl-[3.75rem]">
-                            {s.desc}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </button>
+                          <Icon size={18} className={isActive ? "text-white" : "text-slate-400"} />
+                          <div className={`absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full text-[8px] font-black flex items-center justify-center transition-all ${
+                            isActive ? "bg-white text-slate-800 shadow-sm" : "bg-slate-200 text-slate-500"
+                          }`}
+                            style={{ width: "18px", height: "18px" }}
+                          >
+                            {s.num}
+                          </div>
+                        </div>
+
+                        {/* Title */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`font-black text-base leading-snug transition-colors ${
+                            isActive ? "text-[#0f172a]" : "text-[#64748b]"
+                          }`}>
+                            {s.shortTitle}
+                          </h3>
+                          {isActive && (
+                            <motion.p
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className={`text-xs font-semibold mt-0.5 ${s.textColor}`}
+                            >
+                              Step {s.num} of {STEPS.length}
+                            </motion.p>
+                          )}
+                        </div>
+
+                        <ChevronRight size={16} className={`flex-shrink-0 transition-all ${
+                          isActive ? s.textColor + " opacity-100 rotate-90 xl:rotate-0" : "text-slate-300 opacity-0 group-hover:opacity-100"
+                        }`} />
+                      </div>
+
+                      {/* Expanding description & Mobile Inline Video */}
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <p className="text-[#64748b] font-medium text-sm leading-relaxed mt-3 sm:pl-[3.75rem]">
+                              {s.desc}
+                            </p>
+                            
+                            {/* Mobile inline video render */}
+                            <div 
+                              className="mt-6 mb-2 xl:hidden sm:pl-[3.75rem] cursor-default" 
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                               <SimulationVideoPlayer 
+                                 step={s}
+                                 isInView={isInView}
+                                 isPaused={isPaused}
+                                 progress={progress}
+                                 manuallyPaused={manuallyPaused}
+                                 setManuallyPaused={setManuallyPaused}
+                               />
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </button>
+                </div>
               );
             })}
 
@@ -324,127 +465,23 @@ export default function HowItWorks() {
             </div>
           </motion.div>
 
-          {/* ── RIGHT: Live App Simulation (Video-like) ── */}
+          {/* ── RIGHT: Live App Simulation (Desktop Video) ── */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="flex-1 w-full"
+            className="flex-1 w-full hidden xl:block"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-            {/* Browser window frame */}
-            <div
-              className="relative rounded-2xl overflow-hidden"
-              style={{
-                boxShadow: `0 40px 100px -20px ${step.color}25, 0 0 0 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.04)`,
-                transition: "box-shadow 0.6s ease",
-              }}
-            >
-              {/* Active color top bar */}
-              <motion.div
-                className={`h-1 w-full bg-gradient-to-r ${step.gradient}`}
-                layoutId="active-bar"
-                transition={{ duration: 0.5 }}
-              />
-
-              {/* Browser chrome bar */}
-              <div className="h-11 bg-[#f8f8f8] border-b border-slate-200 flex items-center px-4 gap-3">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-                  <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                  <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
-                </div>
-                <div className="flex-1 flex justify-center">
-                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-md px-3 py-1 shadow-sm max-w-xs w-full">
-                    <svg className="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={step.id}
-                        initial={{ opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.2 }}
-                        className="text-[11px] font-medium text-slate-500 truncate"
-                      >
-                        app.staffschedule.io/{step.id === "team" ? "team.php" : step.id === "schedule" ? "schedule.php" : step.id === "chat" ? "team-chat.php" : step.id === "locations" ? "locations.php" : step.id === "analytics" ? "analytics.php" : "dashboard.php"}
-                      </motion.span>
-                    </AnimatePresence>
-                  </div>
-                </div>
-                {/* Live indicator */}
-                <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full flex-shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Live</span>
-                </div>
-              </div>
-
-              {/* The animated simulation — video-like */}
-              <div className="relative bg-white">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={step.id}
-                    initial={{ opacity: 0, filter: "blur(8px) brightness(1.05)" }}
-                    animate={{ opacity: 1, filter: "blur(0px) brightness(1)" }}
-                    exit={{ opacity: 0, filter: "blur(4px) brightness(0.98)" }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                  >
-                    <ScaleWrapper targetWidth={1100} targetHeight={660}>
-                      <InteractiveAppViewer activeTab={step.id} isActive={isInView && !isPaused} />
-                    </ScaleWrapper>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Step label overlay bottom-left */}
-                <div className="absolute bottom-4 left-4 z-20">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={step.id}
-                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                      transition={{ duration: 0.35 }}
-                      className="flex items-center gap-2.5 bg-black/60 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 shadow-lg"
-                    >
-                      <div
-                        className={`w-6 h-6 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center flex-shrink-0`}
-                      >
-                        <step.Icon size={12} className="text-white" />
-                      </div>
-                      <div>
-                        <p className="text-[9px] font-bold uppercase tracking-widest opacity-60">Step {step.num}</p>
-                        <p className="text-xs font-black leading-tight">{step.shortTitle}</p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                {/* Replay / pause hint bottom-right */}
-                <div className="absolute bottom-4 right-4 z-20">
-                  <button
-                    onClick={() => setManuallyPaused(p => !p)}
-                    className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-white/10 hover:bg-black/70 transition-all"
-                  >
-                    {manuallyPaused
-                      ? <Play size={12} className="text-white fill-white" />
-                      : <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                    }
-                    <span className="text-[10px] font-bold">{manuallyPaused ? "Play" : "Pause"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Bottom progress bar showing auto-advance */}
-              <div className="h-1 bg-slate-100">
-                <motion.div
-                  className={`h-full bg-gradient-to-r ${step.gradient}`}
-                  style={{ width: isPaused ? `${progress}%` : `${progress}%` }}
-                  transition={{ ease: "linear" }}
-                />
-              </div>
-            </div>
+             <SimulationVideoPlayer 
+               step={step}
+               isInView={isInView}
+               isPaused={isPaused}
+               progress={progress}
+               manuallyPaused={manuallyPaused}
+               setManuallyPaused={setManuallyPaused}
+             />
 
             {/* Step quick-jump thumbnails below the viewer */}
             <div className="mt-4 hidden lg:flex items-center justify-center gap-2">
