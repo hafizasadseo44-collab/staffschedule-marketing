@@ -154,8 +154,20 @@ export default function AdminDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(author?.id ? { id: author.id, ...profileForm } : profileForm)
       });
-      if (res.ok) { fetchProfile(); alert("Profile Updated Successfully"); }
-    } catch (e) { console.error(e); } finally { setProfileSaving(false); }
+      
+      const data = await res.json();
+      if (res.ok) {
+        fetchProfile();
+        alert("Profile Updated Successfully!");
+      } else {
+        alert("Failed to update profile: " + (data.error || "Unknown server error"));
+      }
+    } catch (e: any) {
+      console.error(e);
+      alert("Network or connection error: " + (e.message || "Failed to contact server"));
+    } finally {
+      setProfileSaving(false);
+    }
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
