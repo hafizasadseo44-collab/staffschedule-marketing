@@ -22,6 +22,7 @@ export async function GET() {
 // POST create a category
 export async function POST(request: Request) {
   try {
+    await ensureDatabase();
     const body = await request.json();
     const { name, color } = body;
 
