@@ -1,106 +1,95 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, ShieldCheck, Zap, CalendarDays, RefreshCw } from "lucide-react";
+import {
+  Users, ShieldCheck, Zap, CalendarDays, RefreshCw,
+  TrendingUp, TrendingDown, Clock, AlertCircle, CheckCircle2,
+  Bell, MoreHorizontal, ArrowUpRight, ArrowDownRight,
+  MapPin, Coffee
+} from "lucide-react";
+import SimulationSidebar from "../SimulationSidebar";
 
-interface SimulationDashboardProps {
-  isActive: boolean;
-  updateCursor?: (x: number, y: number, clicking?: boolean) => void;
+interface Props { isActive: boolean; updateCursor?: (x: number, y: number, clicking?: boolean) => void; }
+
+const CHART_DATA = {
+  days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  scheduled: [32, 48, 56, 44, 60, 72, 40],
+  actual:    [30, 46, 52, 42, 58, 68, 38],
+};
+
+const ACTIVITY = [
+  { name: "Sarah Connor", action: "Clocked In", time: "2m ago", icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-50" },
+  { name: "Mike Johnson",  action: "Shift Swap Request", time: "8m ago", icon: AlertCircle, color: "text-amber-500", bg: "bg-amber-50" },
+  { name: "Emily Chen",    action: "Left for Break", time: "12m ago", icon: Coffee, color: "text-blue-500", bg: "bg-blue-50" },
+  { name: "David Park",    action: "Clocked In Late", time: "18m ago", icon: Clock, color: "text-rose-500", bg: "bg-rose-50" },
+  { name: "Lisa Wang",     action: "Approved Leave", time: "25m ago", icon: CheckCircle2, color: "text-indigo-500", bg: "bg-indigo-50" },
+];
+
+const ON_SHIFT = [
+  { name: "Sarah Connor", role: "Manager", time: "09:00–17:00", initials: "SC", color: "bg-indigo-500" },
+  { name: "John Smith",   role: "Cashier",  time: "10:00–18:00", initials: "JS", color: "bg-emerald-500" },
+  { name: "Mike Johnson", role: "Stock",    time: "12:00–20:00", initials: "MJ", color: "bg-amber-500" },
+  { name: "Emily Chen",   role: "Host",     time: "13:00–19:00", initials: "EC", color: "bg-pink-500" },
+  { name: "David Park",   role: "Security", time: "08:00–16:00", initials: "DP", color: "bg-sky-500" },
+];
+
+function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [display, setDisplay] = useState(0);
+  const prevRef = useRef(0);
+  useEffect(() => {
+    const start = prevRef.current;
+    const end = value;
+    prevRef.current = end;
+    if (start === end) return;
+    const dur = 900;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      setDisplay(Math.round(start + (end - start) * ease));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [value]);
+  return <>{display}{suffix}</>;
 }
 
-export default function SimulationDashboard({ isActive, updateCursor }: SimulationDashboardProps) {
-  const [step, setStep] = useState(0);
-  
-  // Data States to simulate real-time updates
-  const [data, setData] = useState({
-     staff: 42,
-     coverage: 95,
-     openShifts: 3,
-     leaveReqs: 1,
-     chartHeights: [40, 65, 85, 45, 90, 100, 75],
-     activeStaff: [
-       { name: "Sarah Connor", role: "Manager", time: "09:00 - 17:00", color: "bg-blue-500" },
-       { name: "John Smith", role: "Cashier", time: "10:00 - 18:00", color: "bg-emerald-500" },
-       { name: "Mike Johnson", role: "Stock", time: "12:00 - 20:00", color: "bg-purple-500" },
-     ]
-  });
+export default function SimulationDashboard({ isActive, updateCursor }: Props) {
+  const [live, setLive] = useState({ staff: 42, coverage: 94, openShifts: 3, laborCost: 2840 });
+  const [tick, setTick] = useState(0);
+  const [notification, setNotification] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isActive || !updateCursor) {
-      setStep(0);
-      return;
-    }
-
-    let isMounted = true;
-    let timeoutId: any;
-
-    const runLoop = async () => {
-      while (isMounted) {
-        setStep(0);
-        updateCursor(80, 80); // Start cursor 
-        setData({
-          staff: 42, coverage: 95, openShifts: 3, leaveReqs: 1,
-          chartHeights: [40, 65, 85, 45, 90, 100, 75],
-          activeStaff: [
-            { name: "Sarah Connor", role: "Manager", time: "09:00 - 17:00", color: "bg-blue-500" },
-            { name: "John Smith", role: "Cashier", time: "10:00 - 18:00", color: "bg-emerald-500" },
-            { name: "Mike Johnson", role: "Stock", time: "12:00 - 20:00", color: "bg-purple-500" },
-          ]
-        });
-
-        // 1. Wait, let user see initial load
-        await new Promise(r => { timeoutId = setTimeout(r, 2000); });
-        if (!isMounted) break;
-
-        // 2. Cursor moves to Refresh Button
-        updateCursor(90, 15);
-        await new Promise(r => { timeoutId = setTimeout(r, 800); });
-        if (!isMounted) break;
-
-        // 3. Click Refresh
-        updateCursor(90, 15, true);
-        setStep(1); // Triggers spinning icon
-        await new Promise(r => { timeoutId = setTimeout(r, 600); });
-        if (!isMounted) break;
-
-        // 4. Data Updates Live
-        setData({
-          staff: 45, // +3
-          coverage: 100, // +5
-          openShifts: 0, // Filled
-          leaveReqs: 2, // New request
-          chartHeights: [45, 70, 95, 50, 100, 100, 80], // Bars jump up slightly
-          activeStaff: [
-            { name: "Sarah Connor", role: "Manager", time: "09:00 - 17:00", color: "bg-blue-500" },
-            { name: "John Smith", role: "Cashier", time: "10:00 - 18:00", color: "bg-emerald-500" },
-            { name: "Mike Johnson", role: "Stock", time: "12:00 - 20:00", color: "bg-purple-500" },
-            { name: "Emily Chen", role: "Host", time: "13:00 - 19:00", color: "bg-indigo-500" }, // New staff clocked in
-          ]
-        });
-
-        // 5. Cursor views the left chart
-        await new Promise(r => { timeoutId = setTimeout(r, 1500); });
-        if (!isMounted) break;
-        updateCursor(35, 60);
-
-        // 6. Rest before restarting
-        await new Promise(r => { timeoutId = setTimeout(r, 4000); });
+    if (!isActive) return;
+    const interval = setInterval(() => {
+      setTick(t => t + 1);
+      // Simulate live data ticking
+      setLive(prev => ({
+        staff:      42 + Math.floor(Math.random() * 4),
+        coverage:   92 + Math.floor(Math.random() * 8),
+        openShifts: Math.max(0, prev.openShifts - (Math.random() > 0.7 ? 1 : 0)),
+        laborCost:  2840 + Math.floor(Math.random() * 120),
+      }));
+      if (Math.random() > 0.6) {
+        const msgs = [
+          "🟢 David Park just clocked in",
+          "🔄 Shift swap request from Mike Johnson",
+          "⚠️ Coverage below 85% on Saturday",
+          "✅ Open shift filled by Lisa Wang",
+        ];
+        setNotification(msgs[Math.floor(Math.random() * msgs.length)]);
+        setTimeout(() => setNotification(null), 3500);
       }
-    };
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isActive]);
 
-    runLoop();
-    return () => {
-      isMounted = false;
-      clearTimeout(timeoutId);
-    };
-  }, [isActive, updateCursor]);
-
-  const stats = [
-    { label: "Total Staff", value: data.staff, suffix: "", icon: Users, color: "text-blue-600", bg: "bg-blue-50", highlight: step === 1 },
-    { label: "Coverage Today", value: data.coverage, suffix: "%", icon: ShieldCheck, color: "text-emerald-600", bg: "bg-emerald-50", highlight: step === 1 },
-    { label: "Open Shifts", value: data.openShifts, suffix: "", icon: Zap, color: "text-amber-600", bg: "bg-amber-50", highlight: step === 1 },
-    { label: "Leave Requests", value: data.leaveReqs, suffix: "", icon: CalendarDays, color: "text-purple-600", bg: "bg-purple-50", highlight: step === 1 },
+  const STATS = [
+    { label: "Active Staff", value: live.staff, suffix: "", icon: Users, color: "text-indigo-600", bg: "from-indigo-50 to-indigo-100/50", trend: +3, up: true },
+    { label: "Coverage", value: live.coverage, suffix: "%", icon: ShieldCheck, color: "text-emerald-600", bg: "from-emerald-50 to-emerald-100/50", trend: +2, up: true },
+    { label: "Open Shifts", value: live.openShifts, suffix: "", icon: Zap, color: "text-amber-600", bg: "from-amber-50 to-amber-100/50", trend: -1, up: false },
+    { label: "Labor Cost", value: live.laborCost, suffix: "", icon: TrendingUp, color: "text-purple-600", bg: "from-purple-50 to-purple-100/50", prefix: "$", trend: +2.4, up: true },
   ];
 
   return (
@@ -108,173 +97,202 @@ export default function SimulationDashboard({ isActive, updateCursor }: Simulati
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 p-8 overflow-hidden pointer-events-none bg-white"
+      className="absolute inset-0 flex pointer-events-none overflow-hidden bg-[#f4f3ff]"
     >
-      <div className="max-w-6xl mx-auto space-y-6">
-        
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex justify-between items-start"
-        >
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Real-Time Dashboard</h2>
-            <p className="text-slate-500 text-sm mt-1">Live operational metrics across Main Branch.</p>
-          </div>
-          <div className="px-4 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-lg flex items-center gap-2 text-sm font-bold shadow-sm">
-             <RefreshCw className={`w-4 h-4 ${step === 1 ? 'animate-spin' : ''}`} />
-             Live Sync
-          </div>
-        </motion.div>
+      <SimulationSidebar activeTab="dashboard" />
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-4 gap-4">
-          {stats.map((stat, i) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.1 }}
-                className={`bg-white rounded-2xl p-5 border shadow-sm flex items-center gap-4 transition-colors duration-500 relative overflow-hidden ${stat.highlight ? 'border-indigo-300 bg-indigo-50/30' : 'border-slate-200'}`}
-              >
-                {stat.highlight && (
-                   <motion.div 
-                     initial={{ opacity: 1, scale: 0 }} 
-                     animate={{ opacity: 0, scale: 2 }} 
-                     transition={{ duration: 0.8 }} 
-                     className="absolute inset-0 bg-indigo-400/10 pointer-events-none" 
-                   />
-                )}
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${stat.bg} ${stat.color}`}>
-                  <Icon className="w-6 h-6" strokeWidth={2.5} />
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-slate-800 tracking-tight flex items-baseline">
-                    <AnimatedCounter value={stat.value} />
-                    <span className="text-lg">{stat.suffix}</span>
-                  </div>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                    {stat.label}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+      {/* Main Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+
+        {/* Top bar */}
+        <div className="h-14 flex-shrink-0 bg-white border-b border-slate-200 flex items-center px-6 gap-4">
+          <div>
+            <div className="text-base font-black text-slate-900 leading-tight">Real-Time Dashboard</div>
+            <div className="text-[11px] text-slate-400 font-medium">Main Branch · Thursday, 15 May 2026</div>
+          </div>
+          <div className="flex-1" />
+          {/* Live badge */}
+          <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Live</span>
+          </div>
+          <div className="relative w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+            <Bell size={15} className="text-slate-500" />
+            <span className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border border-white" />
+          </div>
         </div>
 
-        {/* Charts and Tables Area */}
-        <div className="grid grid-cols-3 gap-6">
-          
-          {/* Main Chart (Weekly Hours) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-base font-bold text-slate-800">Scheduled vs Actual Hours</h3>
-              <div className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
-                This Week
-              </div>
-            </div>
-            
-            {/* Fake Bar Chart */}
-            <div className="h-48 flex items-end justify-between gap-3">
-              {data.chartHeights.map((height, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <motion.div
-                    animate={{ height: `${height}%` }}
-                    transition={{ type: "spring", stiffness: 60, damping: 12 }}
-                    className={`w-full rounded-t-lg relative group ${i === 2 ? 'bg-indigo-500' : 'bg-slate-200'}`}
-                  >
-                     <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-800 text-white text-[10px] py-1 px-2 rounded font-bold transition-opacity whitespace-nowrap">
-                       {height} hrs
-                     </div>
-                  </motion.div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase">
-                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}
-                  </span>
+        {/* Content */}
+        <div className="flex-1 overflow-hidden p-5 space-y-4">
+
+          {/* Stats row */}
+          <div className="grid grid-cols-4 gap-3">
+            {STATS.map((s, i) => {
+              const Icon = s.icon;
+              const Trend = s.up ? ArrowUpRight : ArrowDownRight;
+              return (
+                <motion.div
+                  key={s.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                  className={`bg-gradient-to-br ${s.bg} rounded-2xl p-4 border border-white shadow-sm`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={`w-8 h-8 rounded-xl bg-white/80 flex items-center justify-center shadow-sm ${s.color}`}>
+                      <Icon size={15} strokeWidth={2.5} />
+                    </div>
+                    <div className={`flex items-center gap-0.5 text-[10px] font-black ${s.up ? "text-emerald-600" : "text-rose-500"}`}>
+                      <Trend size={11} />
+                      {s.trend > 0 ? "+" : ""}{s.trend}%
+                    </div>
+                  </div>
+                  <div className="text-2xl font-black text-slate-800 leading-none mb-1">
+                    {s.prefix}<AnimatedCounter value={s.value} suffix={s.suffix} />
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{s.label}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Charts + On Shift */}
+          <div className="grid grid-cols-3 gap-3">
+
+            {/* Bar Chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-4"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <div className="text-sm font-black text-slate-900">Weekly Hours Overview</div>
+                  <div className="text-[10px] text-slate-400 font-medium">Scheduled vs Actual Hours</div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Upcoming Shifts */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="col-span-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-base font-bold text-slate-800">On Shift Now</h3>
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-            </div>
-            <div className="space-y-4 flex-1 overflow-hidden">
-              <AnimatePresence>
-                {data.activeStaff.map((staff, i) => (
-                  <motion.div 
-                    key={staff.name} 
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="flex items-center gap-3"
-                  >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm ${staff.color}`}>
-                      {staff.name.split(" ").map(n => n[0]).join("")}
+                <div className="flex items-center gap-3 text-[10px] font-bold">
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-indigo-500 inline-block" />Scheduled</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-indigo-200 inline-block" />Actual</span>
+                </div>
+              </div>
+              <div className="h-36 flex items-end gap-3">
+                {CHART_DATA.days.map((day, i) => {
+                  const h1 = CHART_DATA.scheduled[i];
+                  const h2 = CHART_DATA.actual[i];
+                  const max = 72;
+                  const isToday = i === 3;
+                  return (
+                    <div key={day} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+                      <div className="w-full flex items-end gap-0.5" style={{ height: "100%" }}>
+                        <motion.div
+                          animate={{ height: `${(h1 / max) * 100}%` }}
+                          transition={{ type: "spring", stiffness: 80, damping: 14, delay: i * 0.05 }}
+                          className={`flex-1 rounded-t-md ${isToday ? "bg-indigo-500" : "bg-indigo-200"}`}
+                        />
+                        <motion.div
+                          animate={{ height: `${(h2 / max) * 100}%` }}
+                          transition={{ type: "spring", stiffness: 80, damping: 14, delay: i * 0.05 + 0.1 }}
+                          className={`flex-1 rounded-t-md ${isToday ? "bg-indigo-300" : "bg-slate-100"}`}
+                        />
+                      </div>
+                      <span className={`text-[9px] font-black uppercase ${isToday ? "text-indigo-600" : "text-slate-400"}`}>{day}</span>
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-bold text-slate-800">{staff.name}</div>
-                      <div className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">{staff.time} • {staff.role}</div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* On Shift Now */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm font-black text-slate-900">On Shift Now</div>
+                <div className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] text-emerald-600 font-bold">{ON_SHIFT.length} active</span>
+                </div>
+              </div>
+              <div className="flex-1 space-y-2.5 overflow-hidden">
+                <AnimatePresence>
+                  {ON_SHIFT.map((s, i) => (
+                    <motion.div
+                      key={s.name}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.6 + i * 0.07 }}
+                      className="flex items-center gap-2.5"
+                    >
+                      <div className={`w-7 h-7 rounded-full ${s.color} text-white text-[10px] font-black flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                        {s.initials}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[11px] font-bold text-slate-800 truncate">{s.name}</div>
+                        <div className="text-[9px] text-slate-400 font-medium">{s.time} · {s.role}</div>
+                      </div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Activity Feed */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-sm font-black text-slate-900">Live Activity Feed</div>
+              <div className="text-[10px] text-indigo-500 font-bold cursor-default">View All</div>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-1">
+              {ACTIVITY.map((a, i) => {
+                const Icon = a.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.7 + i * 0.06 }}
+                    className="flex-shrink-0 flex items-center gap-2.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5"
+                  >
+                    <div className={`w-6 h-6 rounded-full ${a.bg} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={12} className={a.color} />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-bold text-slate-800 whitespace-nowrap">{a.name}</div>
+                      <div className="text-[9px] text-slate-400 font-medium whitespace-nowrap">{a.action} · {a.time}</div>
                     </div>
                   </motion.div>
-                ))}
-              </AnimatePresence>
+                );
+              })}
             </div>
           </motion.div>
-
         </div>
       </div>
+
+      {/* Live notification toast */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="absolute bottom-5 right-5 bg-[#0f0f1a] text-white text-[12px] font-bold px-4 py-3 rounded-2xl shadow-2xl border border-white/10 z-50 max-w-xs"
+          >
+            {notification}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
-}
-
-// Simple internal component to animate numbers rolling up or down
-function AnimatedCounter({ value }: { value: number }) {
-  const [displayValue, setDisplayValue] = useState(value);
-
-  useEffect(() => {
-    let start = displayValue;
-    const end = value;
-    if (start === end) return;
-    
-    const duration = 800;
-    const startTime = performance.now();
-    
-    const animate = (time: number) => {
-      const elapsed = time - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // easeOutQuart
-      const ease = 1 - Math.pow(1 - progress, 4);
-      const current = Math.round(start + (end - start) * ease);
-      setDisplayValue(current);
-      
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-    
-    requestAnimationFrame(animate);
-  }, [value]);
-
-  return <span>{displayValue}</span>;
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Mail, CheckCircle2 } from "lucide-react";
+import SimulationSidebar from "../SimulationSidebar";
 
 interface SimulationTeamProps {
   isActive: boolean;
@@ -85,8 +86,10 @@ export default function SimulationTeam({ isActive, updateCursor }: SimulationTea
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
-      className="absolute inset-0 p-6 sm:p-8 flex flex-col font-sans overflow-hidden bg-[#F4F0FC]"
+      className="absolute inset-0 flex font-sans overflow-hidden bg-[#f4f3ff]"
     >
+      <SimulationSidebar activeTab="team" />
+      <div className="flex-1 p-5 flex flex-col overflow-hidden">
       {/* Background UI: Team Directory List */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -222,6 +225,7 @@ export default function SimulationTeam({ isActive, updateCursor }: SimulationTea
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </motion.div>
   );
 }

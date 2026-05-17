@@ -4,9 +4,6 @@ import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MousePointer2 } from "lucide-react";
 
-import SimulationSidebar from "./SimulationSidebar";
-import SimulationHeader from "./SimulationHeader";
-
 import SimulationDashboard from "./scenes/SimulationDashboard";
 import SimulationSchedule from "./scenes/SimulationSchedule";
 import SimulationTeamChat from "./scenes/SimulationTeamChat";
@@ -22,68 +19,81 @@ interface InteractiveAppViewerProps {
 export default function InteractiveAppViewer({ activeTab, isActive = true }: InteractiveAppViewerProps) {
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50, clicking: false });
 
-  // Pass a simulated cursor handler down to the active scene
   const updateCursor = useCallback((x: number, y: number, clicking = false) => {
     setCursorPos({ x, y, clicking });
   }, []);
 
+  const urlMap: Record<string, string> = {
+    team: "team.php",
+    schedule: "schedule.php",
+    dashboard: "dashboard.php",
+    chat: "team-chat.php",
+    locations: "locations.php",
+    analytics: "analytics.php",
+  };
+
   return (
-    <div className="w-full h-full bg-slate-100 flex flex-col relative isolation-auto">
-      {/* Fake Browser Chrome */}
-      <div className="h-10 bg-slate-100 flex items-center px-4 flex-shrink-0 border-b border-slate-200 z-20">
-        <div className="flex items-center gap-1.5 w-16">
-          <div className="w-3.5 h-3.5 rounded-full bg-[#FF5F56]" />
-          <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E]" />
-          <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F]" />
+    <div className="w-full h-full flex flex-col relative overflow-hidden bg-[#0f0f1a]">
+      {/* Fake Browser Chrome — dark themed */}
+      <div className="h-10 bg-[#1a1a2e] flex items-center px-4 flex-shrink-0 border-b border-white/5 z-20 gap-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
         </div>
-        <div className="flex-1 max-w-xl mx-auto flex items-center justify-center bg-white/80 h-6 rounded-md text-[11px] font-medium text-slate-500 shadow-sm border border-slate-200">
-          <svg className="w-3 h-3 mr-1.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-          app.staffschedule.io/{activeTab === "team" ? "team.php" : activeTab === "schedule" ? "schedule.php" : activeTab === "chat" ? "team-chat.php" : activeTab === "locations" ? "locations.php" : activeTab === "analytics" ? "analytics.php" : "dashboard.php"}
-        </div>
-        <div className="w-16" /> {/* Spacer */}
-      </div>
-
-      {/* Internal App Layout wrapper (No Sidebar anymore for full focus) */}
-      <div className="flex-1 flex overflow-hidden relative">
-        <div className="flex-1 flex flex-col min-w-0 bg-[#F4F0FC] relative z-0">
-          <SimulationHeader locationName={activeTab === "locations" ? "Downtown Store" : "Main Branch"} />
-
-          <main className="flex-1 overflow-hidden relative">
+        <div className="flex-1 flex justify-center">
+          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-md px-3 py-1 max-w-md w-full">
+            <svg className="w-3 h-3 text-emerald-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
             <AnimatePresence mode="wait">
-              {activeTab === "dashboard" && <SimulationDashboard key="dashboard" isActive={isActive} updateCursor={updateCursor} />}
-              {activeTab === "team" && <SimulationTeam key="team" isActive={isActive} updateCursor={updateCursor} />}
-              {activeTab === "schedule" && <SimulationSchedule key="schedule" isActive={isActive} updateCursor={updateCursor} />}
-              {activeTab === "chat" && <SimulationTeamChat key="chat" isActive={isActive} updateCursor={updateCursor} />}
-              {activeTab === "locations" && <SimulationLocations key="locations" isActive={isActive} updateCursor={updateCursor} />}
-              {activeTab === "analytics" && <SimulationAnalytics key="analytics" isActive={isActive} updateCursor={updateCursor} />}
+              <motion.span
+                key={activeTab}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-[11px] font-medium text-white/50 truncate"
+              >
+                app.staffschedule.io/{urlMap[activeTab] ?? "dashboard.php"}
+              </motion.span>
             </AnimatePresence>
-          </main>
+          </div>
         </div>
+        <div className="w-16" />
       </div>
 
-      {/* Global Cursor Overlay */}
+      {/* App area */}
+      <div className="flex-1 relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          {activeTab === "dashboard" && <SimulationDashboard key="dashboard" isActive={isActive} updateCursor={updateCursor} />}
+          {activeTab === "team"      && <SimulationTeam      key="team"      isActive={isActive} updateCursor={updateCursor} />}
+          {activeTab === "schedule"  && <SimulationSchedule  key="schedule"  isActive={isActive} updateCursor={updateCursor} />}
+          {activeTab === "chat"      && <SimulationTeamChat  key="chat"      isActive={isActive} updateCursor={updateCursor} />}
+          {activeTab === "locations" && <SimulationLocations key="locations" isActive={isActive} updateCursor={updateCursor} />}
+          {activeTab === "analytics" && <SimulationAnalytics key="analytics" isActive={isActive} updateCursor={updateCursor} />}
+        </AnimatePresence>
+      </div>
+
+      {/* Cursor overlay */}
       <motion.div
-        className="absolute z-[100] w-6 h-6 pointer-events-none drop-shadow-md"
+        className="absolute z-[100] pointer-events-none drop-shadow-xl"
         animate={{
           left: `${cursorPos.x}%`,
           top: `${cursorPos.y}%`,
-          scale: cursorPos.clicking ? 0.8 : 1,
+          scale: cursorPos.clicking ? 0.75 : 1,
         }}
-        transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.5 }}
+        transition={{ type: "spring", stiffness: 120, damping: 22, mass: 0.4 }}
       >
-        <MousePointer2 className="w-6 h-6 text-slate-800 fill-white" strokeWidth={2} />
+        <MousePointer2 className="w-5 h-5 text-white fill-white/90 drop-shadow" strokeWidth={1.5} />
         {cursorPos.clicking && (
           <motion.div
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 2.5, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 rounded-full border-2 border-[#4F46E5]"
+            initial={{ scale: 0, opacity: 0.9 }}
+            animate={{ scale: 2.8, opacity: 0 }}
+            transition={{ duration: 0.45 }}
+            className="absolute inset-0 rounded-full border-2 border-white/60"
           />
         )}
       </motion.div>
-
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Send, FileImage, Paperclip, MoreVertical, Check, CheckCheck } from "lucide-react";
+import SimulationSidebar from "../SimulationSidebar";
 
 interface SimulationTeamChatProps {
   isActive: boolean;
@@ -88,6 +89,8 @@ export default function SimulationTeamChat({ isActive, updateCursor }: Simulatio
       exit={{ opacity: 0 }}
       className="absolute inset-0 bg-white flex pointer-events-none"
     >
+      <SimulationSidebar activeTab="chat" />
+
       {/* Settings / Contacts Sidebar */}
       <div className="w-[320px] bg-slate-50 border-r border-[#E2E8F0] flex flex-col flex-shrink-0 relative z-10">
         <div className="p-4 border-b border-[#E2E8F0] bg-white">
