@@ -3,16 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { 
-  BarChart3, 
-  Calendar, 
+import {
+  BarChart3,
+  Calendar,
   MessageSquare,
-  Clock, 
-  LayoutDashboard, 
-  Users, 
-  Layers, 
-  ClipboardCheck, 
-  FileBox, 
+  Clock,
+  LayoutDashboard,
+  Users,
+  Layers,
+  ClipboardCheck,
+  FileBox,
   Settings,
   CalendarDays,
   Repeat,
@@ -132,49 +132,49 @@ const HeroSection = () => {
                   app.staffschedule.io
                 </div>
               </div>
-              
+
               {/* Main Image */}
-              <img 
-                src="/dashboard.png" 
-                alt="StaffSchedule.io Dashboard" 
+              <img
+                src="/dashboard.png"
+                alt="StaffSchedule.io Dashboard"
                 className="w-full h-full object-cover object-top pt-10 group-hover:scale-105 transition-transform duration-1000 ease-out"
               />
 
               {/* Glass Overlay for depth */}
               <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/20 to-transparent pointer-events-none"></div>
             </div>
-            
+
             {/* Floating Decorative Cards */}
-            <motion.div 
-               animate={{ y: [0, -10, 0] }}
-               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-               className="absolute -top-6 -right-6 z-20 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-border hidden sm:block"
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-6 -right-6 z-20 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-border hidden sm:block"
             >
-               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-black">
-                     +12
-                  </div>
-                  <div>
-                     <p className="text-[10px] font-black uppercase text-slate-400">New Shifts</p>
-                     <p className="text-sm font-black text-brand-dark dark:text-white underline decoration-brand-success">Published Today</p>
-                  </div>
-               </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-black">
+                  +12
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase text-slate-400">New Shifts</p>
+                  <p className="text-sm font-black text-brand-dark dark:text-white underline decoration-brand-success">Published Today</p>
+                </div>
+              </div>
             </motion.div>
 
-            <motion.div 
-               animate={{ y: [0, 10, 0] }}
-               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-               className="absolute -bottom-6 -left-6 z-20 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-border hidden sm:block"
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute -bottom-6 -left-6 z-20 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-border hidden sm:block"
             >
-               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-black">
-                     98%
-                  </div>
-                  <div>
-                     <p className="text-[10px] font-black uppercase text-slate-400">Efficiency</p>
-                     <p className="text-sm font-black text-brand-dark dark:text-white underline decoration-brand-primary">Team Satisfaction</p>
-                  </div>
-               </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-black">
+                  98%
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase text-slate-400">Efficiency</p>
+                  <p className="text-sm font-black text-brand-dark dark:text-white underline decoration-brand-primary">Team Satisfaction</p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>

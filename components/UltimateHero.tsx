@@ -121,7 +121,7 @@ const UltimateHero = () => {
                   </div>
 
                   <img 
-                    src="/images/dashboard.png" 
+                    src="/dashboard.png" 
                     alt="StaffSchedule Dashboard" 
                     className="w-full h-full object-cover object-top pt-12 hover:scale-[1.03] transition-transform duration-1000 ease-out"
                   />
