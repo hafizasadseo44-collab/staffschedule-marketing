@@ -135,7 +135,7 @@ const HeroSection = () => {
               
               {/* Main Image */}
               <img 
-                src="/images/dashboard.png" 
+                src="/dashboard.png" 
                 alt="StaffSchedule.io Dashboard" 
                 className="w-full h-full object-cover object-top pt-10 group-hover:scale-105 transition-transform duration-1000 ease-out"
               />
