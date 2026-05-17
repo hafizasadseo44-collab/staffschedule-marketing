@@ -1,12 +1,11 @@
 // Trigger rebuild for uuid fix
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import path, { join } from 'path';
 import { existsSync } from 'fs';
 import { getSession } from '@/lib/auth';
  
 export const dynamic = 'force-dynamic';
-
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,11 +29,21 @@ export async function POST(req: NextRequest) {
     const filename = `${crypto.randomUUID()}.${ext}`;
     const relativePath = `/uploads/${filename}`;
 
-    // Try multiple possible upload directories (standalone build vs dev)
+    // Resolve the real project root directory in Hostinger standalone mode
+    let projectRoot = process.cwd();
+    if (projectRoot.endsWith('standalone')) {
+      projectRoot = join(projectRoot, '..', '..');
+    } else if (projectRoot.includes('.next' + path.sep + 'standalone')) {
+      projectRoot = projectRoot.split('.next' + path.sep + 'standalone')[0];
+    } else if (projectRoot.includes('.next/standalone')) {
+      projectRoot = projectRoot.split('.next/standalone')[0];
+    }
+
+    // Try multiple possible upload directories relative to the real project root
     const possibleDirs = [
-      join(process.cwd(), 'public', 'uploads'),
-      join(process.cwd(), '.next', 'static', 'uploads'),
-      join(process.cwd(), 'uploads'),
+      join(projectRoot, 'public', 'uploads'),
+      join(projectRoot, '.next', 'static', 'uploads'),
+      join(projectRoot, 'uploads'),
     ];
 
     let uploadDir = possibleDirs[0];
@@ -64,6 +73,7 @@ export async function POST(req: NextRequest) {
     
     try {
       await writeFile(absolutePath, buffer);
+      console.log('[Upload] File written successfully to:', absolutePath);
     } catch (writeErr: any) {
       console.error('[Upload] writeFile failed:', writeErr.message);
       // If filesystem write fails entirely, return a helpful error
