@@ -96,7 +96,7 @@ export default function SplitHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
+            className="text-[2.1rem] sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
           >
             What If Staff Scheduling Took <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">Minutes, Not Hours?</span>
           </motion.h1>
