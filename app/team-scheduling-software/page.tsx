@@ -169,34 +169,137 @@ export default function TeamSchedulingSoftware() {
             No credit card needed · Setup in under 10 minutes
           </motion.p>
 
-          {/* Floating High-Definition Hero Mockup Image */}
-          <motion.div 
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-            className="mt-20 max-w-5xl mx-auto p-4 rounded-[2.5rem] bg-white border border-slate-200/60 shadow-[0_32px_128px_-16px_rgba(99,102,241,0.08)] relative overflow-hidden group"
+          {/* Product Mockup Showcase (Premium Multi-Device Stack) */}
+          <motion.div
+            initial={{ opacity: 0, y: 65 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-5xl mx-auto mt-24 z-40 group text-left"
           >
-            <div className="absolute top-0 left-0 right-0 h-10 bg-slate-50 border-b border-slate-200/50 z-20 flex items-center px-4 gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-              </div>
-              <div className="flex-1 max-w-[240px] mx-auto h-6 bg-slate-100 rounded-md border border-slate-200/30 flex items-center px-3 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                app.staffschedule.io / schedule
+            {/* Background Glow */}
+            <div className="absolute -inset-10 bg-gradient-to-b from-indigo-500/10 to-transparent rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+            {/* Main Desktop Mockup */}
+            <div className="relative rounded-2xl md:rounded-[2rem] border border-slate-200 bg-white/60 shadow-[0_40px_100px_-20px_rgba(99,102,241,0.12)] p-2 md:p-3 transition-transform duration-700 group-hover:scale-[1.01]">
+              <div className="rounded-xl md:rounded-[1.5rem] overflow-hidden border border-slate-100 relative bg-white shadow-sm">
+                
+                {/* Browser Header */}
+                <div className="h-10 md:h-12 bg-slate-50 border-b border-slate-100 flex items-center px-4 gap-2">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+                  </div>
+                  <div className="mx-auto bg-slate-100 rounded-md h-6 w-1/3 flex items-center justify-center border border-slate-200/50">
+                    <span className="text-[9px] font-bold text-slate-400">app.staffschedule.io</span>
+                  </div>
+                </div>
+
+                <div className="relative aspect-[16/10] w-full">
+                  <Image
+                    src="/hero-master.png"
+                    alt="StaffSchedule.io Dashboard UI"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                    sizes="(max-width: 1200px) 100vw, 1024px"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="relative aspect-[16/10] pt-10 rounded-[2rem] overflow-hidden bg-slate-50">
-              <Image 
-                src="/hero-final.png" 
-                alt="StaffSchedule.io Team Scheduling Software Dashboard Mockup" 
-                fill 
-                className="object-cover object-top hover:scale-[1.01] transition-transform duration-1000"
-                sizes="(max-width: 1200px) 100vw, 1024px"
-                priority
-              />
+            {/* Floating Mobile Mockup (iPhone Rota view) */}
+            <div
+              className="absolute -bottom-16 -right-4 md:-right-12 w-[140px] md:w-[260px] aspect-[9/19] rounded-[2rem] md:rounded-[2.5rem] border-4 md:border-8 border-slate-900 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] bg-white overflow-hidden z-50 animate-[float_6s_ease-in-out_infinite] hidden sm:block"
+            >
+              {/* iPhone Dynamic Island */}
+              <div className="absolute top-2 md:top-3 left-1/2 -translate-x-1/2 w-[35%] h-4 md:h-6 bg-slate-900 rounded-full z-30" />
+
+              {/* Mobile Screen Content */}
+              <div className="flex-1 w-full h-full bg-[#fdfcff] flex flex-col pt-8 md:pt-12 px-3 md:px-5 relative z-20">
+                {/* Branded Title */}
+                <div className="flex justify-center items-center mb-3">
+                  <div className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-full shadow-[0_5px_15px_-3px_rgba(139,92,246,0.2)] border border-slate-100">
+                    <div className="w-3.5 h-3.5 md:w-4 md:h-4 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-[3px] flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-white rounded-[1px]" />
+                    </div>
+                    <span className="text-[9px] md:text-xs font-black tracking-tight text-indigo-600">
+                      StaffSchedule.io
+                    </span>
+                  </div>
+                </div>
+
+                {/* Profile Header */}
+                <div className="flex justify-between items-center mb-3 md:mb-5">
+                  <div>
+                    <p className="text-[8px] md:text-xs text-slate-400 font-semibold">Good morning,</p>
+                    <p className="text-[10px] md:text-sm font-black text-slate-800">Sarah Jenkins</p>
+                  </div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-100 overflow-hidden border-2 border-white shadow-sm relative">
+                    <Image
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop"
+                      alt="Profile avatar"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Shift Card */}
+                <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl md:rounded-2xl p-3 md:p-4 mb-4 shadow-lg shadow-indigo-600/20 text-white">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-[7px] md:text-[9px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Next Shift</span>
+                    <span className="text-[7px] md:text-[9px] font-bold">Today</span>
+                  </div>
+                  <h3 className="text-xs md:text-base font-black">Morning Crew</h3>
+                  <p className="text-[9px] md:text-xs text-indigo-100">09:00 AM - 05:00 PM</p>
+                </div>
+
+                {/* Team List */}
+                <div className="flex justify-between items-end mb-2">
+                  <p className="text-[9px] md:text-xs font-bold text-slate-800">Who's working</p>
+                  <p className="text-[7px] md:text-[9px] font-bold text-indigo-600">View All</p>
+                </div>
+                <div className="flex flex-col gap-2 flex-1 overflow-hidden relative">
+                  {[
+                    { name: "Michael T.", role: "Manager", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop" },
+                    { name: "Emma W.", role: "Barista", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop" }
+                  ].map((user, i) => (
+                    <div key={i} className="flex items-center gap-2 bg-white p-1.5 rounded-lg border border-slate-100 shadow-sm relative">
+                      <div className="w-5 h-5 rounded-full overflow-hidden relative flex-shrink-0">
+                        <Image src={user.img} alt={user.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <p className="text-[8px] md:text-[10px] font-bold text-slate-850 leading-tight">{user.name}</p>
+                        <p className="text-[7px] text-slate-450 leading-tight">{user.role}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                </div>
+              </div>
             </div>
+
+            {/* Floating Metric Card (Left Side) */}
+            <div
+              className="absolute top-20 -left-6 md:-left-16 z-50 hidden md:block animate-[floatReverse_5s_ease-in-out_infinite]"
+            >
+              <div className="bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-slate-150 w-[180px] md:w-[220px]">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <TrendingUp size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Labor Cost</p>
+                    <h4 className="text-base md:text-lg font-black text-slate-800">-18.4%</h4>
+                  </div>
+                </div>
+                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="w-[85%] h-full bg-emerald-500 rounded-full" />
+                </div>
+              </div>
+            </div>
+
           </motion.div>
 
         </div>
