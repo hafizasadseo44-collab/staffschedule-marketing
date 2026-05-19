@@ -31,7 +31,7 @@ const footerLinks = [
   {
     title: "Platform",
     links: [
-      { name: "Smart Scheduling", href: "/features/scheduling", icon: CalendarRange },
+      { name: "Smart Scheduling", href: "/employee-schedule-maker", icon: CalendarRange },
       { name: "AI Attendance", href: "/features/attendance", icon: Zap },
       { name: "Compliance Engine", href: "/features/compliance", icon: ShieldCheck },
       { name: "Global Payroll", href: "/features/payroll", icon: Building2 },

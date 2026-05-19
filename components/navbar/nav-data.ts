@@ -35,7 +35,7 @@ export const PLATFORM_ITEMS: NavItemType[] = [
   {
     title: "Scheduling",
     description: "Automated dragging & drop shifts.",
-    href: "/features/scheduling",
+    href: "/employee-schedule-maker",
     icon: Calendar,
   },
   {

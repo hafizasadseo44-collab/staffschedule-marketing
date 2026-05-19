@@ -16,7 +16,7 @@ const platformCategories = [
   {
     title: "Core Platform",
     items: [
-      { name: "Scheduling", description: "Smart Drag-and-Drop Rotas", href: "/features/scheduling", icon: CalendarCheck2, color: "text-blue-600", bg: "bg-blue-50" },
+      { name: "Scheduling", description: "Smart Drag-and-Drop Rotas", href: "/employee-schedule-maker", icon: CalendarCheck2, color: "text-blue-600", bg: "bg-blue-50" },
       { name: "Open Shifts", description: "Claim Open Work Instantly", href: "/features/open-shifts", icon: Sparkles, color: "text-amber-600", bg: "bg-amber-50" },
       { name: "Shift Swaps", description: "Automated Team Trading", href: "/features/shift-swaps", icon: ArrowRight, color: "text-emerald-600", bg: "bg-emerald-50" },
       { name: "Availability", description: "Track Staff Preferences", href: "/features/availability", icon: Clock, color: "text-indigo-600", bg: "bg-indigo-50" }

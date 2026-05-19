@@ -15,7 +15,7 @@ const features = [
     icon: <Calendar className="w-6 h-6" />,
     title: "Scheduling",
     desc: "Drag-and-drop visual builder with pattern cloning.",
-    link: "/features/scheduling",
+    link: "/employee-schedule-maker",
     color: "bg-indigo-500",
     size: "lg"
   },
