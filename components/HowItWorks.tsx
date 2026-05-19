@@ -399,11 +399,11 @@ export default function HowItWorks() {
 
                         {/* Title */}
                         <div className="flex-1 min-w-0">
-                          <h3 className={`font-black text-base leading-snug transition-colors ${
+                          <div className={`font-black text-base leading-snug transition-colors ${
                             isActive ? "text-[#0f172a]" : "text-[#64748b]"
                           }`}>
                             {s.shortTitle}
-                          </h3>
+                          </div>
                           {isActive && (
                             <motion.p
                               initial={{ opacity: 0 }}
@@ -558,10 +558,10 @@ export default function HowItWorks() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6] animate-pulse" />
                   <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#8b5cf6]">No Setup Fee · Cancel Anytime</span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-black text-[#0f172a] leading-tight mb-2">
+                <h2 className="text-2xl md:text-3xl font-black text-[#0f172a] leading-tight mb-2">
                   Ready to simplify your
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#ec4899]"> staff scheduling</span>?
-                </h3>
+                </h2>
                 <p className="text-[#64748b] font-medium text-base">
                   Join 2,000+ growing teams who've already made the switch.
                 </p>

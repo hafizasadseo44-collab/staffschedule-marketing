@@ -93,7 +93,7 @@ export default function SimulationTeam({ isActive, updateCursor }: SimulationTea
       {/* Background UI: Team Directory List */}
       <div className="flex justify-between items-center mb-6">
         <div>
-           <h3 className="text-xl font-bold text-slate-900 tracking-tight">Team Members</h3>
+           <div className="text-xl font-bold text-slate-900 tracking-tight">Team Members</div>
            <p className="text-sm text-slate-500">Manage your staff and send invitations.</p>
         </div>
         <div className={`px-4 py-2 rounded-xl text-white font-bold text-sm flex items-center gap-2 shadow-sm transition-transform ${step === 0 ? 'bg-[#4F46E5]' : 'bg-[#4F46E5] opacity-80'}`}>
@@ -185,7 +185,7 @@ export default function SimulationTeam({ isActive, updateCursor }: SimulationTea
                    <div className="w-12 h-12 bg-indigo-50 text-[#4F46E5] rounded-xl flex items-center justify-center mb-4">
                      <Mail className="w-6 h-6 stroke-[2]" />
                    </div>
-                   <h4 className="text-xl font-bold text-slate-900 mb-1">Invite to Workspace</h4>
+                   <div className="text-xl font-bold text-slate-900 mb-1">Invite to Workspace</div>
                    <p className="text-sm text-slate-500 mb-6">Send an email invitation to a new team member. They will receive a magic link.</p>
                    
                    <div className="space-y-4">
@@ -217,7 +217,7 @@ export default function SimulationTeam({ isActive, updateCursor }: SimulationTea
                    >
                      <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                    </motion.div>
-                   <h4 className="text-xl font-bold text-slate-900 mb-2">Invite Sent!</h4>
+                   <div className="text-xl font-bold text-slate-900 mb-2">Invite Sent!</div>
                    <p className="text-sm text-slate-500">John has been invited to join the staff. An email is on its way.</p>
                  </div>
                )}

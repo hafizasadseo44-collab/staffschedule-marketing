@@ -88,7 +88,7 @@ export default function CustomerSuccessPage() {
             <CheckCircle className="w-8 h-8" />
           </div>
           <div className="text-center md:text-left">
-            <h3 className="text-xl lg:text-2xl font-black text-white mb-2 tracking-tight">100% Verified Operational Results</h3>
+            <div className="text-xl lg:text-2xl font-black text-white mb-2 tracking-tight">100% Verified Operational Results</div>
             <p className="text-slate-400 font-medium text-sm lg:text-base max-w-2xl">
               Every metric outined below is pulled directly from actual live operations. No fabricated marketing stats, no fake estimates. What you see is exactly what our enterprise partners successfully deployed.
             </p>
@@ -161,12 +161,12 @@ export default function CustomerSuccessPage() {
          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-500/20 rounded-full blur-[100px]" />
          
          <div className="max-w-4xl mx-auto px-4 relative z-10">
-            <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-black text-white mb-8 lg:mb-10 tracking-tighter leading-[1.1] lg:leading-[0.95]">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-black text-white mb-8 lg:mb-10 tracking-tighter leading-[1.1] lg:leading-[0.95]">
                Stop managing shifts. <br />
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-emerald-400 pb-2 inline-block">
                  Start leading.
                </span>
-            </h3>
+            </h2>
             <p className="text-lg lg:text-2xl font-medium text-slate-300 mb-12 lg:mb-16 max-w-2xl mx-auto">
                Join the fastest growing enterprise operations platform. Start your premium pilot today.
             </p>

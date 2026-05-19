@@ -211,9 +211,9 @@ export const LinkPreview = ({
                          </div>
                        ) : (
                          <>
-                            <h4 className="text-[13px] font-black text-neutral-800 leading-tight line-clamp-1">
+                            <div className="text-[13px] font-black text-neutral-800 leading-tight line-clamp-1">
                                {data?.title || "StaffSchedule.io Intelligence"}
-                            </h4>
+                            </div>
                             <p className="text-[11px] font-medium text-neutral-500 leading-relaxed line-clamp-2">
                                {data?.description || "Empowering the future of workforce management with AI-driven scheduling."}
                             </p>

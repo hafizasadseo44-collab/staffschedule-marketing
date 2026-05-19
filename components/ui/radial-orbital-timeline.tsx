@@ -257,7 +257,7 @@ export default function RadialOrbitalTimeline({
                       <span className="hidden sm:block text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">{item.date}</span>
                     </div>
                     
-                    <h4 className="text-xl sm:text-lg font-black text-slate-900 mb-2 tracking-tight">{item.title}</h4>
+                    <div className="text-xl sm:text-lg font-black text-slate-900 mb-2 tracking-tight">{item.title}</div>
                     <p className="text-sm sm:text-sm text-slate-500 font-medium leading-relaxed mb-6">{item.content}</p>
 
                     <div className="pt-5 border-t border-slate-100">

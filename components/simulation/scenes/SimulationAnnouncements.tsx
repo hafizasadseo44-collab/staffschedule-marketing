@@ -98,7 +98,7 @@ export default function SimulationAnnouncements({ isActive, updateCursor }: Simu
                <Megaphone className="w-6 h-6 stroke-[2]" />
              </div>
              <div>
-               <h2 className="text-xl font-bold text-slate-800">Announcements</h2>
+               <div className="text-xl font-bold text-slate-800">Announcements</div>
                <p className="text-sm text-slate-500 mt-0.5">Broadcast important updates to your team.</p>
              </div>
           </div>
@@ -123,7 +123,7 @@ export default function SimulationAnnouncements({ isActive, updateCursor }: Simu
                   JD
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-800 text-sm leading-none">Jane Doe</h3>
+                  <div className="font-bold text-slate-800 text-sm leading-none">Jane Doe</div>
                   <div className="flex items-center gap-1 text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">
                     <Globe className="w-3 h-3" /> All Locations
                   </div>
@@ -169,13 +169,13 @@ export default function SimulationAnnouncements({ isActive, updateCursor }: Simu
                       JD
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-800 text-base leading-tight">Jane Doe <span className="text-slate-400 text-sm font-normal ml-1">posted an announcement</span></h4>
+                      <div className="font-bold text-slate-800 text-base leading-tight">Jane Doe <span className="text-slate-400 text-sm font-normal ml-1">posted an announcement</span></div>
                       <p className="text-xs text-slate-400 mt-1">Main Branch • seconds ago</p>
                     </div>
                   </div>
                   <MoreHorizontal className="w-5 h-5 text-slate-400" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{fullTitle}</h3>
+                <div className="text-lg font-bold text-slate-900 mb-2">{fullTitle}</div>
                 <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">{fullBody}</p>
               </motion.div>
             )}
@@ -190,12 +190,12 @@ export default function SimulationAnnouncements({ isActive, updateCursor }: Simu
                   SC
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 text-base leading-tight">Sarah Connor <span className="text-slate-400 text-sm font-normal ml-1">posted an announcement</span></h4>
+                  <div className="font-bold text-slate-800 text-base leading-tight">Sarah Connor <span className="text-slate-400 text-sm font-normal ml-1">posted an announcement</span></div>
                   <p className="text-xs text-slate-500 mt-1">Main Branch • 2 days ago</p>
                 </div>
               </div>
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Welcome to the new system!</h3>
+            <div className="text-lg font-bold text-slate-900 mb-2">Welcome to the new system!</div>
             <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">Please make sure to check your upcoming shifts and update your availability for next week.</p>
           </div>
 

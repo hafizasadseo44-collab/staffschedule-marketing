@@ -94,7 +94,7 @@ export default function SimulationTeamChat({ isActive, updateCursor }: Simulatio
       {/* Settings / Contacts Sidebar */}
       <div className="w-[320px] bg-slate-50 border-r border-[#E2E8F0] flex flex-col flex-shrink-0 relative z-10">
         <div className="p-4 border-b border-[#E2E8F0] bg-white">
-          <h2 className="text-[20px] font-extrabold text-slate-800 tracking-tight mb-3">Team Chat</h2>
+          <div className="text-[20px] font-extrabold text-slate-800 tracking-tight mb-3">Team Chat</div>
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <div className="w-full bg-slate-100 text-sm py-2 pl-9 pr-3 rounded-xl text-slate-400">Search messages...</div>
@@ -154,7 +154,7 @@ export default function SimulationTeamChat({ isActive, updateCursor }: Simulatio
               SC
             </div>
             <div>
-              <h3 className="font-bold text-slate-800 text-sm">Sarah Connor</h3>
+              <div className="font-bold text-slate-800 text-sm">Sarah Connor</div>
               <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Online</p>
             </div>
           </div>

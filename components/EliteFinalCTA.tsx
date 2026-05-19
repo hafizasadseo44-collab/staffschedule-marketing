@@ -159,7 +159,7 @@ const EliteFinalCTA = () => {
                     <Users size={20} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-black text-white">10,000+</h4>
+                    <div className="text-xl font-black text-white">10,000+</div>
                     <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Businesses Trust Us</p>
                   </div>
                 </div>
@@ -222,7 +222,7 @@ const EliteFinalCTA = () => {
                       </div>
                       <div>
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Labor Efficiency</p>
-                        <h5 className="text-lg font-black text-white">+18% Profit Growth</h5>
+                        <div className="text-lg font-black text-white">+18% Profit Growth</div>
                       </div>
                     </div>
                   </motion.div>

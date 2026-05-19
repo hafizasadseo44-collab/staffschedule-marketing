@@ -222,7 +222,7 @@ export default function IndustryShowcase() {
 
                 {/* Bottom Info */}
                 <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                  <h3 className="text-white text-base md:text-lg font-bold drop-shadow-lg leading-snug">{industry.businessName}</h3>
+                  <div className="text-white text-base md:text-lg font-bold drop-shadow-lg leading-snug">{industry.businessName}</div>
                   <p className="text-white/80 text-xs md:text-sm font-medium drop-shadow-md">{industry.ownerName}, {industry.ownerTitle}</p>
                 </div>
               </div>

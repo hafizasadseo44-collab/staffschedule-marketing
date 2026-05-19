@@ -149,7 +149,7 @@ const PremiumNavbar = () => {
                        <div className="flex-1 grid grid-cols-3 gap-10">
                           {platformCategories.map((cat) => (
                             <div key={cat.title}>
-                               <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8 pl-6 border-l border-brand-primary/20">{cat.title}</h4>
+                               <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8 pl-6 border-l border-brand-primary/20">{cat.title}</div>
                                <div className="grid grid-cols-1 gap-2">
                                   {cat.items.map((item) => (
                                     <Link key={item.name} href={item.href} className="flex items-start gap-4 p-4 rounded-[2rem] hover:bg-slate-50 dark:hover:bg-white/5 group/item transition-all">
@@ -166,7 +166,7 @@ const PremiumNavbar = () => {
                        </div>
                        <div className="w-[340px] bg-brand-dark rounded-[2.5rem] p-8 relative overflow-hidden group">
                           <div className="absolute inset-0 bg-brand-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <h4 className="text-xl font-black text-white mb-4 relative z-10 tracking-tight leading-tight">New Platform Release: <span className="text-brand-primary">AI Logic</span></h4>
+                          <div className="text-xl font-black text-white mb-4 relative z-10 tracking-tight leading-tight">New Platform Release: <span className="text-brand-primary">AI Logic</span></div>
                           <p className="text-xs text-slate-400 font-medium mb-8 relative z-10 leading-relaxed">Predictive staffing that self-optimizes based on your real-time demand signals.</p>
                           <Link href="/features/ai-scheduling" className="relative z-10 h-14 w-full bg-white text-brand-dark rounded-xl flex items-center justify-center gap-2 font-black text-xs uppercase tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-xl">Explore Innovation <ArrowRight className="w-4 h-4" /></Link>
                        </div>
@@ -199,7 +199,7 @@ const PremiumNavbar = () => {
                        <div className="flex-1 grid grid-cols-2 gap-10">
                           {solutionsCategories.map((cat) => (
                             <div key={cat.title}>
-                               <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8 pl-6 border-l border-brand-primary/20">{cat.title}</h4>
+                               <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8 pl-6 border-l border-brand-primary/20">{cat.title}</div>
                                <div className="grid grid-cols-1 gap-2">
                                   {cat.items.map((item) => (
                                     <Link key={item.name} href={item.href} className="flex items-start gap-5 p-5 rounded-[2.5rem] hover:bg-slate-50 dark:hover:bg-white/5 group/item transition-all">
@@ -217,7 +217,7 @@ const PremiumNavbar = () => {
                        <div className="w-[450px] bg-slate-50 dark:bg-white/[0.03] rounded-[2.5rem] p-10 flex flex-col justify-between group">
                           <div>
                             <div className="inline-flex px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-[10px] font-black uppercase tracking-widest mb-6">Case Spotlight</div>
-                            <h4 className="text-3xl font-black text-brand-dark dark:text-white mb-4 tracking-tighter leading-none">Saving <br /> $240k Annual <br /> <span className="text-brand-primary italic">Labor Spend.</span></h4>
+                            <div className="text-3xl font-black text-brand-dark dark:text-white mb-4 tracking-tighter leading-none">Saving <br /> $240k Annual <br /> <span className="text-brand-primary italic">Labor Spend.</span></div>
                             <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-[280px]">How NorthGroup Healthcare optimized 4,000 nurses across 12 hospitals.</p>
                           </div>
                           <Link href="/customer-success" className="h-16 w-full bg-brand-dark text-white rounded-2xl flex items-center justify-center gap-3 font-black text-sm uppercase tracking-widest hover:bg-brand-primary transition-all shadow-xl">Read Case Study <ArrowRight className="w-5 h-5" /></Link>
@@ -279,7 +279,7 @@ const PremiumNavbar = () => {
                      <div className="space-y-12">
                         {/* Platform Accordion */}
                         <div>
-                           <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8">Platform</h4>
+                           <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8">Platform</div>
                            <div className="grid grid-cols-1 gap-3">
                               {platformCategories.flatMap(c => c.items).slice(0, 6).map((item) => (
                                 <Link key={item.name} href={item.href} className="flex items-center gap-5 p-5 rounded-[2.5rem] bg-slate-50 dark:bg-white/[0.03] transition-all">
@@ -291,7 +291,7 @@ const PremiumNavbar = () => {
                         </div>
                         {/* Solutions Industry List */}
                         <div>
-                           <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8">Industries</h4>
+                           <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-8">Industries</div>
                            <div className="grid grid-cols-1 gap-3">
                               {solutionsCategories[0].items.map((item) => (
                                 <Link key={item.name} href={item.href} className="flex items-center gap-5 p-5 rounded-[2.5rem] bg-slate-50 dark:bg-white/[0.03] transition-all">

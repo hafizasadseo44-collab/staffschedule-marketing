@@ -61,7 +61,7 @@ export default function SecuritySection() {
                <div className="w-14 h-14 bg-slate-900/80 rounded-2xl flex items-center justify-center text-emerald-400 border border-emerald-500/20 mb-8 shadow-xl shadow-black/40 group-hover:scale-110 transition-transform duration-300">
                  {item.icon}
                </div>
-               <h3 className="text-xl font-bold text-white mb-4 tracking-tight">{item.title}</h3>
+               <div className="text-xl font-bold text-white mb-4 tracking-tight">{item.title}</div>
                <p className="text-slate-400 font-medium leading-relaxed text-sm md:text-base">{item.desc}</p>
              </motion.div>
           ))}

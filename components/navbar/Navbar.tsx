@@ -202,7 +202,7 @@ export const Navbar = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Explore Platform</h4>
+                        <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Explore Platform</div>
                         <MegaMenu items={PLATFORM_ITEMS} type="platform" />
                       </motion.div>
                     )}
@@ -213,7 +213,7 @@ export const Navbar = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Our Solutions</h4>
+                        <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Our Solutions</div>
                         <MegaMenu items={SOLUTIONS_ITEMS} type="solutions" />
                       </motion.div>
                     )}
@@ -224,7 +224,7 @@ export const Navbar = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Knowledge Base</h4>
+                        <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Knowledge Base</div>
                         <MegaMenu items={RESOURCES_ITEMS} type="resources" />
                       </motion.div>
                     )}
@@ -235,7 +235,7 @@ export const Navbar = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Our Company</h4>
+                        <div className="text-[10px] font-black text-brand-primary uppercase tracking-[0.4em] mb-10 opacity-50">Our Company</div>
                         <MegaMenu items={COMPANY_ITEMS} type="company" />
                       </motion.div>
                     )}

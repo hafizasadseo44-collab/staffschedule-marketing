@@ -401,9 +401,9 @@ function IndustryCard({ industry, onClick }: { industry: Industry; onClick: () =
 
       {/* Content */}
       <div className="flex-1">
-        <h3 className="text-[13px] font-black text-slate-900 dark:text-white uppercase tracking-tight italic mb-1 truncate w-full">
+        <div className="text-[13px] font-black text-slate-900 dark:text-white uppercase tracking-tight italic mb-1 truncate w-full">
           {industry.name}
-        </h3>
+        </div>
         <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 leading-tight italic line-clamp-2">
           {industry.shortDesc}
         </p>
@@ -523,9 +523,9 @@ const UseCases = () => {
                           <selectedIndustry.icon className="w-7 h-7" />
                        </div>
                        <div>
-                          <h3 className="text-xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase italic">
+                          <div className="text-xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase italic">
                             {selectedIndustry.name}
-                          </h3>
+                          </div>
                           <p className="text-xs lg:text-sm font-semibold text-slate-500 dark:text-slate-400 italic">
                              {selectedIndustry.tagline}
                           </p>
@@ -544,14 +544,14 @@ const UseCases = () => {
                     {/* Left: Info */}
                     <div className="p-8 lg:p-12 space-y-8">
                        <div className="space-y-4">
-                          <h4 className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Industry Snapshot</h4>
+                          <div className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Industry Snapshot</div>
                           <p className="text-base lg:text-lg text-slate-600 dark:text-slate-300 leading-relaxed italic">
                              {selectedIndustry.description}
                           </p>
                        </div>
 
                        <div className="space-y-4">
-                          <h4 className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Key Industry Benefits</h4>
+                          <div className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Key Industry Benefits</div>
                           <div className="space-y-3">
                              {selectedIndustry.benefits.map((benefit, i) => (
                                <motion.div 

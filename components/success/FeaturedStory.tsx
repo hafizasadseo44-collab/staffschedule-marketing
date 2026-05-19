@@ -40,14 +40,14 @@ export default function FeaturedStory() {
                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                     <TrendingUp className="w-7 h-7 text-emerald-500" />
                  </div>
-                 <h4 className="text-2xl font-black text-brand-dark dark:text-white mb-2">75% Less <br/> No-Shows</h4>
+                 <div className="text-2xl font-black text-brand-dark dark:text-white mb-2">75% Less <br/> No-Shows</div>
                  <p className="text-brand-slate dark:text-slate-400 font-medium leading-relaxed">Through decentralized P2P shift swapping.</p>
               </div>
               <div className="flex-1 bg-white dark:bg-slate-800 rounded-3xl p-6 border border-border shadow-xl shadow-brand-dark/5 dark:shadow-none hover:border-brand-primary/40 transition-colors">
                  <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-4">
                     <Clock className="w-7 h-7 text-indigo-500" />
                  </div>
-                 <h4 className="text-2xl font-black text-brand-dark dark:text-white mb-2">15 Hours <br/> Saved / Wk</h4>
+                 <div className="text-2xl font-black text-brand-dark dark:text-white mb-2">15 Hours <br/> Saved / Wk</div>
                  <p className="text-brand-slate dark:text-slate-400 font-medium leading-relaxed">Managers reclaim their weekends instantly.</p>
               </div>
             </div>

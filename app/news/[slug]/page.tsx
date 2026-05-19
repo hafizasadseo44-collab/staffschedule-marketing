@@ -149,7 +149,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
            </p>
 
            <div className="mt-12 p-8 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 max-w-2xl">
-             <h4 className="text-lg font-black text-slate-900 dark:text-white mb-4">Stay updated with our latest news</h4>
+             <div className="text-lg font-black text-slate-900 dark:text-white mb-4">Stay updated with our latest news</div>
              <SubscribeForm type="news" />
            </div>
 

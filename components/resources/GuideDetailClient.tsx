@@ -217,7 +217,7 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-[80px]" />
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Ready to implement this?</h3>
+                  <h2 className="text-3xl font-black text-white mb-4 tracking-tight">Ready to implement this?</h2>
                   <p className="text-slate-400 font-medium mb-8">Get a personalized walkthrough of our scheduling engine and see the ROI for your specific workforce.</p>
                   <Link href="/contact" className="inline-flex items-center gap-2 h-14 px-8 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all no-underline">
                     Contact Sales
@@ -244,10 +244,10 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
           <aside className="lg:col-span-4 sticky top-[120px] space-y-10">
             {toc.length > 0 && (
               <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm">
-                <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <div className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                   <BookOpen size={16} className="text-indigo-600" />
                   Table of Contents
-                </h4>
+                </div>
                 <nav className="space-y-4">
                   {toc.map((item, i) => (
                     <a 
@@ -267,7 +267,7 @@ export default function GuideDetailClient({ slug }: { slug: string }) {
 
             {guide.pdfUrl && (
               <div className="bg-indigo-50/50 rounded-[2rem] border border-indigo-100 p-8">
-                <h4 className="text-xs font-black text-indigo-900 uppercase tracking-widest mb-4">Offline Resource</h4>
+                <div className="text-xs font-black text-indigo-900 uppercase tracking-widest mb-4">Offline Resource</div>
                 <p className="text-xs text-indigo-600/80 font-bold mb-8 leading-relaxed">Download the PDF version of this guide to share with your leadership team.</p>
                 <a 
                   href={guide.pdfUrl}

@@ -190,7 +190,7 @@ export default function GuidesClient() {
             <div className="relative h-full flex flex-col items-center justify-center p-6 sm:p-8 text-center text-white space-y-4">
               <Target size={48} className="sm:w-[60px] sm:h-[60px] mb-4 text-indigo-300 opacity-50" />
               <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Staffing Blueprint v4.2</p>
-              <h4 className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Automation & AI Mastery</h4>
+              <div className="text-xl sm:text-2xl font-black tracking-tight leading-tight">Automation & AI Mastery</div>
             </div>
           </div>
         </div>

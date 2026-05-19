@@ -146,7 +146,7 @@ export default function ContactPage() {
                 <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <card.icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-lg font-black text-slate-900 mb-0.5">{card.title}</h3>
+                <div className="text-lg font-black text-slate-900 mb-0.5">{card.title}</div>
                 <p className="text-sm font-bold text-indigo-600 mb-1">{card.value}</p>
                 <p className="text-xs text-slate-400">{card.sub}</p>
               </motion.a>
@@ -346,7 +346,7 @@ export default function ContactPage() {
                   <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
                     <Zap size={18} />
                   </div>
-                  <h3 className="text-base font-black text-slate-900">Response Time</h3>
+                  <div className="text-base font-black text-slate-900">Response Time</div>
                 </div>
                 <div className="space-y-3">
                   {[
@@ -365,9 +365,9 @@ export default function ContactPage() {
               {/* What You Get Card */}
               <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-7 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl" />
-                <h3 className="text-base font-black mb-5 relative z-10 flex items-center gap-2">
+                <div className="text-base font-black mb-5 relative z-10 flex items-center gap-2">
                   <Sparkles size={16} /> What You Get with Sales
-                </h3>
+                </div>
                 <div className="space-y-4 relative z-10">
                   {[
                     { icon: CalendarRange, text: "Live AI schedule generation for your team" },
@@ -389,7 +389,7 @@ export default function ContactPage() {
 
               {/* Trust Badges */}
               <div className="bg-slate-50 rounded-3xl p-7 border border-slate-100">
-                <h3 className="text-base font-black text-slate-900 mb-4">Trusted by</h3>
+                <div className="text-base font-black text-slate-900 mb-4">Trusted by</div>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { icon: Users, val: "10,000+", label: "Teams" },
@@ -427,7 +427,7 @@ export default function ContactPage() {
               { q: "Is my data secure?", a: "Absolutely. We use AES-256 encryption, are SOC 2 Type II certified, GDPR compliant, and maintain 99.99% uptime with automated backups every 6 hours." },
             ].map((faq, i) => (
               <motion.div key={i} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.06 }} className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-indigo-200 hover:shadow-md transition-all">
-                <h3 className="text-sm font-black text-slate-900 mb-2">{faq.q}</h3>
+                <div className="text-sm font-black text-slate-900 mb-2">{faq.q}</div>
                 <p className="text-sm text-slate-500 leading-relaxed">{faq.a}</p>
               </motion.div>
             ))}

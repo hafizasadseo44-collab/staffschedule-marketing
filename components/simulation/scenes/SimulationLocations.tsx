@@ -55,7 +55,7 @@ export default function SimulationLocations({ isActive, updateCursor }: Simulati
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Locations</h2>
+          <div className="text-2xl font-bold text-slate-800 tracking-tight">Locations</div>
           <p className="text-sm text-slate-500 mt-1">Manage your business locations and assign staff.</p>
         </div>
         <div className="flex gap-3">
@@ -85,7 +85,7 @@ export default function SimulationLocations({ isActive, updateCursor }: Simulati
                 <Building2 className="w-6 h-6 stroke-[2]" />
              </div>
              <div>
-                <h3 className="text-lg font-bold text-slate-800">Main Branch</h3>
+                <div className="text-lg font-bold text-slate-800">Main Branch</div>
                 <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5"><MapPin className="w-3 h-3 text-slate-400"/> 123 Business Rd, NY</p>
              </div>
           </div>
@@ -117,7 +117,7 @@ export default function SimulationLocations({ isActive, updateCursor }: Simulati
                 <Building2 className="w-6 h-6 stroke-[2]" />
              </div>
              <div>
-                <h3 className="text-lg font-bold text-slate-800">Downtown Store</h3>
+                <div className="text-lg font-bold text-slate-800">Downtown Store</div>
                 <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5"><MapPin className="w-3 h-3 text-slate-400"/> 456 Market St, NY</p>
              </div>
           </div>
@@ -149,7 +149,7 @@ export default function SimulationLocations({ isActive, updateCursor }: Simulati
                 <Building2 className="w-6 h-6 stroke-[2]" />
              </div>
              <div>
-                <h3 className="text-lg font-bold text-slate-800">Uptown Outlet</h3>
+                <div className="text-lg font-bold text-slate-800">Uptown Outlet</div>
                 <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5"><MapPin className="w-3 h-3 text-slate-400"/> 789 5th Ave, NY</p>
              </div>
           </div>

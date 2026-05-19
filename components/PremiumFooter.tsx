@@ -113,9 +113,9 @@ const PremiumFooter = () => {
             </p>
 
             <div className="mb-10 max-w-sm mx-auto xl:mx-0">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">
                 Join our Newsletter
-              </h4>
+              </div>
               <SubscribeForm variant="dark" buttonText="Join" />
             </div>
 
@@ -147,9 +147,9 @@ const PremiumFooter = () => {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
               >
-                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-6 sm:mb-8">
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-6 sm:mb-8">
                   {section.title}
-                </h4>
+                </div>
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.name}>

@@ -50,7 +50,7 @@ export default function SimulationShiftSwaps({ isActive, updateCursor }: Simulat
     >
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Shift Swaps</h2>
+          <div className="text-2xl font-bold text-slate-800 tracking-tight">Shift Swaps</div>
           <p className="text-sm text-slate-500 mt-1">Review and manage employee shift trade requests.</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ export default function SimulationShiftSwaps({ isActive, updateCursor }: Simulat
               <div className="col-span-3 flex items-center gap-3">
                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">SC</div>
                  <div>
-                    <h4 className="font-bold text-slate-800 text-sm">Sarah Connor</h4>
+                    <div className="font-bold text-slate-800 text-sm">Sarah Connor</div>
                     <p className="text-xs text-slate-500">Manager</p>
                  </div>
               </div>
@@ -91,7 +91,7 @@ export default function SimulationShiftSwaps({ isActive, updateCursor }: Simulat
               <div className="col-span-3 flex items-center gap-3">
                  <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs shadow-sm">JS</div>
                  <div>
-                    <h4 className="font-bold text-slate-800 text-sm">John Smith</h4>
+                    <div className="font-bold text-slate-800 text-sm">John Smith</div>
                     <p className="text-xs text-slate-500">Cashier +6 hrs OT</p>
                  </div>
               </div>
@@ -133,7 +133,7 @@ export default function SimulationShiftSwaps({ isActive, updateCursor }: Simulat
               <div className="col-span-3 flex items-center gap-3">
                  <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs shadow-sm">MB</div>
                  <div>
-                    <h4 className="font-bold text-slate-800 text-sm">Mike Brown</h4>
+                    <div className="font-bold text-slate-800 text-sm">Mike Brown</div>
                     <p className="text-xs text-slate-500">Stock</p>
                  </div>
               </div>
@@ -143,7 +143,7 @@ export default function SimulationShiftSwaps({ isActive, updateCursor }: Simulat
               <div className="col-span-3 flex items-center gap-3">
                  <div className="w-10 h-10 rounded-full bg-orange-100 border border-orange-200 border-dashed text-orange-500 flex items-center justify-center font-bold text-xs shadow-sm"><UserSquare2 className="w-5 h-5" /></div>
                  <div>
-                    <h4 className="font-bold text-slate-800 text-sm italic">Unassigned</h4>
+                    <div className="font-bold text-slate-800 text-sm italic">Unassigned</div>
                     <p className="text-xs text-amber-600">Drop Request</p>
                  </div>
               </div>

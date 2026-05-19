@@ -161,9 +161,9 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
               <div className="inline-flex px-3 py-1 rounded-full bg-white text-slate-500 text-[9px] font-black uppercase tracking-[0.2em] mb-8 ring-1 ring-slate-200/50 shadow-sm">
                  {spotlight.badge}
               </div>
-              <h4 className="text-2xl font-black text-brand-dark mb-4 tracking-tighter leading-[1.05]">
+              <div className="text-2xl font-black text-brand-dark mb-4 tracking-tighter leading-[1.05]">
                  {spotlight.title}
-              </h4>
+              </div>
               <p className="text-xs text-slate-400 font-bold leading-relaxed mb-10">
                  {spotlight.desc}
               </p>

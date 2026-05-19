@@ -329,9 +329,9 @@ export default function CaseStudyClientLayout({ study: safeStudy }: Props) {
                               <div className={`absolute left-[-16px] sm:left-auto top-1/2 -translate-y-1/2 w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-brand-dark border-4 border-brand-primary z-10 sm:-ml-[7.5px] lg:ml-0 shadow-[0_0_20px_rgba(79,70,229,0.5)] ${isEven ? 'lg:-right-[13.5px]' : 'lg:-left-[16px]'}`} />
                               <div className="w-full p-6 sm:p-8 lg:p-10 rounded-2xl lg:rounded-[2rem] bg-white dark:bg-slate-900 border border-border shadow-xl ml-6 sm:ml-10 lg:ml-0">
                                  <div className="text-brand-primary font-black uppercase text-[10px] sm:text-xs tracking-widest px-2 sm:px-3 py-1 bg-brand-primary/10 rounded-lg border border-brand-primary/20 inline-block mb-4">Week {i + 1}</div>
-                                 <h4 className="text-xl sm:text-2xl lg:text-3xl font-black text-brand-dark dark:text-white tracking-tight sm:tracking-tighter">
+                                 <div className="text-xl sm:text-2xl lg:text-3xl font-black text-brand-dark dark:text-white tracking-tight sm:tracking-tighter">
                                     {item.milestone}
-                                 </h4>
+                                 </div>
                               </div>
                            </motion.div>
                         );
@@ -440,10 +440,10 @@ export default function CaseStudyClientLayout({ study: safeStudy }: Props) {
       {/* 8. Strategic CTA */}
       <section className="py-24 sm:py-32 lg:py-40 bg-white dark:bg-brand-dark text-center border-t border-border mt-auto px-4">
          <div className="max-w-4xl mx-auto">
-            <h3 className="text-4xl sm:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-6 sm:mb-10 tracking-tighter">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-brand-dark dark:text-white mb-6 sm:mb-10 tracking-tighter">
                Achieve similar <br className="sm:hidden" />
                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-emerald-500">results.</span> 
-            </h3>
+            </h2>
             <p className="text-lg sm:text-xl lg:text-2xl text-brand-slate dark:text-slate-400 font-medium mb-10 sm:mb-16 max-w-2xl mx-auto leading-relaxed">
                Automate your shift management. Deploy StaffSchedule.io in 4 weeks.
             </p>

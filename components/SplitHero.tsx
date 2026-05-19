@@ -273,7 +273,7 @@ export default function SplitHero() {
                   <span className="text-[7px] md:text-[9px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Next Shift</span>
                   <span className="text-[7px] md:text-[9px] font-bold">Today</span>
                 </div>
-                <h3 className="text-sm md:text-lg font-black mb-1">Morning Crew</h3>
+                <div className="text-sm md:text-lg font-black mb-1">Morning Crew</div>
                 <p className="text-[9px] md:text-xs text-purple-100 font-medium">09:00 AM - 05:00 PM</p>
               </div>
 
@@ -315,7 +315,7 @@ export default function SplitHero() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-[#8f86a8] uppercase tracking-wider">Labor Cost</p>
-                  <h4 className="text-lg md:text-xl font-black text-[#1c1236]">-18.4%</h4>
+                  <div className="text-lg md:text-xl font-black text-[#1c1236]">-18.4%</div>
                 </div>
               </div>
               <div className="w-full h-1.5 bg-[#f5f3f9] rounded-full overflow-hidden">

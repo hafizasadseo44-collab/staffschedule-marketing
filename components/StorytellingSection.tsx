@@ -308,9 +308,9 @@ function StorySlide({ set, index, total, scrollYProgress }: {
               </span>
               <div className="h-1 w-8 bg-white/20 rounded-full" />
             </div>
-            <h3 className="text-6xl lg:text-7xl font-black mb-8 leading-[0.95] tracking-tightest">
+            <div className="text-6xl lg:text-7xl font-black mb-8 leading-[0.95] tracking-tightest">
               {set.title}
-            </h3>
+            </div>
             <p className="text-2xl text-white/80 max-w-xl font-medium leading-relaxed mb-10">
               {set.subtitle}
             </p>

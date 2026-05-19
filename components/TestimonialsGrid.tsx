@@ -130,9 +130,9 @@ const TestimonialsGrid = () => {
                 <div className="w-24 h-24 rounded-full overflow-hidden mb-5 border-4 border-slate-100 dark:border-slate-700 shadow-md">
                    <img src={featuredTestimonial.avatar} alt={featuredTestimonial.name} className="w-full h-full object-cover" />
                 </div>
-                <h3 className="font-black text-2xl text-brand-dark dark:text-white flex items-center justify-center md:justify-start gap-2 w-full">
+                <div className="font-black text-2xl text-brand-dark dark:text-white flex items-center justify-center md:justify-start gap-2 w-full">
                   {featuredTestimonial.name} <CheckCircle className="w-5 h-5 text-brand-primary shrink-0" />
-                </h3>
+                </div>
                 <p className="font-bold text-slate-500 dark:text-slate-400 text-sm tracking-wide mt-1 uppercase w-full">
                   {featuredTestimonial.role}
                 </p>

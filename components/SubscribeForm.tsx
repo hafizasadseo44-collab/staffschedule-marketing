@@ -74,7 +74,7 @@ export default function SubscribeForm({
           <CheckCircle2 className={`w-5 h-5 ${variant === "dark" ? "text-emerald-400" : "text-emerald-600"}`} />
         </div>
         <div>
-          <h4 className="font-bold text-sm">You&apos;re subscribed successfully!</h4>
+          <div className="font-bold text-sm">You&apos;re subscribed successfully!</div>
           <p className={`text-xs font-medium ${variant === "dark" ? "text-white/60" : "text-emerald-600/80"}`}>
             Keep an eye on your inbox for updates.
           </p>

@@ -68,7 +68,7 @@ const Testimonials = () => {
                   {t.avatar}
                 </div>
                 <div>
-                  <h4 className="text-sm font-black text-brand-dark dark:text-white">{t.author}</h4>
+                  <div className="text-sm font-black text-brand-dark dark:text-white">{t.author}</div>
                   <p className="text-xs text-brand-slate dark:text-slate-500 font-bold">{t.role}</p>
                 </div>
               </div>
