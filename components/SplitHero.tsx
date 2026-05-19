@@ -209,7 +209,7 @@ export default function SplitHero() {
               </div>
 
               <Image
-                src="/hero-master.png"
+                src="/staffschedule-dashboard.png"
                 alt="StaffSchedule Dashboard UI"
                 width={1400}
                 height={800}

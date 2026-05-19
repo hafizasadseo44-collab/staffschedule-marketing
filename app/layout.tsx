@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     siteName: "StaffSchedule.io",
     title: "StaffSchedule.io | #1 Staff Scheduling Software for Teams",
     description: "The all-in-one workforce management platform. Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
-    images: [{ url: "/hero-mockup.png", width: 1200, height: 630, alt: "StaffSchedule.io" }],
+    images: [{ url: "/staffschedule-dashboard.png", width: 1200, height: 630, alt: "StaffSchedule.io" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "StaffSchedule.io | #1 Staff Scheduling Software for Teams",
     description: "Build perfect shift schedules, cut labor costs by 18%, and keep your entire team in sync.",
-    images: ["/hero-mockup.png"],
+    images: ["/staffschedule-dashboard.png"],
   },
   keywords: ["staff scheduling", "employee scheduling", "workforce management", "shift planner", "labor cost optimization", "team communication"],
   robots: {

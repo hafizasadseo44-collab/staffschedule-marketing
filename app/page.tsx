@@ -47,7 +47,7 @@ export const metadata: Metadata = {
       "The all-in-one workforce platform for modern businesses. Schedule faster, communicate better, and cut labor costs by 18%. Trusted by 10,000+ managers.",
     images: [
       {
-        url: `${BASE_URL}/hero-mockup.png`,
+        url: `${BASE_URL}/staffschedule-dashboard.png`,
         width: 1200,
         height: 630,
         alt: "StaffSchedule.io — Staff Scheduling Dashboard on PC and Mobile",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: "StaffSchedule.io — Staff Scheduling Made Simple",
     description:
       "Build perfect shift schedules in minutes. Eliminate no-shows, cut labor costs by 18%, and keep your whole team in sync.",
-    images: [`${BASE_URL}/hero-mockup.png`],
+    images: [`${BASE_URL}/staffschedule-dashboard.png`],
   },
 
   // ── Robots ────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ const jsonLd = {
         bestRating: "5",
         worstRating: "1",
       },
-      screenshot: `${BASE_URL}/hero-mockup.png`,
+      screenshot: `${BASE_URL}/staffschedule-dashboard.png`,
     },
     {
       "@type": "Organization",
