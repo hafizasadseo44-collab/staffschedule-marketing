@@ -161,19 +161,18 @@ export default function EmployeeScheduleMakerPage() {
           </motion.p>
         </div>
 
-        {/* Hero Visual Mockup */}
+        {/* Hero Visual Mockup — always visible */}
         <motion.div
-          initial={{ opacity: 0, y: 100, rotateX: 15 }}
-          animate={{ opacity: 1, y: 0, rotateX: 8 }}
+          initial={{ opacity: 0, y: 80 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.7, type: "spring", damping: 20 }}
-          style={{ perspective: 1000 }}
-          className="w-full max-w-6xl mx-auto mt-20 relative z-20 hidden md:block"
+          className="w-full max-w-6xl mx-auto mt-16 relative z-20 px-4 md:px-0"
         >
-          <div className="relative rounded-[2rem] border border-slate-200 bg-white/50 p-3 backdrop-blur-md shadow-[0_40px_120px_rgba(108,92,231,0.15)] transition-transform duration-700 hover:rotateX-0 transform-gpu preserve-3d">
-            <div className="rounded-[1.5rem] overflow-hidden bg-white border border-slate-100 relative">
+          <div className="relative rounded-2xl md:rounded-[2rem] border border-slate-200 bg-white/50 p-2 md:p-3 backdrop-blur-md shadow-[0_40px_120px_rgba(108,92,231,0.15)] hover:shadow-[0_50px_140px_rgba(108,92,231,0.25)] transition-shadow duration-700">
+            <div className="rounded-xl md:rounded-[1.5rem] overflow-hidden bg-white border border-slate-100">
               <Image 
-                src="/schedule-dashboard-light.png" 
-                alt="StaffSchedule.io Dashboard Mockup" 
+                src="/staffschedule-dashboard.png" 
+                alt="StaffSchedule.io Dashboard — Weekly Shift Calendar" 
                 width={1200}
                 height={750}
                 className="w-full h-auto object-cover"
@@ -181,24 +180,6 @@ export default function EmployeeScheduleMakerPage() {
               />
             </div>
           </div>
-        </motion.div>
-        
-        {/* Mobile Mockup Fallback */}
-        <motion.div
-           initial={{ opacity: 0, y: 50 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, delay: 0.7 }}
-           className="w-full mt-12 block md:hidden relative z-20 px-4"
-        >
-            <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-[0_20px_50px_rgba(108,92,231,0.15)] bg-white">
-                <Image 
-                    src="/schedule-dashboard-light.png" 
-                    alt="StaffSchedule.io Dashboard" 
-                    width={800}
-                    height={500}
-                    className="w-full h-auto object-cover"
-                />
-            </div>
         </motion.div>
 
         {/* Logo Strip */}
@@ -261,8 +242,8 @@ export default function EmployeeScheduleMakerPage() {
                <div className="absolute inset-0 bg-[#6C5CE7]/10 blur-[100px] rounded-full" />
                <div className="relative rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl overflow-hidden">
                   <Image 
-                     src="/before-after-scheduling-light.png"
-                     alt="Spreadsheet vs StaffSchedule Dashboard"
+                     src="/staffschedule-dashboard.png"
+                     alt="Spreadsheet chaos vs StaffSchedule.io clean scheduling"
                      width={800}
                      height={500}
                      className="w-full h-auto rounded-xl object-cover border border-slate-100"
@@ -365,7 +346,7 @@ export default function EmployeeScheduleMakerPage() {
             <div className="relative">
                <div className="absolute inset-0 bg-[#6C5CE7]/5 blur-[100px] rounded-full" />
                <div className="relative rounded-2xl border border-slate-200 bg-white shadow-2xl p-4 overflow-hidden">
-                  <Image src="/schedule-dashboard-light.png" alt="Drag and drop scheduling" width={600} height={400} className="rounded-xl w-full border border-slate-100" />
+                  <Image src="/staffschedule-dashboard.png" alt="StaffSchedule.io Drag-and-Drop Schedule Builder" width={600} height={400} className="rounded-xl w-full border border-slate-100" />
                   
                   {/* Floating Stat Overlay */}
                   <div className="absolute -bottom-6 -left-6 bg-white border border-slate-200 rounded-xl p-4 shadow-xl flex items-center gap-4 animate-bounce" style={{ animationDuration: '4s' }}>
@@ -383,8 +364,8 @@ export default function EmployeeScheduleMakerPage() {
          <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center mb-32 bg-[#FAF9FF] py-16 rounded-3xl border border-slate-100">
             <div className="order-2 lg:order-1 relative flex justify-center">
                <div className="absolute inset-0 bg-[#00CEC9]/5 blur-[100px] rounded-full" />
-               <div className="relative rounded-3xl border border-slate-200 bg-white shadow-2xl overflow-hidden w-64 h-[500px]">
-                  <Image src="/mobile-schedule-app-light.png" alt="Mobile Schedule App" width={300} height={600} className="w-full h-full object-cover" />
+               <div className="relative rounded-3xl border border-slate-200 bg-white shadow-2xl overflow-hidden w-72 h-auto">
+                  <Image src="/staffschedule-mobile.png" alt="StaffSchedule.io Mobile App — Real-Time Notifications" width={400} height={800} className="w-full h-auto object-contain" />
                </div>
             </div>
             
