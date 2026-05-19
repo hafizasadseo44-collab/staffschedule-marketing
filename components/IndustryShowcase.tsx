@@ -12,7 +12,7 @@ const INDUSTRIES = [
     businessName: "UrbanBite",
     ownerName: "Roxana Martinez",
     ownerTitle: "Owner",
-    image: "/images/industry-hospitality-v2.jpg",
+    image: "/industry-restaurant.png",
     logoText: "URBANBITE",
     logoSubtext: "RESTAURANT",
     LogoIcon: Utensils,
@@ -26,7 +26,7 @@ const INDUSTRIES = [
     businessName: "PrimeCare",
     ownerName: "Dr. James Chen",
     ownerTitle: "Medical Director",
-    image: "/images/industry-healthcare-v2.jpg",
+    image: "/industry-healthcare.png",
     logoText: "PRIMECARE",
     logoSubtext: "CLINIC",
     LogoIcon: HeartPulse,
@@ -40,7 +40,7 @@ const INDUSTRIES = [
     businessName: "TrendyMart",
     ownerName: "Alex Rivera",
     ownerTitle: "Store Manager",
-    image: "/images/industry-retail-v2.jpg",
+    image: "/industry-retail.png",
     logoText: "TRENDY MART",
     logoSubtext: "RETAIL",
     LogoIcon: ShoppingBag,
@@ -54,7 +54,7 @@ const INDUSTRIES = [
     businessName: "FastWave",
     ownerName: "Marcus Thompson",
     ownerTitle: "Operations Lead",
-    image: "/images/industry-construction-v2.jpg",
+    image: "/industry-logistics.png",
     logoText: "FASTWAVE",
     logoSubtext: "LOGISTICS",
     LogoIcon: Truck,
@@ -110,7 +110,7 @@ const INDUSTRIES = [
     businessName: "SwiftRides",
     ownerName: "David Park",
     ownerTitle: "Fleet Manager",
-    image: "/images/industry-construction-v2.jpg",
+    image: "/industry-logistics.png",
     logoText: "SWIFTRIDES",
     logoSubtext: "TRANSPORT",
     LogoIcon: Truck,
@@ -198,6 +198,8 @@ export default function IndustryShowcase() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 400px"
+                  loading="lazy"
+                  quality={85}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 

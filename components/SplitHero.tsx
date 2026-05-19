@@ -215,6 +215,7 @@ export default function SplitHero() {
                 height={800}
                 className="w-full h-auto object-cover object-top"
                 priority
+                quality={100}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1400px"
               />
             </div>

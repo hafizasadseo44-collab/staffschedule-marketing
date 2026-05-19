@@ -11,6 +11,7 @@ const nextConfig = {
 
   // ── Image Optimization ────────────────────────────────────────
   images: {
+    unoptimized: true, // Bypass Vercel Image Optimization limits/errors
     formats: ['image/avif', 'image/webp'], // Serve modern formats
     minimumCacheTTL: 3600,                 // Cache images 1hr at CDN layer
     remotePatterns: [
