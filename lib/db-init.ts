@@ -206,6 +206,7 @@ export async function ensureDatabase() {
         "content" TEXT NOT NULL,
         "excerpt" TEXT,
         "image" TEXT,
+        "authorId" TEXT,
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY("postId") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE
       )
@@ -368,6 +369,14 @@ async function migrateSchema() {
         console.error(`[DB-INIT] Failed to add column ${col.name}:`, err);
       }
     }
+  }
+
+  // PostRevision Table Migrations
+  const postRevInfo = await db.$queryRawUnsafe(`PRAGMA table_info(PostRevision)`) as any[];
+  const postRevCols = postRevInfo.map(c => c.name);
+  if (!postRevCols.includes("authorId")) {
+    console.log(`[DB-INIT] Adding missing column authorId to PostRevision table...`);
+    try { await db.$executeRawUnsafe(`ALTER TABLE "PostRevision" ADD COLUMN "authorId" TEXT`); } catch (e) {}
   }
 
   } catch (err: any) {

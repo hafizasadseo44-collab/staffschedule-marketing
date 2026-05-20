@@ -883,29 +883,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                     />
                   </div>
 
-                  {/* Canonical URL */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Canonical URL</label>
-                    <input
-                      type="text"
-                      value={canonicalUrl}
-                      onChange={e => setCanonicalUrl(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Optional absolute URL"
-                    />
-                  </div>
 
-                  {/* Meta Description */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Meta Description</label>
-                    <textarea
-                      value={metaDescription}
-                      onChange={e => setMetaDescription(e.target.value)}
-                      rows={3}
-                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-                      placeholder="SEO Meta Description..."
-                    />
-                  </div>
 
                   {/* Advanced SEO */}
                   <div className="grid grid-cols-2 gap-4">
