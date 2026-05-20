@@ -44,39 +44,7 @@ const resolveDbUrl = () => {
   const dbIsEmpty = dbFileExists ? fs.statSync(dbPath).size === 0 : true;
 
   if (dbIsEmpty) {
-    console.log('[DATABASE] Fresh/empty database detected. Running prisma db push...');
-    try {
-      // Execute prisma db push programmatically to create tables out of the box
-      execSync('npx prisma db push --accept-data-loss', {
-        cwd: projectRoot,
-        env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
-        stdio: 'inherit'
-      });
-      console.log('[DATABASE] Schema pushed successfully!');
-      
-      // Auto-seed if seed files are present
-      const seedCategories = path.resolve(projectRoot, 'prisma', 'seed-categories.js');
-      if (fs.existsSync(seedCategories)) {
-        console.log('[DATABASE] Seeding categories...');
-        execSync('node prisma/seed-categories.js', {
-          cwd: projectRoot,
-          env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
-          stdio: 'inherit'
-        });
-      }
-
-      const seedBlog = path.resolve(projectRoot, 'prisma', 'seed_blog.js');
-      if (fs.existsSync(seedBlog)) {
-        console.log('[DATABASE] Seeding blog articles...');
-        execSync('node prisma/seed_blog.js', {
-          cwd: projectRoot,
-          env: { ...process.env, DATABASE_URL: `file:${dbPath}` },
-          stdio: 'inherit'
-        });
-      }
-    } catch (err) {
-      console.error('[DATABASE] Auto-initialization failed:', err);
-    }
+    console.log('[DATABASE] Fresh/empty database detected. Schema will be initialized by db-init.ts on first request.');
   }
   
   return `file:${dbPath}`;

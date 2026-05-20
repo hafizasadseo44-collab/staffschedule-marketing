@@ -195,6 +195,49 @@ export async function ensureDatabase() {
       )
     `);
 
+    // PostRevision
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "PostRevision" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "postId" TEXT NOT NULL,
+        "title" TEXT NOT NULL,
+        "content" TEXT NOT NULL,
+        "excerpt" TEXT,
+        "image" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY("postId") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE
+      )
+    `);
+
+    // MediaAsset
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "MediaAsset" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "url" TEXT NOT NULL,
+        "publicId" TEXT,
+        "format" TEXT,
+        "width" INTEGER,
+        "height" INTEGER,
+        "size" INTEGER,
+        "provider" TEXT NOT NULL DEFAULT 'LOCAL',
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // PostAnalytics
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "PostAnalytics" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "postId" TEXT NOT NULL,
+        "views" INTEGER NOT NULL DEFAULT 0,
+        "uniqueViews" INTEGER NOT NULL DEFAULT 0,
+        "date" DATETIME NOT NULL,
+        FOREIGN KEY("postId") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "PostAnalytics_postId_date_key" ON "PostAnalytics"("postId", "date")`);
+
     // Seed default admin user if empty
     const adminCount = await db.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM AdminUser`) as any[];
     if (adminCount[0]?.cnt === 0) {
@@ -255,6 +298,14 @@ async function migrateSchema() {
   try {
     console.log("[DB-INIT] Running lightweight migrations...");
   
+  // AdminUser Table Migrations
+  const adminInfo = await db.$queryRawUnsafe(`PRAGMA table_info(AdminUser)`) as any[];
+  const adminCols = adminInfo.map(c => c.name);
+  if (!adminCols.includes("role")) {
+    console.log(`[DB-INIT] Adding missing column role to AdminUser table...`);
+    try { await db.$executeRawUnsafe(`ALTER TABLE "AdminUser" ADD COLUMN "role" TEXT DEFAULT 'ADMIN'`); } catch (e) {}
+  }
+
   // Post Table Migrations
   const postInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Post)`) as any[];
   const postCols = postInfo.map(c => c.name);
@@ -265,7 +316,19 @@ async function migrateSchema() {
     { name: "canonicalUrl", type: "TEXT" },
     { name: "authorId", type: "TEXT" },
     { name: "type", type: "TEXT DEFAULT 'ARTICLE'" },
-    { name: "category", type: "TEXT DEFAULT 'Scheduling'" }
+    { name: "category", type: "TEXT DEFAULT 'Scheduling'" },
+    { name: "status", type: "TEXT DEFAULT 'DRAFT'" },
+    { name: "scheduledFor", type: "DATETIME" },
+    { name: "metaDescription", type: "TEXT" },
+    { name: "ogTitle", type: "TEXT" },
+    { name: "ogDescription", type: "TEXT" },
+    { name: "ogImage", type: "TEXT" },
+    { name: "twitterCard", type: "TEXT DEFAULT 'summary_large_image'" },
+    { name: "robotsMeta", type: "TEXT DEFAULT 'index, follow'" },
+    { name: "schemaType", type: "TEXT DEFAULT 'Article'" },
+    { name: "schemaData", type: "TEXT" },
+    { name: "viewCount", type: "INTEGER DEFAULT 0" },
+    { name: "readingTime", type: "INTEGER DEFAULT 0" }
   ];
 
   for (const col of postMigrations) {
