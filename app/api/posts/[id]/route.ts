@@ -44,33 +44,64 @@ export async function PUT(
       });
     }
 
-    const post = await db.post.update({
-      where: { id },
-      data: { 
-        title, 
-        slug, 
-        content, 
-        excerpt, 
-        image, 
-        category,
-        type: type !== undefined ? type : undefined,
-        featured: featured !== undefined ? !!featured : undefined,
-        status: status !== undefined ? status : undefined,
-        scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
-        authorId: authorId !== undefined ? authorId : undefined,
-        focusKeyword: focusKeyword !== undefined ? focusKeyword : undefined,
-        seoTitle: seoTitle !== undefined ? seoTitle : undefined,
-        metaDescription: metaDescription !== undefined ? metaDescription : undefined,
-        canonicalUrl: canonicalUrl !== undefined ? canonicalUrl : undefined,
-        ogTitle: ogTitle !== undefined ? ogTitle : undefined,
-        ogDescription: ogDescription !== undefined ? ogDescription : undefined,
-        ogImage: ogImage !== undefined ? ogImage : undefined,
-        twitterCard: twitterCard !== undefined ? twitterCard : undefined,
-        robotsMeta: robotsMeta !== undefined ? robotsMeta : undefined,
-        schemaType: schemaType !== undefined ? schemaType : undefined,
-        schemaData: schemaData !== undefined ? schemaData : undefined
-      },
-    });
+    let post;
+    if (existingPost) {
+      post = await db.post.update({
+        where: { id },
+        data: { 
+          title, 
+          slug, 
+          content, 
+          excerpt, 
+          image, 
+          category,
+          type: type !== undefined ? type : undefined,
+          featured: featured !== undefined ? !!featured : undefined,
+          status: status !== undefined ? status : undefined,
+          scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
+          authorId: authorId !== undefined ? authorId : undefined,
+          focusKeyword: focusKeyword !== undefined ? focusKeyword : undefined,
+          seoTitle: seoTitle !== undefined ? seoTitle : undefined,
+          metaDescription: metaDescription !== undefined ? metaDescription : undefined,
+          canonicalUrl: canonicalUrl !== undefined ? canonicalUrl : undefined,
+          ogTitle: ogTitle !== undefined ? ogTitle : undefined,
+          ogDescription: ogDescription !== undefined ? ogDescription : undefined,
+          ogImage: ogImage !== undefined ? ogImage : undefined,
+          twitterCard: twitterCard !== undefined ? twitterCard : undefined,
+          robotsMeta: robotsMeta !== undefined ? robotsMeta : undefined,
+          schemaType: schemaType !== undefined ? schemaType : undefined,
+          schemaData: schemaData !== undefined ? schemaData : undefined
+        },
+      });
+    } else {
+      post = await db.post.create({
+        data: {
+          id,
+          title, 
+          slug, 
+          content, 
+          excerpt: excerpt || null, 
+          image: image || null, 
+          category: category || "Scheduling",
+          type: type || "ARTICLE",
+          featured: !!featured,
+          status: status || "DRAFT",
+          scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
+          authorId: authorId && authorId !== "" ? authorId : null,
+          focusKeyword: focusKeyword || null,
+          seoTitle: seoTitle || null,
+          metaDescription: metaDescription || null,
+          canonicalUrl: canonicalUrl || null,
+          ogTitle: ogTitle || null,
+          ogDescription: ogDescription || null,
+          ogImage: ogImage || null,
+          twitterCard: twitterCard || "summary_large_image",
+          robotsMeta: robotsMeta || "index, follow",
+          schemaType: schemaType || "Article",
+          schemaData: schemaData || null
+        }
+      });
+    }
 
     // Create a revision
     await db.postRevision.create({
