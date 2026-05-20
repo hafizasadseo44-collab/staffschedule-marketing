@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ArrowRightIcon, CheckCircle2, Star, TrendingUp } from "lucide-react";
+import { ArrowRightIcon, CheckCircle2, Star } from "lucide-react";
 import { LinkPreview } from "@/components/ui/link-preview";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -304,25 +304,7 @@ export default function SplitHero() {
             </div>
           </div>
 
-          {/* Floating Stats Card (Left Side) — CSS animation for zero JS cost */}
-          <div
-            className="absolute top-20 -left-6 md:-left-16 z-50 hidden sm:block animate-[floatReverse_5s_ease-in-out_infinite]"
-          >
-            <div className="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl shadow-2xl border border-white/50 w-[180px] md:w-[220px]">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
-                  <TrendingUp size={20} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-[#8f86a8] uppercase tracking-wider">Labor Cost</p>
-                  <div className="text-lg md:text-xl font-black text-[#1c1236]">-18.4%</div>
-                </div>
-              </div>
-              <div className="w-full h-1.5 bg-[#f5f3f9] rounded-full overflow-hidden">
-                <div className="w-[85%] h-full bg-emerald-500 rounded-full" />
-              </div>
-            </div>
-          </div>
+
 
         </motion.div>
 
