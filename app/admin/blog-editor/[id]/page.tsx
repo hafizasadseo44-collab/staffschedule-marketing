@@ -392,6 +392,9 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
       });
       if (res.ok) {
         if (shouldPublish) setPublished(true);
+        // Clear local storage draft upon manual successful save/publish
+        localStorage.removeItem(`blog_draft_${id}`);
+        
         alert(isNew ? 'Post Created Successfully!' : 'Post Updated Successfully!');
         router.push('/admin');
         router.refresh();

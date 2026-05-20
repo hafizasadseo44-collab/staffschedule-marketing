@@ -47,7 +47,7 @@ export default function NewsroomManager({ posts, onDelete, loading }: NewsroomMa
           <p className="text-sm text-slate-500 font-medium">Manage corporate announcements and official press releases.</p>
         </div>
         <Link 
-          href="/admin/editor/new"
+          href="/admin/blog-editor/new"
           className="flex items-center gap-2 px-6 py-4 bg-brand-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-brand-primary/90 transition-all shadow-xl shadow-brand-primary/20"
         >
           <Plus size={16} /> Draft Release
@@ -102,7 +102,7 @@ export default function NewsroomManager({ posts, onDelete, loading }: NewsroomMa
                   <div className="flex items-center gap-3">
                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
                         <Calendar size={10} /> {new Date(post.createdAt).toLocaleDateString()}
-                     </span>
+                      </span>
                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
                         <MapPin size={10} /> GLOBAL
                      </span>
@@ -129,7 +129,7 @@ export default function NewsroomManager({ posts, onDelete, loading }: NewsroomMa
                       <ExternalLink size={16} />
                     </Link>
                     <Link 
-                      href={`/admin/editor/${post.id}`}
+                      href={`/admin/blog-editor/${post.id}`}
                       className="p-2.5 rounded-xl text-slate-400 hover:text-brand-primary hover:bg-brand-primary/5 transition-all"
                     >
                       <Pencil size={14} />

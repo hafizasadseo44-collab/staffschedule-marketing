@@ -58,7 +58,7 @@ export default function PostManager({ posts, categories, onDelete, onToggleFeatu
           <p className="text-sm text-slate-500 font-medium">Manage your long-form articles and educational content.</p>
         </div>
         <Link 
-          href="/admin/editor/new"
+          href="/admin/blog-editor/new"
           className="flex items-center gap-2 px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20"
         >
           <Plus size={16} /> Write New Article
@@ -109,7 +109,7 @@ export default function PostManager({ posts, categories, onDelete, onToggleFeatu
             {filteredPosts.map((post) => (
               <tr key={post.id} className="group hover:bg-slate-50/50 dark:hover:bg-white/[0.01] transition-all">
                 <td className="px-8 py-6">
-                  <Link href={`/admin/editor/${post.id}`} className="block max-w-md">
+                  <Link href={`/admin/blog-editor/${post.id}`} className="block max-w-md">
                     <div className="text-sm font-black text-slate-800 dark:text-white group-hover:text-brand-primary transition-colors mb-1 truncate">{post.title}</div>
                     <div className="text-[10px] font-bold text-slate-400 tracking-wider">/{post.slug}</div>
                   </Link>
@@ -147,7 +147,7 @@ export default function PostManager({ posts, categories, onDelete, onToggleFeatu
                       <Sparkles size={16} />
                     </button>
                     <Link 
-                      href={`/admin/editor/${post.id}`}
+                      href={`/admin/blog-editor/${post.id}`}
                       className="p-2.5 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
                     >
                       <Pencil size={14} />
