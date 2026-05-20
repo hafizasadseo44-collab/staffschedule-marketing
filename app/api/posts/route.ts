@@ -61,6 +61,7 @@ export async function POST(request: Request) {
       });
     }
 
+    const finalStatus = status || "DRAFT";
     const post = await db.post.create({
       data: { 
         title, 
@@ -71,7 +72,8 @@ export async function POST(request: Request) {
         category: category || "Scheduling",
         type: type || "ARTICLE",
         featured: !!featured,
-        status: status || "DRAFT",
+        status: finalStatus,
+        published: finalStatus === 'PUBLISHED',
         scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
         authorId: authorId && authorId !== "" ? authorId : null,
         focusKeyword: focusKeyword || null,

@@ -58,6 +58,7 @@ export async function PUT(
           type: type !== undefined ? type : undefined,
           featured: featured !== undefined ? !!featured : undefined,
           status: status !== undefined ? status : undefined,
+          published: status !== undefined ? status === 'PUBLISHED' : undefined,
           scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
           authorId: authorId !== undefined ? authorId : undefined,
           focusKeyword: focusKeyword !== undefined ? focusKeyword : undefined,
@@ -74,6 +75,7 @@ export async function PUT(
         },
       });
     } else {
+      const fallbackStatus = status || "DRAFT";
       post = await db.post.create({
         data: {
           id,
@@ -85,7 +87,8 @@ export async function PUT(
           category: category || "Scheduling",
           type: type || "ARTICLE",
           featured: !!featured,
-          status: status || "DRAFT",
+          status: fallbackStatus,
+          published: fallbackStatus === 'PUBLISHED',
           scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
           authorId: authorId && authorId !== "" ? authorId : null,
           focusKeyword: focusKeyword || null,

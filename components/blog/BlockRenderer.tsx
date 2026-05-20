@@ -84,6 +84,8 @@ function renderBlock(block: Block, index: number): React.ReactNode {
       return <CalloutBlock key={index} block={block} />;
     case 'codeBlock':
       return <CodeBlockBlock key={index} block={block} />;
+    case 'table':
+      return <TableBlock key={index} block={block} />;
     default:
       console.warn('Unknown block type:', block.type);
       return null;
@@ -111,7 +113,11 @@ function HeadingBlock({ block }: { block: Block }) {
     <motion.div {...fadeUp}>
       {React.createElement(
         `h${level}`,
-        { id, className: `relative ${cls}` },
+        { 
+          id, 
+          className: `relative ${cls}`,
+          style: { textAlign: block.attrs?.textAlign || 'left' }
+        },
         renderContent(block.content)
       )}
     </motion.div>
@@ -209,6 +215,48 @@ function CodeBlockBlock({ block }: { block: Block }) {
       <pre className="bg-slate-950 text-slate-300 p-6 rounded-b-xl overflow-x-auto text-[14px] leading-relaxed border border-t-0 border-white/5">
         <code>{code}</code>
       </pre>
+    </motion.div>
+  );
+}
+
+// ─── TABLE ───
+function TableBlock({ block }: { block: Block }) {
+  const rows = block.content || [];
+  const headerRows = rows.filter(row => row.content?.some(cell => cell.type === 'tableHeader'));
+  const bodyRows = rows.filter(row => !row.content?.some(cell => cell.type === 'tableHeader'));
+
+  return (
+    <motion.div {...fadeUp} className="my-10 overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+      <table className="w-full border-collapse">
+        {headerRows.length > 0 && (
+          <thead>
+            {headerRows.map((row, ri) => (
+              <tr key={ri}>
+                {row.content?.map((cell, ci) => (
+                  <th key={ci} className="bg-gradient-to-br from-slate-100 to-slate-50 text-slate-700 font-bold text-xs uppercase tracking-wider px-5 py-4 text-left border-b-2 border-slate-200 border-r border-r-slate-100 last:border-r-0">
+                    {cell.content?.map((p: any, pi: number) => (
+                      <React.Fragment key={pi}>{renderContent(p.content)}</React.Fragment>
+                    ))}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+        )}
+        <tbody>
+          {bodyRows.map((row, ri) => (
+            <tr key={ri} className={`transition-colors hover:bg-indigo-50/50 ${ri % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+              {row.content?.map((cell, ci) => (
+                <td key={ci} className="px-5 py-4 text-slate-600 text-[15px] border-b border-slate-100 border-r border-r-slate-50 last:border-r-0 leading-relaxed">
+                  {cell.content?.map((p: any, pi: number) => (
+                    <React.Fragment key={pi}>{renderContent(p.content)}</React.Fragment>
+                  ))}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </motion.div>
   );
 }

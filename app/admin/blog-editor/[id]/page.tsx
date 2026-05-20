@@ -12,6 +12,10 @@ import Highlight from '@tiptap/extension-highlight';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import { Link as TiptapLink } from '@tiptap/extension-link';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 import {
   Save, ArrowLeft, Image as ImageIcon, Plus, Bold, Italic,
   List, ListOrdered, Quote, Heading1, Heading2, Heading3,
@@ -21,7 +25,7 @@ import {
   Strikethrough, Code, AlignLeft, AlignCenter, AlignRight, AlignJustify,
   Minus, Highlighter, Eye, Search, ChevronDown, ChevronUp,
   FileText, BarChart3, Target, Zap, Globe, Hash, Clock,
-  PenTool, Palette
+  PenTool, Palette, Table2, Trash2, Send
 } from 'lucide-react';
 import Link from 'next/link';
 import { Callout, CustomImage } from '@/lib/tiptap-extensions';
@@ -134,6 +138,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   const [seoOpen, setSeoOpen] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(true);
   const [headingMenuOpen, setHeadingMenuOpen] = useState(false);
+  const [publishPanelOpen, setPublishPanelOpen] = useState(false);
   
   // Advanced Link Modal States
   const [linkModalOpen, setLinkModalOpen] = useState(false);
@@ -240,6 +245,13 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
       Color,
       CustomImage,
       Callout,
+      Table.configure({
+        resizable: true,
+        HTMLAttributes: { class: 'editor-table' },
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: '',
     editorProps: {
@@ -487,17 +499,14 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               {saving ? 'Saving...' : (published ? 'Update' : 'Save Draft')}
             </button>
 
-            {/* Publish Button */}
-            {!published && (
-              <button
-                onClick={() => doSave(true)}
-                disabled={saving || publishing}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 shadow-lg shadow-indigo-500/25"
-              >
-                {publishing ? <Loader2 size={16} className="animate-spin" /> : <Globe size={16} />}
-                {publishing ? 'Publishing...' : 'Publish'}
-              </button>
-            )}
+            {/* Publish Button — Opens WordPress-style panel */}
+            <button
+              onClick={() => setPublishPanelOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all shadow-lg shadow-indigo-500/25"
+            >
+              <Send size={16} />
+              Publish
+            </button>
           </div>
         </div>
       </div>
@@ -599,6 +608,24 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                 <ToolBtn onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'tip' }, content: [{ type: 'paragraph' }] }).run()} icon={Lightbulb} tooltip="Tip" className="text-amber-500" />
                 <ToolBtn onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'warning' }, content: [{ type: 'paragraph' }] }).run()} icon={AlertTriangle} tooltip="Warning" className="text-rose-500" />
                 <ToolBtn onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'info' }, content: [{ type: 'paragraph' }] }).run()} icon={Info} tooltip="Info" className="text-sky-500" />
+
+                <ToolDivider />
+
+                {/* Table Controls */}
+                <ToolBtn
+                  onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+                  icon={Table2}
+                  tooltip="Insert Table"
+                />
+                {editor.isActive('table') && (
+                  <>
+                    <button onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column" className="px-2 py-1.5 rounded-lg text-[11px] font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 transition-all">+ Col</button>
+                    <button onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row" className="px-2 py-1.5 rounded-lg text-[11px] font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 transition-all">+ Row</button>
+                    <button onClick={() => editor.chain().focus().deleteColumn().run()} title="Delete Column" className="px-2 py-1.5 rounded-lg text-[11px] font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-rose-500 transition-all">- Col</button>
+                    <button onClick={() => editor.chain().focus().deleteRow().run()} title="Delete Row" className="px-2 py-1.5 rounded-lg text-[11px] font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-rose-500 transition-all">- Row</button>
+                    <ToolBtn onClick={() => editor.chain().focus().deleteTable().run()} icon={Trash2} tooltip="Delete Table" className="text-rose-500" />
+                  </>
+                )}
 
                 {/* We can remove the old file input since MediaLibrary handles it, but let's leave it for now if something still uses it */}
                 <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={handleImageUpload} />
@@ -1005,31 +1032,6 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                     </select>
                   </div>
 
-                  {/* Status */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Publish Status</label>
-                    <select
-                      value={status}
-                      onChange={e => setStatus(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold outline-none focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer"
-                    >
-                      <option value="DRAFT" className="text-slate-500">Draft</option>
-                      <option value="PUBLISHED" className="text-emerald-600">Published (Live)</option>
-                      <option value="SCHEDULED" className="text-amber-500">Scheduled</option>
-                    </select>
-                  </div>
-
-                  {status === 'SCHEDULED' && (
-                    <div>
-                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Schedule Time</label>
-                      <input
-                        type="datetime-local"
-                        value={scheduledFor}
-                        onChange={e => setScheduledFor(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
-                      />
-                    </div>
-                  )}
 
                   {/* Featured Status Toggle */}
                   <div className="flex items-center justify-between py-2 px-1 bg-indigo-50/30 dark:bg-indigo-500/5 rounded-xl border border-indigo-100/50 dark:border-indigo-500/10">
@@ -1142,6 +1144,127 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
           </aside>
         </div>
       </div>
+
+      {/* ─── WORDPRESS-STYLE PUBLISH PANEL ─── */}
+      {publishPanelOpen && (
+        <div className="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-stretch justify-end">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col animate-in slide-in-from-right">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+              <h2 className="text-lg font-bold flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center">
+                  <Send size={16} className="text-indigo-600" />
+                </div>
+                Publish Settings
+              </h2>
+              <button onClick={() => setPublishPanelOpen(false)} className="p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"><X size={20} /></button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Status Selection */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Status</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {([{ value: 'DRAFT', label: 'Draft', color: 'indigo' }, { value: 'PUBLISHED', label: 'Publish', color: 'emerald' }, { value: 'SCHEDULED', label: 'Schedule', color: 'amber' }] as const).map(s => (
+                    <button
+                      key={s.value}
+                      onClick={() => setStatus(s.value)}
+                      className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                        status === s.value
+                          ? s.color === 'emerald' ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700'
+                          : s.color === 'amber' ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-700'
+                          : 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700'
+                          : 'border-slate-200 dark:border-slate-700 text-slate-400 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      {s.value === 'DRAFT' ? <FileText size={20} /> : s.value === 'PUBLISHED' ? <Globe size={20} /> : <Clock size={20} />}
+                      <span className="text-xs font-bold">{s.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Schedule DateTime */}
+              {status === 'SCHEDULED' && (
+                <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
+                  <label className="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-2 flex items-center gap-2">
+                    <Clock size={13} /> Schedule Date & Time
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={scheduledFor}
+                    onChange={e => setScheduledFor(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-700 text-sm font-semibold text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              )}
+
+              {/* Pre-publish summary */}
+              <div>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Summary</label>
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <span className="text-sm text-slate-500 font-medium">Category</span>
+                    <span className="text-sm font-bold text-slate-800 dark:text-white">{category}</span>
+                  </div>
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <span className="text-sm text-slate-500 font-medium">Author</span>
+                    <span className="text-sm font-bold text-slate-800 dark:text-white">{authors.find((a: any) => a.id === authorId)?.name || 'Not selected'}</span>
+                  </div>
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <span className="text-sm text-slate-500 font-medium">Words</span>
+                    <span className="text-sm font-bold text-slate-800 dark:text-white">{seo.wordCount}</span>
+                  </div>
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <span className="text-sm text-slate-500 font-medium">SEO Score</span>
+                    <span className={`text-sm font-bold ${scoreStyle.text}`}>{seo.score}/100 — {scoreStyle.label}</span>
+                  </div>
+                  <div className="flex items-center justify-between px-5 py-3.5">
+                    <span className="text-sm text-slate-500 font-medium">Featured</span>
+                    <span className="text-sm font-bold text-slate-800 dark:text-white">{featured ? 'Yes' : 'No'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Visibility info */}
+              {status === 'PUBLISHED' && (
+                <div className="bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-5 flex items-start gap-3">
+                  <CheckCircle size={18} className="text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-bold text-emerald-800 dark:text-emerald-200">Ready to go live</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">Your post will be visible at staffschedule.io/blog/{slug}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-slate-100 dark:border-slate-800 space-y-3">
+              <button
+                onClick={() => { setPublishPanelOpen(false); doSave(status === 'PUBLISHED'); }}
+                disabled={saving || publishing}
+                className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-sm font-bold transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg ${
+                  status === 'PUBLISHED'
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/25'
+                    : status === 'SCHEDULED'
+                    ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/25'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/25'
+                }`}
+              >
+                {(saving || publishing) ? <Loader2 size={18} className="animate-spin" /> : status === 'PUBLISHED' ? <Globe size={18} /> : status === 'SCHEDULED' ? <Clock size={18} /> : <Save size={18} />}
+                {(saving || publishing) ? 'Processing...' : status === 'PUBLISHED' ? (published ? 'Update & Publish' : 'Publish Now') : status === 'SCHEDULED' ? 'Schedule Post' : 'Save as Draft'}
+              </button>
+              <button
+                onClick={() => setPublishPanelOpen(false)}
+                className="w-full px-6 py-3 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ─── EDITOR STYLES ─── */}
       <style jsx global>{`
@@ -1332,6 +1455,73 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
           font-size: 0.85rem;
           color: #94a3b8;
           font-style: italic;
+        }
+
+        /* ─── Table Styles ─── */
+        .gutenberg-editor table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 1.5rem 0;
+          overflow: hidden;
+          border: 2px solid #e2e8f0;
+          border-radius: 0.75rem;
+        }
+
+        .gutenberg-editor th,
+        .gutenberg-editor td {
+          border: 1px solid #e2e8f0;
+          padding: 0.75rem 1rem;
+          text-align: left;
+          min-width: 80px;
+          position: relative;
+        }
+
+        .gutenberg-editor th {
+          background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+          font-weight: 700;
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: #475569;
+        }
+
+        .gutenberg-editor td {
+          font-size: 0.95rem;
+          color: #475569;
+          background: white;
+        }
+
+        .gutenberg-editor tr:nth-child(even) td {
+          background: #f8fafc;
+        }
+
+        .gutenberg-editor tr:hover td {
+          background: #eef2ff;
+          transition: background 0.15s ease;
+        }
+
+        .gutenberg-editor .selectedCell::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(99, 102, 241, 0.1);
+          pointer-events: none;
+          border: 2px solid #6366f1;
+        }
+
+        .gutenberg-editor .column-resize-handle {
+          position: absolute;
+          right: -2px;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background-color: #6366f1;
+          pointer-events: none;
+        }
+
+        .gutenberg-editor .tableWrapper {
+          overflow-x: auto;
+          margin: 1.5rem 0;
         }
       `}</style>
     </div>
