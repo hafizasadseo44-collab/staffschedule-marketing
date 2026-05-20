@@ -27,3 +27,14 @@ export async function getSession() {
   if (!token) return null;
   return await verifyToken(token);
 }
+
+export async function requireRole(allowedRoles: string[]) {
+  const session = await getSession();
+  if (!session) return { error: 'Unauthorized', status: 401 };
+  
+  if (!allowedRoles.includes(session.role as string) && session.role !== 'ADMIN') {
+    return { error: 'Forbidden', status: 403 };
+  }
+  
+  return { session };
+}

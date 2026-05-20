@@ -267,6 +267,16 @@ export default function BlogPostClient({ post, relatedPosts }: { post: Post; rel
     } catch { setReadingTime(5); }
   }, [post.content]);
 
+  // Analytics Ping
+  useEffect(() => {
+    if (!post?.id) return;
+    const tracked = sessionStorage.getItem(`tracked_view_${post.id}`);
+    if (!tracked) {
+      fetch(`/api/posts/${post.id}/view`, { method: 'POST' }).catch(() => {});
+      sessionStorage.setItem(`tracked_view_${post.id}`, 'true');
+    }
+  }, [post.id]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY + 120;

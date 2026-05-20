@@ -11,6 +11,7 @@ model AdminUser {
   id        String   @id @default(cuid())
   email     String   @unique
   password  String
+  role      String   @default("ADMIN")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -24,15 +25,33 @@ model Post {
   image        String?
   category     String?  @default("Scheduling")
   type         String   @default("ARTICLE")
-  featured     Boolean  @default(false)
-  published    Boolean  @default(false)
-  focusKeyword String?
-  seoTitle     String?
-  canonicalUrl String?
-  authorId     String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  author       Author?  @relation(fields: [authorId], references: [id])
+  featured        Boolean  @default(false)
+  published       Boolean  @default(false)
+  status          String   @default("DRAFT")
+  scheduledFor    DateTime?
+
+  focusKeyword    String?
+  seoTitle        String?
+  metaDescription String?
+  canonicalUrl    String?
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+  twitterCard     String   @default("summary_large_image")
+  robotsMeta      String   @default("index, follow")
+
+  schemaType      String   @default("Article")
+  schemaData      String?
+
+  viewCount       Int      @default(0)
+  readingTime     Int      @default(0)
+
+  authorId        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  author          Author?  @relation(fields: [authorId], references: [id])
+  revisions       PostRevision[]
+  analytics       PostAnalytics[]
 }
 
 model Author {
@@ -102,3 +121,32 @@ model Subscriber {
   updatedAt DateTime @updatedAt
 }
 
+model PostRevision {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  content   String
+  authorId  String?
+  createdAt DateTime @default(now())
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  url        String
+  filename   String
+  mimeType   String
+  size       Int
+  altText    String?
+  title      String?
+  uploaderId String?
+  createdAt  DateTime @default(now())
+}
+
+model PostAnalytics {
+  id             String   @id @default(cuid())
+  postId         String
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  date           DateTime @default(now())
+  views          Int      @default(1)
+  uniqueVisitors Int      @default(1)
+}

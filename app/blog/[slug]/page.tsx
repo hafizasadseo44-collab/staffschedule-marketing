@@ -15,23 +15,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const decodedSlug = decodeURIComponent(slug);
   let post: any;
   try {
-    const results = await db.$queryRaw`
-      SELECT title, excerpt, image, published, seoTitle, focusKeyword, canonicalUrl, type 
-      FROM Post 
-      WHERE (slug = ${slug} OR slug = ${decodedSlug}) AND published = 1
-      LIMIT 1
-    ` as any[];
-    post = results[0];
+    post = await db.post.findFirst({
+      where: {
+        OR: [
+          { slug: slug },
+          { slug: decodedSlug }
+        ],
+        status: 'PUBLISHED'
+      },
+      include: { author: true }
+    });
   } catch (e) {
     post = null;
   }
   
-  if (!post || !post.published) {
+  if (!post) {
     return { title: 'Post Not Found' };
   }
 
-  const finalTitle = post.seoTitle || `${post.title} | StaffSchedule.io Blog`;
-  const finalDesc = post.excerpt || `Read ${post.title} on the StaffSchedule.io blog.`;
+  const finalTitle = post.seoTitle || post.ogTitle || `${post.title} | StaffSchedule.io Blog`;
+  const finalDesc = post.metaDescription || post.ogDescription || post.excerpt || `Read ${post.title} on the StaffSchedule.io blog.`;
+
+  // Respect the robots meta setting
+  let robots = undefined;
+  if (post.robotsMeta) {
+    const parts = post.robotsMeta.split(',').map((s: string) => s.trim().toLowerCase());
+    robots = {
+      index: parts.includes('index'),
+      follow: parts.includes('follow'),
+      googleBot: {
+        index: parts.includes('index'),
+        follow: parts.includes('follow'),
+        'max-video-preview': -1,
+        'max-image-preview': 'large' as 'large',
+        'max-snippet': -1,
+      },
+    };
+  }
 
   return {
     title: finalTitle,
@@ -40,30 +60,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: post.canonicalUrl || `https://staffschedule.io/blog/${slug}`,
     },
-    robots: {
-      index: false,
-      follow: false,
-      googleBot: {
-        index: false,
-        follow: false,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
+    robots: robots || { index: false, follow: false },
     openGraph: {
-       images: post.image ? [post.image] : [],
-       title: finalTitle,
-       description: finalDesc,
+       images: post.ogImage || post.image ? [post.ogImage || post.image] : [],
+       title: post.ogTitle || finalTitle,
+       description: post.ogDescription || finalDesc,
        type: 'article',
        url: `https://staffschedule.io/blog/${slug}`,
        siteName: 'StaffSchedule.io',
     },
     twitter: {
-      card: 'summary_large_image',
-      title: finalTitle,
-      description: finalDesc,
-      images: post.image ? [post.image] : [],
+      card: (post.twitterCard as any) || 'summary_large_image',
+      title: post.ogTitle || finalTitle,
+      description: post.ogDescription || finalDesc,
+      images: post.ogImage || post.image ? [post.ogImage || post.image] : [],
       creator: '@staffschedule',
     }
   };
@@ -75,45 +85,42 @@ export default async function BlogPostPage({ params }: Props) {
   
   let post: any;
   try {
-    const results = await db.$queryRaw`
-      SELECT p.*, a.name as authorName, a.avatar as authorAvatar, a.bio as authorBio, a.slug as authorSlug, a.gender as authorGender
-      FROM Post p
-      LEFT JOIN Author a ON p.authorId = a.id
-      WHERE (p.slug = ${slug} OR p.slug = ${decodedSlug}) AND p.published = 1
-      LIMIT 1
-    ` as any[];
-    
-    if (results.length > 0) {
-      const raw = results[0];
-      post = {
-        ...raw,
-        author: raw.authorId ? {
-          name: raw.authorName,
-          avatar: raw.authorAvatar,
-          bio: raw.authorBio,
-          slug: raw.authorSlug,
-          gender: raw.authorGender
-        } : null
-      };
-    } else {
-      post = null;
-    }
+    post = await db.post.findFirst({
+      where: {
+        OR: [
+          { slug: slug },
+          { slug: decodedSlug }
+        ],
+        status: 'PUBLISHED'
+      },
+      include: { author: true }
+    });
   } catch (e) {
     post = null;
   }
 
-  if (!post || !post.published) {
+  if (!post) {
     notFound();
   }
 
   // Fetch 3 related posts (excluding current one)
-  const relatedPosts = await db.$queryRaw`
-    SELECT id, title, slug, image, category, createdAt 
-    FROM Post 
-    WHERE published = 1 AND id != ${post.id} AND type = 'ARTICLE'
-    ORDER BY createdAt DESC 
-    LIMIT 3
-  ` as any[];
+  let relatedPosts: any[] = [];
+  try {
+    relatedPosts = await db.post.findMany({
+      where: {
+        status: 'PUBLISHED',
+        id: { not: post.id },
+        type: 'ARTICLE'
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 3,
+      select: {
+        id: true, title: true, slug: true, image: true, category: true, createdAt: true
+      }
+    });
+  } catch (e) {
+    console.error("Related posts error", e);
+  }
 
   const serializedPost = {
     ...post,
@@ -125,7 +132,35 @@ export default async function BlogPostPage({ params }: Props) {
     createdAt: typeof p.createdAt === 'string' ? p.createdAt : p.createdAt.toISOString(),
   }));
 
+  // Generate JSON-LD Schema
+  let schemaDataStr = post.schemaData || '';
+  if (!schemaDataStr) {
+    // Generate default schema if empty
+    const schemaObj = {
+      "@context": "https://schema.org",
+      "@type": post.schemaType || "Article",
+      "headline": post.seoTitle || post.title,
+      "image": post.image ? [post.image] : [],
+      "datePublished": typeof post.createdAt === 'string' ? post.createdAt : post.createdAt?.toISOString(),
+      "dateModified": typeof post.updatedAt === 'string' ? post.updatedAt : post.updatedAt?.toISOString(),
+      "author": [{
+          "@type": "Person",
+          "name": post.author?.name || "StaffSchedule Team",
+          "url": `https://staffschedule.io/author/${post.author?.slug || ''}`
+      }]
+    };
+    schemaDataStr = JSON.stringify(schemaObj);
+  }
+
   return (
-    <BlogPostClient post={serializedPost} relatedPosts={serializedRelated} />
+    <>
+      {schemaDataStr && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaDataStr }}
+        />
+      )}
+      <BlogPostClient post={serializedPost} relatedPosts={serializedRelated} />
+    </>
   );
 }

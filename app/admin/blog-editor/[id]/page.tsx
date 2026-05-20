@@ -2,7 +2,8 @@
 
 import { useEffect, useState, use, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
+import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/react';
+import GlobalDragHandle from 'tiptap-extension-global-drag-handle';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Callout, CustomImage } from '@/lib/tiptap-extensions';
+import { MediaLibrary } from '@/components/editor/MediaLibrary';
 
 // ─────────────────────────────────────────────────────
 // SEO ANALYZER (Rank Math Style)
@@ -113,12 +115,22 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   const [excerpt, setExcerpt] = useState('');
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('Scheduling');
-  const [published, setPublished] = useState(false);
+  const [status, setStatus] = useState('DRAFT');
+  const [scheduledFor, setScheduledFor] = useState('');
+  const [published, setPublished] = useState(false); // Legacy
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [focusKeyword, setFocusKeyword] = useState('');
   const [seoTitle, setSeoTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
   const [canonicalUrl, setCanonicalUrl] = useState('');
+  const [ogTitle, setOgTitle] = useState('');
+  const [ogDescription, setOgDescription] = useState('');
+  const [ogImage, setOgImage] = useState('');
+  const [twitterCard, setTwitterCard] = useState('summary_large_image');
+  const [robotsMeta, setRobotsMeta] = useState('index, follow');
+  const [schemaType, setSchemaType] = useState('Article');
+  const [schemaData, setSchemaData] = useState('');
   const [seoOpen, setSeoOpen] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(true);
   const [headingMenuOpen, setHeadingMenuOpen] = useState(false);
@@ -130,6 +142,40 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
   const [linkTarget, setLinkTarget] = useState('_self');
   const [linkRel, setLinkRel] = useState('dofollow');
   const [linkSuggestions, setLinkSuggestions] = useState<any[]>([]);
+  const [mediaLibraryOpen, setMediaLibraryOpen] = useState(false);
+  const [revisionsOpen, setRevisionsOpen] = useState(false);
+  const [revisions, setRevisions] = useState<any[]>([]);
+
+  // Fetch revisions when opened
+  useEffect(() => {
+    if (revisionsOpen && !isNew) {
+      fetch(`/api/posts/${id}/revisions`)
+        .then(r => r.json())
+        .then(data => {
+          if (Array.isArray(data)) setRevisions(data);
+        })
+        .catch(console.error);
+    }
+  }, [revisionsOpen, id, isNew]);
+
+  const restoreRevision = async (revId: string) => {
+    if (!confirm('Are you sure you want to restore this revision? Current unsaved changes will be lost.')) return;
+    try {
+      const res = await fetch(`/api/posts/${id}/revisions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ revisionId: revId })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        editor?.commands.setContent(data.content);
+        setRevisionsOpen(false);
+        alert('Revision restored successfully!');
+      }
+    } catch (e) {
+      alert('Failed to restore revision');
+    }
+  };
   
   const [dynamicCategories, setDynamicCategories] = useState<{id:string;name:string;color:string}[]>([]);
   const [authors, setAuthors] = useState<any[]>([]);
@@ -165,6 +211,10 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
 
   const editor = useEditor({
     extensions: [
+      GlobalDragHandle.configure({
+        dragHandleWidth: 20,
+        scrollTreshold: 100,
+      }),
       StarterKit.configure({
         heading: { levels: [1, 2, 3, 4, 5, 6] },
       }),
@@ -210,12 +260,22 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
           setExcerpt(post.excerpt || '');
           setImage(post.image || '');
           setCategory(post.category || 'Scheduling');
-          setPublished(post.published);
+          setStatus(post.status || 'DRAFT');
+          setScheduledFor(post.scheduledFor ? new Date(post.scheduledFor).toISOString().substring(0, 16) : '');
+          setPublished(post.status === 'PUBLISHED' || post.published);
           setAuthorId(post.authorId || '');
           setFeatured(post.featured || false);
           setFocusKeyword(post.focusKeyword || '');
           setSeoTitle(post.seoTitle || '');
+          setMetaDescription(post.metaDescription || '');
           setCanonicalUrl(post.canonicalUrl || '');
+          setOgTitle(post.ogTitle || '');
+          setOgDescription(post.ogDescription || '');
+          setOgImage(post.ogImage || '');
+          setTwitterCard(post.twitterCard || 'summary_large_image');
+          setRobotsMeta(post.robotsMeta || 'index, follow');
+          setSchemaType(post.schemaType || 'Article');
+          setSchemaData(post.schemaData || '');
           if (editor && post.content) {
             try {
               const json = JSON.parse(post.content);
@@ -311,12 +371,17 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
     if (shouldPublish) setPublishing(true); else setSaving(true);
     const safeSlug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const payload = {
-      title, slug: safeSlug, excerpt, image, published: shouldPublish || published, category, type: 'ARTICLE',
+      title, slug: safeSlug, excerpt, image, category, type: 'ARTICLE',
       authorId: authorId || null,
       featured,
       focusKeyword,
       seoTitle,
+      metaDescription,
       canonicalUrl,
+      ogTitle, ogDescription, ogImage, twitterCard, robotsMeta,
+      schemaType, schemaData,
+      status: shouldPublish ? 'PUBLISHED' : status,
+      scheduledFor: scheduledFor ? new Date(scheduledFor).toISOString() : null,
       content: JSON.stringify(editor.getJSON())
     };
     try {
@@ -397,6 +462,16 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               >
                 <Eye size={14} /> Preview
               </Link>
+            )}
+
+            {/* Revision History Button */}
+            {!isNew && (
+              <button
+                onClick={() => setRevisionsOpen(true)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all border border-slate-200"
+              >
+                <Clock size={16} /> History
+              </button>
             )}
 
             {/* Save Draft Button */}
@@ -513,7 +588,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                   icon={LinkIcon}
                   tooltip="Link"
                 />
-                <ToolBtn onClick={() => fileInputRef.current?.click()} icon={uploading ? Loader2 : ImageIcon} tooltip="Image" className={uploading ? 'animate-spin' : ''} />
+                <ToolBtn onClick={() => setMediaLibraryOpen(true)} icon={ImageIcon} tooltip="Media Library" />
 
                 <ToolDivider />
 
@@ -522,6 +597,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                 <ToolBtn onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'warning' }, content: [{ type: 'paragraph' }] }).run()} icon={AlertTriangle} tooltip="Warning" className="text-rose-500" />
                 <ToolBtn onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'info' }, content: [{ type: 'paragraph' }] }).run()} icon={Info} tooltip="Info" className="text-sky-500" />
 
+                {/* We can remove the old file input since MediaLibrary handles it, but let's leave it for now if something still uses it */}
                 <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={handleImageUpload} />
               </div>
             </div>
@@ -545,6 +621,22 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               </div>
 
               <div className="relative">
+                {/* Floating Menu (Slash Command Alternative on Empty Lines) */}
+                {editor && (
+                  <FloatingMenu 
+                    editor={editor} 
+                    tippyOptions={{ duration: 100, placement: 'left' }}
+                    className="flex items-center gap-1 p-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700"
+                  >
+                    <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg"><Heading2 size={16} /></button>
+                    <button onClick={() => editor.chain().focus().toggleBulletList().run()} className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg"><List size={16} /></button>
+                    <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg"><Quote size={16} /></button>
+                    <button onClick={() => setMediaLibraryOpen(true)} className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg"><ImageIcon size={16} /></button>
+                    <div className="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1" />
+                    <button onClick={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { type: 'tip' }, content: [{ type: 'paragraph' }] }).run()} className="p-1.5 text-slate-500 hover:text-amber-500 hover:bg-amber-50 rounded-lg"><Lightbulb size={16} /></button>
+                  </FloatingMenu>
+                )}
+
                 {/* Bubble Menu */}
                 {editor && (
                   <BubbleMenu
@@ -576,6 +668,54 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                   </BubbleMenu>
                 )}
 
+                {mediaLibraryOpen && (
+                  <MediaLibrary 
+                    onClose={() => setMediaLibraryOpen(false)} 
+                    onSelect={(url) => {
+                      editor.chain().focus().insertContent({
+                        type: 'image',
+                        attrs: { src: url, alt: 'Image', caption: '' }
+                      }).run();
+                      setMediaLibraryOpen(false);
+                    }} 
+                  />
+                )}
+                {revisionsOpen && (
+                  <div className="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-end">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col animate-in slide-in-from-right">
+                      <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+                        <h2 className="text-xl font-bold flex items-center gap-2"><Clock size={20} className="text-indigo-500" /> Revision History</h2>
+                        <button onClick={() => setRevisionsOpen(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-xl"><X size={20} /></button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                        {revisions.length === 0 ? (
+                          <div className="text-center text-slate-400 py-10 text-sm">No revisions found</div>
+                        ) : (
+                          revisions.map((rev, i) => (
+                            <div key={rev.id} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 transition-colors">
+                              <div className="flex items-start justify-between">
+                                <div>
+                                  <div className="text-sm font-bold text-slate-800 dark:text-white">
+                                    {new Date(rev.createdAt).toLocaleString()}
+                                  </div>
+                                  <div className="text-xs text-slate-500 mt-1">
+                                    {i === 0 ? 'Latest Revision' : `Revision ${revisions.length - i}`}
+                                  </div>
+                                </div>
+                                <button 
+                                  onClick={() => restoreRevision(rev.id)}
+                                  className="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100"
+                                >
+                                  Restore
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
                 {/* Advanced Link Modal */}
                 {linkModalOpen && (
                   <div className="absolute top-16 left-8 z-50 w-80 md:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-5">
@@ -752,6 +892,70 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                     />
                   </div>
 
+                  {/* Meta Description */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Meta Description</label>
+                    <textarea
+                      value={metaDescription}
+                      onChange={e => setMetaDescription(e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                      placeholder="SEO Meta Description..."
+                    />
+                  </div>
+
+                  {/* Advanced SEO */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Robots Meta</label>
+                      <select
+                        value={robotsMeta}
+                        onChange={e => setRobotsMeta(e.target.value)}
+                        className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 appearance-none"
+                      >
+                        <option value="index, follow">Index, Follow</option>
+                        <option value="noindex, follow">Noindex, Follow</option>
+                        <option value="index, nofollow">Index, Nofollow</option>
+                        <option value="noindex, nofollow">Noindex, Nofollow</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Schema Type</label>
+                      <select
+                        value={schemaType}
+                        onChange={e => setSchemaType(e.target.value)}
+                        className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 appearance-none"
+                      >
+                        <option value="Article">Article</option>
+                        <option value="BlogPosting">BlogPosting</option>
+                        <option value="NewsArticle">NewsArticle</option>
+                        <option value="TechArticle">TechArticle</option>
+                        <option value="FAQPage">FAQPage</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Open Graph */}
+                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-3">Social Sharing (Open Graph)</label>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={ogTitle}
+                        onChange={e => setOgTitle(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="OG Title"
+                      />
+                      <textarea
+                        value={ogDescription}
+                        onChange={e => setOgDescription(e.target.value)}
+                        rows={2}
+                        className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                        placeholder="OG Description"
+                      />
+                    </div>
+                  </div>
+
                   {/* SEO Checklist */}
                   <div className="space-y-1.5 max-h-[300px] overflow-y-auto">
                     {seo.checks.map((check, i) => (
@@ -819,6 +1023,32 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
                       )}
                     </select>
                   </div>
+
+                  {/* Status */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Publish Status</label>
+                    <select
+                      value={status}
+                      onChange={e => setStatus(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold outline-none focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer"
+                    >
+                      <option value="DRAFT" className="text-slate-500">Draft</option>
+                      <option value="PUBLISHED" className="text-emerald-600">Published (Live)</option>
+                      <option value="SCHEDULED" className="text-amber-500">Scheduled</option>
+                    </select>
+                  </div>
+
+                  {status === 'SCHEDULED' && (
+                    <div>
+                      <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Schedule Time</label>
+                      <input
+                        type="datetime-local"
+                        value={scheduledFor}
+                        onChange={e => setScheduledFor(e.target.value)}
+                        className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  )}
 
                   {/* Featured Status Toggle */}
                   <div className="flex items-center justify-between py-2 px-1 bg-indigo-50/30 dark:bg-indigo-500/5 rounded-xl border border-indigo-100/50 dark:border-indigo-500/10">

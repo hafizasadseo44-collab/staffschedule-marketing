@@ -42,7 +42,7 @@ export async function POST(request: Request) {
         console.warn('Super Admin DB sync failed (continuing):', dbError.message);
       }
 
-      const token = await signToken({ userId, email: envEmail });
+      const token = await signToken({ userId, email: envEmail, role: 'ADMIN' });
       const cookieStore = await cookies();
       cookieStore.set('admin_token', token, {
         httpOnly: true,
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const token = await signToken({ userId: user.id, email: user.email });
+    const token = await signToken({ userId: user.id, email: user.email, role: user.role });
     const cookieStore = await cookies();
     cookieStore.set('admin_token', token, {
       httpOnly: true,
