@@ -11,12 +11,14 @@ let initializationPromise: Promise<void> | null = null;
  * Called once per server lifecycle. Safe to call multiple times.
  */
 export async function ensureDatabase() {
+  console.log("ensureDatabase call: initialized=", initialized, "promise=", !!initializationPromise);
   if (initialized) return;
   if (initializationPromise) return initializationPromise;
 
+  console.log("ensureDatabase starting initializationPromise...");
   initializationPromise = (async () => {
     try {
-    // 1. Try to find the DB path from the connection string
+    console.log("1. Finding DB path...");
     let dbPath = '';
     try {
       // In Next.js App Router / Prisma Client, this is a more reliable way to get the URL
@@ -240,7 +242,8 @@ export async function ensureDatabase() {
 
     // Seed default admin user if empty
     const adminCount = await db.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM AdminUser`) as any[];
-    if (adminCount[0]?.cnt === 0) {
+    const adminCountNum = adminCount[0] ? Number(adminCount[0].cnt ?? adminCount[0].count ?? 0) : 0;
+    if (adminCountNum === 0) {
       // We need to create a hashed password. Use a pre-computed bcrypt hash for the default password.
       // This matches @4499Asad using bcryptjs with 10 rounds
       const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD || '@4499Asad', 10);
@@ -257,7 +260,8 @@ export async function ensureDatabase() {
 
     // Seed default categories if empty
     const catCount = await db.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM Category`) as any[];
-    if (catCount[0]?.cnt === 0) {
+    const catCountNum = catCount[0] ? Number(catCount[0].cnt ?? catCount[0].count ?? 0) : 0;
+    if (catCountNum === 0) {
       const now = new Date().toISOString();
       const cats = [
         { name: 'Scheduling', color: '#6366f1' },
@@ -281,6 +285,7 @@ export async function ensureDatabase() {
     console.log("[DB-INIT] Database schema created successfully.");
   } catch (error) {
     console.error("[DB-INIT] Failed to initialize database:", error);
+    initialized = false;
     initializationPromise = null; // Reset to allow retry
     throw error;
   } finally {
