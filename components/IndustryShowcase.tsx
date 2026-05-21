@@ -20,6 +20,7 @@ const INDUSTRIES = [
     employees: "45 Employees",
     statValue: "70%",
     statText: "Reduction in scheduling time",
+    quote: "Swapping shifts used to be a nightmare of group texts. Now my team handles it themselves in seconds."
   },
   {
     id: 2,
@@ -34,6 +35,7 @@ const INDUSTRIES = [
     employees: "82 Employees",
     statValue: "3X",
     statText: "Faster leave approvals",
+    quote: "Ensuring we have the right mix of nurses every day is critical. This platform brought order to our chaos."
   },
   {
     id: 3,
@@ -48,6 +50,7 @@ const INDUSTRIES = [
     employees: "120 Employees",
     statValue: "60%",
     statText: "Fewer schedule conflicts",
+    quote: "From scheduling around college classes to tracking overtime, everything just runs seamlessly."
   },
   {
     id: 4,
@@ -62,6 +65,7 @@ const INDUSTRIES = [
     employees: "200 Employees",
     statValue: "40%",
     statText: "Increase in productivity",
+    quote: "Dispatching used to mean whiteboards and phone calls. Now everyone has their route on their phone."
   },
   {
     id: 5,
@@ -76,6 +80,7 @@ const INDUSTRIES = [
     employees: "28 Employees",
     statValue: "50%",
     statText: "Better shift coverage",
+    quote: "I finally stopped spending my weekends writing schedules. The templates alone gave me my life back."
   },
   {
     id: 6,
@@ -90,6 +95,7 @@ const INDUSTRIES = [
     employees: "310 Employees",
     statValue: "55%",
     statText: "Fewer overtime disputes",
+    quote: "Keeping track of who is on which site used to cause so many payroll arguments. It's completely transparent now."
   },
   {
     id: 7,
@@ -104,6 +110,7 @@ const INDUSTRIES = [
     employees: "65 Employees",
     statValue: "80%",
     statText: "Faster class scheduling",
+    quote: "Managing different trainer availability and class times used to take hours. Now it takes minutes."
   },
   {
     id: 8,
@@ -118,6 +125,7 @@ const INDUSTRIES = [
     employees: "180 Employees",
     statValue: "45%",
     statText: "Less driver downtime",
+    quote: "We always need to know who is driving which vehicle. The real-time visibility has completely changed how we operate."
   }
 ];
 
@@ -201,7 +209,7 @@ export default function IndustryShowcase() {
                   loading="lazy"
                   quality={85}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0514]/95 via-[#0a0514]/40 to-transparent" />
 
                 {/* Company Logo - top right */}
                 <div className="absolute top-5 right-5 z-20 flex items-center gap-1.5 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
@@ -220,10 +228,15 @@ export default function IndustryShowcase() {
                   </div>
                 </div>
 
-                {/* Bottom Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                  <div className="text-white text-base md:text-lg font-bold drop-shadow-lg leading-snug">{industry.businessName}</div>
-                  <p className="text-white/80 text-xs md:text-sm font-medium drop-shadow-md">{industry.ownerName}, {industry.ownerTitle}</p>
+                {/* Bottom Quote & Info */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-20 flex flex-col gap-4">
+                  <p className="text-white/95 text-sm md:text-[15px] font-medium leading-relaxed drop-shadow-md italic">
+                    "{industry.quote}"
+                  </p>
+                  <div className="flex flex-col">
+                    <div className="text-white text-sm md:text-base font-bold drop-shadow-lg leading-tight">{industry.ownerName}</div>
+                    <p className="text-white/70 text-xs font-medium drop-shadow-md mt-0.5">{industry.ownerTitle}, {industry.businessName}</p>
+                  </div>
                 </div>
               </div>
               );
