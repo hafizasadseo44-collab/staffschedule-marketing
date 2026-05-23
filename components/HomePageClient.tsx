@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { LazySection } from "@/components/ui/lazy-section";
 
 // --- Dynamically Imported Components (Below the fold — ssr:false saves server CPU) ---
+const EcosystemSection = dynamic(() => import("@/components/EcosystemSection"), { ssr: false });
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: false });
 const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: false });
 const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: false });
@@ -33,6 +34,10 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <SplitHero />
       <IndustryShowcase />
 
+      {/* 3. Ecosystem — All-in-One Platform */}
+      <LazySection>
+        <EcosystemSection />
+      </LazySection>
 
       {/* 4. How it works */}
       <LazySection>
