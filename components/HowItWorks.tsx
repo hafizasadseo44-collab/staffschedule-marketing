@@ -13,9 +13,9 @@ const STEPS = [
   {
     num: "01",
     id: "team",
-    shortTitle: "Onboard Your Staff",
-    title: "Onboard Your Staff in Minutes",
-    desc: "Getting started takes less time than your morning coffee. Import your existing roster, invite team members via magic links, assign roles, set wages, and define locations — all from one clean dashboard. Your employee scheduling software is ready before your next shift begins.",
+    shortTitle: "Onboard Your Team",
+    title: "Onboard Your Team",
+    desc: "Get started with our free employee scheduling software by adding your business details and inviting employees with simple invite links. StaffSchedule.io helps you manage staff scheduling from one easy dashboard designed to keep team setup fast, organized and stress-free.",
     Icon: UserPlus,
     color: "#6366f1",
     gradient: "from-[#6366f1] to-[#4338ca]",
@@ -26,9 +26,9 @@ const STEPS = [
   {
     num: "02",
     id: "schedule",
-    shortTitle: "Build Perfect Shifts",
-    title: "Build Shifts That Actually Work",
-    desc: "Drag, drop, done. Our shift scheduling software lets you build weekly schedules in minutes — not hours. It automatically flags overtime risks, availability conflicts, and time-off requests before you hit publish. No more last-minute surprises.",
+    shortTitle: "Build Perfect Shifts for Your Team",
+    title: "Build Perfect Shifts for Your Team",
+    desc: "Easily create weekly or monthly staff schedules for your team in just a few clicks. Our online employee scheduling software automatically shows employee availability, leaves and shift conflicts before you publish schedules, helping managers stay organized without confusion or last-minute problems.",
     Icon: CalendarCheck2,
     color: "#8b5cf6",
     gradient: "from-[#8b5cf6] to-[#6d28d9]",
@@ -38,23 +38,23 @@ const STEPS = [
   },
   {
     num: "03",
-    id: "dashboard",
-    shortTitle: "Monitor in Real Time",
-    title: "See Everything. Miss Nothing.",
-    desc: "Your live dashboard shows who's clocked in, who's running late, open shifts, and daily labor spend — all updated in real time. It's the shift tracker app your managers didn't know they needed, until now.",
-    Icon: LayoutDashboard,
-    color: "#0ea5e9",
-    gradient: "from-[#0ea5e9] to-[#0284c7]",
-    bgLight: "bg-sky-50",
-    textColor: "text-sky-600",
-    ringColor: "ring-sky-500/30",
+    id: "analytics",
+    shortTitle: "Analyze & Optimize Your Team",
+    title: "Analyze & Optimize Your Team",
+    desc: "Easily track, view and download your team’s performance reports, work hours, shifts and overtime report from one powerful analytics dashboard. Our staff scheduling management software helps managers make smarter decisions, improve workforce planning and stay organized without the daily scheduling stress.",
+    Icon: BarChart3,
+    color: "#ec4899",
+    gradient: "from-[#ec4899] to-[#db2777]",
+    bgLight: "bg-pink-50",
+    textColor: "text-pink-600",
+    ringColor: "ring-pink-500/30",
   },
   {
     num: "04",
     id: "chat",
-    shortTitle: "Communicate Instantly",
-    title: "Keep Your Team on the Same Page",
-    desc: "No more scattered group chats or missed messages. Built-in team messaging lets managers broadcast announcements, confirm shift covers, and connect with any team member directly — all inside your staff scheduling app. Everyone stays informed, always.",
+    shortTitle: "Chat With Your Team in One Place",
+    title: "Chat With Your Team in One Place",
+    desc: "Communicate with your team, discuss staff schedules and share important updates from one simple staff scheduling app. Avoid messy WhatsApp groups and manage team communication and shift scheduling together in one organized place.",
     Icon: MessageSquare,
     color: "#10b981",
     gradient: "from-[#10b981] to-[#059669]",
@@ -65,28 +65,15 @@ const STEPS = [
   {
     num: "05",
     id: "locations",
-    shortTitle: "Scale Every Location",
-    title: "One Platform. Every Location.",
-    desc: "Running more than one branch? No problem. Switch between locations instantly, share staff across sites, and manage every team from a single dashboard. Whether you have 3 stores or 300 — our workforce scheduling software scales with you, without the chaos.",
+    shortTitle: "Manage Every Location From One Place",
+    title: "Manage Every Location From One Place",
+    desc: "Whether you manage 5 branches or 50 locations, StaffSchedule.io helps you organize every team, department, and employee schedule from one simple dashboard. Each location can have its own employees, shifts, and scheduling access, making multi-location staff management easy, organized, and stress-free.",
     Icon: MapPin,
     color: "#f59e0b",
     gradient: "from-[#f59e0b] to-[#d97706]",
     bgLight: "bg-amber-50",
     textColor: "text-amber-600",
     ringColor: "ring-amber-500/30",
-  },
-  {
-    num: "06",
-    id: "analytics",
-    shortTitle: "Analyze & Optimize",
-    title: "Schedule Smarter, Spend Less",
-    desc: "Turn your scheduling data into real decisions. Track labor costs, spot overtime patterns, measure shift fill rates, and fine-tune your work scheduling strategy — week after week. Because great businesses don't just run schedules, they improve them.",
-    Icon: BarChart3,
-    color: "#ec4899",
-    gradient: "from-[#ec4899] to-[#db2777]",
-    bgLight: "bg-pink-50",
-    textColor: "text-pink-600",
-    ringColor: "ring-pink-500/30",
   },
 ];
 
@@ -315,16 +302,11 @@ export default function HowItWorks() {
           </div>
 
           <h2 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.1] mb-5">
-            <span className="text-[#0f172a]">How </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">
-              StaffSchedule.io
-            </span>
-            <span className="text-[#0f172a]"> Works</span>
+            Learn How StaffSchedule.io Makes Scheduling Easy
           </h2>
 
           <p className="text-lg md:text-xl text-[#64748b] font-medium leading-relaxed">
-            From your first hire to your fiftieth shift — our staff scheduling platform is built to make workforce management feel effortless, not exhausting.{" "}
-            <strong className="text-[#0f172a] font-bold">Six simple steps. Zero confusion.</strong>
+            See how StaffSchedule.io helps you manage employee scheduling in a simple and organized way. Our easy-to-use staff scheduling software is built for busy teams, so you can create schedules, manage shifts, and keep your staff updated without confusion — all in just 5 simple steps.
           </p>
         </motion.div>
 

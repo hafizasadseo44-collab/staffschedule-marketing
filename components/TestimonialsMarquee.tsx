@@ -123,8 +123,7 @@ export default function TestimonialsMarquee() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-6 leading-[1.1] max-w-4xl mx-auto"
           >
-            Real Teams. Real Results. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-purple-500">Real Staff Scheduling Wins.</span>
+            What Our Customers Say
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -133,7 +132,7 @@ export default function TestimonialsMarquee() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-slate-500 font-medium max-w-3xl mx-auto leading-relaxed"
           >
-            We don't just promise better scheduling — our users live it every day. From retail floors to hospital wards, thousands of managers switched to StaffSchedule.io and never looked back. Here's what they're saying.
+            Businesses and managers use StaffSchedule.io every day to simplify staff scheduling, improve team communication, and keep their workforce organized.
           </motion.p>
         </div>
 

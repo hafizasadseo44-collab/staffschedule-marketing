@@ -98,7 +98,7 @@ export default function SplitHero() {
             transition={{ duration: 0.8 }}
             className="text-[2.1rem] sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight text-[#0f172a] mb-8 lg:mb-10 leading-[1.2] lg:leading-[1.1] drop-shadow-sm px-4"
           >
-            What If Staff Scheduling Took <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">Minutes, Not Hours?</span>
+            What if you could spend less time on <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">Staff scheduling</span> and more time growing your business?
           </motion.h1>
         </motion.div>
 
@@ -111,7 +111,7 @@ export default function SplitHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg sm:text-xl text-[#475569] font-medium leading-[1.8] mb-12 px-6 drop-shadow-sm"
           >
-            Your time is too valuable for spreadsheets. StaffSchedule.io is the work scheduling and employee <strong className="text-[#8b5cf6] font-bold">staff scheduling</strong> software that automates your shifts, eliminates confusion, and keeps your whole team connected — in one place.
+            Built for hardworking managers and growing teams, StaffSchedule.io helps businesses manage employee schedules, leaves, availability, Open Shifts, and team announcements in one simple place. Even with 50+ branches, our multi-location staff scheduling software makes it easy to manage every location, stay connected with employees and keep your team organized without the chaos.
           </motion.p>
 
           {/* CTAs */}

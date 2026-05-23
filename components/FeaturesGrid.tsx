@@ -18,93 +18,72 @@ const fadeInUp = {
 const featureTimelineData = [
   {
     id: 1,
-    title: "Team Management",
-    date: "Core Feature · Workforce",
-    content: "Add staff, assign roles, set permissions, and manage your entire workforce from one place. Whether you have 10 employees or 500, keeping your team organized has never been this straightforward.",
-    category: "Management",
-    icon: Users2,
-    relatedIds: [8, 2],
+    title: "Smart Staff Scheduling",
+    date: "Core Feature · Scheduling",
+    content: "Easily create team schedules in just a few clicks. StaffSchedule.io helps managers create shifts, set work hours, add break times, assign roles, and include notes from one simple dashboard. Once schedules are published, employees can instantly view their shifts from the web or mobile app.",
+    category: "Scheduling",
+    icon: CalendarCheck2,
+    relatedIds: [2, 6],
     status: "completed" as const,
-    energy: 98,
+    energy: 99,
   },
   {
     id: 2,
-    title: "Shift Swaps",
-    date: "Active · Flexibility",
-    content: "Life happens. When someone can't make their shift, our staff scheduling app lets employees request swaps instantly — and managers approve them in one click. No group chats. No confusion. No no-shows.",
-    category: "Operations",
-    icon: RefreshCw,
-    relatedIds: [5, 4],
+    title: "Team Management",
+    date: "Core Feature · Workforce",
+    content: "Easily add, edit, or manage team members from one simple dashboard. Set employee access levels, add staff details, and send secure invite links by email so employees can quickly join your workspace and access their schedules.",
+    category: "Management",
+    icon: Users2,
+    relatedIds: [1, 4],
     status: "completed" as const,
     energy: 95,
   },
   {
     id: 3,
-    title: "Multi-Location Management",
-    date: "Active · Scale",
-    content: "Managing more than one branch? Switch between locations in seconds, share staff across sites, and keep every team running smoothly — all from a single dashboard. Your workforce scheduling software grows with your business.",
-    category: "Enterprise",
-    icon: MapPin,
-    relatedIds: [6, 1],
+    title: "Shift Swap System",
+    date: "Active · Flexibility",
+    content: "StaffSchedule.io includes a simple shift swap system that allows employees to exchange shifts with teammates quickly and easily. It helps teams stay flexible and manage last-minute schedule changes without confusion.",
+    category: "Operations",
+    icon: RefreshCw,
+    relatedIds: [1, 6],
     status: "completed" as const,
     energy: 90,
   },
   {
     id: 4,
-    title: "Team Chat",
+    title: "Multi-Location Management",
+    date: "Active · Scale",
+    content: "No matter how many branches your business has, StaffSchedule.io keeps every team, location, and employee schedule organized in one place with our multi-location staff scheduling system.",
+    category: "Enterprise",
+    icon: MapPin,
+    relatedIds: [2, 5],
+    status: "completed" as const,
+    energy: 88,
+  },
+  {
+    id: 5,
+    title: "Team Chat & Communication",
     date: "Active · Communication",
-    content: "Stop hunting through WhatsApp threads and missed calls. Built-in messaging lets you send shift announcements, handle 1:1 conversations, and broadcast updates to your entire team — right inside your employee scheduling app.",
+    content: "Chat with your team, discuss schedules, and share important updates from one simple dashboard. StaffSchedule.io helps businesses avoid messy WhatsApp groups by keeping team communication and staff scheduling together in one place.",
     category: "Communication",
     icon: MessageSquare,
-    relatedIds: [6, 3],
+    relatedIds: [1, 6],
     status: "completed" as const,
     energy: 92,
   },
   {
-    id: 5,
-    title: "Smart Alerts",
+    id: 6,
+    title: "Smart Alerts & Notifications",
     date: "Active · Automation",
-    content: "Never get blindsided again. StaffSchedule.io automatically notifies managers about open shifts, late clock-ins, overtime risks, and availability conflicts — before they turn into real problems. Stay one step ahead, always.",
+    content: "StaffSchedule.io sends smart notifications through email, mobile and in-app alerts to keep employees updated about upcoming shifts, open shifts, leave requests and team announcements. This helps teams stay organized and avoid missed updates.",
     category: "Automation",
     icon: BellRing,
-    relatedIds: [2, 8],
+    relatedIds: [1, 5],
     status: "completed" as const,
-    energy: 85,
-  },
-  {
-    id: 6,
-    title: "Real-Time Analytics",
-    date: "Active · Insights",
-    content: "See exactly what's happening across your workforce — right now. Track labor costs, monitor scheduled vs actual hours, and spot inefficiencies before they hurt your bottom line. Data-driven work scheduling starts here.",
-    category: "Analytics",
-    icon: BarChart3,
-    relatedIds: [7, 3],
-    status: "completed" as const,
-    energy: 80,
-  },
-  {
-    id: 7,
-    title: "AI Forecasting",
-    date: "Active · Intelligence",
-    content: "Stop guessing how many people you need next Friday. Our AI studies your historical data, peak hours, and seasonal trends to recommend the right staffing levels — so your shift scheduling software works smarter, not harder.",
-    category: "AI",
-    icon: Brain,
-    relatedIds: [6, 8],
-    status: "completed" as const,
-    energy: 75,
-  },
-  {
-    id: 8,
-    title: "Smart Scheduling",
-    date: "Core Feature · Automation",
-    content: "Building a weekly schedule used to take hours. Now it takes minutes. Our online employee scheduling engine auto-fills shifts based on availability, roles, and labor rules — then flags anything that needs your attention. You stay in control. The platform does the heavy lifting.",
-    category: "Scheduling",
-    icon: CalendarCheck2,
-    relatedIds: [7, 1],
-    status: "completed" as const,
-    energy: 99,
+    energy: 96,
   },
 ];
+
 
 export default function FeaturesGrid() {
   const containerRef = useRef(null);
@@ -142,14 +121,11 @@ export default function FeaturesGrid() {
           </motion.div>
 
           <motion.h2 variants={fadeInUp} className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[1.05] drop-shadow-sm">
-            Everything Your Team Needs for <br className="hidden lg:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 drop-shadow-md">
-              Smarter Staff Scheduling
-            </span>
+            Our Staff Scheduling Software Has All the Tools to Make <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 drop-shadow-md">Employee Scheduling Easy</span>
           </motion.h2>
 
           <motion.p variants={fadeInUp} className="text-lg sm:text-xl lg:text-2xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto">
-            Most scheduling tools make you work around them. We built ours around you. From shift management to real-time insights — every feature in StaffSchedule.io solves a real problem your team faces every single week.
+            StaffSchedule.io comes with easy-to-use scheduling tools that help managers and teams handle daily scheduling tasks without confusion. From shift planning to team management, everything is designed to make work faster, simpler, and more organized.
           </motion.p>
         </motion.div>
 
