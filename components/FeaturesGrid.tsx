@@ -120,11 +120,11 @@ export default function FeaturesGrid() {
             Interactive Tour
           </motion.div>
 
-          <motion.h2 variants={fadeInUp} className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[1.05] drop-shadow-sm">
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight mb-6 leading-[1.15] drop-shadow-sm">
             Our Staff Scheduling Software Has All the Tools to Make <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 drop-shadow-md">Employee Scheduling Easy</span>
           </motion.h2>
 
-          <motion.p variants={fadeInUp} className="text-lg sm:text-xl lg:text-2xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-base sm:text-lg lg:text-xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto">
             StaffSchedule.io comes with easy-to-use scheduling tools that help managers and teams handle daily scheduling tasks without confusion. From shift planning to team management, everything is designed to make work faster, simpler, and more organized.
           </motion.p>
         </motion.div>
