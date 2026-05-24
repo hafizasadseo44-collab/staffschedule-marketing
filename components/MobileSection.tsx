@@ -129,85 +129,33 @@ export default function MobileSection() {
           <div className="lg:col-span-5 xl:col-span-6 relative flex justify-center items-center">
             
             {/* Floating Background Glow under device */}
-            <div className="absolute w-[350px] h-[350px] bg-gradient-to-br from-indigo-600/30 to-purple-600/30 blur-3xl rounded-[3rem] transform scale-90 pointer-events-none" />
+            <div className="absolute w-[450px] h-[450px] bg-gradient-to-br from-indigo-500/20 to-purple-500/20 blur-3xl rounded-full transform scale-90 pointer-events-none" />
 
-            {/* Interactive Phone Frame Container */}
+            {/* Main Showcase Image (User Uploaded Composite) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 60 }}
+              initial={{ opacity: 0, scale: 0.95, y: 40 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ rotateY: -6, rotateX: 6, scale: 1.03 }}
               style={{ perspective: 1200, transformStyle: "preserve-3d" }}
-              className="relative w-full max-w-[320px] sm:max-w-[350px] z-10 cursor-pointer"
+              className="relative w-full max-w-[450px] sm:max-w-[550px] lg:max-w-[650px] z-10 cursor-pointer"
             >
-              {/* Premium Phone Bezel (Hardware Mockup CSS) */}
-              <div 
-                className="relative rounded-[3rem] border-[10px] border-slate-900 bg-slate-950 p-2.5 overflow-hidden"
-                style={{ 
-                  boxShadow: "0 50px 100px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1) inset",
-                  transformStyle: "preserve-3d"
-                }}
-              >
-                {/* iPhone Dynamic Island / Notch */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-900 rounded-full z-30 flex items-center justify-between px-3.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-800" />
-                  <div className="w-12 h-1.5 bg-slate-800 rounded-full" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#0a122c] border border-slate-900 flex items-center justify-center">
-                    <div className="w-1 h-1 rounded-full bg-blue-900/50" />
-                  </div>
-                </div>
-
-                {/* The Mobile Screen Image */}
-                <div className="relative rounded-[2.25rem] overflow-hidden bg-slate-900 aspect-[9/19]">
-                  <img 
-                    src="/staffschedule-mobile.png" 
-                    alt="StaffSchedule.io Mobile App interface" 
-                    className="w-full h-full object-cover select-none"
-                    onError={(e) => {
-                      // Fallback image in case the file has any issue
-                      e.currentTarget.src = "/mobile-schedule-app.png";
-                    }}
-                  />
-                  {/* Subtle glare overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
-                </div>
-              </div>
-
-              {/* ── ORBITING / FLOATING INDICATORS ── */}
-              
-              {/* Widget 1: Notification (Top-Left) */}
               <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[12%] -left-[18%] z-20 hidden sm:flex items-center gap-3 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
-                style={{ transform: "translateZ(30px)" }}
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ rotateY: -4, rotateX: 4, scale: 1.02 }}
+                className="relative w-full"
               >
-                <div className="size-9 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Check size={16} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Shift Swap</p>
-                  <p className="text-xs font-black text-slate-900 leading-tight">Approved by Manager</p>
-                </div>
+                <img 
+                  src="/staffschedule-mobile.png" 
+                  alt="StaffSchedule.io Mobile App Showcase" 
+                  className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.15)] select-none"
+                  onError={(e) => {
+                    // Fallback image in case the file has any issue
+                    e.currentTarget.src = "/mobile-schedule-app.png";
+                  }}
+                />
               </motion.div>
-
-              {/* Widget 2: Message Notification (Bottom-Right) */}
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-[20%] -right-[18%] z-20 hidden sm:flex items-center gap-3 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
-                style={{ transform: "translateZ(40px)" }}
-              >
-                <div className="size-9 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <MessageSquare size={16} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">New Message</p>
-                  <p className="text-xs font-black text-slate-900 leading-tight">Emma W: "Thanks!"</p>
-                </div>
-              </motion.div>
-
             </motion.div>
 
             {/* Glowing background circles for modern premium aesthetic */}
