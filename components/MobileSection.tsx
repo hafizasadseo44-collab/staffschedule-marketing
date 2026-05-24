@@ -48,15 +48,15 @@ export default function MobileSection() {
   ];
 
   return (
-    <section className="relative py-24 lg:py-40 bg-[#0B0F19] overflow-hidden font-sans">
+    <section className="relative py-24 lg:py-40 bg-white overflow-hidden font-sans">
       {/* ── Background Grid & Ambient Glows ── */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {/* Modern Grid Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-60" />
         
         {/* Soft Radial Orbs */}
-        <div className="absolute top-0 right-[-10%] w-[800px] h-[800px] bg-gradient-to-br from-indigo-500/15 to-purple-600/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[700px] h-[700px] bg-gradient-to-tr from-pink-500/10 to-violet-600/15 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-[-10%] w-[800px] h-[800px] bg-gradient-to-br from-indigo-500/10 to-purple-600/5 rounded-full blur-[140px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[700px] h-[700px] bg-gradient-to-tr from-pink-500/5 to-violet-600/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="max-w-[1300px] mx-auto px-6 relative z-10">
@@ -71,18 +71,18 @@ export default function MobileSection() {
             viewport={{ once: true, margin: "-100px" }}
           >
             {/* Pill Badge */}
-            <motion.div variants={itemVariants} className="self-start inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-black text-[10px] uppercase tracking-[0.2em] mb-6 shadow-[0_4px_20px_-5px_rgba(99,102,241,0.3)]">
+            <motion.div variants={itemVariants} className="self-start inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-black text-[10px] uppercase tracking-[0.2em] mb-6 shadow-sm">
               <Smartphone size={12} className="animate-pulse" />
               Mobile Experience
             </motion.div>
 
             {/* Main Heading */}
-            <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black text-white tracking-tight mb-6 leading-[1.1]">
-              Your Workforce in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 drop-shadow-sm">Your Pocket</span>
+            <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight mb-6 leading-[1.1]">
+              Your Workforce in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-sm">Your Pocket</span>
             </motion.h2>
 
             {/* Description Paragraph */}
-            <motion.p variants={itemVariants} className="text-base sm:text-lg text-slate-300 font-medium leading-relaxed mb-10 max-w-2xl">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-10 max-w-2xl">
               Managers and employees shouldn't be chained to a desk. StaffSchedule.io gives your entire team the power to check schedules, request swaps, submit leave, and chat in real-time — all from a single intuitive mobile app.
             </motion.p>
 
@@ -94,14 +94,14 @@ export default function MobileSection() {
                   variants={itemVariants}
                   whileHover={{ x: 6 }}
                   transition={{ duration: 0.2 }}
-                  className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300 shadow-lg"
+                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300 shadow-sm"
                 >
                   <div className={`p-3 rounded-xl ${item.iconBg} ${item.iconColor} flex-shrink-0`}>
                     <item.icon size={18} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-100 mb-1">{item.title}</h3>
-                    <p className="text-xs sm:text-sm text-slate-400 font-medium leading-relaxed">{item.desc}</p>
+                    <h3 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h3>
+                    <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -118,9 +118,9 @@ export default function MobileSection() {
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </a>
 
-              <div className="flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-slate-300 font-black text-xs uppercase tracking-[0.12em]">Live Web App Sync</span>
+              <div className="flex items-center gap-3 px-6 py-3.5 rounded-xl bg-slate-50 border border-slate-200 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                <span className="text-slate-700 font-black text-xs uppercase tracking-[0.12em]">Live Web App Sync</span>
               </div>
             </motion.div>
           </motion.div>
@@ -180,15 +180,15 @@ export default function MobileSection() {
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[12%] -left-[18%] z-20 hidden sm:flex items-center gap-3 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                className="absolute top-[12%] -left-[18%] z-20 hidden sm:flex items-center gap-3 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
                 style={{ transform: "translateZ(30px)" }}
               >
-                <div className="size-9 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="size-9 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Check size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Shift Swap</p>
-                  <p className="text-xs font-black text-white leading-tight">Approved by Manager</p>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Shift Swap</p>
+                  <p className="text-xs font-black text-slate-900 leading-tight">Approved by Manager</p>
                 </div>
               </motion.div>
 
@@ -196,15 +196,15 @@ export default function MobileSection() {
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-[20%] -right-[18%] z-20 hidden sm:flex items-center gap-3 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                className="absolute bottom-[20%] -right-[18%] z-20 hidden sm:flex items-center gap-3 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
                 style={{ transform: "translateZ(40px)" }}
               >
-                <div className="size-9 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="size-9 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <MessageSquare size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">New Message</p>
-                  <p className="text-xs font-black text-white leading-tight">Emma W: "Thanks!"</p>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">New Message</p>
+                  <p className="text-xs font-black text-slate-900 leading-tight">Emma W: "Thanks!"</p>
                 </div>
               </motion.div>
 
