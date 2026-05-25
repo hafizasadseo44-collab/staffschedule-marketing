@@ -128,7 +128,7 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
         {/* View All CTA for Platform */}
         {type === 'platform' && (
           <motion.div variants={itemVariants} className="col-span-2 mt-4 px-4">
-            <LinkPreview 
+            <LinkPreview
               url="/features"
               className="group flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-brand-primary/5 transition-all duration-500 no-underline"
             >
@@ -138,6 +138,26 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
                 </div>
                 <span className="text-xs font-black text-brand-dark group-hover:text-brand-primary transition-colors duration-500 uppercase tracking-widest">
                   View All Platform Features
+                </span>
+              </div>
+              <Sparkles size={16} className="text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+            </LinkPreview>
+          </motion.div>
+        )}
+
+        {/* View All CTA for Solutions */}
+        {type === 'solutions' && (
+          <motion.div variants={itemVariants} className="col-span-2 mt-4 px-4">
+            <LinkPreview
+              url="/industries"
+              className="group flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-brand-primary/5 transition-all duration-500 no-underline"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-brand-primary shadow-sm">
+                  <ArrowRight size={16} />
+                </div>
+                <span className="text-xs font-black text-brand-dark group-hover:text-brand-primary transition-colors duration-500 uppercase tracking-widest">
+                  View All 31+ Industries
                 </span>
               </div>
               <Sparkles size={16} className="text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity" />

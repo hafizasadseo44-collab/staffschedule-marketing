@@ -57,6 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/employee-schedule-maker`,       lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/time-clock-software`,           lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/team-messaging`,                lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/industries`,                    lastModified: now, changeFrequency: "monthly", priority: 0.9 },
 
     // ── Features Hub + All Sub-Pages ──────────────────────────────
     { url: `${BASE}/features`,                      lastModified: now, changeFrequency: "monthly", priority: 0.9 },

@@ -1,12 +1,12 @@
-import { 
-  Calendar, 
-  Clock, 
-  Users, 
-  Bell, 
-  BarChart3, 
-  Utensils, 
-  ShoppingBag, 
-  HeartPulse, 
+import {
+  Calendar,
+  Clock,
+  Users,
+  Bell,
+  BarChart3,
+  Utensils,
+  ShoppingBag,
+  HeartPulse,
   ShieldCheck,
   BookOpen,
   FileText,
@@ -16,7 +16,11 @@ import {
   Building2,
   Target,
   Briefcase,
-  Newspaper
+  Newspaper,
+  MessageSquare,
+  MapPin,
+  HardHat,
+  GraduationCap,
 } from "lucide-react";
 
 export interface NavItemType {
@@ -34,15 +38,27 @@ export interface MegaMenuCategory {
 export const PLATFORM_ITEMS: NavItemType[] = [
   {
     title: "Scheduling",
-    description: "Automated dragging & drop shifts.",
+    description: "Drag-and-drop shifts in minutes.",
     href: "/employee-schedule-maker",
     icon: Calendar,
   },
   {
-    title: "Time Tracking",
-    description: "Clock in from any device with GPS.",
-    href: "/features/attendance",
+    title: "Time Clock",
+    description: "GPS clock-in from any device.",
+    href: "/time-clock-software",
     icon: Clock,
+  },
+  {
+    title: "Team Messaging",
+    description: "Group chats without phone numbers.",
+    href: "/team-messaging",
+    icon: MessageSquare,
+  },
+  {
+    title: "AI Forecasting",
+    description: "Predict demand with 98% accuracy.",
+    href: "/features/ai",
+    icon: BarChart3,
   },
   {
     title: "Payroll Connect",
@@ -55,18 +71,6 @@ export const PLATFORM_ITEMS: NavItemType[] = [
     description: "Stay ahead of labor laws & OT.",
     href: "/features/compliance",
     icon: ShieldCheck,
-  },
-  {
-    title: "Team Comms",
-    description: "Instant alerts for shift changes.",
-    href: "/features/announcements",
-    icon: Bell,
-  },
-  {
-    title: "AI Forecasting",
-    description: "Predict demand with 98% accuracy.",
-    href: "/features/ai",
-    icon: BarChart3,
   },
 ];
 
@@ -94,6 +98,18 @@ export const SOLUTIONS_ITEMS: NavItemType[] = [
     description: "Precision scheduling for patrol.",
     href: "/solutions/security",
     icon: ShieldCheck,
+  },
+  {
+    title: "Construction",
+    description: "GPS-verified site scheduling.",
+    href: "/industries",
+    icon: HardHat,
+  },
+  {
+    title: "Education",
+    description: "Faculty and staff coordination.",
+    href: "/industries",
+    icon: GraduationCap,
   },
 ];
 
