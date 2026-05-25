@@ -18,12 +18,19 @@ export const metadata: Metadata = {
   title: "Labor Law Compliance Software | Risk Management | StaffSchedule.io",
   description: "Protect your business with automated labor law compliance. StaffSchedule.io proactively monitors rest periods, shift limits, and employment rules to ensure your roster is always legal.",
   keywords: ["labor compliance software", "staff rest period tracker", "employment law auditing", "workforce risk management", "SaaS compliance portal"],
+  alternates: { canonical: "https://staffschedule.io/features/compliance" },
   openGraph: {
     title: "Proactive Labor Compliance | StaffSchedule.io",
     description: "Zero-risk scheduling with automated law auditing baked into every shift.",
     url: "https://staffschedule.io/features/compliance",
-    images: [{ url: "/images/attendance-manager-v1.jpg", width: 1200, height: 630, alt: "StaffSchedule.io Compliance Audit" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Labor Compliance — StaffSchedule.io" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Labor Compliance Software | StaffSchedule.io",
+    description: "Automated labor law compliance. Protect your business from scheduling violations.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

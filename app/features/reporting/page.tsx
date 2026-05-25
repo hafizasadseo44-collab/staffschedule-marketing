@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Business Intelligence & Labor Reporting | StaffSchedule.io",
   description: "Get total visibility into your labor costs. StaffSchedule.io provides advanced reporting, automated payroll exports, and real-time business intelligence for multi-unit managers.",
   keywords: ["labor reporting software", "workforce business intelligence", "payroll export tools", "scheduling analytics", "manager productivity reports", "SaaS BI tools"],
+  alternates: { canonical: "https://staffschedule.io/features/reporting" },
   openGraph: {
-    title: "Insightful Labor Reporting | StaffSchedule.io",
+    title: "Labor Reporting & Business Intelligence | StaffSchedule.io",
     description: "Data-driven decisions start with high-fidelity reporting. Export your success instantly.",
     url: "https://staffschedule.io/features/reporting",
-    images: [{ url: "/images/reporting-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Reporting Dashboard" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Workforce Reporting — StaffSchedule.io" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Labor Reporting | StaffSchedule.io",
+    description: "Real-time labor cost reporting and payroll export for multi-unit managers.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

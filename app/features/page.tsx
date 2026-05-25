@@ -6,21 +6,23 @@ import FeaturePillarShowcase from "@/components/features/FeaturePillarShowcase";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "All Powerful Features | StaffSchedule.io - The Ultimate Workforce OS",
-  description: "Explore the complete StaffSchedule.io feature set: From world-class scheduling and leave management to enterprise-grade analytics and multi-location control.",
+  title: "All Features | StaffSchedule.io — The Complete Workforce Management Platform",
+  description: "Explore every StaffSchedule.io feature: AI scheduling, leave management, GPS attendance, shift swaps, analytics, multi-location control, and team communication — all in one platform.",
   keywords: ["scheduling features", "team chat for work", "leave management system", "automated shift swaps", "workforce analytics tools", "multi-site scheduling features"],
+  alternates: { canonical: "https://staffschedule.io/features" },
   openGraph: {
-    title: "Everything you need to lead your team | StaffSchedule.io",
+    title: "All Features | StaffSchedule.io",
     description: "One platform. Infinite possibilities. Discover the tools driving efficiency for thousands of teams.",
-    images: ["/images/features-reporting-v1.jpg"],
+    url: "https://staffschedule.io/features",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "StaffSchedule.io Features" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "StaffSchedule.io Features Hub",
     description: "The all-in-one operating system for the modern workforce.",
-    images: ["/images/features-reporting-v1.jpg"],
-  }
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

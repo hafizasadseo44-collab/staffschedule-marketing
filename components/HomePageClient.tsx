@@ -7,17 +7,16 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LazySection } from "@/components/ui/lazy-section";
 
-// --- Dynamically Imported Components (Below the fold — ssr:false saves server CPU) ---
-
-const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: false });
-const PremiumShowcaseSection = dynamic(() => import("@/components/PremiumShowcaseSection"), { ssr: false });
-const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: false });
-const MobileSection = dynamic(() => import("@/components/MobileSection"), { ssr: false });
-const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: false });
-const PricingTable = dynamic(() => import("@/components/PricingTable"), { ssr: false });
-const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"), { ssr: false });
-const FAQSection = dynamic(() => import("@/components/FAQSection"), { ssr: false });
-const EliteFinalCTA = dynamic(() => import("@/components/EliteFinalCTA"), { ssr: false });
+// SSR-enabled dynamic imports — content visible to search engines while still code-split
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"));
+const PremiumShowcaseSection = dynamic(() => import("@/components/PremiumShowcaseSection"));
+const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"));
+const MobileSection = dynamic(() => import("@/components/MobileSection"));
+const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"));
+const PricingTable = dynamic(() => import("@/components/PricingTable"));
+const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"));
+const FAQSection = dynamic(() => import("@/components/FAQSection"));
+const EliteFinalCTA = dynamic(() => import("@/components/EliteFinalCTA"));
 
 
 export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any[] }) {

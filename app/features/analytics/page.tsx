@@ -14,18 +14,20 @@ export const metadata: Metadata = {
   title: "Labor Cost Analytics & Workforce Reporting Software | StaffSchedule.io",
   description: "Stop profit leakage with real-time labor cost analytics. Track overtime, automate payroll exports, and calculate ROI with StaffSchedule.io. Professional reporting for smarter workforce management.",
   keywords: ["labor cost analytics", "workforce reporting", "overtime alerts", "payroll automation", "ROI calculator", "labor spend tracking", "POS integration for scheduling"],
+  alternates: { canonical: "https://staffschedule.io/features/analytics" },
   openGraph: {
     title: "Labor Cost Analytics & Workforce Reporting | StaffSchedule.io",
     description: "Master your profit margins with real-time labor spend oversight and automated reporting.",
-    images: ["/images/analytics-dashboard-v1.jpg"],
+    url: "https://staffschedule.io/features/analytics",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Labor Cost Analytics — StaffSchedule.io" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Labor Cost Analytics & Workforce Reporting",
     description: "Track your labor costs in real-time and eliminate expensive overtime.",
-    images: ["/images/analytics-dashboard-v1.jpg"],
-  }
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

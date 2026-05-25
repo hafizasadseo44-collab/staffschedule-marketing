@@ -6,9 +6,23 @@ import AeoSection from "@/components/features/AeoSection";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Payroll Integration & Sync | StaffSchedule.io",
-  description: "Connect your scheduling data directly to your payroll provider. Automated exports for ADP, Gusto, and more. Reduce errors and save hours every week.",
-  keywords: ["payroll integration", "Gusto sync", "ADP workforce scheduling", "automated labor costs", "payroll automation"],
+  title: "Payroll Integration & Automated Sync | StaffSchedule.io",
+  description: "Connect your scheduling data directly to your payroll provider. One-click exports to ADP, Gusto, QuickBooks, and 40+ more. Reduce payroll errors and save hours every pay cycle.",
+  keywords: ["payroll integration", "Gusto sync", "ADP workforce scheduling", "automated labor costs", "payroll automation", "QuickBooks scheduling sync"],
+  alternates: { canonical: "https://staffschedule.io/features/payroll" },
+  openGraph: {
+    title: "Payroll Integration & Automated Sync | StaffSchedule.io",
+    description: "One-click payroll export to ADP, Gusto, QuickBooks, and 40+ providers.",
+    url: "https://staffschedule.io/features/payroll",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Payroll Integration — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Payroll Integration | StaffSchedule.io",
+    description: "Automated payroll sync. Reduce errors, save hours every week.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

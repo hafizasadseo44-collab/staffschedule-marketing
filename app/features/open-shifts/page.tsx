@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Shift Marketplace & Open Shift Management | StaffSchedule.io",
   description: "Stop the scramble for coverage. Post open shifts to your team instantly. Our shift marketplace allows qualified staff to claim extra hours, reducing overtime and filling gaps fast.",
   keywords: ["open shift management", "staff shift marketplace", "claim extra shifts app", "workforce coverage tool", "on-call shift software", "SaaS scheduling marketplace"],
+  alternates: { canonical: "https://staffschedule.io/features/open-shifts" },
   openGraph: {
-    title: "The Ultimate Shift Marketplace | StaffSchedule.io",
+    title: "Open Shift Marketplace | StaffSchedule.io",
     description: "Fill every shift without making a single call using our mobile-first Open Shift hub.",
     url: "https://staffschedule.io/features/open-shifts",
-    images: [{ url: "/images/open-shifts-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Open Shifts Interface" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Open Shift Marketplace — StaffSchedule.io" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Open Shift Management | StaffSchedule.io",
+    description: "Post open shifts. Staff claim them instantly. Zero scramble.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

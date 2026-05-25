@@ -9,7 +9,21 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Hospitality Staff Scheduling Software | StaffSchedule.io",
   description: "Elite scheduling for restaurants, hotels, and bars. Reduce turnover, manage kitchen rotas, and stay compliant with StaffSchedule.io.",
-  keywords: ["restaurant scheduling", "hospitality workforce management", "hotel staff rota", "kitchen scheduling software"],
+  keywords: ["restaurant scheduling", "hospitality workforce management", "hotel staff rota", "kitchen scheduling software", "restaurant rota planner"],
+  alternates: { canonical: "https://staffschedule.io/solutions/hospitality" },
+  openGraph: {
+    title: "Hospitality Scheduling Software | StaffSchedule.io",
+    description: "Perfect rotas for restaurants, hotels, and bars. Reduce turnover and stay compliant.",
+    url: "https://staffschedule.io/solutions/hospitality",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Hospitality Scheduling — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hospitality Staff Scheduling | StaffSchedule.io",
+    description: "The scheduling platform built for restaurants, hotels, and hospitality teams.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

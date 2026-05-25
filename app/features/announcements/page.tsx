@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Staff Announcements & Digital Noticeboard | StaffSchedule.io",
   description: "Ditch the group texts. Communicate officially with your workforce using digital announcements, read-receipts, and mandatory acknowledgment signatures. Ensure compliance across all locations.",
   keywords: ["staff announcements app", "digital noticeboard for work", "employee internal communications", "workplace news portal", "compliance communication software", "SaaS team hub"],
+  alternates: { canonical: "https://staffschedule.io/features/announcements" },
   openGraph: {
-    title: "Official Staff Announcements | StaffSchedule.io",
+    title: "Staff Announcements & Digital Noticeboard | StaffSchedule.io",
     description: "Digital accountability for every team update. See who read what, instantly.",
     url: "https://staffschedule.io/features/announcements",
-    images: [{ url: "/images/announcements-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Announcements Dashboard" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Staff Announcements — StaffSchedule.io" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Staff Announcements | StaffSchedule.io",
+    description: "Official digital announcements with read-receipts for your entire team.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

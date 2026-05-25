@@ -11,8 +11,23 @@ import AttendanceOfflineSync from "@/components/features/AttendanceOfflineSync";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GPS Time Clock & Employee Attendance Software",
-  description: "Track employee hours with precision. StaffSchedule.io offers GPS geofencing, automated timesheets, and real-time attendance tracking for your team.",
+  title: "GPS Time Clock & Employee Attendance Tracking | StaffSchedule.io",
+  description: "Track employee hours with precision. StaffSchedule.io offers GPS geofencing, automated timesheets, and real-time attendance tracking to eliminate time theft.",
+  keywords: ["GPS time clock", "employee attendance software", "geofencing time tracking", "automated timesheets", "employee clock-in app"],
+  alternates: { canonical: "https://staffschedule.io/features/attendance" },
+  openGraph: {
+    title: "GPS Time Clock & Attendance Tracking | StaffSchedule.io",
+    description: "GPS geofencing, automated timesheets, and real-time attendance tracking.",
+    url: "https://staffschedule.io/features/attendance",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Employee Attendance Tracking — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GPS Attendance Tracking | StaffSchedule.io",
+    description: "Eliminate time theft with GPS geofencing and automated timesheets.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

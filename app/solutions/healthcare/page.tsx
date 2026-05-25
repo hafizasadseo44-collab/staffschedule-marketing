@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   title: "Healthcare Workforce Scheduling Software | StaffSchedule.io",
   description: "Critical shift coverage for hospital systems and clinics. Manage nurse-to-patient ratios, track certifications, and ensure compliance with StaffSchedule.io.",
   keywords: ["healthcare scheduling", "nurse staffing software", "hospital rota management", "clinical workforce platform"],
+  alternates: { canonical: "https://staffschedule.io/solutions/healthcare" },
+  openGraph: {
+    title: "Healthcare Staff Scheduling | StaffSchedule.io",
+    description: "Critical shift coverage for hospitals and clinics. Nurse ratio tracking and certification alerts.",
+    url: "https://staffschedule.io/solutions/healthcare",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Healthcare Scheduling — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Healthcare Scheduling Software | StaffSchedule.io",
+    description: "Ensure patient safety with intelligent shift mapping and compliance tracking.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

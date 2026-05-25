@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Employee Leave Management Software | StaffSchedule.io",
   description: "Automate your employee time off requests, holiday tracking, and sick leave. Smart conflict detection ensures your shifts are always covered. Syncs perfectly with payroll.",
   keywords: ["leave management software", "holiday tracking app", "employee time off system", "sick leave management", "staff holiday planner", "SaaS leave tools"],
+  alternates: { canonical: "https://staffschedule.io/features/leave-management" },
   openGraph: {
     title: "Employee Leave Management Software | StaffSchedule.io",
     description: "Digital leave management that detects scheduling conflicts before they happen.",
     url: "https://staffschedule.io/features/leave-management",
-    images: [{ url: "/images/leave-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Leave Management View" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "StaffSchedule.io Leave Management" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Employee Leave Management | StaffSchedule.io",
+    description: "Automated leave tracking with smart conflict detection.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

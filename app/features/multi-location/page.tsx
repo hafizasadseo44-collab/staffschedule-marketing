@@ -16,18 +16,20 @@ export const metadata: Metadata = {
   title: "Multi-Location Staff Management & Scheduling Software | StaffSchedule.io",
   description: "Scale your empire with professional multi-site management. Shared staff pools, centralized regional reporting, and cross-location compliance for franchises and large organizations.",
   keywords: ["multi-location scheduling", "franchise staff management", "shared labor pool", "regional workforce reporting", "multi-site time tracking", "enterprise resource management"],
+  alternates: { canonical: "https://staffschedule.io/features/multi-location" },
   openGraph: {
-    title: "Multi-Location & Enterprise Staff Management | StaffSchedule.io",
+    title: "Multi-Location Staff Management | StaffSchedule.io",
     description: "Built for scale. Manage hundreds of branches, share staff seamlessly, and maintain global control from one dashboard.",
-    images: ["/images/multi-location-global-v1.jpg"],
+    url: "https://staffschedule.io/features/multi-location",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Multi-Location Scheduling — StaffSchedule.io" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Multi-Location Enterprise Scheduling",
+    title: "Multi-Location Enterprise Scheduling | StaffSchedule.io",
     description: "Unified control for your entire multi-site operation.",
-    images: ["/images/multi-location-global-v1.jpg"],
-  }
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

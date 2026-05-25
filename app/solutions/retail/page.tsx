@@ -9,7 +9,21 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Retail Staff Scheduling Software | StaffSchedule.io",
   description: "Scale your storefront workforce with ease. StaffSchedule.io offers multi-location management, sales surge forecasting, and peak-season scheduling for retail leaders.",
-  keywords: ["retail scheduling", "storefront management", "retail workforce software", "multi-location staffing"],
+  keywords: ["retail scheduling", "storefront management", "retail workforce software", "multi-location staffing", "retail rota planner"],
+  alternates: { canonical: "https://staffschedule.io/solutions/retail" },
+  openGraph: {
+    title: "Retail Workforce Scheduling | StaffSchedule.io",
+    description: "Multi-location management and peak-season scheduling for retail leaders.",
+    url: "https://staffschedule.io/solutions/retail",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Retail Scheduling — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Retail Staff Scheduling | StaffSchedule.io",
+    description: "Scale your retail workforce across multiple locations with ease.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

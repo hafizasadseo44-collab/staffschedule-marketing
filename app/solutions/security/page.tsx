@@ -7,9 +7,23 @@ import AeoSection from "@/components/features/AeoSection";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Security Workforce Scheduling Software | StaffSchedule.io",
-  description: "Precision scheduling for patrol and site security. Track guards in real-time, validate post attendance, and reduce incident response times.",
-  keywords: ["security scheduling", "guard management software", "patrol tracking", "workforce staffing for security"],
+  title: "Security Guard Scheduling Software | StaffSchedule.io",
+  description: "Precision scheduling for patrol and site security. Track guards in real-time, validate post attendance, and reduce incident response times with StaffSchedule.io.",
+  keywords: ["security scheduling", "guard management software", "patrol tracking", "workforce staffing for security", "security guard rota"],
+  alternates: { canonical: "https://staffschedule.io/solutions/security" },
+  openGraph: {
+    title: "Security Guard Scheduling | StaffSchedule.io",
+    description: "Real-time guard tracking, post attendance validation, and compliance for security teams.",
+    url: "https://staffschedule.io/solutions/security",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Security Scheduling — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Security Workforce Scheduling | StaffSchedule.io",
+    description: "GPS-verified guard attendance and precision scheduling for security teams.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

@@ -6,9 +6,23 @@ import AeoSection from "@/components/features/AeoSection";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "AI Demand Forecasting | StaffSchedule.io",
+  title: "AI Demand Forecasting & Predictive Scheduling | StaffSchedule.io",
   description: "Stop guessing your staffing needs. StaffSchedule.io uses advanced AI to predict labor demand with 98% accuracy based on historical sales and foot traffic.",
   keywords: ["AI forecasting", "predictive scheduling", "labor demand modeling", "machine learning workforce management", "AI workforce tools"],
+  alternates: { canonical: "https://staffschedule.io/features/ai" },
+  openGraph: {
+    title: "AI Demand Forecasting | StaffSchedule.io",
+    description: "Predict your staffing needs with 98% accuracy. Powered by advanced AI.",
+    url: "https://staffschedule.io/features/ai",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "AI Scheduling Forecasting — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Demand Forecasting | StaffSchedule.io",
+    description: "98% accurate labor demand prediction. Eliminate scheduling guesswork.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

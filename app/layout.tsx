@@ -34,14 +34,11 @@ export const metadata: Metadata = {
     images: ["/staffschedule-dashboard.png"],
   },
   keywords: ["staff scheduling", "employee scheduling", "workforce management", "shift planner", "labor cost optimization", "team communication"],
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
-    },
-  },
+  // Controlled by SITE_PRIVATE_MODE env var.
+  // Set SITE_PRIVATE_MODE=false to enable indexing on launch.
+  robots: process.env.SITE_PRIVATE_MODE !== "false"
+    ? { index: false, follow: false, googleBot: { index: false, follow: false } }
+    : { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
 };
 
 
@@ -64,14 +61,10 @@ export default async function RootLayout({
   return (
     <html lang="en" className={cn("h-full font-sans", geist.variable)} suppressHydrationWarning>
       <head>
-        {/* Preconnect for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* DNS prefetch for external image hosts */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Preload hero LCP image to improve Core Web Vitals */}
-        <link rel="preload" href="/staffschedule-dashboard.png" as="image" type="image/png" />
-        {/* Theme colour for mobile browsers */}
+        {/* Preload hero LCP image */}
+        <link rel="preload" href="/staffschedule-dashboard.png" as="image" type="image/png" fetchPriority="high" />
         <meta name="theme-color" content="#4F46E5" />
         <meta name="color-scheme" content="light" />
       </head>

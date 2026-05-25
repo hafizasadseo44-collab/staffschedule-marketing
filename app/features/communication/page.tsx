@@ -11,8 +11,23 @@ import ChatTranslation from "@/components/features/ChatTranslation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Team Messaging & Communication Platform for Staff",
-  description: "Centralize your team communication with StaffSchedule.io. Built-in staff chat, instant push notifications, and shift-related messaging for focused collaboration.",
+  title: "Team Messaging & Staff Communication Platform | StaffSchedule.io",
+  description: "Centralize your team communication with StaffSchedule.io. Built-in staff chat, instant push notifications, and shift-related messaging — no more group texts.",
+  keywords: ["team messaging app", "staff communication software", "workplace chat platform", "employee push notifications", "shift communication tool"],
+  alternates: { canonical: "https://staffschedule.io/features/communication" },
+  openGraph: {
+    title: "Team Communication for Shift Workers | StaffSchedule.io",
+    description: "Replace group texts with a professional team messaging platform built for shift workers.",
+    url: "https://staffschedule.io/features/communication",
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Staff Communication Platform — StaffSchedule.io" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Staff Messaging Platform | StaffSchedule.io",
+    description: "Centralized team communication built for shift workers.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
+  },
 };
 
 const FAQS = [

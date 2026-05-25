@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Employee Shift Swap Software | Roster Trades | StaffSchedule.io",
   description: "Stop the back-and-forth management of shift trades. StaffSchedule.io allows your employees to negotiate and swap shifts directly from their phones, with automated labor rule verification.",
   keywords: ["shift swap software", "employee roster trades", "workforce coverage app", "peer to peer shift swapping", "staff trade management", "SaaS scheduling portal"],
+  alternates: { canonical: "https://staffschedule.io/features/shift-swaps" },
   openGraph: {
-    title: "Simplified Shift Swapping | StaffSchedule.io",
+    title: "Shift Swap Software | StaffSchedule.io",
     description: "Delegated authority for shift trades. Managers save time, staff get flexibility.",
     url: "https://staffschedule.io/features/shift-swaps",
-    images: [{ url: "/images/shift-swaps-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Shift Swap User Interface" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "StaffSchedule.io Shift Swap Management" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shift Swap Software | StaffSchedule.io",
+    description: "Let staff swap shifts from their phones — with manager approval.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 

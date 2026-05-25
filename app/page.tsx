@@ -68,17 +68,20 @@ export const metadata: Metadata = {
   },
 
   // ── Robots ────────────────────────────────────────────────────
-  robots: {
-    index: false,
-    follow: false,
-    googleBot: {
-      index: false,
-      follow: false,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
+  // Set SITE_PRIVATE_MODE=false in .env to enable indexing on launch.
+  robots: process.env.SITE_PRIVATE_MODE !== "false"
+    ? { index: false, follow: false, googleBot: { index: false, follow: false } }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      },
 
   // ── App info ──────────────────────────────────────────────────
   applicationName: "StaffSchedule.io",

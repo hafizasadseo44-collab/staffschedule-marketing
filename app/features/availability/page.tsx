@@ -17,12 +17,19 @@ export const metadata: Metadata = {
   title: "Staff Availability Software | Employee Planning | StaffSchedule.io",
   description: "Reduce no-shows and scheduling conflicts. StaffSchedule.io allows your employees to set their own availability from their phones, giving you the perfect layout for every shift.",
   keywords: ["staff availability software", "employee scheduling preferences", "workforce availability app", "shift planning tools", "availability tracking system"],
+  alternates: { canonical: "https://staffschedule.io/features/availability" },
   openGraph: {
     title: "Staff Availability Management | StaffSchedule.io",
     description: "Empower your team and simplify your scheduling with staff-led availability.",
     url: "https://staffschedule.io/features/availability",
-    images: [{ url: "/images/availability-hero-v1.png", width: 1200, height: 630, alt: "StaffSchedule.io Availability Interface" }],
+    images: [{ url: "https://staffschedule.io/staffschedule-dashboard.png", width: 1200, height: 630, alt: "Staff Availability Software — StaffSchedule.io" }],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Staff Availability Software | StaffSchedule.io",
+    description: "Reduce no-shows. Let staff set their own availability from their phones.",
+    images: ["https://staffschedule.io/staffschedule-dashboard.png"],
   },
 };
 
