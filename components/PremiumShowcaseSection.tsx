@@ -196,29 +196,15 @@ const STATS = [
 
 export default function PremiumShowcaseSection() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [testimonialProgress, setTestimonialProgress] = useState(0);
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, margin: "-100px" });
 
-  // Auto-rotate testimonials with progress
+  // Auto-rotate testimonials
   useEffect(() => {
-    const DURATION = 6000;
-    const startTime = Date.now();
-    let animFrame: number;
-
-    const tick = () => {
-      const elapsed = Date.now() - startTime;
-      const pct = Math.min((elapsed / DURATION) * 100, 100);
-      setTestimonialProgress(pct);
-      if (pct >= 100) {
-        setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-        return;
-      }
-      animFrame = requestAnimationFrame(tick);
-    };
-    animFrame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animFrame);
-  }, [activeTestimonial]);
+    const timer = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Mouse parallax for Part 1 dashboard
   const mouseX = useMotionValue(0);
@@ -672,7 +658,7 @@ export default function PremiumShowcaseSection() {
                 {testimonials.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => { setActiveTestimonial(i); setTestimonialProgress(0); }}
+                    onClick={() => { setActiveTestimonial(i); }}
                     className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300"
                     style={{ width: i === activeTestimonial ? 32 : 8 }}
                   >
@@ -680,7 +666,9 @@ export default function PremiumShowcaseSection() {
                     {i === activeTestimonial && (
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full origin-left"
-                        style={{ scaleX: testimonialProgress / 100 }}
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 6, ease: "linear" }}
                       />
                     )}
                     {i < activeTestimonial && (
