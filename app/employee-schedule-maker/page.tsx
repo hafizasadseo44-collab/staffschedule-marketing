@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import {
+  motion, useInView, AnimatePresence, type Variants, type Transition,
+  useMotionValue, useTransform, useSpring as useMotionSpring,
+} from "framer-motion";
 import {
   ArrowRight, CheckCircle2, Star, Users, Calendar, Clock,
   Smartphone, MessageSquare, MapPin, BarChart3, ShieldCheck,
@@ -14,12 +17,16 @@ import {
 } from "lucide-react";
 import IndustryShowcase from "@/components/IndustryShowcase";
 
-/* ─── helpers ─── */
+/* ─── animation helpers ─── */
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
+  hidden: { opacity: 0, y: 36 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
 };
-const stagger: Variants = { visible: { transition: { staggerChildren: 0.1 } } };
+const stagger: Variants = { visible: { transition: { staggerChildren: 0.11 } } };
+const springCard: Transition = { type: "spring", stiffness: 280, damping: 22 };
 
 /* ─── AVATARS ─── */
 const AVATARS = [
@@ -31,31 +38,31 @@ const AVATARS = [
 
 /* ─── FEATURES ─── */
 const FEATURES = [
-  { icon: CalendarCheck2, color: "from-indigo-500 to-indigo-700", bg: "bg-indigo-50", text: "text-indigo-600", title: "Drag-and-Drop Scheduling", desc: "Build weekly and monthly shift schedules in minutes with an intuitive drag-and-drop editor. Publish to your whole team instantly." },
-  { icon: Users, color: "from-purple-500 to-purple-700", bg: "bg-purple-50", text: "text-purple-600", title: "Employee Availability", desc: "Staff set their availability directly in the app. Schedules automatically reflect who is available so you never double-book again." },
-  { icon: Repeat, color: "from-fuchsia-500 to-fuchsia-700", bg: "bg-fuchsia-50", text: "text-fuchsia-600", title: "Shift Swaps & Open Shifts", desc: "Let employees trade shifts and claim open shifts themselves. Managers get a one-click approval so coverage is always maintained." },
-  { icon: Bell, color: "from-sky-500 to-sky-700", bg: "bg-sky-50", text: "text-sky-600", title: "Real-Time Notifications", desc: "Every schedule change, shift approval, and leave update is pushed to employees instantly via the mobile app." },
-  { icon: BarChart3, color: "from-emerald-500 to-emerald-700", bg: "bg-emerald-50", text: "text-emerald-600", title: "Labor Cost Analytics", desc: "Monitor labor costs, overtime risks, and team productivity in real time. Make smarter scheduling decisions with live data." },
-  { icon: MapPin, color: "from-rose-500 to-rose-700", bg: "bg-rose-50", text: "text-rose-600", title: "Multi-Location Management", desc: "Manage schedules for multiple business locations from a single dashboard. Each site has its own staff, shifts, and access controls." },
-  { icon: ShieldCheck, color: "from-amber-500 to-amber-700", bg: "bg-amber-50", text: "text-amber-600", title: "Leave & Time-Off Requests", desc: "Employees request leave from the app. Managers approve in one tap. Schedules auto-update to reflect approved time off." },
-  { icon: MessageSquare, color: "from-teal-500 to-teal-700", bg: "bg-teal-50", text: "text-teal-600", title: "Built-In Team Chat", desc: "Replace chaotic WhatsApp groups with a professional team messaging system built directly inside the scheduling platform." },
+  { icon: CalendarCheck2, color: "from-indigo-500 to-indigo-700", glow: "rgba(99,102,241,0.18)", title: "Drag-and-Drop Scheduling", desc: "Build weekly and monthly shift schedules in minutes with an intuitive drag-and-drop editor. Publish to your whole team instantly." },
+  { icon: Users, color: "from-purple-500 to-purple-700", glow: "rgba(139,92,246,0.18)", title: "Employee Availability", desc: "Staff set their availability directly in the app. Schedules automatically reflect who is available so you never double-book again." },
+  { icon: Repeat, color: "from-fuchsia-500 to-fuchsia-700", glow: "rgba(217,70,239,0.18)", title: "Shift Swaps & Open Shifts", desc: "Let employees trade shifts and claim open shifts themselves. Managers get a one-click approval so coverage is always maintained." },
+  { icon: Bell, color: "from-sky-500 to-sky-700", glow: "rgba(14,165,233,0.18)", title: "Real-Time Notifications", desc: "Every schedule change, shift approval, and leave update is pushed to employees instantly via the mobile app." },
+  { icon: BarChart3, color: "from-emerald-500 to-emerald-700", glow: "rgba(16,185,129,0.18)", title: "Labor Cost Analytics", desc: "Monitor labor costs, overtime risks, and team productivity in real time. Make smarter scheduling decisions with live data." },
+  { icon: MapPin, color: "from-rose-500 to-rose-700", glow: "rgba(244,63,94,0.18)", title: "Multi-Location Management", desc: "Manage schedules for multiple business locations from a single dashboard. Each site has its own staff, shifts, and access controls." },
+  { icon: ShieldCheck, color: "from-amber-500 to-amber-700", glow: "rgba(245,158,11,0.18)", title: "Leave & Time-Off Requests", desc: "Employees request leave from the app. Managers approve in one tap. Schedules auto-update to reflect approved time off." },
+  { icon: MessageSquare, color: "from-teal-500 to-teal-700", glow: "rgba(20,184,166,0.18)", title: "Built-In Team Chat", desc: "Replace chaotic WhatsApp groups with a professional team messaging system built directly inside the scheduling platform." },
 ];
 
 /* ─── HOW IT WORKS ─── */
 const STEPS = [
-  { num: "01", icon: UserPlus, color: "#6366f1", bg: "bg-indigo-50", text: "text-indigo-600", title: "Add Your Employees", desc: "Invite your entire team in seconds. Add names, roles, locations, and availability preferences. No technical setup required." },
-  { num: "02", icon: CalendarCheck2, color: "#8b5cf6", bg: "bg-purple-50", text: "text-purple-600", title: "Build Your Schedule", desc: "Use the drag-and-drop editor to create shifts in minutes. The system shows availability conflicts before you publish." },
-  { num: "03", icon: Bell, color: "#ec4899", bg: "bg-pink-50", text: "text-pink-600", title: "Share Shifts Instantly", desc: "Publish schedules with one click. Every employee gets an instant notification on their phone with their upcoming shifts." },
-  { num: "04", icon: Repeat, color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-600", title: "Manage Changes Live", desc: "Approve shift swaps, leave requests, and open shifts in real time from your phone or desktop — no back-and-forth required." },
-  { num: "05", icon: BarChart3, color: "#f59e0b", bg: "bg-amber-50", text: "text-amber-600", title: "Track & Optimise", desc: "Monitor labor costs, attendance, and team performance with real-time analytics to keep operations running efficiently." },
+  { num: "01", icon: UserPlus, color: "#6366f1", grad: "from-indigo-500 to-indigo-600", title: "Add Your Employees", desc: "Invite your entire team in seconds. Add names, roles, locations, and availability preferences. No technical setup required." },
+  { num: "02", icon: CalendarCheck2, color: "#8b5cf6", grad: "from-purple-500 to-purple-600", title: "Build Your Schedule", desc: "Use the drag-and-drop editor to create shifts in minutes. The system shows availability conflicts before you publish." },
+  { num: "03", icon: Bell, color: "#ec4899", grad: "from-pink-500 to-fuchsia-600", title: "Share Shifts Instantly", desc: "Publish schedules with one click. Every employee gets an instant notification on their phone with their upcoming shifts." },
+  { num: "04", icon: Repeat, color: "#10b981", grad: "from-emerald-500 to-teal-600", title: "Manage Changes Live", desc: "Approve shift swaps, leave requests, and open shifts in real time from your phone or desktop — no back-and-forth required." },
+  { num: "05", icon: BarChart3, color: "#f59e0b", grad: "from-amber-500 to-orange-500", title: "Track & Optimise", desc: "Monitor labor costs, attendance, and team performance with real-time analytics to keep operations running efficiently." },
 ];
 
 /* ─── BENEFITS ─── */
 const BENEFITS = [
-  { value: "70%", label: "Less Time Building Schedules", desc: "Managers spend hours on spreadsheets. StaffSchedule.io cuts schedule creation time by up to 70%.", icon: Clock, color: "from-indigo-500 to-purple-600" },
-  { value: "18%", label: "Average Labor Cost Savings", desc: "Real-time overtime alerts and smart shift planning help businesses reduce labour costs by an average of 18%.", icon: TrendingUp, color: "from-emerald-500 to-teal-600" },
-  { value: "3×", label: "Faster Leave Approvals", desc: "One-tap approvals mean leave requests are processed 3× faster, keeping teams informed and managers stress-free.", icon: Zap, color: "from-fuchsia-500 to-pink-600" },
-  { value: "98%", label: "Employee Satisfaction Score", desc: "When staff can see their schedules, swap shifts, and request leave from their phone, they are significantly more engaged.", icon: Heart, color: "from-rose-500 to-orange-500" },
+  { value: 70, suffix: "%", label: "Less Time Building Schedules", desc: "Managers spend hours on spreadsheets. StaffSchedule.io cuts schedule creation time by up to 70%.", icon: Clock, color: "from-indigo-500 to-purple-600", glow: "shadow-indigo-200" },
+  { value: 18, suffix: "%", label: "Average Labor Cost Savings", desc: "Real-time overtime alerts and smart shift planning help businesses reduce labour costs by an average of 18%.", icon: TrendingUp, color: "from-emerald-500 to-teal-600", glow: "shadow-emerald-200" },
+  { value: 3, suffix: "×", label: "Faster Leave Approvals", desc: "One-tap approvals mean leave requests are processed 3× faster, keeping teams informed and managers stress-free.", icon: Zap, color: "from-fuchsia-500 to-pink-600", glow: "shadow-fuchsia-200" },
+  { value: 98, suffix: "%", label: "Employee Satisfaction Score", desc: "When staff can see their schedules, swap shifts, and request leave from their phone, they are significantly more engaged.", icon: Heart, color: "from-rose-500 to-orange-500", glow: "shadow-rose-200" },
 ];
 
 /* ─── TESTIMONIALS ─── */
@@ -78,73 +85,44 @@ const FAQS = [
   { q: "Which AI is good for scheduling?", a: "Different AI scheduling tools help businesses automate scheduling tasks, but the best option depends on your business needs. Many growing teams use employee scheduling online software like StaffSchedule.io to simplify staff scheduling, manage employee shifts, track availability, and keep teams updated in real time." },
 ];
 
+/* ─── animated counter ─── */
+function Counter({ to, suffix, duration = 1.8 }: { to: number; suffix: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const steps = Math.round(duration * 60);
+    const inc = to / steps;
+    const id = setInterval(() => {
+      start += inc;
+      if (start >= to) { setCount(to); clearInterval(id); }
+      else setCount(Math.round(start));
+    }, 1000 / 60);
+    return () => clearInterval(id);
+  }, [inView, to, duration]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
 /* ═══════════════════════════════════════════════════════
    PAGE
 ═══════════════════════════════════════════════════════ */
 export default function EmployeeScheduleMakerPage() {
   return (
     <div className="bg-white overflow-x-hidden font-sans">
-
-      {/* ══════════════════════════════════════════
-          1. HERO
-      ══════════════════════════════════════════ */}
       <HeroSection />
-
-      {/* ══════════════════════════════════════════
-          2. PROBLEM
-      ══════════════════════════════════════════ */}
       <ProblemSection />
-
-      {/* ══════════════════════════════════════════
-          3. SOLUTION
-      ══════════════════════════════════════════ */}
       <SolutionSection />
-
-      {/* ══════════════════════════════════════════
-          4. CTA BANNER
-      ══════════════════════════════════════════ */}
       <CtaBanner />
-
-      {/* ══════════════════════════════════════════
-          5. FEATURES
-      ══════════════════════════════════════════ */}
       <FeaturesSection />
-
-      {/* ══════════════════════════════════════════
-          6. HOW IT WORKS
-      ══════════════════════════════════════════ */}
       <HowItWorksSection />
-
-      {/* ══════════════════════════════════════════
-          7. MOBILE APP
-      ══════════════════════════════════════════ */}
       <MobileAppSection />
-
-      {/* ══════════════════════════════════════════
-          8. INDUSTRIES (reuse homepage component)
-      ══════════════════════════════════════════ */}
       <IndustryShowcase />
-
-      {/* ══════════════════════════════════════════
-          9. BENEFITS
-      ══════════════════════════════════════════ */}
       <BenefitsSection />
-
-      {/* ══════════════════════════════════════════
-          10. TESTIMONIALS
-      ══════════════════════════════════════════ */}
       <TestimonialsSection />
-
-      {/* ══════════════════════════════════════════
-          11. FAQ
-      ══════════════════════════════════════════ */}
       <FaqSection />
-
-      {/* ══════════════════════════════════════════
-          12. FINAL CTA
-      ══════════════════════════════════════════ */}
       <FinalCtaSection />
-
     </div>
   );
 }
@@ -153,9 +131,16 @@ export default function EmployeeScheduleMakerPage() {
    HERO
 ═══════════════════════════════════════════════════════ */
 function HeroSection() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useMotionSpring(useTransform(mouseY, [-300, 300], [4, -4]), { stiffness: 120, damping: 30 });
+  const rotateY = useMotionSpring(useTransform(mouseX, [-600, 600], [-4, 4]), { stiffness: 120, damping: 30 });
+
   return (
-    <section className="relative min-h-[100vh] flex flex-col justify-start pt-28 sm:pt-32 pb-0 overflow-hidden bg-[#FDFBFF]">
-      {/* Background */}
+    <section
+      className="relative min-h-[100vh] flex flex-col justify-start pt-28 sm:pt-32 pb-0 overflow-hidden bg-[#FDFBFF]"
+      onMouseMove={(e) => { mouseX.set(e.clientX - window.innerWidth / 2); mouseY.set(e.clientY - window.innerHeight / 2); }}
+    >
       <div aria-hidden className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[65%] bg-gradient-to-b from-[#F5EEFF] via-[#FAF5FF] to-transparent opacity-90" />
         <div className="absolute top-[30%] w-[140%] -left-[20%] h-[500px] z-0 overflow-visible">
@@ -164,69 +149,63 @@ function HeroSection() {
               <path d="M0,150 C240,350 480,50 720,200 C960,350 1200,50 1440,150 L1440,500 L0,500 Z" fill="url(#hero-wave)" />
               <defs>
                 <linearGradient id="hero-wave" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="30%" stopColor="#8b5cf6" />
-                  <stop offset="60%" stopColor="#ec4899" />
-                  <stop offset="100%" stopColor="#818cf8" />
+                  <stop offset="0%" stopColor="#6366f1" /><stop offset="30%" stopColor="#8b5cf6" />
+                  <stop offset="60%" stopColor="#ec4899" /><stop offset="100%" stopColor="#818cf8" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
         </div>
-        <div className="absolute top-[38%] left-[12%] w-[380px] h-[200px] bg-indigo-500/15 rounded-full blur-[70px] animate-[float_10s_ease-in-out_infinite]" />
-        <div className="absolute top-[35%] right-[12%] w-[480px] h-[240px] bg-purple-500/15 rounded-full blur-[80px] animate-[floatReverse_12s_ease-in-out_infinite]" />
+        <motion.div animate={{ x: [0, 20, -10, 0], y: [0, -15, 10, 0] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[38%] left-[12%] w-[380px] h-[200px] bg-indigo-500/15 rounded-full blur-[70px]" />
+        <motion.div animate={{ x: [0, -20, 15, 0], y: [0, 15, -10, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[35%] right-[12%] w-[480px] h-[240px] bg-purple-500/15 rounded-full blur-[80px]" />
         <div className="absolute bottom-0 left-0 w-full h-[25%] bg-gradient-to-t from-white via-white/80 to-transparent z-10" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 flex flex-col items-center">
-        {/* Badge */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/70 backdrop-blur-md border border-purple-100 shadow-sm mb-8">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Free 14-Day Trial · No Credit Card Required</span>
         </motion.div>
 
-        {/* H1 */}
         <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
           className="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4rem] font-black tracking-tight text-[#0f172a] text-center leading-[1.15] mb-6 max-w-5xl px-2">
           Employee Schedule Maker{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">
-            for Busy Teams
-          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">for Busy Teams</span>
         </motion.h1>
 
-        {/* Subheadline */}
         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
           className="text-base sm:text-lg md:text-xl text-[#475569] font-medium leading-relaxed text-center max-w-3xl mb-10 px-4">
           StaffSchedule.io is an easy-to-use online employee scheduling software that helps businesses create work schedules, manage employee availability, track shifts, approve leave requests, and keep teams connected from one organized dashboard.
         </motion.p>
 
-        {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-4 mb-10 w-full sm:w-auto">
-          <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-            className="w-full sm:w-auto flex items-center justify-center gap-3 h-14 px-10 rounded-2xl bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9] text-white font-black text-sm uppercase tracking-widest shadow-[0_12px_40px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_16px_50px_-8px_rgba(139,92,246,0.6)] hover:scale-[1.02] transition-all group">
-            Start Your Free Trial
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link href="/pricing"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 h-14 px-10 rounded-2xl bg-white text-[#1c1236] border-2 border-[#e5e0f1] font-black text-sm uppercase tracking-widest hover:border-[#8b5cf6] hover:text-[#8b5cf6] transition-all">
-            View Pricing Plans
-          </Link>
+          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+            <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
+              className="flex items-center justify-center gap-3 h-14 px-10 rounded-2xl bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9] text-white font-black text-sm uppercase tracking-widest shadow-[0_12px_40px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_16px_50px_-8px_rgba(139,92,246,0.65)] transition-shadow group">
+              Start Your Free Trial <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+            <Link href="/pricing"
+              className="flex items-center justify-center gap-2 h-14 px-10 rounded-2xl bg-white text-[#1c1236] border-2 border-[#e5e0f1] font-black text-sm uppercase tracking-widest hover:border-[#8b5cf6] hover:text-[#8b5cf6] transition-colors">
+              View Pricing Plans
+            </Link>
+          </motion.div>
         </motion.div>
 
-        {/* Trust signals */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }}
           className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-10">
           {["No Credit Card Required", "14-Day Free Trial", "Setup in Under 10 Minutes"].map((t) => (
             <div key={t} className="flex items-center gap-2 text-[11px] font-black text-[#5b4f7a] uppercase tracking-wider">
-              <CheckCircle2 size={13} className="text-[#8b5cf6]" />
-              {t}
+              <CheckCircle2 size={13} className="text-[#8b5cf6]" /> {t}
             </div>
           ))}
         </motion.div>
 
-        {/* Social proof */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }}
           className="flex items-center gap-3 py-2 px-6 bg-white/60 rounded-full border border-[#e5e0f1] shadow-sm backdrop-blur-md mb-16">
           <div className="flex -space-x-2" aria-hidden>
@@ -237,24 +216,23 @@ function HeroSection() {
             ))}
           </div>
           <div className="flex flex-col items-start pl-1">
-            <div className="flex gap-0.5 mb-0.5">
-              {[1,2,3,4,5].map(s => <Star key={s} size={10} className="fill-yellow-400 text-yellow-400" />)}
-            </div>
+            <div className="flex gap-0.5 mb-0.5">{[1,2,3,4,5].map(s => <Star key={s} size={10} className="fill-yellow-400 text-yellow-400" />)}</div>
             <p className="text-[10px] text-[#5b4f7a] font-bold uppercase tracking-wider">
               Loved by <span className="text-[#8b5cf6] font-black">10,000+</span> Managers
             </p>
           </div>
         </motion.div>
 
-        {/* Dashboard mockup */}
+        {/* Dashboard mockup with mouse parallax */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          style={{ rotateX, rotateY, transformPerspective: 1200 }}
           className="relative w-full max-w-5xl mx-auto mb-[-80px] sm:mb-[-100px] z-30 group"
         >
-          <div className="absolute -inset-8 bg-gradient-to-b from-purple-500/8 to-transparent rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-          <div className="relative rounded-2xl md:rounded-[2rem] border border-[#e5e0f1]/60 shadow-[0_40px_100px_-20px_rgba(139,92,246,0.18)] bg-white/40 backdrop-blur-2xl p-2 md:p-3 transition-transform duration-700 group-hover:scale-[1.005]">
+          <div className="absolute -inset-8 bg-gradient-to-b from-purple-500/10 to-transparent rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          <div className="relative rounded-2xl md:rounded-[2rem] border border-[#e5e0f1]/60 shadow-[0_40px_100px_-20px_rgba(139,92,246,0.2)] bg-white/40 backdrop-blur-2xl p-2 md:p-3">
             <div className="rounded-xl md:rounded-[1.5rem] overflow-hidden border border-[#f0ecf9] bg-white shadow-sm">
               <div className="h-10 bg-[#fdfcff] border-b border-[#f0ecf9] flex items-center px-4 gap-2">
                 <div className="flex gap-1.5">
@@ -266,7 +244,7 @@ function HeroSection() {
               </div>
               <Image
                 src="/staffschedule-dashboard.png"
-                alt="StaffSchedule.io employee schedule maker dashboard showing shift scheduling, employee availability, and team management"
+                alt="StaffSchedule.io employee schedule maker dashboard"
                 width={1400} height={800}
                 className="w-full h-auto object-cover object-top"
                 priority quality={90}
@@ -281,62 +259,116 @@ function HeroSection() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   PROBLEM
+   PROBLEM  —  white / brand colours
 ═══════════════════════════════════════════════════════ */
 function ProblemSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   const problems = [
-    { icon: FileSpreadsheet, color: "text-red-500", bg: "bg-red-50 border-red-100", title: "Spreadsheet Chaos", desc: "Hours wasted building schedules in Excel that break every time someone changes availability or calls in sick.", tag: "TIME WASTED" },
-    { icon: PhoneCall, color: "text-orange-500", bg: "bg-orange-50 border-orange-100", title: "Phone Call Chaos", desc: "Endless back-and-forth calls and texts trying to fill shift gaps, confirm availability, and approve last-minute swaps.", tag: "COMMUNICATION BREAKDOWN" },
-    { icon: AlertTriangle, color: "text-yellow-500", bg: "bg-yellow-50 border-yellow-100", title: "Missed Shift Updates", desc: "Employees miss schedule changes because updates get buried in group chats. No-shows, confusion, and angry customers follow.", tag: "COVERAGE GAPS" },
-    { icon: XCircle, color: "text-rose-500", bg: "bg-rose-50 border-rose-100", title: "Leave Request Mess", desc: "Time-off requests in WhatsApp, email, and paper notes. Managers lose track and teams end up understaffed without warning.", tag: "SCHEDULING MISTAKES" },
+    {
+      icon: FileSpreadsheet, num: "01",
+      grad: "from-indigo-500 to-purple-600",
+      border: "border-indigo-100", bg: "bg-indigo-50/40",
+      glow: "group-hover:shadow-indigo-100/80",
+      pill: "bg-indigo-100 text-indigo-600",
+      tag: "TIME WASTED",
+      title: "Spreadsheet Chaos",
+      desc: "Hours wasted building schedules in Excel that break every time someone changes availability or calls in sick.",
+    },
+    {
+      icon: PhoneCall, num: "02",
+      grad: "from-purple-500 to-fuchsia-600",
+      border: "border-purple-100", bg: "bg-purple-50/40",
+      glow: "group-hover:shadow-purple-100/80",
+      pill: "bg-purple-100 text-purple-600",
+      tag: "COMMUNICATION BREAKDOWN",
+      title: "Phone Call Chaos",
+      desc: "Endless back-and-forth calls and texts trying to fill shift gaps, confirm availability, and approve last-minute swaps.",
+    },
+    {
+      icon: AlertTriangle, num: "03",
+      grad: "from-fuchsia-500 to-pink-600",
+      border: "border-fuchsia-100", bg: "bg-fuchsia-50/40",
+      glow: "group-hover:shadow-fuchsia-100/80",
+      pill: "bg-fuchsia-100 text-fuchsia-600",
+      tag: "COVERAGE GAPS",
+      title: "Missed Shift Updates",
+      desc: "Employees miss schedule changes because updates get buried in group chats. No-shows, confusion, and angry customers follow.",
+    },
+    {
+      icon: XCircle, num: "04",
+      grad: "from-rose-500 to-orange-500",
+      border: "border-rose-100", bg: "bg-rose-50/40",
+      glow: "group-hover:shadow-rose-100/80",
+      pill: "bg-rose-100 text-rose-600",
+      tag: "SCHEDULING MISTAKES",
+      title: "Leave Request Mess",
+      desc: "Time-off requests in WhatsApp, email, and paper notes. Managers lose track and teams end up understaffed without warning.",
+    },
   ];
 
   return (
-    <section ref={ref} className="relative py-24 lg:py-32 bg-[#0c0a1a] overflow-hidden">
+    <section ref={ref} className="relative py-24 lg:py-32 bg-white overflow-hidden">
+      {/* decorative blobs */}
       <div aria-hidden className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] [background-size:28px_28px]" />
-        <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-purple-900/30 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[300px] bg-indigo-900/20 rounded-full blur-[100px]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,#000_40%,transparent_100%)] opacity-40" />
+        <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.2, 0.35, 0.2] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-32 -left-32 w-[600px] h-[500px] bg-gradient-to-br from-indigo-200/50 to-purple-200/40 rounded-full blur-[100px]" />
+        <motion.div animate={{ scale: [1, 1.06, 1], opacity: [0.15, 0.28, 0.15] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-32 -right-32 w-[500px] h-[400px] bg-gradient-to-tl from-fuchsia-200/40 to-pink-200/30 rounded-full blur-[90px]" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* heading */}
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
           <motion.div variants={fadeUp}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
-            <AlertTriangle size={13} className="text-red-400" />
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-red-400">The Problem</span>
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 mb-6">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#6366f1]">The Problem</span>
           </motion.div>
-          <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15] mb-5">
+          <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight leading-[1.15] mb-5">
             Why Employee Scheduling Becomes{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">So Difficult</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">So Difficult</span>
           </motion.h2>
-          <motion.p variants={fadeUp} className="text-[#94a3b8] text-base sm:text-lg leading-relaxed font-medium">
+          <motion.p variants={fadeUp} className="text-[#475569] text-base sm:text-lg leading-relaxed font-medium">
             Managing employee schedules manually can become stressful and confusing for managers and business owners. Shift changes, availability issues, missed updates, and last-minute changes can waste hours every day.
           </motion.p>
         </motion.div>
 
+        {/* cards */}
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {problems.map((p, i) => (
-            <motion.div key={i} variants={fadeUp}
-              className={`relative rounded-2xl border p-6 ${p.bg} group hover:-translate-y-1 transition-all duration-300 overflow-hidden`}>
-              <div className="absolute top-4 right-4 px-2 py-0.5 rounded-full bg-white/80 border border-current">
-                <span className={`text-[8px] font-black tracking-widest ${p.color}`}>{p.tag}</span>
+            <motion.div
+              key={i} variants={fadeUp}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={springCard}
+              className={`group relative rounded-2xl border ${p.border} ${p.bg} p-6 overflow-hidden cursor-default hover:shadow-2xl ${p.glow} transition-shadow duration-300`}
+            >
+              {/* gradient top bar */}
+              <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${p.grad} rounded-t-2xl`} />
+              {/* big blurred bg number */}
+              <span className="absolute -bottom-4 -right-2 text-[7rem] font-black text-black/[0.03] leading-none select-none pointer-events-none">{p.num}</span>
+
+              {/* tag pill */}
+              <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-black tracking-widest uppercase mb-4 ${p.pill}`}>
+                {p.tag}
+              </span>
+
+              {/* icon */}
+              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${p.grad} flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                <p.icon size={20} className="text-white" />
               </div>
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-white shadow-sm`}>
-                <p.icon size={22} className={p.color} />
-              </div>
-              <h3 className="text-base font-black text-white mb-2">{p.title}</h3>
-              <p className="text-sm text-[#94a3b8] leading-relaxed font-medium">{p.desc}</p>
+
+              <h3 className="text-base font-black text-[#0f172a] mb-2">{p.title}</h3>
+              <p className="text-sm text-[#64748b] leading-relaxed font-medium">{p.desc}</p>
             </motion.div>
           ))}
         </motion.div>
 
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.55 }}
           className="text-center text-[#64748b] text-sm sm:text-base font-medium mt-12 max-w-2xl mx-auto">
           Without the right employee schedule maker, managers spend hours creating schedules, updating shifts, and fixing mistakes instead of focusing on business growth.
         </motion.p>
@@ -364,7 +396,6 @@ function SolutionSection() {
         <div className="absolute top-0 right-0 w-[700px] h-[600px] bg-purple-100/40 rounded-full blur-[130px] -mr-40 -mt-40" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[400px] bg-indigo-100/30 rounded-full blur-[100px] -ml-20" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
@@ -375,22 +406,19 @@ function SolutionSection() {
           </motion.div>
           <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight leading-[1.15] mb-5">
             Easy-to-Use Employee Schedule Maker{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">
-              for Growing Businesses
-            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#ec4899]">for Growing Businesses</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-[#475569] text-base sm:text-lg leading-relaxed font-medium">
-            StaffSchedule.io helps managers create employee schedules, manage shifts, approve leave requests, and update teams from one simple dashboard. Schedules, team communication, open shifts, and employee availability — all in one place.
+            StaffSchedule.io helps managers create employee schedules, manage shifts, approve leave requests, and update teams from one simple dashboard.
           </motion.p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: solution cards */}
           <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger} className="flex flex-col gap-5">
             {solutions.map((s, i) => (
-              <motion.div key={i} variants={fadeUp}
-                className="flex gap-5 p-6 bg-white rounded-2xl border border-[#f0ecf9] shadow-sm hover:shadow-md hover:border-purple-200 transition-all group">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${s.color} flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
+              <motion.div key={i} variants={fadeUp} whileHover={{ x: 6, scale: 1.01 }} transition={springCard}
+                className="flex gap-5 p-6 bg-white rounded-2xl border border-[#f0ecf9] shadow-sm hover:shadow-lg hover:border-purple-200 transition-shadow cursor-default group">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${s.color} flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`}>
                   <s.icon size={22} className="text-white" />
                 </div>
                 <div>
@@ -399,43 +427,43 @@ function SolutionSection() {
                 </div>
               </motion.div>
             ))}
-
-            {/* Inline CTA */}
-            <motion.div variants={fadeUp}
-              className="flex flex-col sm:flex-row gap-3 mt-2">
-              <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-all group">
-                Start Free Trial <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link href="/features"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white text-[#5b4f7a] border border-[#e5e0f1] font-black text-sm uppercase tracking-wider hover:border-purple-300 transition-all">
-                See All Features
-              </Link>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 mt-2">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+                <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-purple-500/20 transition-all group">
+                  Start Free Trial <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+                <Link href="/features"
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white text-[#5b4f7a] border border-[#e5e0f1] font-black text-sm uppercase tracking-wider hover:border-purple-300 transition-colors">
+                  See All Features
+                </Link>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Right: stats panel */}
-          <motion.div initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative">
+          {/* stats panel */}
+          <motion.div initial={{ opacity: 0, x: 50, scale: 0.97 }} animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}>
             <div className="bg-white rounded-3xl border border-[#f0ecf9] shadow-xl shadow-purple-100/50 p-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/5 rounded-full -mr-24 -mt-24 blur-2xl" />
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-indigo-500/5 rounded-full -ml-20 -mb-20 blur-2xl" />
-
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-xs font-black uppercase tracking-widest text-[#8b5cf6]">Live Dashboard Preview</span>
                 </div>
-
-                {/* Mini schedule preview */}
                 <div className="space-y-3 mb-8">
                   {[
-                    { name: "Sarah M.", role: "Morning Shift", time: "08:00 – 16:00", status: "Confirmed", color: "bg-emerald-100 text-emerald-700" },
-                    { name: "James K.", role: "Evening Shift", time: "16:00 – 24:00", status: "Pending", color: "bg-amber-100 text-amber-700" },
-                    { name: "Emma R.", role: "Night Shift", time: "00:00 – 08:00", status: "Confirmed", color: "bg-emerald-100 text-emerald-700" },
-                    { name: "David L.", role: "Morning Shift", time: "08:00 – 16:00", status: "Swap Req.", color: "bg-purple-100 text-purple-700" },
+                    { name: "Sarah M.", time: "08:00 – 16:00", status: "Confirmed", color: "bg-emerald-100 text-emerald-700" },
+                    { name: "James K.", time: "16:00 – 24:00", status: "Pending", color: "bg-amber-100 text-amber-700" },
+                    { name: "Emma R.", time: "00:00 – 08:00", status: "Confirmed", color: "bg-emerald-100 text-emerald-700" },
+                    { name: "David L.", time: "08:00 – 16:00", status: "Swap Req.", color: "bg-purple-100 text-purple-700" },
                   ].map((row, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 bg-[#fafafa] rounded-xl border border-[#f0ecf9]">
+                    <motion.div key={i} initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ delay: 0.5 + i * 0.08 }}
+                      className="flex items-center justify-between p-3 bg-[#fafafa] rounded-xl border border-[#f0ecf9]">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center">
                           <span className="text-white text-[10px] font-black">{row.name.split(" ").map(n => n[0]).join("")}</span>
@@ -446,10 +474,9 @@ function SolutionSection() {
                         </div>
                       </div>
                       <span className={`text-[10px] font-black px-2.5 py-1 rounded-full ${row.color}`}>{row.status}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { val: "12/12", label: "Shifts Filled", icon: CheckCircle2, color: "text-emerald-500" },
@@ -481,38 +508,70 @@ function CtaBanner() {
     <section className="relative py-16 overflow-hidden bg-gradient-to-r from-[#4338ca] via-[#7c3aed] to-[#9333ea]">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]" />
-        <div className="absolute -top-20 left-1/3 w-[500px] h-[300px] bg-white/10 rounded-full blur-[100px]" />
+        <motion.div animate={{ x: [0, 30, -20, 0], y: [0, -20, 15, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-20 left-1/3 w-[500px] h-[300px] bg-white/10 rounded-full blur-[100px]" />
       </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight mb-1">
-            Ready to simplify your employee scheduling?
-          </h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight mb-1">Ready to simplify your employee scheduling?</h2>
           <p className="text-white/70 font-medium text-sm sm:text-base">Join 10,000+ businesses already saving time with StaffSchedule.io</p>
         </div>
-        <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-          className="flex-shrink-0 flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-[#6d28d9] font-black text-sm uppercase tracking-widest shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all group">
-          Get Started Free <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </Link>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+          <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
+            className="flex-shrink-0 flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-[#6d28d9] font-black text-sm uppercase tracking-widest shadow-xl group">
+            Get Started Free <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════
-   FEATURES
+   FEATURES  — spotlight cards
 ═══════════════════════════════════════════════════════ */
+function SpotlightCard({ f, i, inView }: { f: typeof FEATURES[0]; i: number; inView: boolean }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const spotX = useTransform(x, v => `${v}px`);
+  const spotY = useTransform(y, v => `${v}px`);
+  return (
+    <motion.article
+      variants={fadeUp}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={springCard}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        x.set(e.clientX - rect.left);
+        y.set(e.clientY - rect.top);
+      }}
+      className="group relative bg-white rounded-2xl border border-[#f0ecf9] p-6 overflow-hidden cursor-default hover:border-purple-200 hover:shadow-2xl hover:shadow-purple-100/60 transition-shadow duration-300"
+    >
+      {/* mouse-follow spotlight */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(180px circle at ${spotX} ${spotY}, ${f.glow}, transparent 70%)`,
+        }}
+      />
+      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10`}>
+        <f.icon size={22} className="text-white" />
+      </div>
+      <h3 className="text-base font-black text-[#0f172a] mb-2 relative z-10">{f.title}</h3>
+      <p className="text-sm text-[#64748b] leading-relaxed font-medium relative z-10">{f.desc}</p>
+    </motion.article>
+  );
+}
+
 function FeaturesSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <section ref={ref} className="relative py-24 lg:py-32 bg-white overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_50%,#000_50%,transparent_100%)] opacity-30" />
         <div className="absolute top-1/2 right-0 w-[600px] h-[600px] bg-purple-100/30 rounded-full blur-[120px] -mr-40 -translate-y-1/2" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
@@ -529,20 +588,9 @@ function FeaturesSection() {
             One powerful employee schedule maker packed with every tool growing businesses need to manage shifts, track availability, and keep teams connected.
           </motion.p>
         </motion.div>
-
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {FEATURES.map((f, i) => (
-            <motion.article key={i} variants={fadeUp}
-              className="group relative bg-white rounded-2xl border border-[#f0ecf9] p-6 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden cursor-default">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/[0.03] group-hover:to-indigo-500/[0.02] transition-all duration-500 rounded-2xl" />
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10`}>
-                <f.icon size={22} className="text-white" />
-              </div>
-              <h3 className="text-base font-black text-[#0f172a] mb-2 relative z-10">{f.title}</h3>
-              <p className="text-sm text-[#64748b] leading-relaxed font-medium relative z-10">{f.desc}</p>
-            </motion.article>
-          ))}
+          {FEATURES.map((f, i) => <SpotlightCard key={i} f={f} i={i} inView={inView} />)}
         </motion.div>
       </div>
     </section>
@@ -550,7 +598,7 @@ function FeaturesSection() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   HOW IT WORKS
+   HOW IT WORKS  — animated timeline
 ═══════════════════════════════════════════════════════ */
 function HowItWorksSection() {
   const [active, setActive] = useState(0);
@@ -563,7 +611,6 @@ function HowItWorksSection() {
         <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-indigo-100/30 rounded-full blur-[130px] -ml-40 -mt-40" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-100/20 rounded-full blur-[110px] -mr-40 -mb-40" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
@@ -573,44 +620,62 @@ function HowItWorksSection() {
             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-600">How It Works</span>
           </motion.div>
           <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight leading-[1.15] mb-5">
-            Your Employee Schedule Maker,{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]">Up and Running in Minutes</span>
+            Up and Running{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]">in Minutes</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-[#475569] text-base sm:text-lg font-medium leading-relaxed">
             Five simple steps from team setup to fully automated scheduling. No training required.
           </motion.p>
         </motion.div>
 
+        {/* animated progress bar */}
+        <div className="hidden lg:flex items-center justify-between max-w-4xl mx-auto mb-6 px-8 relative">
+          <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-0.5 bg-[#e5e7eb]" />
+          <motion.div
+            className="absolute left-8 top-1/2 -translate-y-1/2 h-0.5 origin-left"
+            style={{ background: `linear-gradient(to right, #6366f1, #8b5cf6, #ec4899)` }}
+            initial={{ scaleX: 0 }}
+            animate={inView ? { scaleX: (active + 1) / STEPS.length } : { scaleX: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          />
+          {STEPS.map((s, i) => (
+            <button key={i} onClick={() => setActive(i)}
+              className="relative z-10 flex flex-col items-center gap-1.5 group"
+              aria-label={s.title}>
+              <motion.div
+                animate={{ scale: active === i ? 1.18 : 1, backgroundColor: i <= active ? s.color : "#e5e7eb" }}
+                transition={springCard}
+                className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+              >
+                <s.icon size={14} className="text-white" />
+              </motion.div>
+              <span className={`text-[9px] font-black tracking-widest uppercase ${i <= active ? "text-[#6366f1]" : "text-[#94a3b8]"}`}>{s.num}</span>
+            </button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-3">
           {STEPS.map((step, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, scale: 1.025 }}
+              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], ...springCard }}
               onClick={() => setActive(i)}
-              className={`group relative rounded-2xl p-6 border cursor-pointer transition-all duration-300 ${active === i ? "bg-white border-purple-200 shadow-xl shadow-purple-100/50 scale-[1.02]" : "bg-white/60 border-[#f0ecf9] hover:bg-white hover:shadow-md"}`}
+              className={`relative rounded-2xl p-6 border cursor-pointer transition-colors duration-300 ${active === i ? "bg-white border-purple-200 shadow-xl shadow-purple-100/50" : "bg-white/60 border-[#f0ecf9] hover:bg-white"}`}
             >
-              {/* Step number */}
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#94a3b8]">{step.num}</span>
-                {i < STEPS.length - 1 && (
-                  <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20">
-                    <ChevronRight size={16} className="text-[#c4b5d4]" />
-                  </div>
-                )}
-              </div>
-              {/* Icon */}
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#94a3b8] mb-3 block">{step.num}</span>
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform"
                 style={{ background: `${step.color}18` }}>
                 <step.icon size={20} style={{ color: step.color }} />
               </div>
               <h3 className="text-[13px] font-black text-[#0f172a] mb-2 leading-snug">{step.title}</h3>
-              <p className={`text-xs text-[#64748b] leading-relaxed font-medium transition-all duration-300 ${active === i ? "max-h-40 opacity-100" : "max-h-0 opacity-0 lg:max-h-40 lg:opacity-100"}`}>
+              <p className={`text-xs text-[#64748b] leading-relaxed font-medium transition-all duration-300 ${active === i ? "opacity-100 max-h-40" : "opacity-0 max-h-0 lg:opacity-100 lg:max-h-40"}`}>
                 {step.desc}
               </p>
               {active === i && (
-                <motion.div layoutId="stepHighlight" className="absolute bottom-0 left-0 right-0 h-0.5 rounded-b-2xl"
-                  style={{ background: `linear-gradient(to right, ${step.color}, ${step.color}88)` }} />
+                <motion.div layoutId="stepHL" className="absolute bottom-0 left-0 right-0 h-[3px] rounded-b-2xl"
+                  style={{ background: `linear-gradient(to right, ${step.color}, ${step.color}66)` }} />
               )}
             </motion.div>
           ))}
@@ -626,24 +691,20 @@ function HowItWorksSection() {
 function MobileAppSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   const features = [
     { icon: Calendar, color: "text-indigo-500", bg: "bg-indigo-50", title: "View Schedules Anywhere", desc: "Employees check their shifts, locations, and role details from their phone — no laptop needed." },
     { icon: Bell, color: "text-purple-500", bg: "bg-purple-50", title: "Instant Push Notifications", desc: "Every schedule update, swap approval, and leave decision is pushed to their phone in real time." },
     { icon: Repeat, color: "text-fuchsia-500", bg: "bg-fuchsia-50", title: "Request Swaps on the Go", desc: "Staff can offer shifts to teammates and managers approve in one tap — all from the mobile app." },
     { icon: MessageSquare, color: "text-emerald-500", bg: "bg-emerald-50", title: "Team Chat Built In", desc: "No personal numbers, no WhatsApp chaos. Direct messages and team channels live in the app." },
   ];
-
   return (
     <section ref={ref} className="relative py-24 lg:py-32 bg-white overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[700px] bg-gradient-to-br from-indigo-100/40 to-purple-100/30 rounded-full blur-[130px] -mr-40 -mt-40" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[500px] bg-gradient-to-tr from-purple-100/20 to-pink-100/20 rounded-full blur-[110px] -ml-20 -mb-20" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left: content */}
           <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}>
             <motion.div variants={fadeUp}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-200 mb-6">
@@ -655,13 +716,13 @@ function MobileAppSection() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]">in Your Pocket</span>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-[#475569] text-base sm:text-lg font-medium leading-relaxed mb-10">
-              StaffSchedule.io makes staff scheduling easier with a simple mobile app built for busy managers and growing teams. Whether you are at work, at home, or travelling, you can create schedules, approve leave requests, manage shifts, and keep employees updated in real time.
+              StaffSchedule.io makes staff scheduling easier with a simple mobile app built for busy managers and growing teams. Create schedules, approve leave, manage shifts, and keep employees updated in real time.
             </motion.p>
             <motion.div variants={stagger} className="flex flex-col gap-4">
               {features.map((f, i) => (
-                <motion.div key={i} variants={fadeUp}
-                  className="flex items-start gap-4 p-4 rounded-xl border border-[#f0ecf9] bg-white hover:shadow-md hover:border-purple-200 transition-all group">
-                  <div className={`w-10 h-10 rounded-xl ${f.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                <motion.div key={i} variants={fadeUp} whileHover={{ x: 5 }} transition={springCard}
+                  className="flex items-start gap-4 p-4 rounded-xl border border-[#f0ecf9] bg-white hover:shadow-md hover:border-purple-200 transition-all group cursor-default">
+                  <div className={`w-10 h-10 rounded-xl ${f.bg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
                     <f.icon size={18} className={f.color} />
                   </div>
                   <div>
@@ -673,14 +734,11 @@ function MobileAppSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right: phone mockup */}
-          <motion.div initial={{ opacity: 0, scale: 0.92, y: 30 }} animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          <motion.div initial={{ opacity: 0, scale: 0.9, y: 40 }} animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="flex justify-center relative">
-            {/* Glow behind phone */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-purple-500/15 rounded-full blur-[80px]" />
 
-            {/* Floating notification cards */}
             <motion.div animate={{ y: [-4, 4, -4] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -left-4 sm:-left-8 top-12 bg-white rounded-2xl shadow-xl border border-[#f0ecf9] p-3 z-20 w-44 sm:w-52">
               <div className="flex items-center gap-2 mb-1.5">
@@ -707,15 +765,13 @@ function MobileAppSection() {
                 <div className="w-6 h-6 rounded-full bg-sky-100 flex items-center justify-center"><MessageSquare size={12} className="text-sky-600" /></div>
                 <span className="text-[10px] font-black text-sky-600 uppercase tracking-wider">Team Chat</span>
               </div>
-              <p className="text-[11px] font-bold text-[#0f172a]">Manager: "Schedule updated"</p>
+              <p className="text-[11px] font-bold text-[#0f172a]">Manager: &quot;Schedule updated&quot;</p>
               <p className="text-[10px] text-[#94a3b8] font-medium">2 minutes ago</p>
             </motion.div>
 
-            {/* Phone frame */}
             <div className="relative w-[220px] sm:w-[260px] aspect-[9/19] rounded-[2.5rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-[#1c1236] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.35)] bg-white overflow-hidden z-10 animate-[float_7s_ease-in-out_infinite]">
               <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-[35%] h-4 sm:h-5 bg-[#1c1236] rounded-full z-30" />
               <div className="w-full h-full bg-[#fdfcff] flex flex-col pt-8 sm:pt-10 px-3 sm:px-4 relative z-20 overflow-hidden">
-                {/* App header */}
                 <div className="flex justify-between items-center mb-3">
                   <div>
                     <p className="text-[8px] sm:text-[9px] text-[#8f86a8] font-semibold">Good morning,</p>
@@ -725,7 +781,6 @@ function MobileAppSection() {
                     <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" alt="Staff manager" fill className="object-cover" />
                   </div>
                 </div>
-                {/* Next shift */}
                 <div className="bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-3 shadow-lg shadow-purple-500/30 text-white">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-[7px] sm:text-[8px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Next Shift</span>
@@ -734,7 +789,6 @@ function MobileAppSection() {
                   <div className="text-sm sm:text-base font-black mb-0.5">Morning Crew</div>
                   <p className="text-[9px] sm:text-[10px] text-purple-100 font-medium">09:00 AM – 05:00 PM</p>
                 </div>
-                {/* Team list */}
                 <p className="text-[8px] sm:text-[9px] font-black text-[#1c1236] mb-2 uppercase tracking-wider">Who&apos;s Working</p>
                 <div className="flex flex-col gap-1.5 flex-1 overflow-hidden relative">
                   {[
@@ -765,26 +819,24 @@ function MobileAppSection() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   BENEFITS
+   BENEFITS  — animated counters
 ═══════════════════════════════════════════════════════ */
 function BenefitsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <section ref={ref} className="relative py-24 lg:py-32 bg-[#FAFAFA] overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 w-[700px] h-[500px] bg-purple-100/30 rounded-full blur-[130px] -ml-40 -translate-y-1/2" />
         <div className="absolute top-1/2 right-0 w-[600px] h-[400px] bg-indigo-100/20 rounded-full blur-[110px] -mr-40 -translate-y-1/2" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
           <motion.div variants={fadeUp}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-200 mb-6">
             <TrendingUp size={13} className="text-[#8b5cf6]" />
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Results You'll See</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Results You&apos;ll See</span>
           </motion.div>
           <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight leading-[1.15] mb-5">
             Benefits of Using Our{" "}
@@ -798,23 +850,22 @@ function BenefitsSection() {
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {BENEFITS.map((b, i) => (
-            <motion.div key={i} variants={fadeUp}
-              className="group relative bg-white rounded-2xl border border-[#f0ecf9] p-7 overflow-hidden hover:shadow-xl hover:shadow-purple-100/50 hover:-translate-y-1.5 transition-all duration-300">
+            <motion.div key={i} variants={fadeUp} whileHover={{ y: -10, scale: 1.03 }} transition={springCard}
+              className={`group relative bg-white rounded-2xl border border-[#f0ecf9] p-7 overflow-hidden hover:shadow-2xl ${b.glow} transition-shadow duration-300 cursor-default`}>
+              {/* animated gradient top bar */}
+              <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${b.color} rounded-t-2xl`} />
               <div className={`absolute inset-0 bg-gradient-to-br ${b.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 rounded-2xl`} />
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${b.color} flex items-center justify-center mb-5 shadow-md group-hover:scale-110 transition-transform relative z-10`}>
                 <b.icon size={22} className="text-white" />
               </div>
-              <div className={`text-4xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-br ${b.color} relative z-10`}>{b.value}</div>
+              <div className={`text-5xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-br ${b.color} relative z-10`}>
+                <Counter to={b.value} suffix={b.suffix} />
+              </div>
               <h3 className="text-sm font-black text-[#0f172a] mb-2 relative z-10">{b.label}</h3>
               <p className="text-xs text-[#64748b] font-medium leading-relaxed relative z-10">{b.desc}</p>
             </motion.div>
           ))}
         </motion.div>
-
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }}
-          className="text-center text-[#64748b] font-medium mt-12 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-          Whether you manage a small business or multiple locations, our staff scheduling software helps reduce scheduling confusion, improve communication, and save hours every week.
-        </motion.p>
       </div>
     </section>
   );
@@ -826,15 +877,15 @@ function BenefitsSection() {
 function TestimonialsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <section ref={ref} className="relative py-24 lg:py-32 bg-[#0c0a1a] overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] [background-size:28px_28px]" />
-        <div className="absolute top-0 left-1/3 w-[700px] h-[500px] bg-purple-900/25 rounded-full blur-[130px]" />
-        <div className="absolute bottom-0 right-1/3 w-[600px] h-[400px] bg-indigo-900/20 rounded-full blur-[110px]" />
+        <motion.div animate={{ x: [0, 20, -15, 0], y: [0, -15, 12, 0] }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 left-1/3 w-[700px] h-[500px] bg-purple-900/25 rounded-full blur-[130px]" />
+        <motion.div animate={{ x: [0, -20, 18, 0], y: [0, 18, -14, 0] }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-0 right-1/3 w-[600px] h-[400px] bg-indigo-900/20 rounded-full blur-[110px]" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
@@ -845,9 +896,7 @@ function TestimonialsSection() {
           </motion.div>
           <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15] mb-5">
             Why Teams Love Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] to-[#ec4899]">
-              Employee Schedule Maker
-            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] to-[#ec4899]">Employee Schedule Maker</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-[#94a3b8] text-base sm:text-lg font-medium leading-relaxed">
             From staff scheduling and employee availability to shift management and team communication, StaffSchedule.io helps growing businesses manage teams more easily.
@@ -857,18 +906,16 @@ function TestimonialsSection() {
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {TESTIMONIALS.map((t, i) => (
-            <motion.article key={i} variants={fadeUp}
-              className="group relative rounded-2xl border border-white/8 bg-white/[0.04] backdrop-blur-md p-7 hover:bg-white/[0.07] hover:border-purple-500/25 hover:shadow-xl hover:shadow-purple-900/20 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-purple-500/10 transition-colors" />
-              {/* Stars */}
+            <motion.article key={i} variants={fadeUp} whileHover={{ y: -8, scale: 1.02 }} transition={springCard}
+              className="group relative rounded-2xl border border-white/8 bg-white/[0.04] backdrop-blur-md p-7 hover:bg-white/[0.08] hover:border-purple-500/30 hover:shadow-2xl hover:shadow-purple-900/30 transition-colors duration-300 overflow-hidden cursor-default">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-purple-500/12 transition-colors" />
               <div className="flex gap-1 mb-5">
                 {[1,2,3,4,5].map(s => <Star key={s} size={13} className="fill-yellow-400 text-yellow-400" />)}
               </div>
-              {/* Quote */}
               <blockquote className="text-[#e2e8f0] text-sm leading-relaxed font-medium mb-6 relative z-10">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
-              {/* Author */}
               <div className="flex items-center gap-3 relative z-10">
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 relative flex-shrink-0">
                   <Image src={t.avatar} alt={t.name} fill className="object-cover" />
@@ -894,13 +941,11 @@ function FaqSection() {
   const [open, setOpen] = useState<number | null>(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <section ref={ref} className="relative py-24 lg:py-32 bg-white overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[600px] h-[500px] bg-purple-100/25 rounded-full blur-[120px] -mr-40 -mt-40" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto mb-14">
@@ -918,13 +963,10 @@ function FaqSection() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
           className="max-w-3xl mx-auto space-y-3">
           {FAQS.map((faq, i) => (
-            <div key={i}
-              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${open === i ? "border-purple-200 shadow-md shadow-purple-100/50 bg-white" : "border-[#f0ecf9] bg-[#FAFAFA] hover:border-purple-200"}`}>
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between gap-4 p-6 text-left"
-                aria-expanded={open === i}
-              >
+            <motion.div key={i} whileHover={{ scale: open === i ? 1 : 1.005 }} transition={springCard}
+              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${open === i ? "border-purple-200 shadow-lg shadow-purple-100/40 bg-white" : "border-[#f0ecf9] bg-[#FAFAFA] hover:border-purple-200"}`}>
+              <button onClick={() => setOpen(open === i ? null : i)}
+                className="w-full flex items-center justify-between gap-4 p-6 text-left" aria-expanded={open === i}>
                 <h3 className={`text-sm sm:text-base font-black transition-colors ${open === i ? "text-[#6366f1]" : "text-[#0f172a]"}`}>{faq.q}</h3>
                 <motion.div animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.3 }} className="flex-shrink-0">
                   <ChevronDown size={18} className={open === i ? "text-[#6366f1]" : "text-[#94a3b8]"} />
@@ -936,14 +978,13 @@ function FaqSection() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
-                  >
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+                    className="overflow-hidden">
                     <p className="px-6 pb-6 text-sm text-[#64748b] font-medium leading-relaxed">{faq.a}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
@@ -957,7 +998,6 @@ function FaqSection() {
 function FinalCtaSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <section ref={ref} className="relative py-28 lg:py-40 bg-[#0c0a1a] overflow-hidden">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
@@ -967,10 +1007,8 @@ function FinalCtaSection() {
         <motion.div animate={{ x: [0, -20, 25, 0], y: [0, 20, -20, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           className="absolute bottom-[10%] right-[15%] w-[500px] h-[350px] bg-purple-600/15 rounded-full blur-[100px]" />
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger}
-          className="max-w-3xl mx-auto">
+        <motion.div initial="hidden" animate={inView ? "visible" : "hidden"} variants={stagger} className="max-w-3xl mx-auto">
           <motion.div variants={fadeUp}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -978,31 +1016,30 @@ function FinalCtaSection() {
           </motion.div>
           <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] mb-6">
             Stop Wasting Hours on{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] via-[#c084fc] to-[#ec4899]">
-              Manual Scheduling
-            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] via-[#c084fc] to-[#ec4899]">Manual Scheduling</span>
           </motion.h2>
           <motion.p variants={fadeUp} className="text-[#94a3b8] text-base sm:text-lg font-medium leading-relaxed mb-10 max-w-2xl mx-auto">
             Join 10,000+ managers who switched from spreadsheets and group chats to a professional employee schedule maker. Set up in minutes, see results from day one.
           </motion.p>
-
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
-              className="w-full sm:w-auto flex items-center justify-center gap-3 h-16 px-12 rounded-2xl bg-gradient-to-r from-[#8b5cf6] to-[#ec4899] text-white font-black text-sm uppercase tracking-widest shadow-[0_12px_50px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_16px_60px_-8px_rgba(139,92,246,0.6)] hover:scale-[1.02] transition-all group">
-              Start Free Trial — No Credit Card
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link href="/pricing"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 h-16 px-10 rounded-2xl bg-white/5 border border-white/15 text-white font-black text-sm uppercase tracking-widest hover:bg-white/10 hover:border-white/25 transition-all">
-              View Pricing Plans
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+              <Link href="https://app.staffschedule.io/onboarding.php?start_trial=1"
+                className="flex items-center justify-center gap-3 h-16 px-12 rounded-2xl bg-gradient-to-r from-[#8b5cf6] to-[#ec4899] text-white font-black text-sm uppercase tracking-widest shadow-[0_12px_50px_-8px_rgba(139,92,246,0.5)] hover:shadow-[0_16px_60px_-8px_rgba(139,92,246,0.65)] transition-shadow group">
+                Start Free Trial — No Credit Card
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} transition={springCard}>
+              <Link href="/pricing"
+                className="flex items-center justify-center gap-2 h-16 px-10 rounded-2xl bg-white/5 border border-white/15 text-white font-black text-sm uppercase tracking-widest hover:bg-white/10 hover:border-white/25 transition-colors">
+                View Pricing Plans
+              </Link>
+            </motion.div>
           </motion.div>
-
           <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {["14-Day Free Trial", "No Credit Card Required", "Setup in Under 10 Minutes", "Cancel Anytime"].map((t) => (
               <div key={t} className="flex items-center gap-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
-                <CheckCircle2 size={13} className="text-[#8b5cf6]" />
-                {t}
+                <CheckCircle2 size={13} className="text-[#8b5cf6]" /> {t}
               </div>
             ))}
           </motion.div>
