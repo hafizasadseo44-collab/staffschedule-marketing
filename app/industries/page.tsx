@@ -519,7 +519,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: -40, scale: 0.85 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.2, ...spring }}
-              className="absolute -left-6 top-24 bg-white rounded-2xl shadow-2xl border border-gray-100 px-3.5 py-2.5 z-10">
+              className="hidden md:block absolute -left-6 top-24 bg-white rounded-2xl shadow-2xl border border-gray-100 px-3.5 py-2.5 z-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -534,7 +534,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: 40, scale: 0.85 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.7, ...spring }}
-              className="absolute -right-6 bottom-20 bg-white rounded-2xl shadow-2xl border border-gray-100 px-3.5 py-2.5 z-10">
+              className="hidden md:block absolute -right-6 bottom-20 bg-white rounded-2xl shadow-2xl border border-gray-100 px-3.5 py-2.5 z-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
                   <Zap className="w-4 h-4 text-indigo-600" />
@@ -806,7 +806,7 @@ function FeaturedIndustries() {
 
               {/* Visual side — animated mock card */}
               <SpotCard glow={`${f.accent}25`} className="rounded-3xl">
-                <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1830] via-[#1f1d36] to-[#13112a] border border-white/10 shadow-2xl shadow-indigo-900/40 p-7">
+                <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1830] via-[#1f1d36] to-[#13112a] border border-white/10 shadow-2xl shadow-indigo-900/40 p-5 sm:p-7">
                   {/* Header */}
                   <div className="flex items-center gap-3 mb-5 pb-4 border-b border-white/5">
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${f.grad} flex items-center justify-center`}>
@@ -1084,7 +1084,6 @@ export default function IndustriesPage() {
     <main>
       <HeroSection />
       <StatsBar />
-      <IndustriesGrid />
       <IndustryIndexSection />
       <FeaturedIndustries />
       <OnePlatform />

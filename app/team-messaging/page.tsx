@@ -383,7 +383,7 @@ function HeroSection() {
               initial={{ opacity: 0, x: 40, scale: 0.8 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.6, type: "spring", stiffness: 280, damping: 22 }}
-              className="absolute -right-6 top-20 bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-100 px-3.5 py-2.5 flex items-center gap-2.5 min-w-max z-10"
+              className="hidden md:flex absolute -right-6 top-20 bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-100 px-3.5 py-2.5 items-center gap-2.5 min-w-max z-10"
             >
               <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -399,7 +399,7 @@ function HeroSection() {
               initial={{ opacity: 0, x: 40, scale: 0.8 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 2.2, type: "spring", stiffness: 280, damping: 22 }}
-              className="absolute -right-8 bottom-32 bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-100 px-3.5 py-2.5 flex items-center gap-2.5 min-w-max z-10"
+              className="hidden md:flex absolute -right-8 bottom-32 bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-100 px-3.5 py-2.5 items-center gap-2.5 min-w-max z-10"
             >
               <div className="w-8 h-8 rounded-xl bg-indigo-100 flex items-center justify-center">
                 <Bell className="w-4 h-4 text-indigo-600" />

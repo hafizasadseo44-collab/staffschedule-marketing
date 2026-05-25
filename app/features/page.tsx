@@ -326,7 +326,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: -40, scale: 0.85 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.4, ...spring }}
-              className="absolute -left-6 top-32 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
+              className="hidden md:flex absolute -left-6 top-32 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-white" />
@@ -342,7 +342,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: 40, scale: 0.85 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.9, ...spring }}
-              className="absolute -right-4 top-72 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
+              className="hidden md:flex absolute -right-4 top-72 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -358,7 +358,7 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.85 }} animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 2.3, ...spring }}
-              className="absolute -right-2 -bottom-4 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
+              className="hidden md:flex absolute -right-2 -bottom-4 bg-white rounded-2xl shadow-2xl shadow-gray-300/30 border border-gray-100 px-3.5 py-3 min-w-max z-10">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
                   <MessageSquare className="w-4 h-4 text-indigo-600" />
@@ -527,10 +527,10 @@ function ConnectedPlatform() {
         <motion.div initial={{ opacity: 0, scale: 0.9 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="relative mx-auto" style={{ width: "100%", maxWidth: 720, height: 560 }}>
+          className="relative mx-auto w-full max-w-[720px] aspect-[720/560]">
 
           {/* SVG connecting lines */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 720 560">
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 720 560" preserveAspectRatio="xMidYMid meet">
             <defs>
               <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />
@@ -558,7 +558,7 @@ function ConnectedPlatform() {
             <motion.div key={i}
               animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
               transition={{ duration: 3, repeat: Infinity, delay: i * 1, ease: "easeOut" }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-2 border-indigo-400/40" />
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full border-2 border-indigo-400/40" />
           ))}
 
           {/* Center hub */}
@@ -566,11 +566,11 @@ function ConnectedPlatform() {
             initial={{ scale: 0, rotate: -45 }}
             animate={inView ? { scale: 1, rotate: 0 } : {}}
             transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 18 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-fuchsia-600 flex flex-col items-center justify-center shadow-2xl shadow-indigo-400/40 z-10"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-fuchsia-600 flex flex-col items-center justify-center shadow-2xl shadow-indigo-400/40 z-10"
           >
-            <Sparkles className="w-8 h-8 text-white mb-2" />
-            <p className="text-white text-xs font-black tracking-wider">STAFFSCHEDULE</p>
-            <p className="text-white/70 text-[9px] uppercase tracking-widest">Unified Platform</p>
+            <Sparkles className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white mb-1 sm:mb-2" />
+            <p className="text-white text-[9px] sm:text-[11px] lg:text-xs font-black tracking-wider">STAFFSCHEDULE</p>
+            <p className="text-white/70 text-[7px] sm:text-[8px] lg:text-[9px] uppercase tracking-widest">Unified Platform</p>
           </motion.div>
 
           {/* Orbiting nodes */}
@@ -591,19 +591,19 @@ function ConnectedPlatform() {
               >
                 <div className="relative group cursor-pointer">
                   <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 3 + i * 0.3, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}>
-                    <div className="w-16 h-16 rounded-2xl bg-white border-2 border-gray-100 shadow-xl shadow-gray-300/30 flex items-center justify-center group-hover:shadow-2xl transition-shadow duration-200"
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-2xl bg-white border-2 border-gray-100 shadow-xl shadow-gray-300/30 flex items-center justify-center group-hover:shadow-2xl transition-shadow duration-200"
                       style={{ borderColor: `${node.color}40` }}>
-                      <node.icon className="w-7 h-7" style={{ color: node.color }} />
+                      <node.icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" style={{ color: node.color }} />
                     </div>
                     {/* pulse dot */}
                     <motion.div
                       animate={{ scale: [1, 1.6, 1], opacity: [1, 0, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                      className="absolute -top-1 -right-1 w-3 h-3 rounded-full"
+                      className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full"
                       style={{ backgroundColor: node.color }}
                     />
                   </motion.div>
-                  <p className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-xs font-bold text-gray-800 whitespace-nowrap">{node.label}</p>
+                  <p className="absolute -bottom-6 sm:-bottom-7 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-bold text-gray-800 whitespace-nowrap">{node.label}</p>
                 </div>
               </motion.div>
             );
@@ -826,7 +826,7 @@ function MobileShowcase() {
                 initial={{ opacity: 0, x: -40, scale: 0.85 }}
                 animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
                 transition={{ delay: 1.2, ...spring }}
-                className="absolute -left-8 top-24 bg-white rounded-2xl shadow-2xl shadow-indigo-900/40 border border-gray-100 px-3 py-2.5 z-10">
+                className="hidden md:block absolute -left-8 top-24 bg-white rounded-2xl shadow-2xl shadow-indigo-900/40 border border-gray-100 px-3 py-2.5 z-10">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
                     <Bell className="w-4 h-4 text-indigo-600" />
@@ -842,7 +842,7 @@ function MobileShowcase() {
                 initial={{ opacity: 0, x: 40, scale: 0.85 }}
                 animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
                 transition={{ delay: 1.6, ...spring }}
-                className="absolute -right-6 bottom-32 bg-white rounded-2xl shadow-2xl shadow-purple-900/40 border border-gray-100 px-3 py-2.5 z-10">
+                className="hidden md:block absolute -right-6 bottom-32 bg-white rounded-2xl shadow-2xl shadow-purple-900/40 border border-gray-100 px-3 py-2.5 z-10">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
