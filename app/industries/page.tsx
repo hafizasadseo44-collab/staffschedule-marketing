@@ -14,7 +14,9 @@ import {
   Truck, Sparkles as SparklesIcon, Heart, Scissors,
   Calendar, Clock, MessageSquare, Users, MapPin,
   Building2, Wrench, Phone, Zap, TrendingUp, Globe,
-  PaintBucket, FlaskConical, Pizza, Coffee,
+  PartyPopper, Store, Code, Headphones, Home,
+  HeartPulse, PawPrint, Pill, Smile, Bug, TreePine,
+  Siren, Package, Music, HeartHandshake, Layers,
 } from "lucide-react";
 
 /* ─── animation constants ─── */
@@ -164,6 +166,152 @@ const INDUSTRIES = [
   },
 ];
 
+/* All 32 industries grouped by 11 categories (full competitor coverage) */
+const INDUSTRY_INDEX = [
+  {
+    key: "hospitality",
+    category: "Hospitality & Food Services",
+    catIcon: UtensilsCrossed,
+    accent: "#ea580c",
+    bg: "from-orange-500 to-red-600",
+    glow: "rgba(249,115,22,0.16)",
+    items: [
+      { name: "Restaurants, Cafés, Bars & Coffee Shops", icon: UtensilsCrossed, href: "/solutions/hospitality" },
+      { name: "Catering & Events", icon: PartyPopper, href: "/industries" },
+      { name: "Hotels & Resorts", icon: Hotel, href: "/solutions/hospitality" },
+    ],
+  },
+  {
+    key: "retail",
+    category: "Retail & Consumer Services",
+    catIcon: ShoppingBag,
+    accent: "#ec4899",
+    bg: "from-pink-500 to-rose-600",
+    glow: "rgba(236,72,153,0.16)",
+    items: [
+      { name: "Retail Stores", icon: Store, href: "/solutions/retail" },
+      { name: "Salon & Spa", icon: Scissors, href: "/industries" },
+      { name: "Franchises", icon: Building2, href: "/industries" },
+    ],
+  },
+  {
+    key: "professional",
+    category: "Professional & Business Services",
+    catIcon: Briefcase,
+    accent: "#8b5cf6",
+    bg: "from-violet-500 to-purple-600",
+    glow: "rgba(139,92,246,0.16)",
+    items: [
+      { name: "Professional Services", icon: Briefcase, href: "/industries" },
+      { name: "Staffing & Recruitment", icon: Users, href: "/industries" },
+      { name: "Security Services", icon: Shield, href: "/solutions/security" },
+      { name: "Technology & Software", icon: Code, href: "/industries" },
+      { name: "Call Centers & Customer Support", icon: Headphones, href: "/industries" },
+    ],
+  },
+  {
+    key: "healthcare",
+    category: "Health & Social Care",
+    catIcon: Stethoscope,
+    accent: "#f43f5e",
+    bg: "from-rose-500 to-pink-600",
+    glow: "rgba(244,63,94,0.16)",
+    items: [
+      { name: "Healthcare & Medical", icon: Stethoscope, href: "/solutions/healthcare" },
+      { name: "Caregivers & Assisted Living", icon: Heart, href: "/industries" },
+      { name: "Home Care", icon: Home, href: "/industries" },
+      { name: "Nursing", icon: HeartPulse, href: "/industries" },
+      { name: "Veterinary Care", icon: PawPrint, href: "/industries" },
+      { name: "Pharmacy", icon: Pill, href: "/industries" },
+      { name: "Dental Practice", icon: Smile, href: "/industries" },
+    ],
+  },
+  {
+    key: "education",
+    category: "Education Services",
+    catIcon: GraduationCap,
+    accent: "#0ea5e9",
+    bg: "from-sky-500 to-cyan-600",
+    glow: "rgba(14,165,233,0.16)",
+    items: [
+      { name: "Colleges, Universities & Schools", icon: GraduationCap, href: "/industries" },
+    ],
+  },
+  {
+    key: "facilities",
+    category: "Facilities & Maintenance",
+    catIcon: Wrench,
+    accent: "#14b8a6",
+    bg: "from-teal-500 to-cyan-600",
+    glow: "rgba(20,184,166,0.16)",
+    items: [
+      { name: "Cleaning Services", icon: SparklesIcon, href: "/industries" },
+      { name: "Electricians", icon: Zap, href: "/industries" },
+      { name: "Lawn Care & Landscaping", icon: TreePine, href: "/industries" },
+      { name: "Pest Control", icon: Bug, href: "/industries" },
+      { name: "Plumbers", icon: Wrench, href: "/industries" },
+    ],
+  },
+  {
+    key: "public",
+    category: "Public & Emergency Services",
+    catIcon: Siren,
+    accent: "#dc2626",
+    bg: "from-red-500 to-rose-600",
+    glow: "rgba(220,38,38,0.16)",
+    items: [
+      { name: "Emergency & Law Enforcement", icon: Siren, href: "/industries" },
+      { name: "Field Services", icon: Truck, href: "/industries" },
+    ],
+  },
+  {
+    key: "entertainment",
+    category: "Entertainment & Media",
+    catIcon: Music,
+    accent: "#a855f7",
+    bg: "from-purple-500 to-fuchsia-600",
+    glow: "rgba(168,85,247,0.16)",
+    items: [
+      { name: "Entertainment & Seasonal", icon: PartyPopper, href: "/industries" },
+    ],
+  },
+  {
+    key: "logistics",
+    category: "Logistics & Transportation",
+    catIcon: Truck,
+    accent: "#10b981",
+    bg: "from-emerald-500 to-teal-600",
+    glow: "rgba(16,185,129,0.16)",
+    items: [
+      { name: "Delivery", icon: Package, href: "/industries" },
+      { name: "Logistics & Warehousing", icon: Truck, href: "/industries" },
+    ],
+  },
+  {
+    key: "nonprofit",
+    category: "Non-Profit & Community",
+    catIcon: HeartHandshake,
+    accent: "#d946ef",
+    bg: "from-fuchsia-500 to-pink-600",
+    glow: "rgba(217,70,239,0.16)",
+    items: [
+      { name: "Volunteers & Non-Profit", icon: HeartHandshake, href: "/industries" },
+    ],
+  },
+  {
+    key: "construction",
+    category: "Industry & Construction",
+    catIcon: HardHat,
+    accent: "#f59e0b",
+    bg: "from-yellow-500 to-amber-600",
+    glow: "rgba(245,158,11,0.16)",
+    items: [
+      { name: "Construction & Trades", icon: HardHat, href: "/industries" },
+      { name: "Manufacturing", icon: Factory, href: "/industries" },
+    ],
+  },
+];
+
 const FEATURED = [
   {
     icon: UtensilsCrossed, grad: "from-orange-500 to-red-600",
@@ -208,7 +356,7 @@ const FEATURED = [
 
 const STATS = [
   { value: 200, suffix: "K+", label: "Workplaces Served" },
-  { value: 31, suffix: "+", label: "Industries Supported" },
+  { value: 32, suffix: "", label: "Industries Supported" },
   { value: 4.9, suffix: "/5", label: "Average Customer Rating", isFloat: true },
   { value: 99.9, suffix: "%", label: "Platform Uptime SLA", isFloat: true },
 ];
@@ -271,7 +419,7 @@ function HeroSection() {
         <motion.div variants={stagger} initial="hidden" animate="visible" className="text-center lg:text-left">
           <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-6">
             <Globe className="w-3.5 h-3.5" />
-            31+ Industries Served
+            32 Industries Served
           </motion.div>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl xl:text-[3.6rem] font-black text-white leading-[1.07] tracking-tight mb-6">
             Built for Every Industry.{" "}
@@ -487,6 +635,110 @@ function IndustriesGrid() {
             </motion.div>
           ))}
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════
+   COMPLETE INDUSTRY INDEX (32 industries)
+══════════════════════════════════ */
+function IndustryIndexSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+
+  const flat = INDUSTRY_INDEX.flatMap(g => g.items.map(item => ({
+    ...item,
+    catKey: g.key,
+    catName: g.category,
+    accent: g.accent,
+    bg: g.bg,
+    glow: g.glow,
+  })));
+  const filtered = activeKey ? flat.filter(i => i.catKey === activeKey) : flat;
+
+  return (
+    <section className="py-24 bg-white relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.04, 0.1, 0.04] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-fuchsia-200 rounded-full blur-3xl" />
+        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.04, 0.08, 0.04] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-200 rounded-full blur-3xl" />
+      </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div ref={ref} variants={stagger} initial="hidden" animate={inView ? "visible" : "hidden"} className="text-center mb-10">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fuchsia-50 border border-fuchsia-100 text-fuchsia-600 text-xs font-bold tracking-widest uppercase mb-5">
+            <Layers className="w-3.5 h-3.5" />
+            Complete Industry Index
+          </motion.div>
+          <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
+            Browse All <span className="bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text text-transparent">32 Industries</span>
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-gray-500 text-lg max-w-2xl mx-auto mb-2">
+            Sorted by category. Every sector gets the platform tailored to its specific workflow.
+          </motion.p>
+          <motion.p variants={fadeUp} className="text-gray-400 text-sm">
+            Showing <span className="font-bold text-gray-700">{filtered.length}</span> of <span className="font-bold text-gray-700">{flat.length}</span> industries
+          </motion.p>
+        </motion.div>
+
+        {/* Category filter pills */}
+        <motion.div variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+          className="flex flex-wrap justify-center gap-2 mb-10">
+          <button onClick={() => setActiveKey(null)}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${activeKey === null ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-200" : "bg-white border border-gray-200 text-gray-600 hover:border-indigo-300 hover:text-indigo-600"}`}>
+            <Globe className="w-3.5 h-3.5" />
+            All Industries
+            <span className={`ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold ${activeKey === null ? "bg-white/20" : "bg-gray-100"}`}>{flat.length}</span>
+          </button>
+          {INDUSTRY_INDEX.map(g => (
+            <button key={g.key} onClick={() => setActiveKey(g.key)}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${activeKey === g.key ? "text-white shadow-md" : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300"}`}
+              style={activeKey === g.key ? { background: `linear-gradient(to right, ${g.accent}, ${g.accent}dd)`, boxShadow: `0 6px 18px ${g.accent}40` } : {}}
+            >
+              <g.catIcon className="w-3.5 h-3.5" />
+              {g.category}
+              <span className={`ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold ${activeKey === g.key ? "bg-white/20" : "bg-gray-100"}`}>{g.items.length}</span>
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Industries grid */}
+        <div key={activeKey ?? "all"} className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+          {filtered.map((ind, i) => (
+            <motion.div key={ind.name}
+              initial={{ opacity: 0, y: 14, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.4, delay: i * 0.025, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+            >
+              <Link href={ind.href}>
+                <SpotCard glow={ind.glow} className="rounded-2xl border border-gray-100 bg-white shadow-sm cursor-pointer h-full">
+                  <div className="p-5 h-full flex items-start gap-3">
+                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${ind.bg} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                      <ind.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-gray-900 leading-tight mb-1.5">{ind.name}</p>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-gray-400">
+                        <span className="w-1 h-1 rounded-full" style={{ backgroundColor: ind.accent }} />
+                        {ind.catName}
+                      </span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0 mt-1" />
+                  </div>
+                </SpotCard>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom note */}
+        <motion.p
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+          className="text-center text-sm text-gray-500 mt-12">
+          Don&apos;t see your industry? <Link href="/contact" className="text-indigo-600 font-semibold hover:underline">Tell us about your team</Link> — we adapt to your workflow.
+        </motion.p>
       </div>
     </section>
   );
@@ -833,6 +1085,7 @@ export default function IndustriesPage() {
       <HeroSection />
       <StatsBar />
       <IndustriesGrid />
+      <IndustryIndexSection />
       <FeaturedIndustries />
       <OnePlatform />
       <TestimonialsSection />

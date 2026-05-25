@@ -157,7 +157,7 @@ export const MegaMenu = ({ items, type }: MegaMenuProps) => {
                   <ArrowRight size={16} />
                 </div>
                 <span className="text-xs font-black text-brand-dark group-hover:text-brand-primary transition-colors duration-500 uppercase tracking-widest">
-                  View All 31+ Industries
+                  View All 32 Industries
                 </span>
               </div>
               <Sparkles size={16} className="text-brand-primary opacity-0 group-hover:opacity-100 transition-opacity" />
