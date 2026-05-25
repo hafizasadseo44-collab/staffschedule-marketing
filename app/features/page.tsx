@@ -448,15 +448,12 @@ function FeaturesGrid() {
         </motion.div>
 
         {/* Grid */}
-        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((f) => (
+        <div key={active ?? "all"} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map((f, i) => (
               <motion.div key={f.title}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={spring}
+                initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.35, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               >
                 <Link href={f.href}>
                   <SpotCard glow={f.glow} className={`rounded-2xl border bg-white shadow-sm cursor-pointer h-full ${f.featured ? "border-indigo-200 ring-1 ring-indigo-100" : "border-gray-100"}`}>
@@ -480,8 +477,7 @@ function FeaturesGrid() {
                 </Link>
               </motion.div>
             ))}
-          </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
