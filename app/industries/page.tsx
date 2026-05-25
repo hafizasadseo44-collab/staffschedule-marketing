@@ -176,9 +176,9 @@ const INDUSTRY_INDEX = [
     bg: "from-orange-500 to-red-600",
     glow: "rgba(249,115,22,0.16)",
     items: [
-      { name: "Restaurants, Cafés, Bars & Coffee Shops", icon: UtensilsCrossed, href: "/solutions/hospitality" },
-      { name: "Catering & Events", icon: PartyPopper, href: "/industries" },
-      { name: "Hotels & Resorts", icon: Hotel, href: "/solutions/hospitality" },
+      { name: "Restaurants, Cafés, Bars & Coffee Shops", icon: UtensilsCrossed, href: "/industries/restaurants" },
+      { name: "Catering & Events", icon: PartyPopper, href: "/industries/events-catering" },
+      { name: "Hotels & Resorts", icon: Hotel, href: "/industries/hotels-resorts" },
     ],
   },
   {

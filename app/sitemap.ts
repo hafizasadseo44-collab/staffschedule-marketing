@@ -58,6 +58,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/time-clock-software`,           lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/team-messaging`,                lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/industries`,                    lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/industries/restaurants`,        lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE}/industries/events-catering`,    lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE}/industries/hotels-resorts`,     lastModified: now, changeFrequency: "monthly", priority: 0.85 },
 
     // ── Features Hub + All Sub-Pages ──────────────────────────────
     { url: `${BASE}/features`,                      lastModified: now, changeFrequency: "monthly", priority: 0.9 },
