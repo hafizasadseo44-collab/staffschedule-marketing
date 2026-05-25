@@ -171,7 +171,7 @@ export default function IndustryShowcase() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 w-full text-transparent bg-clip-text bg-gradient-to-r from-[#1c1236] via-[#4c1d95] to-[#8b5cf6]"
           >
-            Smarter Staff Scheduling for Every Business
+            Staff Scheduling Software for Restaurants, Retail, Clinics, and Growing Teams
           </motion.h2>
 
           <motion.p
@@ -181,7 +181,7 @@ export default function IndustryShowcase() {
             transition={{ delay: 0.2 }}
             className="text-base md:text-lg text-[#5b4f7a] font-medium leading-relaxed max-w-4xl"
           >
-            Whether you run a restaurant, café, clinic, retail store or any growing business, StaffSchedule.io helps Top Local Business to manage staff scheduling, leaves, open shifts, availability and team updates in one simple place. It keeps your team organized so every employee always knows when and where they need to work.
+            Whether you manage a restaurant, café, clinic, retail store, or shift-based business, StaffSchedule.io helps teams handle staff scheduling, employee availability, leave management, open shifts, and workforce communication from one centralized scheduling platform. Employees stay informed with real-time shift updates so managers can reduce scheduling confusion and keep daily operations running smoothly.
           </motion.p>
         </div>
 

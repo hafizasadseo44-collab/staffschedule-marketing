@@ -123,7 +123,7 @@ export default function TestimonialsMarquee() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-6 leading-[1.1] max-w-4xl mx-auto"
           >
-            What Our Customers Say
+            Why Businesses Trust StaffSchedule.io for Workforce Scheduling
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -132,7 +132,7 @@ export default function TestimonialsMarquee() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-slate-500 font-medium max-w-3xl mx-auto leading-relaxed"
           >
-            Businesses and managers use StaffSchedule.io every day to simplify staff scheduling, improve team communication, and keep their workforce organized.
+            Businesses use StaffSchedule.io to reduce scheduling confusion, improve team communication, and manage workforce scheduling more efficiently with real-time shift updates and scheduling automation.
           </motion.p>
         </div>
 

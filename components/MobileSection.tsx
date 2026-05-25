@@ -78,13 +78,21 @@ export default function MobileSection() {
 
             {/* Main Heading */}
             <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-[3.25rem] font-black text-slate-900 tracking-tight mb-6 leading-[1.1]">
-              Your Workforce in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-sm">Your Pocket</span>
+              How Can Managers Handle Staff Scheduling <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-sm">From Anywhere?</span>
             </motion.h2>
 
-            {/* Description Paragraph */}
-            <motion.p variants={itemVariants} className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-10 max-w-2xl">
-              Managers and employees shouldn't be chained to a desk. StaffSchedule.io gives your entire team the power to check schedules, request swaps, submit leave, and chat in real-time — all from a single intuitive mobile app.
-            </motion.p>
+            {/* Description Paragraphs */}
+            <motion.div variants={itemVariants} className="flex flex-col gap-4 text-base sm:text-lg text-slate-600 font-medium leading-relaxed mb-10 max-w-2xl">
+              <p>
+                StaffSchedule.io helps managers handle staff scheduling, employee availability, shift updates, leave requests, and workforce communication from anywhere using a mobile workforce management app designed for shift-based businesses.
+              </p>
+              <p>
+                Whether you are at the office, working remotely, traveling, or managing multiple business locations, our employee scheduling platform provides real-time shift management, scheduling automation, and employee communication tools that help teams stay connected and informed.
+              </p>
+              <p>
+                Managers can create schedules, approve leave requests, send announcements, and manage open shifts directly from their mobile devices without relying on spreadsheets, phone calls, or scattered group chats. This helps businesses improve workforce coordination, reduce scheduling delays, and keep daily operations running more efficiently.
+              </p>
+            </motion.div>
 
             {/* Features Staggered List */}
             <div className="flex flex-col gap-5 mb-10">

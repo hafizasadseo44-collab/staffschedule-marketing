@@ -6,44 +6,44 @@ import { Plus, Minus, CheckCircle2, HelpCircle } from "lucide-react";
 
 const faqs = [
   {
-    question: "What is staff scheduling software and do I actually need it?",
-    answer: "If you're still building weekly rosters on spreadsheets, WhatsApp groups, or sticky notes — yes, you need it. Staff scheduling software is a digital tool that automates how you create, manage, and share employee shifts. Instead of spending hours every week figuring out who's available and who's on leave, the software handles it in minutes. For any business with more than 5 employees and rotating shifts, it's not a luxury — it's a time-saver you'll wonder how you lived without."
+    question: "What is staff scheduling software?",
+    answer: "Staff scheduling software helps businesses create, manage, and organize employee work schedules digitally. It allows managers to handle shift planning, employee availability, leave requests, open shifts, and team communication from one workforce management platform."
   },
   {
-    question: "How is StaffSchedule.io different from other employee scheduling software?",
-    answer: "Most employee scheduling software gives you a calendar and calls it a day. StaffSchedule.io goes further — combining smart shift scheduling, real-time team chat, AI-powered forecasting, multi-location management, and live analytics in one platform. You don't need five different tools. You need one that actually works end-to-end. That's what we built."
+    question: "How does StaffSchedule.io improve staff scheduling?",
+    answer: "StaffSchedule.io helps businesses reduce scheduling confusion by centralizing employee schedules, shift updates, workforce communication, and leave management in one platform. Managers can create schedules faster, track employee availability, and send real-time notifications to teams."
   },
   {
-    question: "Is there a free plan? Can I try it before paying?",
-    answer: "Yes — StaffSchedule.io offers a free trial so you can explore the platform with your actual team before committing to anything. No credit card required to get started. If you're looking for a free employee scheduling software option to test the waters, our trial gives you full access to core features so you can see the difference firsthand."
+    question: "Can employees check schedules from their mobile phones?",
+    answer: "Yes. Employees can view schedules, receive shift updates, check open shifts, and stay informed through our mobile employee scheduling app. This helps teams stay connected even when working remotely or across multiple locations."
   },
   {
-    question: "How long does it take to set up and onboard my team?",
-    answer: "Most teams are fully set up within a day. You import your roster or invite staff via magic links, assign roles and locations, and your employee scheduling app is ready to go. There's no steep learning curve — if your team can use a smartphone, they can use StaffSchedule.io."
+    question: "How do businesses reduce scheduling conflicts?",
+    answer: "Businesses can reduce scheduling conflicts by using scheduling automation and employee availability tracking. Workforce management software helps managers avoid overlapping shifts, missed updates, and last-minute scheduling problems."
   },
   {
-    question: "Can I manage multiple locations from one account?",
-    answer: "Absolutely. Whether you're running 2 branches or 200, our workforce scheduling software lets you switch between locations instantly, share staff across sites, and monitor every team from a single dashboard. No logging in and out. No confusion. Just complete visibility across your entire operation."
+    question: "Is StaffSchedule.io good for restaurants, retail stores, and clinics?",
+    answer: "Yes. StaffSchedule.io is built for shift-based businesses including restaurants, cafés, retail stores, clinics, warehouses, call centers, and growing teams that need better workforce scheduling and shift management."
   },
   {
-    question: "What happens when an employee can't make their shift?",
-    answer: "With our built-in shift swap feature, employees can request a swap directly through the staff scheduling app — and managers approve it in one click. No frantic group texts. No scrambling for last-minute cover. The right person shows up, every time."
+    question: "Can I manage multiple business locations with StaffSchedule.io?",
+    answer: "Yes. Our multi-location workforce management system allows businesses to manage employee schedules, departments, shifts, and team communication across multiple branches from one centralized platform."
   },
   {
-    question: "Does StaffSchedule.io work for my industry?",
-    answer: "If your business runs on shifts, it works for you. Our team scheduling app is used across healthcare, retail, hospitality, logistics, cafés, clinics, and more. The platform adapts to how your industry actually schedules — not the other way around."
+    question: "How does employee availability tracking work?",
+    answer: "Managers can track employee availability, leave requests, and shift preferences before publishing schedules. This helps businesses improve shift planning and reduce scheduling mistakes."
   },
   {
-    question: "Can employees see their own schedules on their phones?",
-    answer: "Yes. Your team gets instant access to their shifts through our employee scheduling app — directly on their phone. When schedules are published or updated, they get notified immediately. No more \"I didn't know I was working\" excuses."
+    question: "What are the benefits of employee scheduling software?",
+    answer: "Employee scheduling software helps businesses save time, reduce scheduling errors, improve workforce communication, and simplify shift management. Many businesses use scheduling automation to improve workforce productivity and daily operations."
   },
   {
-    question: "How does StaffSchedule.io help reduce overtime and labor costs?",
-    answer: "Our shift management software automatically flags overtime risks before you publish a schedule. Pair that with AI forecasting and real-time labor cost tracking, and you'll always know exactly what your workforce is costing you — and where you can trim without hurting coverage."
+    question: "Can employees swap shifts using StaffSchedule.io?",
+    answer: "Yes. Employees can request shift swaps directly through the platform, helping teams manage schedule changes more efficiently while keeping managers informed in real time."
   },
   {
-    question: "Is my data secure? What if I want to cancel?",
-    answer: "Your data is encrypted and stored securely — we take privacy seriously. And if you ever decide to leave (though our users rarely do), cancelling is simple with no hidden fees or long-term contracts. We believe in earning your business every single month, not locking you in."
+    question: "Why do businesses use workforce management software?",
+    answer: "Businesses use workforce management software to improve scheduling operations, manage employee shifts, track attendance, simplify communication, and keep teams aligned with real-time schedule updates."
   }
 ];
 
