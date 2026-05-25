@@ -71,10 +71,10 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { icon: Twitter, href: "#", color: "hover:text-sky-400" },
-  { icon: Linkedin, href: "#", color: "hover:text-blue-600" },
-  { icon: Github, href: "#", color: "hover:text-slate-200" },
-  { icon: Youtube, href: "#", color: "hover:text-rose-600" },
+  { icon: Twitter, href: "#", color: "hover:text-sky-400", label: "Follow StaffSchedule.io on Twitter" },
+  { icon: Linkedin, href: "#", color: "hover:text-blue-600", label: "Connect with StaffSchedule.io on LinkedIn" },
+  { icon: Github, href: "#", color: "hover:text-slate-200", label: "StaffSchedule.io on GitHub" },
+  { icon: Youtube, href: "#", color: "hover:text-rose-600", label: "StaffSchedule.io on YouTube" },
 ];
 
 const PremiumFooter = () => {
@@ -125,13 +125,14 @@ const PremiumFooter = () => {
                 <Link 
                   key={i} 
                   href={social.href}
+                  aria-label={social.label}
                   className={cn(
                     "w-12 h-12 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-500 transition-all duration-300",
                     social.color,
                     "hover:bg-white/10 hover:-translate-y-1"
                   )}
                 >
-                  <social.icon size={20} />
+                  <social.icon size={20} aria-hidden="true" />
                 </Link>
               ))}
             </div>

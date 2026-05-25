@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Users, ShieldCheck, Zap, CalendarDays, RefreshCw,
   TrendingUp, TrendingDown, Clock, AlertCircle, CheckCircle2,
-  Bell, MoreHorizontal, ArrowUpRight, ArrowDownRight,
+  Bell, MoreHorizontal,
   MapPin, Coffee
 } from "lucide-react";
 import SimulationSidebar from "../SimulationSidebar";
@@ -129,7 +129,7 @@ export default function SimulationDashboard({ isActive, updateCursor }: Props) {
           <div className="grid grid-cols-4 gap-3">
             {STATS.map((s, i) => {
               const Icon = s.icon;
-              const Trend = s.up ? ArrowUpRight : ArrowDownRight;
+              const Trend = s.up ? TrendingUp : TrendingDown;
               return (
                 <motion.div
                   key={s.label}

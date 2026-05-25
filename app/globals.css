@@ -151,14 +151,25 @@
   }
 }
 
-/* Disable hover effects on touch devices to prevent "stuck" states */
+/* Disable problematic hover scale/bg effects on touch devices to prevent "stuck" states */
+/* Note: We only target specific properties, NOT all transitions (which would break focus styles) */
 @media (hover: none) {
   .hover\:scale-\[1\.03\]:hover { transform: none !important; }
   .hover\:bg-\[\#7c3aed\]:hover { background-color: #8b5cf6 !important; }
   .hover\:border-indigo-500\/50:hover { border-color: transparent !important; }
-  /* Add more specific resets if needed, or use the global approach: */
-  *:hover {
-    transition: none !important;
+  /* Disable 3D tilt effects on touch — not possible without mouse */
+  [class*="hover:rotate"] { transform: none !important; }
+}
+
+/* Respect user OS accessibility preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -202,6 +213,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -209,9 +223,6 @@
   }
   * {
     @apply border-border outline-ring/50;
-  }
-  html {
-    @apply font-sans;
   }
 }
 

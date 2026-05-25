@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Smartphone, Check, ArrowRight, AppWindow, Play, MessageSquare, Calendar, Clock } from "lucide-react";
 
@@ -154,14 +155,13 @@ export default function MobileSection() {
                 whileHover={{ rotateY: -4, rotateX: 4, scale: 1.02 }}
                 className="relative w-full"
               >
-                <img 
-                  src="/staffschedule-mobile.png" 
-                  alt="StaffSchedule.io Mobile App Showcase" 
+                <Image
+                  src="/staffschedule-mobile.png"
+                  alt="StaffSchedule.io mobile app - manage employee schedules from anywhere on iOS and Android"
+                  width={650}
+                  height={800}
                   className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.15)] select-none"
-                  onError={(e) => {
-                    // Fallback image in case the file has any issue
-                    e.currentTarget.src = "/mobile-schedule-app.png";
-                  }}
+                  loading="lazy"
                 />
               </motion.div>
             </motion.div>

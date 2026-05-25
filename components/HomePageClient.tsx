@@ -10,10 +10,10 @@ import { LazySection } from "@/components/ui/lazy-section";
 // --- Dynamically Imported Components (Below the fold — ssr:false saves server CPU) ---
 
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"), { ssr: false });
+const PremiumShowcaseSection = dynamic(() => import("@/components/PremiumShowcaseSection"), { ssr: false });
 const FeaturesGrid = dynamic(() => import("@/components/FeaturesGrid"), { ssr: false });
 const MobileSection = dynamic(() => import("@/components/MobileSection"), { ssr: false });
 const TestimonialsMarquee = dynamic(() => import("@/components/TestimonialsMarquee"), { ssr: false });
-const CaseStudySection = dynamic(() => import("@/components/CaseStudySection"), { ssr: false });
 const PricingTable = dynamic(() => import("@/components/PricingTable"), { ssr: false });
 const LatestBlogsSection = dynamic(() => import("@/components/LatestBlogsSection"), { ssr: false });
 const FAQSection = dynamic(() => import("@/components/FAQSection"), { ssr: false });
@@ -33,13 +33,23 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
       <div className="relative z-10">
       {/* 1. Hero */}
       <SplitHero />
-      <IndustryShowcase />
+      {/* 2. Industry Showcase */}
+      <LazySection>
+        <IndustryShowcase />
+      </LazySection>
+
+      {/* 3. Premium Showcase Section */}
+      <LazySection>
+        <PremiumShowcaseSection />
+      </LazySection>
 
 
 
       {/* 4. How it works */}
       <LazySection>
+        <div id="how-it-works">
         <HowItWorks />
+        </div>
       </LazySection>
 
       {/* 5. Feature highlights */}
@@ -52,17 +62,12 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
         <MobileSection />
       </LazySection>
 
-      {/* 10. Testimonials */}
+      {/* 7. Testimonials */}
       <LazySection>
         <TestimonialsMarquee />
       </LazySection>
 
-      {/* 11. Case Study */}
-      <LazySection>
-        <CaseStudySection />
-      </LazySection>
-
-      {/* 12. Pricing + link to page */}
+      {/* 8. Pricing + link to page */}
       <LazySection>
         <PricingTable />
       </LazySection>
@@ -77,17 +82,17 @@ export default function HomePageClient({ latestBlogs = [] }: { latestBlogs?: any
         </Link>
       </div>
 
-      {/* 12. Latest Blogs */}
+      {/* 9. Latest Blogs */}
       <LazySection>
         <LatestBlogsSection posts={latestBlogs} />
       </LazySection>
 
-      {/* 13. FAQ */}
+      {/* 10. FAQ */}
       <LazySection>
         <FAQSection />
       </LazySection>
 
-      {/* 14. Elite Final CTA */}
+      {/* 11. Elite Final CTA */}
       <LazySection>
         <EliteFinalCTA />
       </LazySection>

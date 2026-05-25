@@ -26,26 +26,18 @@ const EliteFinalCTA = () => {
         >
           {/* --- AMBIENT ATMOSPHERICS --- */}
           <div className="absolute inset-0 pointer-events-none">
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.3, 0.2],
-                x: [0, 50, 0],
-              }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-1/4 -right-1/4 w-[1000px] h-[1000px] bg-violet-600/30 rounded-full blur-[160px]" 
+            {/* Top-right purple orb - CSS animation (compositor thread, zero JS cost) */}
+            <div
+              className="absolute -top-1/4 -right-1/4 w-[1000px] h-[1000px] bg-violet-600/30 rounded-full blur-[160px] animate-[glow-pulse_15s_ease-in-out_infinite]"
+              aria-hidden="true"
             />
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.3, 1],
-                opacity: [0.15, 0.25, 0.15],
-                x: [0, -30, 0],
-              }}
-              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute -bottom-1/4 -left-1/4 w-[900px] h-[900px] bg-indigo-600/20 rounded-full blur-[160px]" 
+            {/* Bottom-left indigo orb - CSS animation */}
+            <div
+              className="absolute -bottom-1/4 -left-1/4 w-[900px] h-[900px] bg-indigo-600/20 rounded-full blur-[160px] animate-[glow-pulse_18s_ease-in-out_infinite_2s]"
+              aria-hidden="true"
             />
-            {/* Animated Mesh Gradients */}
-            <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+            {/* Grain texture overlay using existing bg-grain utility */}
+            <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-grain" aria-hidden="true" />
           </div>
 
           <div className="relative z-20 grid lg:grid-cols-2 gap-16 items-center p-10 md:p-16 lg:p-24">
@@ -139,8 +131,8 @@ const EliteFinalCTA = () => {
                 <div className="flex items-center gap-4">
                   <div className="flex -space-x-3">
                     {AVATARS.map((url, i) => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0F172A] overflow-hidden shadow-xl">
-                        <img src={url} alt="User" className="w-full h-full object-cover" />
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0F172A] overflow-hidden shadow-xl relative">
+                        <Image src={url} alt={`StaffSchedule.io user avatar ${i + 1}`} fill className="object-cover" />
                       </div>
                     ))}
                   </div>
@@ -169,10 +161,9 @@ const EliteFinalCTA = () => {
             {/* RIGHT SIDE: VISUALS */}
             <div className="relative flex items-center justify-center lg:justify-end">
               {/* Floating Orbs & Glows */}
-              <motion.div 
-                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-violet-600/10 rounded-full blur-[120px] -z-10"
+              <div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-violet-600/10 rounded-full blur-[120px] -z-10 animate-[glow-pulse_10s_ease-in-out_infinite]"
+                aria-hidden="true"
               />
 
               {/* The Main Mockup Container */}
@@ -186,10 +177,13 @@ const EliteFinalCTA = () => {
                   className="relative z-10 w-full group"
                 >
                   <div className="relative p-2 bg-white/5 backdrop-blur-3xl rounded-[2.5rem] border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden group-hover:scale-[1.02] transition-transform duration-700">
-                    <img 
-                      src="/hero-master.png" 
-                      alt="StaffSchedule Dashboard" 
+                  <Image
+                      src="/hero-master.png"
+                      alt="StaffSchedule.io workforce management dashboard - shift scheduling and team communication interface"
+                      width={1200}
+                      height={800}
                       className="w-full h-auto rounded-[1.8rem] shadow-2xl"
+                      loading="lazy"
                     />
                     {/* Glass Shine Effect */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none" />
@@ -202,11 +196,14 @@ const EliteFinalCTA = () => {
                     className="absolute -right-8 -bottom-12 w-[240px] z-20 hidden xl:block"
                   >
                     <div className="p-1.5 bg-white/5 backdrop-blur-2xl rounded-[3rem] border border-white/10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
-                      <img 
-                        src="/hero-mockup.png" 
-                        alt="StaffSchedule Mobile" 
-                        className="w-full h-auto rounded-[2.5rem] object-cover aspect-[9/16]"
-                      />
+                      <Image
+                          src="/hero-mockup.png"
+                          alt="StaffSchedule.io mobile scheduling app - view shifts and manage schedule on your phone"
+                          width={240}
+                          height={427}
+                          className="w-full h-auto rounded-[2.5rem] object-cover aspect-[9/16]"
+                          loading="lazy"
+                        />
                     </div>
                   </motion.div>
 

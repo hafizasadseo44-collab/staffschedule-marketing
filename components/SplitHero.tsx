@@ -5,28 +5,18 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon, CheckCircle2, Star } from "lucide-react";
 import { LinkPreview } from "@/components/ui/link-preview";
-import { LogoCloud } from "@/components/ui/logo-cloud";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 // --- Trust Avatars ---
 const AVATARS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
+  { src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop", alt: "Restaurant manager using StaffSchedule.io" },
+  { src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop", alt: "Retail team lead managing employee schedules" },
+  { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop", alt: "Operations manager using workforce management software" },
+  { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop", alt: "Business owner managing staff shifts online" },
 ];
 
-// --- Partner Logo Data ---
-const logos = [
-  { src: "https://storage.efferd.com/logo/nvidia-wordmark.svg", alt: "Nvidia" },
-  { src: "https://storage.efferd.com/logo/supabase-wordmark.svg", alt: "Supabase" },
-  { src: "https://storage.efferd.com/logo/openai-wordmark.svg", alt: "OpenAI" },
-  { src: "https://storage.efferd.com/logo/vercel-wordmark.svg", alt: "Vercel" },
-  { src: "https://storage.efferd.com/logo/github-wordmark.svg", alt: "GitHub" },
-  { src: "https://storage.efferd.com/logo/claude-wordmark.svg", alt: "Claude AI" },
-  { src: "https://storage.efferd.com/logo/clerk-wordmark.svg", alt: "Clerk" },
-];
+
 
 export default function SplitHero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -160,11 +150,12 @@ export default function SplitHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex items-center gap-3 py-2 px-6 bg-white/60 rounded-full border border-[#e5e0f1] shadow-sm backdrop-blur-md"
+            aria-label="Trusted by over 10,000 managers — rated 5 stars"
           >
-            <div className="flex -space-x-2">
-              {AVATARS.map((url, i) => (
+            <div className="flex -space-x-2" aria-hidden="true">
+              {AVATARS.map((avatar, i) => (
                 <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow-sm">
-                  <Image src={url} alt="User" width={32} height={32} className="w-full h-full object-cover" />
+                  <Image src={avatar.src} alt={avatar.alt} width={32} height={32} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
@@ -260,7 +251,7 @@ export default function SplitHero() {
                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-purple-100 overflow-hidden border-2 border-white shadow-sm relative">
                   <Image
                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop"
-                    alt="Profile"
+                    alt="Sarah Jenkins - StaffSchedule.io scheduling manager"
                     fill
                     className="object-cover"
                   />

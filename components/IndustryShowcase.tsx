@@ -195,14 +195,16 @@ export default function IndustryShowcase() {
             {/* Render cards twice for seamless loop */}
             {[...INDUSTRIES, ...INDUSTRIES].map((industry, idx) => {
               const Icon = industry.LogoIcon;
+              const isDuplicate = idx >= INDUSTRIES.length;
               return (
               <div 
                 key={`${industry.id}-${idx}`} 
                 className="min-w-[260px] md:min-w-[300px] lg:min-w-[320px] h-[380px] md:h-[440px] relative rounded-[1.5rem] overflow-hidden group cursor-pointer flex-shrink-0"
+                aria-hidden={isDuplicate ? "true" : undefined}
               >
                 <Image
                   src={industry.image}
-                  alt={industry.businessName}
+                  alt={`${industry.businessName} - staff scheduling software for ${industry.logoSubtext.toLowerCase()} businesses`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 400px"
@@ -231,7 +233,7 @@ export default function IndustryShowcase() {
                 {/* Bottom Quote & Info */}
                 <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-20 flex flex-col gap-4">
                   <p className="text-white/95 text-sm md:text-[15px] font-medium leading-relaxed drop-shadow-md italic">
-                    "{industry.quote}"
+                     &ldquo;{industry.quote}&rdquo;
                   </p>
                   <div className="flex flex-col">
                     <div className="text-white text-sm md:text-base font-bold drop-shadow-lg leading-tight">{industry.ownerName}</div>

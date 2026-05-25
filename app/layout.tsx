@@ -67,6 +67,10 @@ export default async function RootLayout({
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for external image hosts */}
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Preload hero LCP image to improve Core Web Vitals */}
+        <link rel="preload" href="/staffschedule-dashboard.png" as="image" type="image/png" />
         {/* Theme colour for mobile browsers */}
         <meta name="theme-color" content="#4F46E5" />
         <meta name="color-scheme" content="light" />
