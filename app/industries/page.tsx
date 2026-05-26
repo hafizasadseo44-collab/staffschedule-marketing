@@ -189,9 +189,9 @@ const INDUSTRY_INDEX = [
     bg: "from-pink-500 to-rose-600",
     glow: "rgba(236,72,153,0.16)",
     items: [
-      { name: "Retail Stores", icon: Store, href: "/solutions/retail" },
-      { name: "Salon & Spa", icon: Scissors, href: "/industries" },
-      { name: "Franchises", icon: Building2, href: "/industries" },
+      { name: "Retail Stores", icon: Store, href: "/industries/retail" },
+      { name: "Salon & Spa", icon: Scissors, href: "/industries/salon-spa" },
+      { name: "Franchises", icon: Building2, href: "/industries/franchise" },
     ],
   },
   {
