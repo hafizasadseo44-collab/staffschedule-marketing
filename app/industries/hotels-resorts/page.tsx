@@ -65,36 +65,36 @@ function HeroSection() {
   const active = DEPARTMENTS.find(d => d.id === activeDept) ?? DEPARTMENTS[0];
 
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#031a2e] via-[#062942] to-[#031a2e] overflow-hidden pt-24 pb-16">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden pt-24 pb-16">
       <div className="absolute inset-0 pointer-events-none">
         <motion.div animate={{ scale: [1, 1.18, 1], opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-600/25 rounded-full blur-3xl" />
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/25 rounded-full blur-3xl" />
         <motion.div animate={{ scale: [1, 1.22, 1], opacity: [0.15, 0.35, 0.15] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
         {/* Left copy */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="text-center lg:text-left">
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-cyan-300/30 text-cyan-200 text-xs font-bold tracking-widest uppercase mb-6">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-200 text-xs font-bold tracking-widest uppercase mb-6">
             <Hotel className="w-3.5 h-3.5" />
             For Hotels · Resorts · Hospitality
           </motion.div>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl xl:text-[3.5rem] font-black text-white leading-[1.07] tracking-tight mb-6">
             Hotel Scheduling{" "}
-            <span className="bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
               That Never Sleeps
             </span>
             .
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-cyan-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-indigo-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
             24-hour coverage across housekeeping, front desk, F&amp;B, spa, and engineering — coordinated from one dashboard.
             Built for boutique inns, full-service hotels, and resort groups managing dozens of properties.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-400 hover:to-teal-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-cyan-900/50">
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-900/50">
               Start Free for Your Property <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="#departments"
@@ -102,10 +102,10 @@ function HeroSection() {
               Tour the Property Dashboard
             </Link>
           </motion.div>
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-cyan-200/60">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> 24/7 coverage views</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> Multi-property ready</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> Union-compliant</span>
+          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-indigo-200/60">
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> 24/7 coverage views</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Multi-property ready</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Union-compliant</span>
           </motion.div>
         </motion.div>
 
@@ -115,16 +115,16 @@ function HeroSection() {
           transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="relative w-full"
         >
-          <div className="relative bg-gradient-to-br from-[#062942] to-[#031a2e] rounded-2xl border border-cyan-900/40 shadow-2xl shadow-cyan-900/30 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-2xl border border-indigo-900/40 shadow-2xl shadow-indigo-900/30 overflow-hidden">
             {/* Property header */}
-            <div className="px-5 py-4 border-b border-cyan-900/30 flex items-center justify-between">
+            <div className="px-5 py-4 border-b border-indigo-900/30 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center">
                   <Hotel className="w-4 h-4 text-white" />
                 </div>
                 <div>
                   <p className="text-white text-sm font-bold leading-tight">The Lakeside Resort</p>
-                  <p className="text-cyan-300/60 text-[10px]">4 properties · 312 rooms · 86 staff on duty</p>
+                  <p className="text-indigo-300/60 text-[10px]">4 properties · 312 rooms · 86 staff on duty</p>
                 </div>
               </div>
               <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold">
@@ -143,7 +143,7 @@ function HeroSection() {
                     <d.icon className="w-4 h-4 text-white" />
                   </div>
                   <p className="text-white text-[10px] font-bold leading-tight">{d.name}</p>
-                  <p className="text-cyan-300/50 text-[9px] mt-0.5">{d.staff} on · {d.shift}</p>
+                  <p className="text-indigo-300/50 text-[9px] mt-0.5">{d.staff} on · {d.shift}</p>
                 </motion.button>
               ))}
             </div>
@@ -183,7 +183,7 @@ function HeroSection() {
                           {p.name.split(" ").map(w => w[0]).join("")}
                         </div>
                         <span className="text-white text-[11px] font-semibold flex-1 truncate">{p.name}</span>
-                        <span className="text-cyan-200/50 text-[9px] truncate max-w-[120px]">{p.role}</span>
+                        <span className="text-indigo-200/50 text-[9px] truncate max-w-[120px]">{p.role}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -193,7 +193,7 @@ function HeroSection() {
 
             {/* Bottom 24h coverage bar */}
             <div className="px-5 pb-5 pt-1">
-              <p className="text-cyan-200/50 text-[10px] uppercase tracking-widest mb-2">24-Hour Property Coverage</p>
+              <p className="text-indigo-200/50 text-[10px] uppercase tracking-widest mb-2">24-Hour Property Coverage</p>
               <div className="flex gap-0.5 h-3 rounded-full overflow-hidden bg-cyan-950/50">
                 {Array.from({ length: 24 }).map((_, h) => {
                   const intensity = h >= 6 && h <= 22 ? 0.7 + Math.sin((h - 6) / 16 * Math.PI) * 0.3 : 0.3;
@@ -207,7 +207,7 @@ function HeroSection() {
                   );
                 })}
               </div>
-              <div className="flex justify-between mt-1 text-[8px] text-cyan-300/40 font-mono">
+              <div className="flex justify-between mt-1 text-[8px] text-indigo-300/40 font-mono">
                 <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
               </div>
             </div>
@@ -217,9 +217,9 @@ function HeroSection() {
           <motion.div
             initial={{ opacity: 0, x: -40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 1.4, ...spring }}
-            className="hidden md:flex absolute -left-8 top-16 bg-white rounded-2xl shadow-2xl border border-cyan-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
-            <div className="w-9 h-9 rounded-xl bg-cyan-100 flex items-center justify-center">
-              <KeySquare className="w-4 h-4 text-cyan-600" />
+            className="hidden md:flex absolute -left-8 top-16 bg-white rounded-2xl shadow-2xl border border-indigo-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
+            <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+              <KeySquare className="w-4 h-4 text-indigo-600" />
             </div>
             <div>
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Check-out rush</p>
@@ -259,8 +259,8 @@ function StatsBar() {
     { v: 200, s: "+", l: "multi-property groups served" },
   ];
   return (
-    <div ref={ref} className="border-y border-cyan-100 bg-gradient-to-r from-cyan-50/30 to-teal-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 divide-y-2 lg:divide-y-0 lg:divide-x divide-cyan-100">
+    <div ref={ref} className="border-y border-indigo-100 bg-gradient-to-r from-indigo-50/30 to-violet-50/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 divide-y-2 lg:divide-y-0 lg:divide-x divide-indigo-100">
         {items.map((it, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: i * 0.08 }} className="flex flex-col items-center gap-1 px-6 py-4 text-center">
@@ -283,7 +283,7 @@ function DepartmentsDeepDive() {
     <section id="departments" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-100 text-cyan-700 text-xs font-bold tracking-widest uppercase mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold tracking-widest uppercase mb-5">
             <Building2 className="w-3.5 h-3.5" />
             Every Department, One Platform
           </div>
@@ -334,7 +334,7 @@ function DepartmentsDeepDive() {
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
               whileHover={{ y: -6 }}
-              className="group bg-white rounded-2xl border border-cyan-100 p-6 shadow-sm hover:shadow-xl hover:border-cyan-200 transition-all duration-300 relative overflow-hidden">
+              className="group bg-white rounded-2xl border border-indigo-100 p-6 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-300 relative overflow-hidden">
               <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: `radial-gradient(circle, ${d.glow}, transparent 70%)` }} />
               <div className="relative">
@@ -343,7 +343,7 @@ function DepartmentsDeepDive() {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{d.name}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed mb-4">{d.desc}</p>
-                <div className="space-y-1.5 pt-3 border-t border-cyan-50">
+                <div className="space-y-1.5 pt-3 border-t border-indigo-50">
                   {d.features.map(f => (
                     <div key={f} className="flex items-center gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" />
@@ -371,17 +371,17 @@ function MultiProperty() {
     { name: "Mountain Lodge", rooms: 124, staff: 52, alert: 0, color: "#3b82f6" },
   ];
   return (
-    <section className="py-24 bg-gradient-to-br from-[#031a2e] via-[#062942] to-[#031a2e] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }} transition={{ duration: 10, repeat: Infinity }}
-        className="absolute top-1/3 left-1/3 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl pointer-events-none" />
+        className="absolute top-1/3 left-1/3 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           {/* Visual */}
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-            className="bg-gradient-to-br from-[#062942] to-[#031a2e] rounded-2xl border border-cyan-900/40 p-6 shadow-2xl shadow-cyan-900/30">
+            className="bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-2xl border border-indigo-900/40 p-6 shadow-2xl shadow-indigo-900/30">
             <div className="flex items-center justify-between mb-5">
               <p className="text-white text-sm font-bold">Portfolio Overview</p>
-              <span className="text-cyan-300/60 text-[10px] uppercase tracking-wider">4 properties</span>
+              <span className="text-indigo-300/60 text-[10px] uppercase tracking-wider">4 properties</span>
             </div>
             <div className="space-y-2.5">
               {props.map((p, i) => (
@@ -396,7 +396,7 @@ function MultiProperty() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-bold truncate">{p.name}</p>
-                    <p className="text-cyan-300/50 text-[10px]">{p.rooms} rooms · {p.staff} staff on duty</p>
+                    <p className="text-indigo-300/50 text-[10px]">{p.rooms} rooms · {p.staff} staff on duty</p>
                   </div>
                   {p.alert > 0 ? (
                     <motion.span animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
@@ -419,7 +419,7 @@ function MultiProperty() {
                   initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   transition={{ delay: 0.7 + i * 0.08 }}
                   className="bg-white/5 rounded-lg p-2.5 text-center">
-                  <p className="text-cyan-300/60 text-[9px] uppercase tracking-wider">{m.l}</p>
+                  <p className="text-indigo-300/60 text-[9px] uppercase tracking-wider">{m.l}</p>
                   <p className="text-white text-lg font-black">{m.v}</p>
                 </motion.div>
               ))}
@@ -428,16 +428,16 @@ function MultiProperty() {
 
           {/* Copy */}
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-cyan-300/30 text-cyan-300 text-xs font-bold tracking-widest uppercase mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-6">
               <Building2 className="w-3.5 h-3.5" />
               Multi-Property Command Center
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-5">
               One Dashboard for Your
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Entire Hotel Portfolio.</span>
+              <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Entire Hotel Portfolio.</span>
             </h2>
-            <p className="text-cyan-100/70 text-lg leading-relaxed mb-6">
+            <p className="text-indigo-100/70 text-lg leading-relaxed mb-6">
               Boutique inns, full-service properties, and resort destinations — see every property at once.
               Identify coverage gaps before they become guest issues. Move staff between sister properties with a tap.
               Run portfolio-wide labor reports without exporting a single spreadsheet.
@@ -453,10 +453,10 @@ function MultiProperty() {
                   initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                   className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-md bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                  <div className="w-6 h-6 rounded-md bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" />
                   </div>
-                  <p className="text-cyan-100/80 text-sm">{line}</p>
+                  <p className="text-indigo-100/80 text-sm">{line}</p>
                 </motion.div>
               ))}
             </div>
@@ -495,8 +495,8 @@ function PropertyTypes() {
             <motion.div key={t.t}
               initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
-              className="group flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-cyan-50/40 to-teal-50/30 border border-cyan-100 hover:border-cyan-300 transition-all duration-200">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-200">
+              className="group flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-indigo-50/40 to-violet-50/30 border border-indigo-100 hover:border-cyan-300 transition-all duration-200">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-200">
                 <t.icon className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -516,9 +516,9 @@ function PropertyTypes() {
 ══════════════════════════════════ */
 function TestimonialSection() {
   return (
-    <section className="py-24 bg-gradient-to-br from-cyan-600 via-teal-600 to-emerald-700 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.2, 0.1] }} transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-cyan-300/20 rounded-full blur-3xl" />
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-300/20 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex justify-center gap-1 mb-6">
@@ -530,12 +530,12 @@ function TestimonialSection() {
             Best operational decision we&apos;ve made in three years.&rdquo;
           </p>
           <div className="flex items-center justify-center gap-3">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-300 to-teal-400 flex items-center justify-center text-white text-base font-black shadow-lg">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-300 to-violet-400 flex items-center justify-center text-white text-base font-black shadow-lg">
               KH
             </div>
             <div className="text-left">
               <p className="text-white font-bold text-lg">Katherine H.</p>
-              <p className="text-cyan-100/80 text-sm">VP Operations · 4-property boutique hotel group</p>
+              <p className="text-indigo-100/80 text-sm">VP Operations · 4-property boutique hotel group</p>
             </div>
           </div>
         </motion.div>
@@ -560,7 +560,7 @@ function FaqSection() {
     { q: "Does it integrate with hotel payroll providers?", a: "Yes. Approved timesheets flow to ADP, Gusto, QuickBooks, and major payroll providers. F&B tips, housekeeping room-based bonuses, on-call differentials, and overnight premiums are all calculated correctly. Payroll runs in under an hour instead of two days." },
   ];
   return (
-    <section className="py-24 bg-cyan-50/20">
+    <section className="py-24 bg-indigo-50/20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
@@ -570,19 +570,19 @@ function FaqSection() {
         </div>
         <div className="space-y-3">
           {faqs.map((f, i) => (
-            <div key={i} className="border border-cyan-100 rounded-2xl overflow-hidden bg-white shadow-sm">
+            <div key={i} className="border border-indigo-100 rounded-2xl overflow-hidden bg-white shadow-sm">
               <button onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-cyan-50/40 transition-colors duration-150">
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-indigo-50/40 transition-colors duration-150">
                 <span className="font-semibold text-gray-900 pr-4 text-sm sm:text-base">{f.q}</span>
                 <motion.div animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.25 }}>
-                  <ChevronDown className="w-5 h-5 text-cyan-400 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-indigo-400 flex-shrink-0" />
                 </motion.div>
               </button>
               <AnimatePresence>
                 {open === i && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}>
-                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-cyan-50">{f.a}</div>
+                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-indigo-50">{f.a}</div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -599,25 +599,25 @@ function FaqSection() {
 ══════════════════════════════════ */
 function FinalCta() {
   return (
-    <section className="py-24 bg-gradient-to-br from-[#031a2e] via-[#062942] to-[#031a2e] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-cyan-600/30 to-teal-600/30 rounded-full blur-3xl" />
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-indigo-600/30 to-violet-600/30 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-cyan-900/50">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-indigo-900/50">
             <Hotel className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
             Your Property, Always Covered.
             <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent">Every Department. Every Hour.</span>
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Every Department. Every Hour.</span>
           </h2>
-          <p className="text-cyan-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-indigo-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
             Start free. Schedule your next week across every department. Live in under an hour.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-400 hover:to-teal-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-cyan-900/50">
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-indigo-900/50">
               Start Free Trial <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/contact"
@@ -628,8 +628,8 @@ function FinalCta() {
           <div className="flex flex-wrap items-center justify-center gap-5">
             {["24/7 coverage", "Multi-property ready", "Union-compliant", "Live on day one"].map((t) => (
               <div key={t} className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                <span className="text-sm text-cyan-200/70">{t}</span>
+                <CheckCircle2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                <span className="text-sm text-indigo-200/70">{t}</span>
               </div>
             ))}
           </div>

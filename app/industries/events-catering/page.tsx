@@ -57,36 +57,36 @@ function HeroSection() {
   const activePhase = phases.find(p => playPos >= p.start && playPos < p.end) ?? phases[0];
 
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0d0420] via-[#1a0830] to-[#0d0420] overflow-hidden pt-24 pb-16">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden pt-24 pb-16">
       <div className="absolute inset-0 pointer-events-none">
         <motion.div animate={{ scale: [1, 1.18, 1], opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-fuchsia-600/25 rounded-full blur-3xl" />
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/25 rounded-full blur-3xl" />
         <motion.div animate={{ scale: [1, 1.22, 1], opacity: [0.15, 0.35, 0.15] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl" />
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
         {/* Left copy */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="text-center lg:text-left">
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-fuchsia-300/30 text-fuchsia-200 text-xs font-bold tracking-widest uppercase mb-6">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-200 text-xs font-bold tracking-widest uppercase mb-6">
             <PartyPopper className="w-3.5 h-3.5" />
             For Events · Catering · Production
           </motion.div>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl xl:text-[3.5rem] font-black text-white leading-[1.07] tracking-tight mb-6">
             Event Staff Scheduling{" "}
-            <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
               From Booking to Breakdown
             </span>
             .
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-fuchsia-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-indigo-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
             Roster temp crews. Coordinate multi-venue events. Run day-of-event from your phone.
             Built for caterers, event producers, and venue operators who live by the next booking.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-fuchsia-900/50">
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-900/50">
               Start Free for Your Event Business <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="#event-lifecycle"
@@ -94,10 +94,10 @@ function HeroSection() {
               See Event Lifecycle Demo
             </Link>
           </motion.div>
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-fuchsia-200/60">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" /> Built for temp crews</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" /> W-2 + 1099 support</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" /> Multi-venue ready</span>
+          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-indigo-200/60">
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Built for temp crews</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> W-2 + 1099 support</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Multi-venue ready</span>
           </motion.div>
         </motion.div>
 
@@ -107,20 +107,20 @@ function HeroSection() {
           transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="relative w-full"
         >
-          <div className="relative bg-gradient-to-br from-[#1a0a2e] to-[#0d0420] rounded-2xl border border-fuchsia-900/40 shadow-2xl shadow-fuchsia-900/30 overflow-hidden p-6">
+          <div className="relative bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-2xl border border-fuchsia-900/40 shadow-2xl shadow-indigo-900/30 overflow-hidden p-6">
             {/* Event header */}
             <div className="flex items-center justify-between mb-5">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Heart className="w-4 h-4 text-pink-400" />
-                  <p className="text-fuchsia-200/60 text-[10px] font-bold tracking-widest uppercase">Tonight&apos;s Event</p>
+                  <p className="text-indigo-200/60 text-[10px] font-bold tracking-widest uppercase">Tonight&apos;s Event</p>
                 </div>
                 <p className="text-white text-base font-black">Anderson Wedding Reception</p>
-                <p className="text-fuchsia-300/50 text-xs">Lakefront Pavilion · 180 guests</p>
+                <p className="text-indigo-300/50 text-xs">Lakefront Pavilion · 180 guests</p>
               </div>
               <div className="text-right">
                 <p className="text-white text-xl font-black tabular-nums">{activePhase.label}</p>
-                <p className="text-fuchsia-300/60 text-[10px] uppercase tracking-wider">Live now</p>
+                <p className="text-indigo-300/60 text-[10px] uppercase tracking-wider">Live now</p>
               </div>
             </div>
 
@@ -145,7 +145,7 @@ function HeroSection() {
                 <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white" />
               </motion.div>
             </div>
-            <div className="flex justify-between text-[9px] text-fuchsia-300/40 font-mono mb-5">
+            <div className="flex justify-between text-[9px] text-indigo-300/40 font-mono mb-5">
               <span>2:00 PM</span><span>4:00 PM</span><span>6:00 PM</span><span>10:00 PM</span><span>11:30 PM</span>
             </div>
 
@@ -194,7 +194,7 @@ function HeroSection() {
                         {p.name.split(" ").map(w => w[0]).join("")}
                       </div>
                       <span className="text-white text-[11px] font-semibold flex-1">{p.name}</span>
-                      <span className="text-fuchsia-300/60 text-[10px]">{p.role}</span>
+                      <span className="text-indigo-300/60 text-[10px]">{p.role}</span>
                       <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                     </motion.div>
                   ))}
@@ -207,9 +207,9 @@ function HeroSection() {
           <motion.div
             initial={{ opacity: 0, x: -40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 1.4, ...spring }}
-            className="hidden md:flex absolute -left-6 top-16 bg-white rounded-2xl shadow-2xl border border-fuchsia-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
-            <div className="w-9 h-9 rounded-xl bg-fuchsia-100 flex items-center justify-center">
-              <MessageSquare className="w-4 h-4 text-fuchsia-600" />
+            className="hidden md:flex absolute -left-6 top-16 bg-white rounded-2xl shadow-2xl border border-indigo-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
+            <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+              <MessageSquare className="w-4 h-4 text-indigo-600" />
             </div>
             <div>
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Event Chat</p>
@@ -221,9 +221,9 @@ function HeroSection() {
           <motion.div
             initial={{ opacity: 0, x: 40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 1.9, ...spring }}
-            className="hidden md:flex absolute -right-4 -bottom-4 bg-white rounded-2xl shadow-2xl border border-pink-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
-            <div className="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
-              <MapPin className="w-4 h-4 text-pink-600" />
+            className="hidden md:flex absolute -right-4 -bottom-4 bg-white rounded-2xl shadow-2xl border border-violet-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
+            <div className="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-violet-600" />
             </div>
             <div>
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">GPS Checked-in</p>
@@ -249,8 +249,8 @@ function StatsBar() {
     { v: 100, s: "+", l: "events per week supported" },
   ];
   return (
-    <div ref={ref} className="border-y border-fuchsia-100 bg-gradient-to-r from-fuchsia-50/30 to-pink-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 divide-y-2 lg:divide-y-0 lg:divide-x divide-fuchsia-100">
+    <div ref={ref} className="border-y border-indigo-100 bg-gradient-to-r from-indigo-50/30 to-violet-50/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 divide-y-2 lg:divide-y-0 lg:divide-x divide-indigo-100">
         {items.map((it, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: i * 0.08 }} className="flex flex-col items-center gap-1 px-6 py-4 text-center">
@@ -277,7 +277,7 @@ function EventLifecycle() {
       action: "Crew positions defined by event type — 12 servers, 4 bartenders, 2 AV techs for a 180-person wedding.",
     },
     {
-      icon: Users, color: "#d946ef", bg: "from-fuchsia-500 to-pink-600",
+      icon: Users, color: "#d946ef", bg: "from-indigo-600 to-violet-600",
       title: "Crew Roster Built", subtitle: "Day -10 to -3",
       desc: "Available temp staff with matching skill tags get notified. They accept or decline from the mobile app.",
       action: "Roster fills automatically based on availability, skills, and proximity to venue.",
@@ -306,7 +306,7 @@ function EventLifecycle() {
     <section id="event-lifecycle" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fuchsia-50 border border-fuchsia-100 text-fuchsia-700 text-xs font-bold tracking-widest uppercase mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold tracking-widest uppercase mb-5">
             <Sparkles className="w-3.5 h-3.5" />
             From Booking to Breakdown
           </div>
@@ -342,11 +342,11 @@ function EventLifecycle() {
 
               {/* Card */}
               <div className={`ml-20 sm:ml-0 sm:w-[calc(50%-3rem)] ${i % 2 === 0 ? "sm:mr-auto sm:pr-12" : "sm:ml-auto sm:pl-12"}`}>
-                <div className="bg-gradient-to-br from-white to-fuchsia-50/30 border border-fuchsia-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:border-fuchsia-200 transition-all duration-300">
+                <div className="bg-gradient-to-br from-white to-fuchsia-50/30 border border-indigo-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-300">
                   <p className="text-[10px] font-black tracking-widest uppercase mb-2" style={{ color: p.color }}>{p.subtitle}</p>
                   <h3 className="text-xl font-black text-gray-900 mb-2">{p.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed mb-3">{p.desc}</p>
-                  <div className="flex items-start gap-2 pt-3 border-t border-fuchsia-50">
+                  <div className="flex items-start gap-2 pt-3 border-t border-indigo-50">
                     <Zap className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: p.color }} />
                     <p className="text-xs font-semibold text-gray-700 leading-relaxed">{p.action}</p>
                   </div>
@@ -376,13 +376,13 @@ function SkillRostering() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-[#0d0420] via-[#160630] to-[#0d0420] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.3, 0.15] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/3 right-1/3 w-96 h-96 bg-pink-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-fuchsia-300/30 text-fuchsia-300 text-xs font-bold tracking-widest uppercase mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-6">
               <Tag className="w-3.5 h-3.5" />
               Skill-Based Crew Matching
             </div>
@@ -391,7 +391,7 @@ function SkillRostering() {
               <br />
               <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">Right Event.</span>
             </h2>
-            <p className="text-fuchsia-100/70 text-lg leading-relaxed mb-7">
+            <p className="text-indigo-100/70 text-lg leading-relaxed mb-7">
               Every crew member carries skill tags: bartender, AV tech, server, setup, security, photographer.
               When you book an event, the system suggests the perfect crew composition automatically.
               Cross-check availability, certifications, and venue proximity in one screen.
@@ -407,10 +407,10 @@ function SkillRostering() {
                   initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                   className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-md bg-fuchsia-500/20 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" />
+                  <div className="w-6 h-6 rounded-md bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" />
                   </div>
-                  <p className="text-fuchsia-100/80 text-sm">{line}</p>
+                  <p className="text-indigo-100/80 text-sm">{line}</p>
                 </motion.div>
               ))}
             </div>
@@ -431,7 +431,7 @@ function SkillRostering() {
                   <s.icon className="w-5 h-5" style={{ color: s.color }} />
                 </div>
                 <p className="text-white text-sm font-bold mb-1">{s.name}</p>
-                <p className="text-fuchsia-200/50 text-xs">{s.count} available crew</p>
+                <p className="text-indigo-200/50 text-xs">{s.count} available crew</p>
               </motion.div>
             ))}
           </motion.div>
@@ -448,7 +448,7 @@ function EventTypes() {
   const types = [
     { icon: Heart, t: "Weddings", d: "Reception flow, vendor coordination, day-of timeline", grad: "from-pink-500 to-rose-600" },
     { icon: Building2, t: "Corporate Events", d: "Conferences, brand launches, executive meetings", grad: "from-purple-500 to-fuchsia-600" },
-    { icon: Music, t: "Festivals & Concerts", d: "Multi-stage crews, security, hospitality", grad: "from-fuchsia-500 to-pink-600" },
+    { icon: Music, t: "Festivals & Concerts", d: "Multi-stage crews, security, hospitality", grad: "from-indigo-600 to-violet-600" },
     { icon: Award, t: "Fundraisers & Galas", d: "Auction support, sponsor handling, VIP service", grad: "from-violet-500 to-purple-600" },
     { icon: PartyPopper, t: "Private Parties", d: "Birthdays, anniversaries, milestones", grad: "from-rose-500 to-red-500" },
     { icon: Cake, t: "Catering Operations", d: "Off-site service, prep crews, drop-off logistics", grad: "from-amber-500 to-pink-500" },
@@ -470,7 +470,7 @@ function EventTypes() {
               initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
               whileHover={{ y: -6 }}
-              className="group p-6 rounded-2xl bg-gradient-to-br from-fuchsia-50/40 to-pink-50/30 border border-fuchsia-100 hover:border-fuchsia-300 hover:shadow-xl transition-all duration-300">
+              className="group p-6 rounded-2xl bg-gradient-to-br from-indigo-50/40 to-violet-50/30 border border-indigo-100 hover:border-fuchsia-300 hover:shadow-xl transition-all duration-300">
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${t.grad} flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-200`}>
                 <t.icon className="w-6 h-6 text-white" />
               </div>
@@ -489,9 +489,9 @@ function EventTypes() {
 ══════════════════════════════════ */
 function TestimonialSection() {
   return (
-    <section className="py-24 bg-gradient-to-br from-fuchsia-600 via-pink-600 to-rose-700 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.2, 0.1] }} transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-pink-300/20 rounded-full blur-3xl" />
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-300/20 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex justify-center gap-1 mb-6">
@@ -508,7 +508,7 @@ function TestimonialSection() {
             </div>
             <div className="text-left">
               <p className="text-white font-bold text-lg">David P.</p>
-              <p className="text-pink-100/80 text-sm">Founder · Premier Events Group · 200+ freelance crew</p>
+              <p className="text-indigo-100/80 text-sm">Founder · Premier Events Group · 200+ freelance crew</p>
             </div>
           </div>
         </motion.div>
@@ -533,7 +533,7 @@ function FaqSection() {
     { q: "How fast can my event business get set up?", a: "Most event firms run their first event on the platform within 48 hours. The setup wizard imports your crew roster, applies the event-industry preset (skill tags, common roles, GPS clock-in), and walks you through your first booking. Live training is included on every plan." },
   ];
   return (
-    <section className="py-24 bg-fuchsia-50/20">
+    <section className="py-24 bg-indigo-50/20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
@@ -543,19 +543,19 @@ function FaqSection() {
         </div>
         <div className="space-y-3">
           {faqs.map((f, i) => (
-            <div key={i} className="border border-fuchsia-100 rounded-2xl overflow-hidden bg-white shadow-sm">
+            <div key={i} className="border border-indigo-100 rounded-2xl overflow-hidden bg-white shadow-sm">
               <button onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-fuchsia-50/40 transition-colors duration-150">
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-indigo-50/40 transition-colors duration-150">
                 <span className="font-semibold text-gray-900 pr-4 text-sm sm:text-base">{f.q}</span>
                 <motion.div animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.25 }}>
-                  <ChevronDown className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-indigo-400 flex-shrink-0" />
                 </motion.div>
               </button>
               <AnimatePresence>
                 {open === i && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}>
-                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-fuchsia-50">{f.a}</div>
+                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-indigo-50">{f.a}</div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -572,25 +572,25 @@ function FaqSection() {
 ══════════════════════════════════ */
 function FinalCta() {
   return (
-    <section className="py-24 bg-gradient-to-br from-[#0d0420] via-[#1a0830] to-[#0d0420] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-fuchsia-600/30 to-pink-600/30 rounded-full blur-3xl" />
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-indigo-600/30 to-violet-600/30 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-fuchsia-900/50">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-indigo-900/50">
             <PartyPopper className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
             Your Next Event,
             <br />
-            <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Fully Coordinated.</span>
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Fully Coordinated.</span>
           </h2>
-          <p className="text-fuchsia-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-indigo-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
             Start free. Run your next booking on StaffSchedule.io. See your team breathe easier.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-fuchsia-900/50">
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-indigo-900/50">
               Start Free Trial <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/contact"
@@ -601,8 +601,8 @@ function FinalCta() {
           <div className="flex flex-wrap items-center justify-center gap-5">
             {["W-2 + 1099 ready", "14-day free trial", "Multi-venue support", "Cancel anytime"].map((t) => (
               <div key={t} className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-fuchsia-400 flex-shrink-0" />
-                <span className="text-sm text-fuchsia-200/70">{t}</span>
+                <CheckCircle2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                <span className="text-sm text-indigo-200/70">{t}</span>
               </div>
             ))}
           </div>

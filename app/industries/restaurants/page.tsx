@@ -62,14 +62,14 @@ function HeroSection() {
 
   return (
     <section
-      className="relative min-h-screen flex items-center bg-gradient-to-br from-[#1a0a0e] via-[#2a0f15] to-[#1a0a0e] overflow-hidden pt-24 pb-16"
+      className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden pt-24 pb-16"
       onMouseMove={e => { mx.set(e.clientX - window.innerWidth / 2); my.set(e.clientY - window.innerHeight / 2); }}
     >
       <div className="absolute inset-0 pointer-events-none">
         <motion.div animate={{ scale: [1, 1.18, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-orange-600/30 rounded-full blur-3xl" />
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/30 rounded-full blur-3xl" />
         <motion.div animate={{ scale: [1, 1.22, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-red-600/25 rounded-full blur-3xl" />
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-violet-600/25 rounded-full blur-3xl" />
       </div>
       <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(rgba(255,200,150,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,200,150,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
 
@@ -77,24 +77,24 @@ function HeroSection() {
 
         {/* Left copy */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="text-center lg:text-left">
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-orange-300/30 text-orange-200 text-xs font-bold tracking-widest uppercase mb-6">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-200 text-xs font-bold tracking-widest uppercase mb-6">
             <UtensilsCrossed className="w-3.5 h-3.5" />
             For Restaurants · Cafés · Bars · QSR
           </motion.div>
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl xl:text-[3.5rem] font-black text-white leading-[1.07] tracking-tight mb-6">
             Restaurant Scheduling Built for the{" "}
-            <span className="bg-gradient-to-r from-orange-400 via-red-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
               7 PM Rush
             </span>
             .
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-orange-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-indigo-100/70 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
             Front-of-house and back-of-house in one platform. Shift swaps in 60 seconds.
             Tips tracked automatically. Payroll-ready timesheets every Sunday night.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-red-900/50">
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-indigo-900/50">
               Start Free for Your Restaurant <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="#how-it-works"
@@ -102,10 +102,10 @@ function HeroSection() {
               See Tonight&apos;s Floor Demo
             </Link>
           </motion.div>
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-orange-200/60">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-orange-400" /> 14-day free trial</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-orange-400" /> Restaurant industry preset</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-orange-400" /> Built for FOH + BOH</span>
+          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 justify-center lg:justify-start text-xs text-indigo-200/60">
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> 14-day free trial</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Restaurant industry preset</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" /> Built for FOH + BOH</span>
           </motion.div>
         </motion.div>
 
@@ -116,32 +116,32 @@ function HeroSection() {
           className="relative flex justify-center lg:justify-end"
         >
           <motion.div style={{ rotateX, rotateY, transformPerspective: 1500 }} className="relative w-full max-w-md">
-            <div className="relative bg-gradient-to-br from-[#1f0f14] to-[#15090d] rounded-2xl border border-orange-900/40 shadow-2xl shadow-red-900/40 overflow-hidden">
+            <div className="relative bg-gradient-to-br from-[#1f0f14] to-[#15090d] rounded-2xl border border-indigo-900/40 shadow-2xl shadow-indigo-900/40 overflow-hidden">
               {/* Header */}
-              <div className="px-5 py-3.5 border-b border-orange-900/30 flex items-center justify-between">
+              <div className="px-5 py-3.5 border-b border-indigo-900/30 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Flame className="w-4 h-4 text-orange-400" />
+                  <Flame className="w-4 h-4 text-indigo-400" />
                   <span className="text-white text-xs font-bold">Tonight&apos;s Floor</span>
                 </div>
-                <span className="text-orange-300/70 text-[10px] font-mono">Fri · May 25 · {slots[time].hour}</span>
+                <span className="text-indigo-300/70 text-[10px] font-mono">Fri · May 25 · {slots[time].hour}</span>
               </div>
 
               {/* Demand timeline */}
               <div className="px-5 pt-4 pb-3">
-                <p className="text-orange-200/50 text-[10px] uppercase tracking-widest mb-2">Demand Forecast</p>
+                <p className="text-indigo-200/50 text-[10px] uppercase tracking-widest mb-2">Demand Forecast</p>
                 <div className="flex items-end gap-1.5 h-16 mb-2">
                   {slots.map((s, i) => (
                     <button key={s.label} onClick={() => setTime(i)} className="flex-1 group">
                       <motion.div
                         animate={{ height: `${s.level * 100}%`, opacity: i === time ? 1 : 0.45 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                        className={`w-full rounded-t transition-all ${i === time ? "bg-gradient-to-t from-red-500 to-orange-400" : "bg-orange-900/40"}`} />
+                        className={`w-full rounded-t transition-all ${i === time ? "bg-gradient-to-t from-violet-500 to-indigo-400" : "bg-indigo-900/40"}`} />
                     </button>
                   ))}
                 </div>
                 <div className="flex gap-1.5">
                   {slots.map((s, i) => (
-                    <span key={s.label} className={`flex-1 text-center text-[9px] font-bold ${i === time ? "text-orange-300" : "text-orange-200/30"}`}>
+                    <span key={s.label} className={`flex-1 text-center text-[9px] font-bold ${i === time ? "text-indigo-300" : "text-indigo-200/30"}`}>
                       {s.hour}
                     </span>
                   ))}
@@ -149,14 +149,14 @@ function HeroSection() {
               </div>
 
               {/* FOH section */}
-              <div className="px-5 pt-3 pb-2 border-t border-orange-900/30">
+              <div className="px-5 pt-3 pb-2 border-t border-indigo-900/30">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-orange-200/60 text-[10px] uppercase tracking-widest">Front of House</p>
+                  <p className="text-indigo-200/60 text-[10px] uppercase tracking-widest">Front of House</p>
                   <span className="text-white text-xs font-bold">8 on floor</span>
                 </div>
                 {[
-                  { name: "Sarah M.", role: "Lead Server · Sections 1–3", color: "#f97316", status: "in" },
-                  { name: "Marcus T.", role: "Bartender · Main Bar", color: "#ef4444", status: "in" },
+                  { name: "Sarah M.", role: "Lead Server · Sections 1–3", color: "#8b5cf6", status: "in" },
+                  { name: "Marcus T.", role: "Bartender · Main Bar", color: "#6366f1", status: "in" },
                   { name: "Jenny K.", role: "Host · Front", color: "#ec4899", status: "soon" },
                 ].map((p, i) => (
                   <motion.div key={p.name}
@@ -169,7 +169,7 @@ function HeroSection() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-[11px] font-semibold truncate">{p.name}</p>
-                      <p className="text-orange-200/40 text-[9px] truncate">{p.role}</p>
+                      <p className="text-indigo-200/40 text-[9px] truncate">{p.role}</p>
                     </div>
                     <span className={`w-1.5 h-1.5 rounded-full ${p.status === "in" ? "bg-emerald-400" : "bg-amber-400"}`} />
                   </motion.div>
@@ -177,13 +177,13 @@ function HeroSection() {
               </div>
 
               {/* BOH section */}
-              <div className="px-5 pt-3 pb-4 border-t border-orange-900/30">
+              <div className="px-5 pt-3 pb-4 border-t border-indigo-900/30">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-orange-200/60 text-[10px] uppercase tracking-widest">Back of House</p>
+                  <p className="text-indigo-200/60 text-[10px] uppercase tracking-widest">Back of House</p>
                   <span className="text-white text-xs font-bold">6 in kitchen</span>
                 </div>
                 {[
-                  { name: "Chef Diaz", role: "Head Chef · Pass", color: "#dc2626", status: "in" },
+                  { name: "Chef Diaz", role: "Head Chef · Pass", color: "#7c3aed", status: "in" },
                   { name: "Tomas R.", role: "Line · Grill", color: "#b91c1c", status: "in" },
                   { name: "Aiko L.", role: "Prep · Sauté", color: "#991b1b", status: "in" },
                 ].map((p, i) => (
@@ -197,7 +197,7 @@ function HeroSection() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-[11px] font-semibold truncate">{p.name}</p>
-                      <p className="text-orange-200/40 text-[9px] truncate">{p.role}</p>
+                      <p className="text-indigo-200/40 text-[9px] truncate">{p.role}</p>
                     </div>
                     <span className={`w-1.5 h-1.5 rounded-full ${p.status === "in" ? "bg-emerald-400" : "bg-amber-400"}`} />
                   </motion.div>
@@ -205,9 +205,9 @@ function HeroSection() {
               </div>
 
               {/* Bottom labor */}
-              <div className="px-5 pb-5 pt-2 bg-gradient-to-r from-red-950/40 to-orange-950/40 border-t border-orange-900/30">
+              <div className="px-5 pb-5 pt-2 bg-gradient-to-r from-indigo-950/40 to-violet-950/40 border-t border-indigo-900/30">
                 <div className="flex items-center justify-between">
-                  <span className="text-orange-200/60 text-[10px] uppercase tracking-widest">Tonight&apos;s Labor</span>
+                  <span className="text-indigo-200/60 text-[10px] uppercase tracking-widest">Tonight&apos;s Labor</span>
                   <span className="text-emerald-400 text-xs font-bold">28% of forecast revenue</span>
                 </div>
               </div>
@@ -217,9 +217,9 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: -40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.4, ...spring }}
-              className="hidden md:flex absolute -left-8 top-32 bg-white rounded-2xl shadow-2xl border border-orange-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
-              <div className="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center">
-                <Repeat className="w-4 h-4 text-orange-600" />
+              className="hidden md:flex absolute -left-8 top-32 bg-white rounded-2xl shadow-2xl border border-indigo-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
+              <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+                <Repeat className="w-4 h-4 text-indigo-600" />
               </div>
               <div>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Swap Approved</p>
@@ -231,9 +231,9 @@ function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: 40, scale: 0.8 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 1.9, ...spring }}
-              className="hidden md:flex absolute -right-6 bottom-28 bg-white rounded-2xl shadow-2xl border border-red-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
-              <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center">
-                <DollarSign className="w-4 h-4 text-red-600" />
+              className="hidden md:flex absolute -right-6 bottom-28 bg-white rounded-2xl shadow-2xl border border-violet-100 px-3.5 py-2.5 items-center gap-2.5 z-10">
+              <div className="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
+                <DollarSign className="w-4 h-4 text-violet-600" />
               </div>
               <div>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tip Pool</p>
@@ -260,12 +260,12 @@ function StatsBar() {
     { v: 4.8, s: "/5", l: "mobile app rating" },
   ];
   return (
-    <div ref={ref} className="border-y border-orange-100 bg-gradient-to-r from-orange-50/40 to-red-50/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 gap-0 divide-y-2 lg:divide-y-0 lg:divide-x divide-orange-100">
+    <div ref={ref} className="border-y border-indigo-100 bg-gradient-to-r from-indigo-50/40 to-violet-50/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 lg:grid-cols-4 gap-0 divide-y-2 lg:divide-y-0 lg:divide-x divide-indigo-100">
         {items.map((it, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: i * 0.08 }} className="flex flex-col items-center gap-1 px-6 py-4 text-center">
-            <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
               {inView ? <Counter to={it.v} suffix={it.s} /> : `0${it.s}`}
             </p>
             <p className="text-sm font-semibold text-gray-700 leading-tight">{it.l}</p>
@@ -284,11 +284,11 @@ function DinnerRushScenario() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: false, margin: "-100px" });
   const steps = [
-    { icon: AlertCircle, time: "4:42 PM", title: "Server calls out", body: "Maria texts she's sick. You have 18 minutes until first reservation.", color: "#ef4444", bg: "bg-red-100", text: "text-red-700" },
-    { icon: Zap, time: "4:43 PM", title: "Auto-broadcast sent", body: "The shift drops into the swap board. All qualified servers get a push notification with one-tap claim.", color: "#f97316", bg: "bg-orange-100", text: "text-orange-700" },
+    { icon: AlertCircle, time: "4:42 PM", title: "Server calls out", body: "Maria texts she's sick. You have 18 minutes until first reservation.", color: "#6366f1", bg: "bg-indigo-100", text: "text-indigo-700" },
+    { icon: Zap, time: "4:43 PM", title: "Auto-broadcast sent", body: "The shift drops into the swap board. All qualified servers get a push notification with one-tap claim.", color: "#8b5cf6", bg: "bg-indigo-100", text: "text-indigo-700" },
     { icon: CheckCircle2, time: "4:47 PM", title: "Jordan claims it", body: "Jordan is closest to the restaurant. He confirms. Manager approves with one tap from her phone.", color: "#10b981", bg: "bg-emerald-100", text: "text-emerald-700" },
     { icon: Bell, time: "4:49 PM", title: "FOH team notified", body: "Updated schedule pushes to every server, host, and bartender. The kitchen knows who's running food.", color: "#8b5cf6", bg: "bg-purple-100", text: "text-purple-700" },
-    { icon: UtensilsCrossed, time: "5:00 PM", title: "Service starts on time", body: "Doors open. Every section is covered. The dinner rush hits — and you're ready for it.", color: "#dc2626", bg: "bg-red-100", text: "text-red-700" },
+    { icon: UtensilsCrossed, time: "5:00 PM", title: "Service starts on time", body: "Doors open. Every section is covered. The dinner rush hits — and you're ready for it.", color: "#7c3aed", bg: "bg-indigo-100", text: "text-indigo-700" },
   ];
   useEffect(() => {
     if (!inView) return;
@@ -300,14 +300,14 @@ function DinnerRushScenario() {
     <section id="how-it-works" className="py-24 bg-white">
       <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-100 text-red-600 text-xs font-bold tracking-widest uppercase mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-50 border border-violet-100 text-indigo-600 text-xs font-bold tracking-widest uppercase mb-5">
             <Flame className="w-3.5 h-3.5" />
             18 Minutes to Service
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
             What Actually Happens
             <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent"> When a Server Calls Out at 4:42 PM</span>
+            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent"> When a Server Calls Out at 4:42 PM</span>
           </h2>
           <p className="text-gray-500 text-lg max-w-2xl mx-auto">
             A real Friday night scenario. Five steps. Eighteen minutes. Zero panic.
@@ -319,7 +319,7 @@ function DinnerRushScenario() {
             <motion.button key={i} onClick={() => setStep(i)}
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className={`relative text-left p-5 rounded-2xl border-2 transition-all duration-300 ${step === i ? "border-orange-300 bg-orange-50 shadow-lg shadow-orange-100 scale-[1.02]" : "border-gray-100 bg-white hover:border-gray-200"}`}
+              className={`relative text-left p-5 rounded-2xl border-2 transition-all duration-300 ${step === i ? "border-indigo-300 bg-indigo-50 shadow-lg shadow-indigo-100 scale-[1.02]" : "border-gray-100 bg-white hover:border-gray-200"}`}
             >
               <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center mb-3`}>
                 <s.icon className="w-5 h-5" style={{ color: s.color }} />
@@ -360,17 +360,17 @@ function FohBohSplit() {
     <section className="py-24 bg-gradient-to-br from-[#1a0a0e] to-[#0c0506]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-orange-300/30 text-orange-300 text-xs font-bold tracking-widest uppercase mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-5">
             <UtensilsCrossed className="w-3.5 h-3.5" />
             Built for the Whole Restaurant
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-4">
             One Platform for{" "}
-            <span className="bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">Front of House</span>
+            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Front of House</span>
             {" "}AND{" "}
-            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Back of House</span>
+            <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">Back of House</span>
           </h2>
-          <p className="text-orange-100/60 text-lg max-w-2xl mx-auto">
+          <p className="text-indigo-100/60 text-lg max-w-2xl mx-auto">
             Most scheduling tools treat servers and chefs the same. We don&apos;t. Both sides get the right tools for the job.
           </p>
         </motion.div>
@@ -378,15 +378,15 @@ function FohBohSplit() {
         <div className="grid lg:grid-cols-2 gap-5">
           {/* FOH */}
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-            transition={{ duration: 0.7 }} className="relative bg-gradient-to-br from-orange-950/60 to-red-950/60 backdrop-blur border border-orange-500/20 rounded-3xl p-7 overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-orange-500/15 rounded-full blur-3xl" />
+            transition={{ duration: 0.7 }} className="relative bg-gradient-to-br from-indigo-950/60 to-violet-950/60 backdrop-blur border border-indigo-500/20 rounded-3xl p-7 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-xl shadow-orange-500/30">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-xl shadow-indigo-500/30">
                   <Wine className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-orange-300/60 text-[10px] font-bold tracking-widest uppercase">Front of House</p>
+                  <p className="text-indigo-300/60 text-[10px] font-bold tracking-widest uppercase">Front of House</p>
                   <h3 className="text-xl font-black text-white">Servers, Hosts, Bar</h3>
                 </div>
               </div>
@@ -396,12 +396,12 @@ function FohBohSplit() {
                     initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                     className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors duration-200">
-                    <div className="w-9 h-9 rounded-lg bg-orange-500/15 flex items-center justify-center flex-shrink-0">
-                      <f.icon className="w-4.5 h-4.5 text-orange-300" />
+                    <div className="w-9 h-9 rounded-lg bg-indigo-500/15 flex items-center justify-center flex-shrink-0">
+                      <f.icon className="w-4.5 h-4.5 text-indigo-300" />
                     </div>
                     <div>
                       <p className="text-white text-sm font-bold mb-0.5">{f.label}</p>
-                      <p className="text-orange-200/60 text-xs leading-relaxed">{f.desc}</p>
+                      <p className="text-indigo-200/60 text-xs leading-relaxed">{f.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -411,15 +411,15 @@ function FohBohSplit() {
 
           {/* BOH */}
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-            transition={{ duration: 0.7 }} className="relative bg-gradient-to-br from-red-950/60 to-orange-950/60 backdrop-blur border border-red-500/20 rounded-3xl p-7 overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-red-500/15 rounded-full blur-3xl" />
+            transition={{ duration: 0.7 }} className="relative bg-gradient-to-br from-violet-950/60 to-purple-950/60 backdrop-blur border border-violet-500/20 rounded-3xl p-7 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-violet-500/15 rounded-full blur-3xl" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-orange-700 flex items-center justify-center shadow-xl shadow-red-600/30">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center shadow-xl shadow-violet-600/30">
                   <ChefHat className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-red-300/60 text-[10px] font-bold tracking-widest uppercase">Back of House</p>
+                  <p className="text-violet-300/60 text-[10px] font-bold tracking-widest uppercase">Back of House</p>
                   <h3 className="text-xl font-black text-white">Chefs, Line, Prep</h3>
                 </div>
               </div>
@@ -429,12 +429,12 @@ function FohBohSplit() {
                     initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                     className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors duration-200">
-                    <div className="w-9 h-9 rounded-lg bg-red-500/15 flex items-center justify-center flex-shrink-0">
-                      <f.icon className="w-4.5 h-4.5 text-red-300" />
+                    <div className="w-9 h-9 rounded-lg bg-violet-500/15 flex items-center justify-center flex-shrink-0">
+                      <f.icon className="w-4.5 h-4.5 text-violet-300" />
                     </div>
                     <div>
                       <p className="text-white text-sm font-bold mb-0.5">{f.label}</p>
-                      <p className="text-red-200/60 text-xs leading-relaxed">{f.desc}</p>
+                      <p className="text-violet-200/60 text-xs leading-relaxed">{f.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -452,26 +452,26 @@ function FohBohSplit() {
 ══════════════════════════════════ */
 function FeaturesGrid() {
   const feats = [
-    { icon: Calendar, t: "Demand-Based Templates", d: "Pre-build coverage for brunch, lunch rush, Friday dinner, late-night. Drag and the whole week fills.", grad: "from-orange-500 to-red-600" },
-    { icon: Repeat, t: "Shift Swap Marketplace", d: "Servers post swaps. Qualified peers claim. Managers approve with one tap. Average swap: 60 seconds.", grad: "from-red-500 to-rose-600" },
-    { icon: Receipt, t: "Tip Pool & Tip-Out", d: "Configure tip rules by role. System calculates pools by shift and syncs distributions to payroll.", grad: "from-amber-500 to-orange-600" },
-    { icon: Timer, t: "Break Enforcement", d: "California, New York, and every other state&apos;s break rules built in. Reminders prevent compliance fines.", grad: "from-yellow-500 to-amber-600" },
-    { icon: Phone, t: "Server Mobile App", d: "Check schedule, swap shifts, message coworkers, clock in — all from a phone the whole staff already uses.", grad: "from-orange-600 to-red-700" },
-    { icon: TrendingDown, t: "Real-Time Labor %", d: "Live labor cost vs revenue forecast. Get warned the moment you&apos;re over budget — not on Monday morning.", grad: "from-rose-500 to-pink-600" },
-    { icon: MessageSquare, t: "Pre-Service Briefings", d: "Send 86&apos;d items, VIP reservations, and shift notes as one broadcast. Read receipts confirm every server saw it.", grad: "from-red-600 to-orange-700" },
-    { icon: Shield, t: "Food-Safe Cert Tracking", d: "ServSafe, food handler, alcohol service — every cert logged with expiry alerts. Audit-ready every day.", grad: "from-amber-600 to-red-600" },
+    { icon: Calendar, t: "Demand-Based Templates", d: "Pre-build coverage for brunch, lunch rush, Friday dinner, late-night. Drag and the whole week fills.", grad: "from-indigo-600 to-violet-600" },
+    { icon: Repeat, t: "Shift Swap Marketplace", d: "Servers post swaps. Qualified peers claim. Managers approve with one tap. Average swap: 60 seconds.", grad: "from-violet-500 to-fuchsia-600" },
+    { icon: Receipt, t: "Tip Pool & Tip-Out", d: "Configure tip rules by role. System calculates pools by shift and syncs distributions to payroll.", grad: "from-violet-500 to-purple-600" },
+    { icon: Timer, t: "Break Enforcement", d: "California, New York, and every other state&apos;s break rules built in. Reminders prevent compliance fines.", grad: "from-fuchsia-500 to-pink-600" },
+    { icon: Phone, t: "Server Mobile App", d: "Check schedule, swap shifts, message coworkers, clock in — all from a phone the whole staff already uses.", grad: "from-indigo-600 to-blue-700" },
+    { icon: TrendingDown, t: "Real-Time Labor %", d: "Live labor cost vs revenue forecast. Get warned the moment you&apos;re over budget — not on Monday morning.", grad: "from-purple-500 to-fuchsia-600" },
+    { icon: MessageSquare, t: "Pre-Service Briefings", d: "Send 86&apos;d items, VIP reservations, and shift notes as one broadcast. Read receipts confirm every server saw it.", grad: "from-violet-600 to-indigo-700" },
+    { icon: Shield, t: "Food-Safe Cert Tracking", d: "ServSafe, food handler, alcohol service — every cert logged with expiry alerts. Audit-ready every day.", grad: "from-indigo-500 to-violet-700" },
   ];
   return (
-    <section className="py-24 bg-orange-50/30">
+    <section className="py-24 bg-indigo-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-xs font-bold tracking-widest uppercase mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold tracking-widest uppercase mb-5">
             <Sparkles className="w-3.5 h-3.5" />
             Built for Restaurants
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
             Every Feature, Tuned for{" "}
-            <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">How Restaurants Actually Run</span>
+            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">How Restaurants Actually Run</span>
           </h2>
           <p className="text-gray-500 text-lg max-w-2xl mx-auto">
             Not generic SaaS scheduling with a restaurant logo bolted on. Built ground-up for tipped wages, kitchen brigades, and the chaos of service.
@@ -483,7 +483,7 @@ function FeaturesGrid() {
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
               whileHover={{ y: -6 }}
-              className="bg-white rounded-2xl border border-orange-100 p-5 shadow-sm hover:shadow-xl hover:border-orange-200 transition-all duration-300">
+              className="bg-white rounded-2xl border border-indigo-100 p-5 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-300">
               <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${f.grad} flex items-center justify-center mb-4 shadow-sm`}>
                 <f.icon className="w-5 h-5 text-white" />
               </div>
@@ -525,8 +525,8 @@ function RestaurantTypes() {
             <motion.div key={t.t}
               initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
-              className="group flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-orange-50/50 to-red-50/30 border border-orange-100 hover:border-orange-300 transition-all duration-200">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-200">
+              className="group flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-indigo-50/50 to-violet-50/30 border border-indigo-100 hover:border-indigo-300 transition-all duration-200">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-200">
                 <t.icon className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -546,9 +546,9 @@ function RestaurantTypes() {
 ══════════════════════════════════ */
 function TestimonialSection() {
   return (
-    <section className="py-24 bg-gradient-to-br from-orange-600 via-red-600 to-rose-700 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.2, 0.1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-300/20 rounded-full blur-3xl" />
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-300/20 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex justify-center gap-1 mb-6">
@@ -560,12 +560,12 @@ function TestimonialSection() {
             For a 4-restaurant group, this is the platform we wish existed five years ago.&rdquo;
           </p>
           <div className="flex items-center justify-center gap-3">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-300 to-red-400 flex items-center justify-center text-white text-base font-black shadow-lg">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-300 to-violet-400 flex items-center justify-center text-white text-base font-black shadow-lg">
               MR
             </div>
             <div className="text-left">
               <p className="text-white font-bold text-lg">Maria R.</p>
-              <p className="text-orange-100/80 text-sm">Operations Director · 4-location Italian group</p>
+              <p className="text-indigo-100/80 text-sm">Operations Director · 4-location Italian group</p>
             </div>
           </div>
         </motion.div>
@@ -590,7 +590,7 @@ function FaqSection() {
     { q: "How long does setup take?", a: "Most restaurants are running their first schedule on day one. The setup wizard applies the restaurant industry preset (FOH/BOH structure, tip rules, common positions), imports your roster from a CSV or your POS, and walks you through publishing the first week. Staff get the mobile app the same day." },
   ];
   return (
-    <section className="py-24 bg-orange-50/20">
+    <section className="py-24 bg-indigo-50/20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-4">
@@ -600,19 +600,19 @@ function FaqSection() {
         </div>
         <div className="space-y-3">
           {faqs.map((f, i) => (
-            <div key={i} className="border border-orange-100 rounded-2xl overflow-hidden bg-white shadow-sm">
+            <div key={i} className="border border-indigo-100 rounded-2xl overflow-hidden bg-white shadow-sm">
               <button onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-orange-50/40 transition-colors duration-150">
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-indigo-50/40 transition-colors duration-150">
                 <span className="font-semibold text-gray-900 pr-4 text-sm sm:text-base">{f.q}</span>
                 <motion.div animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.25 }}>
-                  <ChevronDown className="w-5 h-5 text-orange-400 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-indigo-400 flex-shrink-0" />
                 </motion.div>
               </button>
               <AnimatePresence>
                 {open === i && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}>
-                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-orange-50">{f.a}</div>
+                    <div className="px-6 pb-5 pt-3 text-gray-600 leading-relaxed text-sm border-t border-indigo-50">{f.a}</div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -629,25 +629,25 @@ function FaqSection() {
 ══════════════════════════════════ */
 function FinalCta() {
   return (
-    <section className="py-24 bg-gradient-to-br from-[#1a0a0e] via-[#2a0f15] to-[#1a0a0e] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-orange-600/30 to-red-600/30 rounded-full blur-3xl" />
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-indigo-600/30 to-violet-600/30 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-red-900/50">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-8 shadow-xl shadow-indigo-900/50">
             <UtensilsCrossed className="w-8 h-8 text-white" />
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
             Cover the Dinner Rush.
             <br />
-            <span className="bg-gradient-to-r from-orange-400 via-red-400 to-pink-400 bg-clip-text text-transparent">Track Tips. Stop Chasing Call-Outs.</span>
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Track Tips. Stop Chasing Call-Outs.</span>
           </h2>
-          <p className="text-orange-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-indigo-100/70 text-xl mb-10 max-w-xl mx-auto leading-relaxed">
             Start free. Run this Friday&apos;s schedule on StaffSchedule.io. See for yourself.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
             <Link href="https://app.staffschedule.io/register"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-red-900/50">
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-indigo-900/50">
               Start Free Trial <ArrowRight className="w-4 h-4" />
             </Link>
             <Link href="/contact"
@@ -658,8 +658,8 @@ function FinalCta() {
           <div className="flex flex-wrap items-center justify-center gap-5">
             {["No credit card", "14-day free trial", "Restaurant preset", "Live on day one"].map((t) => (
               <div key={t} className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                <span className="text-sm text-orange-200/70">{t}</span>
+                <CheckCircle2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                <span className="text-sm text-indigo-200/70">{t}</span>
               </div>
             ))}
           </div>

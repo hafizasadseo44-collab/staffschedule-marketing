@@ -59,7 +59,7 @@ function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#070a1f] via-[#0d1230] to-[#070a1f] overflow-hidden pt-24 pb-16">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden pt-24 pb-16">
       <div className="absolute inset-0 pointer-events-none">
         <motion.div animate={{ scale: [1, 1.18, 1], opacity: [0.25, 0.45, 0.25] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/25 rounded-full blur-3xl" />
@@ -111,7 +111,7 @@ function HeroSection() {
           transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="relative w-full"
         >
-          <div className="relative bg-gradient-to-br from-[#0d1230] to-[#070a1f] rounded-2xl border border-indigo-900/40 shadow-2xl shadow-indigo-900/30 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-2xl border border-indigo-900/40 shadow-2xl shadow-indigo-900/30 overflow-hidden">
             {/* Brand HQ header */}
             <div className="px-5 py-4 border-b border-indigo-900/30 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -279,7 +279,7 @@ function HqVsFranchisee() {
   ];
 
   return (
-    <section id="hq-vs-franchisee" className="py-24 bg-gradient-to-br from-[#070a1f] to-[#040714]">
+    <section id="hq-vs-franchisee" className="py-24 bg-gradient-to-br from-[#0f172a] to-[#020617]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-indigo-300/30 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-5">
@@ -550,7 +550,7 @@ function FaqSection() {
 ══════════════════════════════════ */
 function FinalCta() {
   return (
-    <section className="py-24 bg-gradient-to-br from-[#070a1f] via-[#0d1230] to-[#070a1f] relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] relative overflow-hidden">
       <motion.div animate={{ scale: [1, 1.25, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 8, repeat: Infinity }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-indigo-600/30 to-violet-600/30 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
