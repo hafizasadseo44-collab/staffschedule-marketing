@@ -206,7 +206,7 @@ const INDUSTRY_INDEX = [
       { name: "Staffing & Recruitment", icon: Users, href: "/industries" },
       { name: "Security Services", icon: Shield, href: "/solutions/security" },
       { name: "Technology & Software", icon: Code, href: "/industries" },
-      { name: "Call Centers & Customer Support", icon: Headphones, href: "/industries" },
+      { name: "Call Centers & Customer Support", icon: Headphones, href: "/industries/call-center" },
     ],
   },
   {
@@ -217,10 +217,10 @@ const INDUSTRY_INDEX = [
     bg: "from-rose-500 to-pink-600",
     glow: "rgba(244,63,94,0.16)",
     items: [
-      { name: "Healthcare & Medical", icon: Stethoscope, href: "/solutions/healthcare" },
-      { name: "Caregivers & Assisted Living", icon: Heart, href: "/industries" },
-      { name: "Home Care", icon: Home, href: "/industries" },
-      { name: "Nursing", icon: HeartPulse, href: "/industries" },
+      { name: "Healthcare & Medical", icon: Stethoscope, href: "/industries/healthcare" },
+      { name: "Caregivers & Assisted Living", icon: Heart, href: "/industries/caregivers-assisted-living" },
+      { name: "Home Care", icon: Home, href: "/industries/home-care" },
+      { name: "Nursing", icon: HeartPulse, href: "/industries/nurse-scheduling" },
       { name: "Veterinary Care", icon: PawPrint, href: "/industries" },
       { name: "Pharmacy", icon: Pill, href: "/industries" },
       { name: "Dental Practice", icon: Smile, href: "/industries" },
