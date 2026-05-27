@@ -249,7 +249,7 @@ const INDUSTRY_INDEX = [
       { name: "Electricians", icon: Zap, href: "/industries", image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop" },
       { name: "Lawn Care & Landscaping", icon: TreePine, href: "/industries", image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=600&auto=format&fit=crop" },
       { name: "Pest Control", icon: Bug, href: "/industries", image: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=600&auto=format&fit=crop" },
-      { name: "Plumbers", icon: Wrench, href: "/industries", image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=600&auto=format&fit=crop" },
+      { name: "Plumbers", icon: Wrench, href: "/industries/plumbing-scheduling-software", image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
@@ -260,8 +260,8 @@ const INDUSTRY_INDEX = [
     bg: "from-red-500 to-rose-600",
     glow: "rgba(220,38,38,0.16)",
     items: [
-      { name: "Emergency & Law Enforcement", icon: Siren, href: "/industries", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=600&auto=format&fit=crop" },
-      { name: "Field Services", icon: Truck, href: "/industries", image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=600&auto=format&fit=crop" },
+      { name: "Emergency & Law Enforcement", icon: Siren, href: "/industries/emergency-worker", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=600&auto=format&fit=crop" },
+      { name: "Field Services", icon: Truck, href: "/industries/field-service-scheduling-software", image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
@@ -272,7 +272,7 @@ const INDUSTRY_INDEX = [
     bg: "from-purple-500 to-fuchsia-600",
     glow: "rgba(168,85,247,0.16)",
     items: [
-      { name: "Entertainment & Seasonal", icon: PartyPopper, href: "/industries", image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=600&auto=format&fit=crop" },
+      { name: "Entertainment & Seasonal", icon: PartyPopper, href: "/industries/seasonal-staff-scheduling", image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
