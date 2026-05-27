@@ -113,7 +113,7 @@ const INDUSTRIES = [
     title: "Construction & Trades",
     pitch: "Site-based GPS clock-ins, crew assignment by skill, and instant updates when plans change.",
     sectors: ["General Contractors", "Electrical", "Plumbing", "HVAC", "Concrete & Framing"],
-    href: "/industries",
+    href: "/industries/construction-crew-scheduling-software",
     metric: "18%", metricLabel: "less rework from missed updates",
   },
   {
@@ -121,7 +121,7 @@ const INDUSTRIES = [
     title: "Manufacturing",
     pitch: "Line-by-line scheduling, certification gating, and rotating shift patterns that protect production.",
     sectors: ["Production Lines", "Warehouses", "Assembly", "Quality Control", "Maintenance"],
-    href: "/industries",
+    href: "/industries/manufacturing-scheduling-software",
     metric: "24/7", metricLabel: "continuous coverage",
   },
   {
@@ -145,7 +145,7 @@ const INDUSTRIES = [
     title: "Logistics & Transportation",
     pitch: "Driver schedules, hours-of-service compliance, and dock crew coordination for warehouses.",
     sectors: ["Delivery", "Warehousing", "Trucking", "Couriers", "Ride-Share"],
-    href: "/industries",
+    href: "/industries/logistics-scheduling-software",
     metric: "30 min", metricLabel: "average dispatch turnaround",
   },
   {
@@ -161,7 +161,7 @@ const INDUSTRIES = [
     title: "Non-Profit & Community",
     pitch: "Volunteer coordination, shift signups, and donor-event staffing — without the spreadsheet chaos.",
     sectors: ["Charities", "Religious Orgs", "Volunteer Programs", "Community Centers", "Food Banks"],
-    href: "/industries",
+    href: "/industries/volunteer-scheduling-software",
     metric: "5×", metricLabel: "more volunteer signups",
   },
 ];
@@ -283,8 +283,8 @@ const INDUSTRY_INDEX = [
     bg: "from-emerald-500 to-teal-600",
     glow: "rgba(16,185,129,0.16)",
     items: [
-      { name: "Delivery", icon: Package, href: "/industries", image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=600&auto=format&fit=crop" },
-      { name: "Logistics & Warehousing", icon: Truck, href: "/industries", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=600&auto=format&fit=crop" },
+      { name: "Delivery", icon: Package, href: "/industries/delivery-scheduling-software", image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=600&auto=format&fit=crop" },
+      { name: "Logistics & Warehousing", icon: Truck, href: "/industries/logistics-scheduling-software", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
@@ -295,7 +295,7 @@ const INDUSTRY_INDEX = [
     bg: "from-fuchsia-500 to-pink-600",
     glow: "rgba(217,70,239,0.16)",
     items: [
-      { name: "Volunteers & Non-Profit", icon: HeartHandshake, href: "/industries", image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=600&auto=format&fit=crop" },
+      { name: "Volunteers & Non-Profit", icon: HeartHandshake, href: "/industries/volunteer-scheduling-software", image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
@@ -306,8 +306,8 @@ const INDUSTRY_INDEX = [
     bg: "from-yellow-500 to-amber-600",
     glow: "rgba(245,158,11,0.16)",
     items: [
-      { name: "Construction & Trades", icon: HardHat, href: "/industries", image: "/images/industries/ind_construction.png" },
-      { name: "Manufacturing", icon: Factory, href: "/industries", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop" },
+      { name: "Construction & Trades", icon: HardHat, href: "/industries/construction-crew-scheduling-software", image: "/images/industries/ind_construction.png" },
+      { name: "Manufacturing", icon: Factory, href: "/industries/manufacturing-scheduling-software", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop" },
     ],
   },
 ];
