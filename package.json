@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "node scripts/setup-production.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
