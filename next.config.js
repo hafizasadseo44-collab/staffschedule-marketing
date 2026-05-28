@@ -2,6 +2,19 @@
 const nextConfig = {
   output: 'standalone',
 
+  // ── Prisma + standalone fix ───────────────────────────────────
+  // Treat Prisma as an external (non-bundled) package so its query-engine
+  // binary is loaded from node_modules at runtime instead of being bundled
+  // by webpack (which drops the native engine and causes 500s on the server).
+  serverExternalPackages: ['@prisma/client', 'prisma', 'bcryptjs'],
+
+  // Ensure the Prisma engine + schema are copied into the standalone output.
+  // Without this, `.next/standalone` can be missing the query engine on Linux.
+  outputFileTracingIncludes: {
+    '/': ['./node_modules/.prisma/client/**/*', './prisma/**/*'],
+    '/**': ['./node_modules/.prisma/client/**/*', './prisma/**/*'],
+  },
+
   // ── Production Performance ────────────────────────────────────
   compress: true,            // Enable gzip/br compression on responses
   poweredByHeader: false,    // Remove X-Powered-By header (security + minor perf)

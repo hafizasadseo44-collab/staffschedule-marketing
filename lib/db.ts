@@ -52,16 +52,46 @@ const resolveDbUrl = () => {
 
 export const dbUrl = resolveDbUrl();
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as { prisma: PrismaClient | undefined };
 
-// Optimize Prisma for production by reducing log verbosity
-export const db = globalForPrisma.prisma || new PrismaClient({
-  datasources: {
-    db: {
-      url: dbUrl,
+function createPrismaClient(): PrismaClient {
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: dbUrl,
+      },
     },
-  },
-  log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'error', 'warn'],
-});
+    log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'error', 'warn'],
+  });
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db;
+/**
+ * Lazily instantiate the Prisma client on first use.
+ *
+ * CRITICAL: We expose `db` as a Proxy so that `new PrismaClient()` only runs
+ * the first time a query is actually made — never at module-evaluation time.
+ *
+ * Why this matters: every page that does `import { db } from "@/lib/db"`
+ * evaluates this module at load. If `new PrismaClient()` throws (e.g. the
+ * query-engine binary for the host platform is missing on the server), it
+ * would crash the entire route during module init — BEFORE any try/catch in
+ * the page's data-fetching code can run, producing a hard 500.
+ *
+ * By deferring instantiation into a getter, any init failure is thrown from
+ * inside the actual query call (e.g. `db.$queryRaw(...)`), where the calling
+ * code's try/catch can handle it gracefully and still render the page.
+ */
+function getClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient();
+  }
+  return globalForPrisma.prisma;
+}
+
+export const db = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getClient();
+    const value = (client as unknown as Record<string | symbol, unknown>)[prop];
+    return typeof value === "function" ? (value as (...args: unknown[]) => unknown).bind(client) : value;
+  },
+});

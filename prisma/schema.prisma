@@ -1,5 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // "native" = the build machine's platform (Windows in dev).
+  // The debian/rhel/musl targets cover the common Linux variants used by
+  // Hostinger and most Node hosts, so the query-engine binary is always
+  // present after `prisma generate` runs on the server. Without these,
+  // the client only ships the dev-machine binary and `new PrismaClient()`
+  // throws at runtime on Linux.
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x", "rhel-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
