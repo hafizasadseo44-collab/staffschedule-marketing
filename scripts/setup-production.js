@@ -22,6 +22,16 @@ try {
   execSync('npx prisma generate', { stdio: 'inherit' });
   console.log('✅ Prisma Client generated successfully.');
 
+  // Fix EACCES permissions on Hostinger for Prisma engines
+  if (process.platform !== 'win32') {
+    try {
+      console.log('🔧 Fixing Prisma engine permissions...');
+      execSync('chmod -R +x node_modules/@prisma/engines || true', { stdio: 'inherit' });
+    } catch (e) {
+      console.log('⚠️ Could not change permissions, continuing...');
+    }
+  }
+
   // 3. Push Database Schema (Creates dev.db if missing)
   console.log('\n🚀 Pushing Database Schema (Creating SQLite DB if needed)...');
   execSync('npx prisma db push --accept-data-loss', { stdio: 'inherit' });
