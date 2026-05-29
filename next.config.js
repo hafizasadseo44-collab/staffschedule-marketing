@@ -1,19 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // NOTE: `output: 'standalone'` was removed. Hostinger's managed Next.js
+  // deployment runs the app itself (via next start), and standalone mode does
+  // NOT serve /public images or .next/static client JS unless those folders
+  // are manually copied next to the standalone server — which Hostinger's
+  // pipeline doesn't do. That caused images to 404 and client animations to
+  // never hydrate. A normal build serves all static assets correctly.
 
-  // ── Prisma + standalone fix ───────────────────────────────────
   // Treat Prisma as an external (non-bundled) package so its query-engine
   // binary is loaded from node_modules at runtime instead of being bundled
-  // by webpack (which drops the native engine and causes 500s on the server).
+  // by webpack (which can drop the native engine and cause 500s on the server).
   serverExternalPackages: ['@prisma/client', 'prisma', 'bcryptjs'],
-
-  // Ensure the Prisma engine + schema are copied into the standalone output.
-  // Without this, `.next/standalone` can be missing the query engine on Linux.
-  outputFileTracingIncludes: {
-    '/': ['./node_modules/.prisma/client/**/*', './prisma/**/*'],
-    '/**': ['./node_modules/.prisma/client/**/*', './prisma/**/*'],
-  },
 
   // ── Production Performance ────────────────────────────────────
   compress: true,            // Enable gzip/br compression on responses

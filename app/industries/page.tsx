@@ -129,7 +129,7 @@ const INDUSTRIES = [
     title: "Professional Services",
     pitch: "Bill-by-the-hour accuracy, project-based schedules, and remote-friendly time tracking.",
     sectors: ["Consulting", "Legal", "Accounting", "Agencies", "Staffing"],
-    href: "/industries",
+    href: "/industries/professional-services",
     metric: "98%", metricLabel: "billable hour accuracy",
   },
   {
@@ -137,7 +137,7 @@ const INDUSTRIES = [
     title: "Education",
     pitch: "Faculty rotations, substitute teacher dispatch, and dining-hall worker coordination in one platform.",
     sectors: ["Universities", "Schools", "Daycares", "Tutoring Centers", "Camps"],
-    href: "/industries",
+    href: "/industries/education",
     metric: "Zero", metricLabel: "uncovered classrooms",
   },
   {
@@ -153,7 +153,7 @@ const INDUSTRIES = [
     title: "Cleaning & Facilities",
     pitch: "Geofenced site verification, recurring crew assignments, and proof-of-service capture.",
     sectors: ["Commercial Cleaning", "Janitorial", "Landscaping", "Pest Control", "Pool Service"],
-    href: "/industries",
+    href: "/industries/cleaning-service-scheduling-software",
     metric: "100%", metricLabel: "service verification",
   },
   {
@@ -202,10 +202,10 @@ const INDUSTRY_INDEX = [
     bg: "from-violet-500 to-purple-600",
     glow: "rgba(139,92,246,0.16)",
     items: [
-      { name: "Professional Services", icon: Briefcase, href: "/industries", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop" },
-      { name: "Staffing & Recruitment", icon: Users, href: "/industries", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" },
+      { name: "Professional Services", icon: Briefcase, href: "/industries/professional-services", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop" },
+      { name: "Staffing & Recruitment", icon: Users, href: "/industries/staffing-scheduling-software", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" },
       { name: "Security Services", icon: Shield, href: "/solutions/security", image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=600&auto=format&fit=crop" },
-      { name: "Technology & Software", icon: Code, href: "/industries", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop" },
+      { name: "Technology & Software", icon: Code, href: "/industries/technology-software", image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop" },
       { name: "Call Centers & Customer Support", icon: Headphones, href: "/industries/call-center", image: "https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=600&auto=format&fit=crop" },
     ],
   },
@@ -221,9 +221,9 @@ const INDUSTRY_INDEX = [
       { name: "Caregivers & Assisted Living", icon: Heart, href: "/industries/caregivers-assisted-living", image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?q=80&w=600&auto=format&fit=crop" },
       { name: "Home Care", icon: Home, href: "/industries/home-care", image: "/images/industries/ind_home_care.png" },
       { name: "Nursing", icon: HeartPulse, href: "/industries/nurse-scheduling", image: "/images/industries/ind_nursing.png" },
-      { name: "Veterinary Care", icon: PawPrint, href: "/industries", image: "/images/industries/ind_veterinary.png" },
-      { name: "Pharmacy", icon: Pill, href: "/industries", image: "/images/industries/ind_pharmacy.png" },
-      { name: "Dental Practice", icon: Smile, href: "/industries", image: "/images/industries/ind_dental.png" },
+      { name: "Veterinary Care", icon: PawPrint, href: "/industries/veterinary-clinic-software", image: "/images/industries/ind_veterinary.png" },
+      { name: "Pharmacy", icon: Pill, href: "/industries/pharmacy-scheduling-software", image: "/images/industries/ind_pharmacy.png" },
+      { name: "Dental Practice", icon: Smile, href: "/industries/dental-office-scheduling-software", image: "/images/industries/ind_dental.png" },
     ],
   },
   {
@@ -234,7 +234,7 @@ const INDUSTRY_INDEX = [
     bg: "from-sky-500 to-cyan-600",
     glow: "rgba(14,165,233,0.16)",
     items: [
-      { name: "Colleges, Universities & Schools", icon: GraduationCap, href: "/industries", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop" },
+      { name: "Colleges, Universities & Schools", icon: GraduationCap, href: "/industries/education", image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop" },
     ],
   },
   {
@@ -245,10 +245,10 @@ const INDUSTRY_INDEX = [
     bg: "from-teal-500 to-cyan-600",
     glow: "rgba(20,184,166,0.16)",
     items: [
-      { name: "Cleaning Services", icon: SparklesIcon, href: "/industries", image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop" },
-      { name: "Electricians", icon: Zap, href: "/industries", image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop" },
-      { name: "Lawn Care & Landscaping", icon: TreePine, href: "/industries", image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=600&auto=format&fit=crop" },
-      { name: "Pest Control", icon: Bug, href: "/industries", image: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=600&auto=format&fit=crop" },
+      { name: "Cleaning Services", icon: SparklesIcon, href: "/industries/cleaning-service-scheduling-software", image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop" },
+      { name: "Electricians", icon: Zap, href: "/industries/electrician-scheduling-software", image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop" },
+      { name: "Lawn Care & Landscaping", icon: TreePine, href: "/industries/lawn-care-scheduling-app", image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=600&auto=format&fit=crop" },
+      { name: "Pest Control", icon: Bug, href: "/industries/pest-control-scheduling-software", image: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=600&auto=format&fit=crop" },
       { name: "Plumbers", icon: Wrench, href: "/industries/plumbing-scheduling-software", image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=600&auto=format&fit=crop" },
     ],
   },
