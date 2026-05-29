@@ -126,7 +126,7 @@ export default function AboutHero() {
               className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(79,70,229,0.2)] border border-white/50 bg-slate-100"
              >
                 <Image 
-                  src="/about-hero.png"
+                  src="/about-hero.jpg"
                   fill
                   className="object-cover"
                   alt="StaffSchedule Modern Workplace"

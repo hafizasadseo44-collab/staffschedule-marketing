@@ -115,7 +115,7 @@ export default function FounderVision() {
               className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden group shadow-[0_50px_100px_-20px_rgba(79,70,229,0.1)] border border-slate-100"
             >
               <Image
-                src="/images/team/founder.png"
+                src="/images/team/founder.jpg"
                 alt="Founder Portrait"
                 fill
                 className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"

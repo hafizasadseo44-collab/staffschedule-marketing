@@ -54,7 +54,7 @@ export default function HospitalitySolutionPage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-video">
             <Image 
-              src="/images/solutions/hospitality-hero.png" 
+              src="/images/solutions/hospitality-hero.jpg" 
               alt="Hospitality Scheduling Dashboard" 
               fill 
               className="object-cover"

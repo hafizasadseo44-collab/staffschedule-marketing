@@ -16,7 +16,7 @@ export default function SchedulingHeroVisual() {
         {/* 3D Isometric Background Render (HD Image from earlier prompt) */}
         <div className="absolute inset-0">
           <img 
-            src="/images/isometric-scheduling-hero.png" 
+            src="/images/isometric-scheduling-hero.jpg" 
             alt="3D Scheduling Interface" 
             className="w-full h-full object-cover relative z-0 scale-[1.02] group-hover:scale-100 transition-transform duration-1000" 
           />

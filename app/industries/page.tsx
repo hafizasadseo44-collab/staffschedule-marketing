@@ -219,11 +219,11 @@ const INDUSTRY_INDEX = [
     items: [
       { name: "Healthcare & Medical", icon: Stethoscope, href: "/industries/healthcare", image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=600&auto=format&fit=crop" },
       { name: "Caregivers & Assisted Living", icon: Heart, href: "/industries/caregivers-assisted-living", image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?q=80&w=600&auto=format&fit=crop" },
-      { name: "Home Care", icon: Home, href: "/industries/home-care", image: "/images/industries/ind_home_care.png" },
-      { name: "Nursing", icon: HeartPulse, href: "/industries/nurse-scheduling", image: "/images/industries/ind_nursing.png" },
-      { name: "Veterinary Care", icon: PawPrint, href: "/industries/veterinary-clinic-software", image: "/images/industries/ind_veterinary.png" },
-      { name: "Pharmacy", icon: Pill, href: "/industries/pharmacy-scheduling-software", image: "/images/industries/ind_pharmacy.png" },
-      { name: "Dental Practice", icon: Smile, href: "/industries/dental-office-scheduling-software", image: "/images/industries/ind_dental.png" },
+      { name: "Home Care", icon: Home, href: "/industries/home-care", image: "/images/industries/ind_home_care.jpg" },
+      { name: "Nursing", icon: HeartPulse, href: "/industries/nurse-scheduling", image: "/images/industries/ind_nursing.jpg" },
+      { name: "Veterinary Care", icon: PawPrint, href: "/industries/veterinary-clinic-software", image: "/images/industries/ind_veterinary.jpg" },
+      { name: "Pharmacy", icon: Pill, href: "/industries/pharmacy-scheduling-software", image: "/images/industries/ind_pharmacy.jpg" },
+      { name: "Dental Practice", icon: Smile, href: "/industries/dental-office-scheduling-software", image: "/images/industries/ind_dental.jpg" },
     ],
   },
   {
@@ -306,7 +306,7 @@ const INDUSTRY_INDEX = [
     bg: "from-yellow-500 to-amber-600",
     glow: "rgba(245,158,11,0.16)",
     items: [
-      { name: "Construction & Trades", icon: HardHat, href: "/industries/construction-crew-scheduling-software", image: "/images/industries/ind_construction.png" },
+      { name: "Construction & Trades", icon: HardHat, href: "/industries/construction-crew-scheduling-software", image: "/images/industries/ind_construction.jpg" },
       { name: "Manufacturing", icon: Factory, href: "/industries/manufacturing-scheduling-software", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop" },
     ],
   },

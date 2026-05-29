@@ -464,7 +464,7 @@ export default function PremiumShowcaseSection() {
                 <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#f43f5e_1px,transparent_1px)] [background-size:24px_24px]" />
                 
                 <Image
-                  src="/stressed_manager_3d.png"
+                  src="/stressed_manager_3d.jpg"
                   alt="Stressed Manager struggling with manual employee scheduling"
                   fill
                   className="object-contain p-8 scale-110 drop-shadow-2xl"

@@ -54,7 +54,7 @@ export default function SecuritySolutionPage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-video">
             <Image 
-              src="/images/solutions/security-hero.png" 
+              src="/images/solutions/security-hero.jpg" 
               alt="Security Scheduling Dashboard" 
               fill 
               className="object-cover"

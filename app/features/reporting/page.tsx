@@ -74,7 +74,7 @@ export default function ReportingPage() {
              <div className="absolute -inset-4 bg-indigo-500/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
              <div className="relative bg-white dark:bg-slate-900 rounded-[3rem] border border-border shadow-2xl overflow-hidden transform group-hover:rotate-1 group-hover:scale-[1.02] transition-all duration-500">
                 <Image 
-                   src="/images/reporting-hero-v1.png" 
+                   src="/images/reporting-hero-v1.jpg" 
                    alt="Reporting Intelligence UI" 
                    width={800} 
                    height={600} 

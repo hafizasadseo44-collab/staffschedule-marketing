@@ -27,7 +27,7 @@ const FALLBACK_IMAGES = [
   "/saas_blog_3d_laptop_hero_1776734582759.png",
   "/saas_blog_3d_tablet_productivity_1776735096680.png",
   "/saas_blog_3d_analytics_sphere_1776735168198.png",
-  "/team_productivity_blog_hero_1776680822720.png",
+  "/team_productivity_blog_hero_1776680822720.jpg",
 ];
 
 const CATEGORIES = ["All", "Scheduling", "AI Intelligence", "Productivity", "Legal & Compliance", "Operations"];

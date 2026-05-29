@@ -80,7 +80,7 @@ const TEAM = [
   {
     name: "Alex Rivera",
     role: "Co-Founder & CEO",
-    avatar: "/images/team/alex-rivera.png",
+    avatar: "/images/team/alex-rivera.jpg",
     initials: "AR",
     gradient: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A78BFA 100%)",
     ringColor: "#6366F1",
@@ -93,7 +93,7 @@ const TEAM = [
   {
     name: "Shirin Nazari",
     role: "Co-Founder & CTO",
-    avatar: "/images/team/shirin-nazari.png",
+    avatar: "/images/team/shirin-nazari.jpg",
     initials: "SN",
     gradient: "linear-gradient(135deg, #4F46E5 0%, #3B82F6 50%, #60A5FA 100%)",
     ringColor: "#4F46E5",
@@ -119,7 +119,7 @@ const TEAM = [
   {
     name: "Priya Menon",
     role: "Head of Customer Success",
-    avatar: "/images/team/priya-menon.png",
+    avatar: "/images/team/priya-menon.jpg",
     initials: "PM",
     gradient: "linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%)",
     ringColor: "#10B981",

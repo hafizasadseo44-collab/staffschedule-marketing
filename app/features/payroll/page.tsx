@@ -53,7 +53,7 @@ export default function PayrollFeaturePage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-video bg-slate-900">
             <Image 
-              src="/images/features/payroll-hero.png" 
+              src="/images/features/payroll-hero.jpg" 
               alt="Payroll Integration Dashboard" 
               fill 
               className="object-cover opacity-90"

@@ -54,7 +54,7 @@ export default function HealthcareSolutionPage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-video">
             <Image 
-              src="/images/solutions/healthcare-hero.png" 
+              src="/images/solutions/healthcare-hero.jpg" 
               alt="Healthcare Scheduling Dashboard" 
               fill 
               className="object-cover"

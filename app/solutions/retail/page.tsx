@@ -54,7 +54,7 @@ export default function RetailSolutionPage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 aspect-video">
             <Image 
-              src="/images/solutions/retail-hero.png" 
+              src="/images/solutions/retail-hero.jpg" 
               alt="Retail Scheduling Dashboard" 
               fill 
               className="object-cover"

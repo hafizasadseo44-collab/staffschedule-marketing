@@ -53,7 +53,7 @@ export default function AiFeaturePage() {
         visual={
           <div className="relative rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(59,130,246,0.3)] border border-white/10 aspect-video bg-black">
             <Image 
-              src="/images/features/ai-hero.png" 
+              src="/images/features/ai-hero.jpg" 
               alt="AI Forecasting Dashboard" 
               fill 
               className="object-cover opacity-80"
