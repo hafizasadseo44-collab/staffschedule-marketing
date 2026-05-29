@@ -2,37 +2,43 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
+// NOTE: JWT_SECRET is only required to verify the admin session token.
+// It must NOT be read+thrown at module load — the middleware runs on every
+// request to the whole site, so a missing secret would 500 every public page.
+// Instead we read it lazily inside the admin-only branch and degrade
+// gracefully (redirect to login) if it isn't configured.
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error("JWT_SECRET env var is not set");
-const key = new TextEncoder().encode(JWT_SECRET);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. GLOBAL PRIVATE MODE PROTECTION REMOVED
-
-  // 2. PATHNAME TRACKING
+  // PATHNAME TRACKING
   // Set x-pathname header on the REQUEST so Server Components can read it
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-pathname', pathname);
 
   // Default response with updated request headers
-  let response = NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
 
-  // 3. ADMIN PANEL PROTECTION
-  // Protect /admin routes, excluding /admin/login
+  // ADMIN PANEL PROTECTION
+  // Protect /admin routes, excluding /admin/login. The public marketing site
+  // never enters this branch, so it is fully isolated from JWT_SECRET.
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const token = request.cookies.get('admin_token')?.value;
 
-    if (!token) {
+    // No session token, or no secret configured on this environment → send to
+    // login. We never throw here, so a missing JWT_SECRET can never take down
+    // the rest of the site.
+    if (!token || !JWT_SECRET) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
     try {
+      const key = new TextEncoder().encode(JWT_SECRET);
       await jwtVerify(token, key);
       return response;
     } catch (err) {
