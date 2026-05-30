@@ -20,11 +20,16 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
 
   // ── Image Optimization ────────────────────────────────────────
+  // unoptimized: true bypasses the /_next/image?url=... endpoint and serves
+  // images directly from /public (or remote URLs) via plain <img>. The
+  // built-in optimizer was returning 0-byte responses in this environment —
+  // every <Image> rendered as a broken thumbnail with only the alt text
+  // visible. With unoptimized: true, images render correctly everywhere
+  // (dev + Hostinger prod) at the cost of skipping AVIF/WebP transcoding.
+  // Source files in /public are already reasonably sized, so the trade-off
+  // is correct rendering for slightly larger downloads.
   images: {
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 86400,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
     ],
