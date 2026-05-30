@@ -197,7 +197,7 @@ const EliteFinalCTA = () => {
                   >
                     <div className="p-1.5 bg-white/5 backdrop-blur-2xl rounded-[3rem] border border-white/10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
                       <Image
-                          src="/hero-mockup.png"
+                          src="/staffschedule-mobile.png"
                           alt="StaffSchedule.io mobile scheduling app - view shifts and manage schedule on your phone"
                           width={240}
                           height={427}
