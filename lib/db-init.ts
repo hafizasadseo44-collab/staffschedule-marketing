@@ -16,7 +16,13 @@ export async function ensureDatabase() {
   if (initializationPromise) return initializationPromise;
 
   console.log("ensureDatabase starting initializationPromise...");
-  initializationPromise = (async () => {
+  initializationPromise = new Promise(async (resolve, reject) => {
+    // Timeout to prevent hanging
+    const timeout = setTimeout(() => {
+      console.warn("[DB-INIT] Initialization timed out after 3 seconds, continuing...");
+      resolve();
+    }, 3000);
+
     try {
     console.log("1. Finding DB path...");
     let dbPath = '';
@@ -284,15 +290,15 @@ export async function ensureDatabase() {
 
     initialized = true;
     console.log("[DB-INIT] Database schema created successfully.");
+    clearTimeout(timeout);
+    resolve();
   } catch (error) {
     console.error("[DB-INIT] Failed to initialize database:", error);
     initialized = false;
-    initializationPromise = null; // Reset to allow retry
-    throw error;
-  } finally {
-    initializationPromise = null;
+    clearTimeout(timeout);
+    resolve(); // Resolve anyway to not block
   }
-})();
+  });
 
   return initializationPromise;
 }

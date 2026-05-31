@@ -32,14 +32,18 @@ export async function POST(request: Request) {
       
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await db.adminUser.upsert({
-          where: { email },
-          update: { password: hashedPassword },
-          create: { email, password: hashedPassword }
-        });
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Prisma timeout')), 3000));
+        const user = await Promise.race([
+          db.adminUser.upsert({
+            where: { email },
+            update: { password: hashedPassword },
+            create: { email, password: hashedPassword }
+          }),
+          timeoutPromise
+        ]) as any;
         userId = user.id;
       } catch (dbError: any) {
-        console.warn('Super Admin DB sync failed (continuing):', dbError.message);
+        console.warn('Super Admin DB sync failed or timed out (continuing):', dbError.message);
       }
 
       const token = await signToken({ userId, email: envEmail, role: 'ADMIN' });
@@ -55,7 +59,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true });
     }
 
-    let user = await db.adminUser.findUnique({ where: { email } });
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Prisma timeout')), 3000));
+    let user: any = null;
+    try {
+      user = await Promise.race([
+        db.adminUser.findUnique({ where: { email } }),
+        timeoutPromise
+      ]);
+    } catch (err: any) {
+      console.error('DB fetch user error/timeout:', err.message);
+      return NextResponse.json({ error: 'Database connection failed, please try again later' }, { status: 500 });
+    }
 
     // Seed first admin if DB is empty
     const count = await db.adminUser.count();
