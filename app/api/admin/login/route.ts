@@ -31,7 +31,6 @@ export async function POST(request: Request) {
       let userId = 'env-admin';
       
       try {
-      try {
         const hashedPassword = await bcrypt.hash(password, 10);
         let timeoutId: NodeJS.Timeout;
         const timeoutPromise = new Promise((_, reject) => {
@@ -48,8 +47,6 @@ export async function POST(request: Request) {
         clearTimeout(timeoutId!);
         userId = user.id;
       } catch (dbError: any) {
-        console.warn('Super Admin DB sync failed or timed out (continuing):', dbError.message);
-      }
         console.warn('Super Admin DB sync failed or timed out (continuing):', dbError.message);
       }
 
