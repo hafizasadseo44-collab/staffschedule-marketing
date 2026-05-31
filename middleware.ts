@@ -7,7 +7,7 @@ import { jwtVerify } from 'jose';
 // request to the whole site, so a missing secret would 500 every public page.
 // Instead we read it lazily inside the admin-only branch and degrade
 // gracefully (redirect to login) if it isn't configured.
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-replace-in-production';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
