@@ -16,14 +16,6 @@ interface Block {
   content?: Block[];
 }
 
-
-const SEO_INTERNAL_LINKS = [
-  { keywords: ["staff scheduling", "shift scheduling"], url: "/blog", category: "Scheduling" },
-  { keywords: ["workforce management", "operations"], url: "/blog", category: "Operations" },
-  { keywords: ["ai intelligence", "artificial intelligence", "smart scheduling"], url: "/blog", category: "AI Intelligence" },
-  { keywords: ["productivity", "efficiency"], url: "/blog", category: "Productivity" },
-];
-
 interface BlockRendererProps {
   content: string | any;
 }
@@ -35,7 +27,13 @@ const fadeUp = {
   transition: { duration: 0.5 }
 };
 
+// Track heading counts to generate unique IDs
+let headingCounter: Record<string, number> = {};
+
 export default function BlockRenderer({ content }: BlockRendererProps) {
+  // Reset heading counter for each render
+  headingCounter = {};
+
   // 1. Handle Legacy HTML Fallback
   if (typeof content === 'string') {
     try {
@@ -63,13 +61,16 @@ export default function BlockRenderer({ content }: BlockRendererProps) {
 function renderBlock(block: Block, index: number): React.ReactNode {
   switch (block.type) {
     case 'heading':
-      return <HeadingBlock key={index} block={block} />;
+      return <HeadingBlock key={index} block={block} index={index} />;
     case 'paragraph':
       return <ParagraphBlock key={index} block={block} />;
     case 'bulletList':
       return <ListBlock key={index} block={block} ordered={false} />;
     case 'orderedList':
       return <ListBlock key={index} block={block} ordered={true} />;
+    case 'listItem':
+      // If a listItem appears outside a list context, render its children
+      return <React.Fragment key={index}>{block.content?.map((child, ci) => renderBlock(child, ci))}</React.Fragment>;
     case 'blockquote':
       return <BlockquoteBlock key={index} block={block} />;
     case 'horizontalRule':
@@ -86,17 +87,32 @@ function renderBlock(block: Block, index: number): React.ReactNode {
       return <CodeBlockBlock key={index} block={block} />;
     case 'table':
       return <TableBlock key={index} block={block} />;
+    case 'tableRow':
+    case 'tableHeader':
+    case 'tableCell':
+      // These should be handled inside TableBlock, but if they appear standalone, render children
+      return <React.Fragment key={index}>{block.content?.map((child, ci) => renderBlock(child, ci))}</React.Fragment>;
     default:
-      console.warn('Unknown block type:', block.type);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Unknown block type:', block.type);
+      }
       return null;
   }
 }
 
 // ─── HEADING ───
-function HeadingBlock({ block }: { block: Block }) {
+function HeadingBlock({ block, index }: { block: Block; index: number }) {
   const level = block.attrs?.level || 2;
   const text = extractText(block.content);
-  const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  let id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  // Make IDs unique by appending a counter if duplicate
+  if (headingCounter[id] !== undefined) {
+    headingCounter[id]++;
+    id = `${id}-${headingCounter[id]}`;
+  } else {
+    headingCounter[id] = 0;
+  }
 
   const styles: Record<number, string> = {
     1: 'text-4xl md:text-5xl font-extrabold tracking-tight tight leading-tight mb-8 text-slate-900',
@@ -141,19 +157,35 @@ function ParagraphBlock({ block }: { block: Block }) {
 }
 
 // ─── LISTS ───
+// NOTE: each <li> uses display:flex (for the marker + text alignment), which
+// suppresses the browser's native list markers. We therefore render the bullet
+// OR the number manually in their own column. Without this, ordered lists
+// rendered as plain text with no 1./2./3. visible to the reader.
 function ListBlock({ block, ordered }: { block: Block; ordered: boolean }) {
   const Tag = ordered ? 'ol' : 'ul';
   return (
     <motion.div {...fadeUp} className="mb-10 ml-1">
-      <Tag className={`space-y-4 ${ordered ? 'list-decimal pl-6 text-slate-600' : ''}`}>
+      <Tag className="space-y-4">
         {block.content?.map((item, i) => (
           <li key={i} className="flex items-start gap-4 text-slate-600 text-[17px] leading-relaxed">
-            {!ordered && (
+            {ordered ? (
+              <div className="mt-0.5 shrink-0 min-w-[1.75rem] h-7 px-2 rounded-md bg-indigo-50 text-indigo-600 font-bold text-sm flex items-center justify-center tabular-nums">
+                {i + 1}
+              </div>
+            ) : (
               <div className="mt-1.5 shrink-0 w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center">
-                 <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
+                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
               </div>
             )}
-            <div className="flex-1">{renderContent(item.content ? item.content[0]?.content : [])}</div>
+            <div className="flex-1">
+              {item.content?.map((child: any, ci: number) => {
+                // Render paragraphs inside list items inline (no motion wrapper, no mb-8)
+                if (child.type === 'paragraph') {
+                  return <span key={ci}>{renderContent(child.content)}</span>;
+                }
+                return <React.Fragment key={ci}>{renderBlock(child, ci)}</React.Fragment>;
+              })}
+            </div>
           </li>
         ))}
       </Tag>
@@ -167,7 +199,7 @@ function BlockquoteBlock({ block }: { block: Block }) {
     <motion.div {...fadeUp} className="my-12 pl-8 border-l-4 border-indigo-500 bg-slate-50/50 py-8 pr-8 rounded-r-2xl">
       <div className="relative z-10">
         <Quote className="text-indigo-200 mb-6 w-10 h-10 opacity-50" />
-        <div className="text-xl md:text-2xl font-semibold text-slate-800 leading-snug italic italic text-balance">
+        <div className="text-xl md:text-2xl font-semibold text-slate-800 leading-snug italic text-balance">
           {block.content?.map((p, i) => <React.Fragment key={i}>{renderContent(p.content)}</React.Fragment>)}
         </div>
       </div>
@@ -220,8 +252,25 @@ function CodeBlockBlock({ block }: { block: Block }) {
 }
 
 // ─── TABLE ───
+// Helper: render cell content without motion wrappers or paragraph margins
+function renderCellContent(content?: Block[]): React.ReactNode {
+  if (!content) return null;
+  return content.map((child, i) => {
+    if (child.type === 'paragraph') {
+      // Render paragraph content inline inside cells (no <p>, no motion, no mb-8)
+      if (!child.content || child.content.length === 0) return null;
+      return <span key={i}>{renderContent(child.content)}</span>;
+    }
+    // For other block types inside cells (lists, etc.), use normal renderBlock
+    return <React.Fragment key={i}>{renderBlock(child, i)}</React.Fragment>;
+  });
+}
+
 function TableBlock({ block }: { block: Block }) {
   const rows = block.content || [];
+  if (rows.length === 0) return null;
+
+  // Separate header rows from body rows
   const headerRows = rows.filter(row => row.content?.some(cell => cell.type === 'tableHeader'));
   const bodyRows = rows.filter(row => !row.content?.some(cell => cell.type === 'tableHeader'));
 
@@ -233,10 +282,13 @@ function TableBlock({ block }: { block: Block }) {
             {headerRows.map((row, ri) => (
               <tr key={ri}>
                 {row.content?.map((cell, ci) => (
-                  <th key={ci} className="bg-gradient-to-br from-slate-100 to-slate-50 text-slate-700 font-bold text-xs uppercase tracking-wider px-5 py-4 text-left border-b-2 border-slate-200 border-r border-r-slate-100 last:border-r-0">
-                    {cell.content?.map((p: any, pi: number) => (
-                      <React.Fragment key={pi}>{renderContent(p.content)}</React.Fragment>
-                    ))}
+                  <th
+                    key={ci}
+                    className="bg-gradient-to-br from-slate-100 to-slate-50 text-slate-700 font-bold text-sm px-5 py-4 text-left border-b-2 border-slate-200 border-r border-r-slate-100 last:border-r-0"
+                    colSpan={cell.attrs?.colspan || 1}
+                    rowSpan={cell.attrs?.rowspan || 1}
+                  >
+                    {renderCellContent(cell.content)}
                   </th>
                 ))}
               </tr>
@@ -247,10 +299,13 @@ function TableBlock({ block }: { block: Block }) {
           {bodyRows.map((row, ri) => (
             <tr key={ri} className={`transition-colors hover:bg-indigo-50/50 ${ri % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
               {row.content?.map((cell, ci) => (
-                <td key={ci} className="px-5 py-4 text-slate-600 text-[15px] border-b border-slate-100 border-r border-r-slate-50 last:border-r-0 leading-relaxed">
-                  {cell.content?.map((p: any, pi: number) => (
-                    <React.Fragment key={pi}>{renderContent(p.content)}</React.Fragment>
-                  ))}
+                <td
+                  key={ci}
+                  className="px-5 py-4 text-slate-600 text-[15px] border-b border-slate-100 border-r border-r-slate-50 last:border-r-0 leading-relaxed"
+                  colSpan={cell.attrs?.colspan || 1}
+                  rowSpan={cell.attrs?.rowspan || 1}
+                >
+                  {renderCellContent(cell.content)}
                 </td>
               ))}
             </tr>
@@ -306,44 +361,6 @@ function renderContent(content?: Block[]): React.ReactNode {
 
     if (node.type === 'text') {
       let element: React.ReactNode = node.text;
-      
-      // Auto-Internal Linking Logic
-      const hasLink = node.marks?.some((m: any) => m.type === 'link');
-      if (!hasLink && node.text && node.text.length > 10) {
-        let textSegments: (string | React.ReactNode)[] = [node.text];
-        
-        SEO_INTERNAL_LINKS.forEach(({ keywords, url }) => {
-           keywords.forEach(keyword => {
-             const newSegments: (string | React.ReactNode)[] = [];
-             textSegments.forEach(segment => {
-                if (typeof segment !== 'string') {
-                  newSegments.push(segment);
-                  return;
-                }
-                
-                const regex = new RegExp(`\\b(${keyword})\\b`, 'i');
-                const parts = segment.split(regex);
-                if (parts.length > 1) {
-                  parts.forEach((part, i) => {
-                    if (i % 2 === 1) {
-                      newSegments.push(
-                        <a key={`${keyword}-${i}`} href={url} className="text-indigo-600 font-medium underline decoration-indigo-200 decoration-1 underline-offset-4 hover:text-indigo-900 transition-colors">
-                          {part}
-                        </a>
-                      );
-                    } else if (part) {
-                      newSegments.push(part);
-                    }
-                  });
-                } else {
-                  newSegments.push(segment);
-                }
-             });
-             textSegments = newSegments;
-           });
-        });
-        element = <>{textSegments}</>;
-      }
 
       if (node.marks) {
         node.marks.forEach((mark: any) => {

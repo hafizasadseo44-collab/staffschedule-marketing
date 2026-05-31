@@ -53,10 +53,18 @@ function useHeadings(content: string) {
     try {
       const json = JSON.parse(content);
       const found: typeof headings = [];
+      const idCount: Record<string, number> = {};
       const walk = (nodes: any[]) => nodes?.forEach(n => {
         if (n.type === "heading") {
           const text = n.content?.map((c: any) => c.text).join("") || "";
-          const id = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+          let id = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+          // Make IDs unique
+          if (idCount[id] !== undefined) {
+            idCount[id]++;
+            id = `${id}-${idCount[id]}`;
+          } else {
+            idCount[id] = 0;
+          }
           if (text) found.push({ id, text, level: n.attrs?.level || 2 });
         }
         if (n.content) walk(n.content);

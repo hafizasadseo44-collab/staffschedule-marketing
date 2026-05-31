@@ -496,7 +496,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 active:scale-95 transition-all disabled:opacity-50"
             >
               {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-              {saving ? 'Saving...' : (published ? 'Update' : 'Save Draft')}
+              {saving ? 'Saving...' : (published ? 'Save Changes' : 'Save Draft')}
             </button>
 
             {/* Publish Button — Opens WordPress-style panel */}
@@ -505,7 +505,7 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition-all shadow-lg shadow-indigo-500/25"
             >
               <Send size={16} />
-              Publish
+              {published ? 'Publish Settings' : 'Publish'}
             </button>
           </div>
         </div>
