@@ -8,6 +8,7 @@ import {
   Sparkles, BookOpen, ArrowRight, Zap,
 } from "lucide-react";
 import BlockRenderer from "./BlockRenderer";
+import NewsletterForm from "@/components/newsletter/NewsletterForm";
 
 /* ─── TYPES ─── */
 interface Author { name: string; slug: string; avatar?: string | null; gender?: string | null; bio?: string | null; }
@@ -407,6 +408,18 @@ export default function BlogPostClient({ post, relatedPosts }: { post: Post; rel
                   View All Articles <ArrowRight size={11} />
                 </Link>
               </div>
+            </div>
+
+            {/* Newsletter CTA */}
+            <div className="mt-16 sm:mt-24">
+              <NewsletterForm
+                variant="split"
+                source={`/blog/${post.slug}`}
+                tags={[post.category || "blog"].filter(Boolean) as string[]}
+                preferences={["blog", "weeklyDigest"]}
+                heading="Enjoyed this article?"
+                subheading="Join 12,000+ ops leaders getting our best scheduling playbooks, AI workforce trends, and exclusive guides — straight to your inbox every Monday."
+              />
             </div>
 
             {/* Related Posts Section */}

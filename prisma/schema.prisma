@@ -120,12 +120,108 @@ model GuideCategory {
 model Subscriber {
   id        String   @id @default(cuid())
   email     String   @unique
+  name      String?
+  active    Boolean  @default(true)
+  status    String   @default("ACTIVE") // ACTIVE | UNSUBSCRIBED | BOUNCED | COMPLAINED
+
+  // Legacy preference flags (kept for back-compat with existing email service)
   blog      Boolean  @default(true)
   news      Boolean  @default(true)
   guides    Boolean  @default(true)
-  active    Boolean  @default(true)
+
+  // New granular preferences
+  productUpdates    Boolean @default(true)
+  schedulingTips    Boolean @default(true)
+  industryInsights  Boolean @default(true)
+  featureReleases   Boolean @default(true)
+  announcements     Boolean @default(true)
+  weeklyDigest      Boolean @default(true)
+
+  // Lifecycle + attribution
+  sourcePage       String?
+  tags             String?  // comma-separated for SQLite
+  subscribedAt     DateTime @default(now())
+  unsubscribedAt   DateTime?
+  lastEmailedAt    DateTime?
+  emailsSent       Int      @default(0)
+  emailsOpened     Int      @default(0)
+  emailsClicked    Int      @default(0)
+  unsubscribeToken String?  @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  events    EmailEvent[]
+}
+
+model Campaign {
+  id              String    @id @default(cuid())
+  type            String    @default("CUSTOM") // BLOG | NEWS | GUIDE | DIGEST | PRODUCT_UPDATE | FEATURE_RELEASE | ANNOUNCEMENT | CUSTOM
+  name            String    // internal name
+  subject         String
+  preheader       String?
+  fromName        String    @default("StaffSchedule.io Team")
+  fromEmail       String    @default("newsletter@staffschedule.io")
+
+  contentHtml     String
+  contentJson     String?
+
+  // Targeting: JSON string of { preferences: [...], tags: [...] }
+  audience        String    @default("{}")
+
+  status          String    @default("DRAFT") // DRAFT | SCHEDULED | SENDING | SENT | FAILED | CANCELLED
+  scheduledFor    DateTime?
+  sentAt          DateTime?
+
+  totalRecipients   Int @default(0)
+  totalSent         Int @default(0)
+  totalDelivered    Int @default(0)
+  totalOpened       Int @default(0)
+  totalClicked      Int @default(0)
+  totalBounced      Int @default(0)
+  totalUnsubscribed Int @default(0)
+
+  postId          String?
+  guideId         String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  events          EmailEvent[]
+}
+
+model EmailEvent {
+  id           String      @id @default(cuid())
+  campaignId   String?
+  campaign     Campaign?   @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  subscriberId String?
+  subscriber   Subscriber? @relation(fields: [subscriberId], references: [id], onDelete: SetNull)
+  email        String
+  type         String      // SENT | DELIVERED | OPEN | CLICK | BOUNCE | COMPLAINT | UNSUBSCRIBE
+  url          String?
+  userAgent    String?
+  ipAddress    String?
+  createdAt    DateTime    @default(now())
+
+  @@index([campaignId])
+  @@index([subscriberId])
+  @@index([email])
+  @@index([type])
+}
+
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  category    String   @default("GENERAL") // WELCOME | BLOG | DIGEST | PRODUCT | FEATURE | CUSTOM
+  subject     String
+  preheader   String?
+  html        String
+  thumbnail   String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model PostRevision {

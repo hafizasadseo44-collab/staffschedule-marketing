@@ -179,15 +179,104 @@ export async function ensureDatabase() {
       CREATE TABLE IF NOT EXISTS "Subscriber" (
         "id" TEXT NOT NULL PRIMARY KEY,
         "email" TEXT NOT NULL,
+        "name" TEXT,
+        "active" INTEGER NOT NULL DEFAULT 1,
+        "status" TEXT NOT NULL DEFAULT 'ACTIVE',
         "blog" INTEGER NOT NULL DEFAULT 1,
         "news" INTEGER NOT NULL DEFAULT 1,
         "guides" INTEGER NOT NULL DEFAULT 1,
-        "active" INTEGER NOT NULL DEFAULT 1,
+        "productUpdates" INTEGER NOT NULL DEFAULT 1,
+        "schedulingTips" INTEGER NOT NULL DEFAULT 1,
+        "industryInsights" INTEGER NOT NULL DEFAULT 1,
+        "featureReleases" INTEGER NOT NULL DEFAULT 1,
+        "announcements" INTEGER NOT NULL DEFAULT 1,
+        "weeklyDigest" INTEGER NOT NULL DEFAULT 1,
+        "sourcePage" TEXT,
+        "tags" TEXT,
+        "subscribedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "unsubscribedAt" DATETIME,
+        "lastEmailedAt" DATETIME,
+        "emailsSent" INTEGER NOT NULL DEFAULT 0,
+        "emailsOpened" INTEGER NOT NULL DEFAULT 0,
+        "emailsClicked" INTEGER NOT NULL DEFAULT 0,
+        "unsubscribeToken" TEXT,
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
     `);
     await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Subscriber_email_key" ON "Subscriber"("email")`);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Subscriber_unsubscribeToken_key" ON "Subscriber"("unsubscribeToken")`);
+
+    // Campaign
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Campaign" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "type" TEXT NOT NULL DEFAULT 'CUSTOM',
+        "name" TEXT NOT NULL,
+        "subject" TEXT NOT NULL,
+        "preheader" TEXT,
+        "fromName" TEXT NOT NULL DEFAULT 'StaffSchedule.io Team',
+        "fromEmail" TEXT NOT NULL DEFAULT 'newsletter@staffschedule.io',
+        "contentHtml" TEXT NOT NULL,
+        "contentJson" TEXT,
+        "audience" TEXT NOT NULL DEFAULT '{}',
+        "status" TEXT NOT NULL DEFAULT 'DRAFT',
+        "scheduledFor" DATETIME,
+        "sentAt" DATETIME,
+        "totalRecipients" INTEGER NOT NULL DEFAULT 0,
+        "totalSent" INTEGER NOT NULL DEFAULT 0,
+        "totalDelivered" INTEGER NOT NULL DEFAULT 0,
+        "totalOpened" INTEGER NOT NULL DEFAULT 0,
+        "totalClicked" INTEGER NOT NULL DEFAULT 0,
+        "totalBounced" INTEGER NOT NULL DEFAULT 0,
+        "totalUnsubscribed" INTEGER NOT NULL DEFAULT 0,
+        "postId" TEXT,
+        "guideId" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // EmailEvent
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "EmailEvent" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "campaignId" TEXT,
+        "subscriberId" TEXT,
+        "email" TEXT NOT NULL,
+        "type" TEXT NOT NULL,
+        "url" TEXT,
+        "userAgent" TEXT,
+        "ipAddress" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY("campaignId") REFERENCES "Campaign"("id") ON DELETE SET NULL,
+        FOREIGN KEY("subscriberId") REFERENCES "Subscriber"("id") ON DELETE SET NULL
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_campaignId_idx" ON "EmailEvent"("campaignId")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_subscriberId_idx" ON "EmailEvent"("subscriberId")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_email_idx" ON "EmailEvent"("email")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_type_idx" ON "EmailEvent"("type")`);
+
+    // EmailTemplate
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "EmailTemplate" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "slug" TEXT NOT NULL,
+        "description" TEXT,
+        "category" TEXT NOT NULL DEFAULT 'GENERAL',
+        "subject" TEXT NOT NULL,
+        "preheader" TEXT,
+        "html" TEXT NOT NULL,
+        "thumbnail" TEXT,
+        "isSystem" INTEGER NOT NULL DEFAULT 0,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "EmailTemplate_name_key" ON "EmailTemplate"("name")`);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "EmailTemplate_slug_key" ON "EmailTemplate"("slug")`);
 
     // Prisma migrations table (so Prisma doesn't complain)
     await db.$executeRawUnsafe(`
@@ -383,6 +472,50 @@ async function migrateSchema() {
   if (!postRevCols.includes("authorId")) {
     console.log(`[DB-INIT] Adding missing column authorId to PostRevision table...`);
     try { await db.$executeRawUnsafe(`ALTER TABLE "PostRevision" ADD COLUMN "authorId" TEXT`); } catch (e) {}
+  }
+
+  // Subscriber Table Migrations — bring legacy rows up to the new marketing schema.
+  // Existing live DB has only the original 8 columns; add the new ones idempotently.
+  try {
+    const subInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Subscriber)`) as any[];
+    const subCols = subInfo.map(c => c.name);
+    const subMigrations = [
+      { name: "name", type: "TEXT" },
+      { name: "status", type: "TEXT NOT NULL DEFAULT 'ACTIVE'" },
+      { name: "productUpdates", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "schedulingTips", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "industryInsights", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "featureReleases", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "announcements", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "weeklyDigest", type: "INTEGER NOT NULL DEFAULT 1" },
+      { name: "sourcePage", type: "TEXT" },
+      { name: "tags", type: "TEXT" },
+      { name: "subscribedAt", type: "DATETIME" },
+      { name: "unsubscribedAt", type: "DATETIME" },
+      { name: "lastEmailedAt", type: "DATETIME" },
+      { name: "emailsSent", type: "INTEGER NOT NULL DEFAULT 0" },
+      { name: "emailsOpened", type: "INTEGER NOT NULL DEFAULT 0" },
+      { name: "emailsClicked", type: "INTEGER NOT NULL DEFAULT 0" },
+      { name: "unsubscribeToken", type: "TEXT" },
+    ];
+    for (const col of subMigrations) {
+      if (!subCols.includes(col.name)) {
+        console.log(`[DB-INIT] Adding missing column ${col.name} to Subscriber table...`);
+        try { await db.$executeRawUnsafe(`ALTER TABLE "Subscriber" ADD COLUMN "${col.name}" ${col.type}`); } catch (e) { console.error(e); }
+      }
+    }
+    // Backfill subscribedAt from createdAt for legacy rows
+    try {
+      await db.$executeRawUnsafe(`UPDATE "Subscriber" SET subscribedAt = createdAt WHERE subscribedAt IS NULL`);
+    } catch (e) {}
+    // Backfill status from active flag
+    try {
+      await db.$executeRawUnsafe(`UPDATE "Subscriber" SET status = CASE WHEN active = 1 THEN 'ACTIVE' ELSE 'UNSUBSCRIBED' END WHERE status IS NULL OR status = ''`);
+    } catch (e) {}
+    // Unique index for unsubscribeToken
+    try { await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "Subscriber_unsubscribeToken_key" ON "Subscriber"("unsubscribeToken")`); } catch (e) {}
+  } catch (err) {
+    console.error("[DB-INIT] Subscriber migration error:", err);
   }
 
   } catch (err: any) {

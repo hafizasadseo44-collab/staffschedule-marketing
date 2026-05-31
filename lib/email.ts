@@ -6,7 +6,12 @@ const getResendClient = () => new Resend(process.env.RESEND_API_KEY || 'dummy_ke
 
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://staffschedule.io';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'StaffSchedule.io <hello@staffschedule.io>';
+// Legacy notifier: marketing-style content uses the newsletter@ sender.
+const FROM_EMAIL =
+  process.env.RESEND_FROM_NEWSLETTER ||
+  process.env.RESEND_FROM_EMAIL ||
+  'StaffSchedule.io Team <newsletter@staffschedule.io>';
+const REPLY_TO = process.env.RESEND_REPLY_TO_NEWSLETTER || 'hello@staffschedule.io';
 const BATCH_SIZE = 50; // Resend batch limit
 
 // ─── Email Template (inline HTML for maximum compatibility) ───
@@ -152,6 +157,7 @@ export async function sendNotificationEmails(content: EmailContent) {
 
       const batchEmails = batch.map((sub) => ({
         from: FROM_EMAIL,
+        replyTo: REPLY_TO,
         to: sub.email,
         subject: content.type === 'news'
           ? `📢 ${content.title}`

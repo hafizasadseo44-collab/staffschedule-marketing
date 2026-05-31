@@ -10,6 +10,11 @@ import GuideCategoryManager from "@/components/admin/GuideCategoryManager";
 import CategoryManager from "@/components/admin/CategoryManager";
 import ProfileManager from "@/components/admin/ProfileManager";
 import SettingsManager from "@/components/admin/SettingsManager";
+import MarketingOverview from "@/components/admin/marketing/MarketingOverview";
+import SubscriberManager from "@/components/admin/marketing/SubscriberManager";
+import CampaignManager from "@/components/admin/marketing/CampaignManager";
+import TemplateManager from "@/components/admin/marketing/TemplateManager";
+import EmailAnalytics from "@/components/admin/marketing/EmailAnalytics";
 import { Loader2 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -235,6 +240,11 @@ export default function AdminDashboard() {
       case "newsroom": return <NewsroomManager posts={posts} onDelete={deletePost} />;
       case "guides": return <GuideManager />;
       case "guide-categories": return <GuideCategoryManager />;
+      case "marketing": return <MarketingOverview />;
+      case "subscribers": return <SubscriberManager />;
+      case "campaigns": return <CampaignManager />;
+      case "templates": return <TemplateManager />;
+      case "analytics": return <EmailAnalytics />;
       case "categories": return <CategoryManager 
           categories={categories} posts={posts} 
           newCatName={newCatName} setNewCatName={setNewCatName} newCatColor={newCatColor} setNewCatColor={setNewCatColor}

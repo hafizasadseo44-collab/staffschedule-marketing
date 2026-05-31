@@ -51,7 +51,20 @@ const schedulingMethods = [
 ];
 
 /* ─── FORM INPUT COMPONENT ─── */
-function FormInput({ label, required = false, ...props }: { label: string; required?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
+function FormInput({
+  label,
+  required = false,
+  value,
+  onChange,
+  name,
+  ...props
+}: {
+  label: string;
+  required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
+  name: string;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value">) {
   return (
     <div className="group">
       <label className="block text-[11px] font-black uppercase tracking-[0.15em] text-slate-400 group-focus-within:text-indigo-500 mb-2 transition-colors">
@@ -59,6 +72,9 @@ function FormInput({ label, required = false, ...props }: { label: string; requi
       </label>
       <input
         {...props}
+        name={name}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         required={required}
         className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium outline-none text-slate-900 placeholder:text-slate-400"
       />
@@ -66,13 +82,30 @@ function FormInput({ label, required = false, ...props }: { label: string; requi
   );
 }
 
-function FormSelect({ label, options, required = false }: { label: string; options: { value: string; label: string }[]; required?: boolean }) {
+function FormSelect({
+  label,
+  options,
+  required = false,
+  value,
+  onChange,
+  name,
+}: {
+  label: string;
+  options: { value: string; label: string }[];
+  required?: boolean;
+  value: string;
+  onChange: (v: string) => void;
+  name: string;
+}) {
   return (
     <div className="group">
       <label className="block text-[11px] font-black uppercase tracking-[0.15em] text-slate-400 group-focus-within:text-indigo-500 mb-2 transition-colors">
         {label} {required && <span className="text-red-400">*</span>}
       </label>
       <select
+        name={name}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         required={required}
         className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium outline-none text-slate-900 appearance-none"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 1.25rem center" }}
@@ -90,7 +123,65 @@ function FormSelect({ label, options, required = false }: { label: string; optio
    ═══════════════════════════════════════════════════════════════════ */
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formType, setFormType] = useState<"demo" | "sales" | "support">("demo");
+
+  // Controlled fields — kept simple as one flat record so the same state
+  // works across all three form types (demo/sales/support).
+  const [fields, setFields] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    industry: "",
+    teamSize: "",
+    schedulingMethod: "",
+    jobTitle: "",
+    category: "",
+    message: "",
+    website: "", // honeypot
+  });
+  const [features, setFeatures] = useState<string[]>([]);
+
+  const set = (key: keyof typeof fields) => (v: string) =>
+    setFields((f) => ({ ...f, [key]: v }));
+
+  const toggleFeature = (f: string) =>
+    setFeatures((arr) => (arr.includes(f) ? arr.filter((x) => x !== f) : [...arr, f]));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType,
+          ...fields,
+          features: formType === "demo" ? features : undefined,
+          sourcePage:
+            typeof window !== "undefined" ? window.location.pathname : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Submission failed");
+      setSubmitted(true);
+      // Reset for next submission
+      setFields({
+        name: "", email: "", company: "", phone: "", industry: "", teamSize: "",
+        schedulingMethod: "", jobTitle: "", category: "", message: "", website: "",
+      });
+      setFeatures([]);
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const formTypes = [
     { id: "demo" as const, label: "Contact Sales", icon: CalendarRange, description: "See StaffSchedule.io in action" },
@@ -232,42 +323,54 @@ export default function ContactPage() {
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -10 }}
-                      onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+                      onSubmit={handleSubmit}
                       className="space-y-5 relative z-10"
                     >
+                      {/* Honeypot — hidden from real users */}
+                      <input
+                        type="text"
+                        name="website"
+                        value={fields.website}
+                        onChange={(e) => set("website")(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="absolute -left-[9999px] opacity-0 pointer-events-none"
+                      />
+
                       {/* Row 1: Name + Email */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <FormInput label="Full Name" placeholder="John Doe" required type="text" />
-                        <FormInput label="Work Email" placeholder="john@company.com" required type="email" />
+                        <FormInput label="Full Name" name="name" value={fields.name} onChange={set("name")} placeholder="John Doe" required type="text" />
+                        <FormInput label="Work Email" name="email" value={fields.email} onChange={set("email")} placeholder="john@company.com" required type="email" />
                       </div>
 
                       {/* Row 2: Company + Phone */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <FormInput label="Company Name" placeholder="Acme Healthcare Inc." type="text" required />
-                        <FormInput label="Phone Number" placeholder="+1 (555) 000-0000" type="tel" />
+                        <FormInput label="Company Name" name="company" value={fields.company} onChange={set("company")} placeholder="Acme Healthcare Inc." type="text" required />
+                        <FormInput label="Phone Number" name="phone" value={fields.phone} onChange={set("phone")} placeholder="+1 (555) 000-0000" type="tel" />
                       </div>
 
                       {/* Row 3: Industry + Team Size (for demo/sales) */}
                       {formType !== "support" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                          <FormSelect label="Industry" options={industries} required />
-                          <FormSelect label="Team Size" options={teamSizes} required />
+                          <FormSelect label="Industry" name="industry" value={fields.industry} onChange={set("industry")} options={industries} required />
+                          <FormSelect label="Team Size" name="teamSize" value={fields.teamSize} onChange={set("teamSize")} options={teamSizes} required />
                         </div>
                       )}
 
                       {/* Row 4: Current scheduling method (for demo only) */}
                       {formType === "demo" && (
-                        <FormSelect label="Current Scheduling Method" options={schedulingMethods} />
+                        <FormSelect label="Current Scheduling Method" name="schedulingMethod" value={fields.schedulingMethod} onChange={set("schedulingMethod")} options={schedulingMethods} />
                       )}
 
                       {/* Row 4b: Job title (for sales) */}
                       {formType === "sales" && (
-                        <FormInput label="Job Title" placeholder="VP of Operations" type="text" />
+                        <FormInput label="Job Title" name="jobTitle" value={fields.jobTitle} onChange={set("jobTitle")} placeholder="VP of Operations" type="text" />
                       )}
 
                       {/* Row 4c: Ticket category (for support) */}
                       {formType === "support" && (
-                        <FormSelect label="Issue Category" options={[
+                        <FormSelect label="Issue Category" name="category" value={fields.category} onChange={set("category")} options={[
                           { value: "", label: "Select an issue category" },
                           { value: "login", label: "🔑 Login / Account Access" },
                           { value: "scheduling", label: "📅 Scheduling & Shifts" },
@@ -285,6 +388,9 @@ export default function ContactPage() {
                           <span className="text-red-400"> *</span>
                         </label>
                         <textarea
+                          name="message"
+                          value={fields.message}
+                          onChange={(e) => set("message")(e.target.value)}
                           required
                           rows={4}
                           className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-all font-medium outline-none resize-none text-slate-900 placeholder:text-slate-400"
@@ -310,20 +416,49 @@ export default function ContactPage() {
                             "Multi-location management",
                           ].map((item) => (
                             <label key={item} className="flex items-center gap-3 cursor-pointer group/check">
-                              <input type="checkbox" className="w-4.5 h-4.5 rounded-lg border-slate-300 text-indigo-600 focus:ring-indigo-500/20" />
+                              <input
+                                type="checkbox"
+                                checked={features.includes(item)}
+                                onChange={() => toggleFeature(item)}
+                                className="w-4.5 h-4.5 rounded-lg border-slate-300 text-indigo-600 focus:ring-indigo-500/20"
+                              />
                               <span className="text-sm text-slate-600 group-hover/check:text-slate-900 transition-colors font-medium">{item}</span>
                             </label>
                           ))}
                         </div>
                       )}
 
+                      {/* Error */}
+                      {error && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="rounded-2xl bg-rose-50 border border-rose-200 px-4 py-3 text-sm font-bold text-rose-700"
+                        >
+                          {error}
+                        </motion.div>
+                      )}
+
                       {/* Submit */}
                       <button
                         type="submit"
-                        className="w-full py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 group"
+                        disabled={submitting}
+                        className="w-full py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        {formType === "demo" ? "Contact Sales" : formType === "sales" ? "Get Enterprise Quote" : "Submit Support Ticket"}
-                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                        {submitting ? (
+                          <>
+                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+                              <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                            </svg>
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            {formType === "demo" ? "Contact Sales" : formType === "sales" ? "Get Enterprise Quote" : "Submit Support Ticket"}
+                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </button>
 
                       <p className="text-center text-[11px] text-slate-400">

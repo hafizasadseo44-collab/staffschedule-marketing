@@ -25,7 +25,7 @@ import {
   Strikethrough, Code, AlignLeft, AlignCenter, AlignRight, AlignJustify,
   Minus, Highlighter, Eye, Search, ChevronDown, ChevronUp,
   FileText, BarChart3, Target, Zap, Globe, Hash, Clock,
-  PenTool, Palette, Table2, Trash2, Send
+  PenTool, Palette, Table2, Trash2, Send, Mail
 } from 'lucide-react';
 import Link from 'next/link';
 import { Callout, CustomImage } from '@/lib/tiptap-extensions';
@@ -507,6 +507,35 @@ export default function BlogEditor({ params }: { params: Promise<{ id: string }>
               <Send size={16} />
               {published ? 'Publish Settings' : 'Publish'}
             </button>
+
+            {/* Send Newsletter — only available once published */}
+            {published && (
+              <button
+                onClick={async () => {
+                  if (!confirm(`Send "${title || 'this post'}" as a newsletter to all blog subscribers? This cannot be undone.`)) return;
+                  try {
+                    const r = await fetch('/api/admin/campaigns/from-blog', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ postId: id }),
+                    });
+                    const data = await r.json();
+                    if (r.ok) {
+                      alert(`✓ Newsletter sent to ${data.sent} subscribers`);
+                    } else {
+                      alert('Send failed: ' + (data.error || 'Unknown error'));
+                    }
+                  } catch (e: any) {
+                    alert('Send failed: ' + e.message);
+                  }
+                }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 transition-all shadow-lg shadow-emerald-500/25"
+                title="Auto-generate a branded newsletter from this post and send it to all blog subscribers"
+              >
+                <Mail size={16} />
+                Send Newsletter
+              </button>
+            )}
           </div>
         </div>
       </div>

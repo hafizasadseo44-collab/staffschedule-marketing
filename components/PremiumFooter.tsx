@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import SubscribeForm from "./SubscribeForm";
+import NewsletterForm from "./newsletter/NewsletterForm";
 import { LinkPreview } from "@/components/ui/link-preview";
 
 
@@ -116,7 +116,15 @@ const PremiumFooter = () => {
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">
                 Join our Newsletter
               </div>
-              <SubscribeForm variant="dark" buttonText="Join" />
+              <NewsletterForm
+                variant="minimal"
+                cta="Join"
+                source="/footer"
+                className="[&_input]:bg-white/5 [&_input]:border-white/10 [&_input]:text-white [&_input]:placeholder:text-white/40"
+              />
+              <p className="text-[11px] text-slate-500 mt-2 font-medium">
+                Weekly tips · No spam · Unsubscribe anytime
+              </p>
             </div>
 
             

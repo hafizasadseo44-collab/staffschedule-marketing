@@ -2,11 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { 
-  LayoutDashboard, FileText, Newspaper, 
+import {
+  LayoutDashboard, FileText, Newspaper,
   Tag, User, Globe, LogOut, ChevronRight,
   Sparkles, Settings, BarChart3, BookOpen,
-  LayoutGrid, Shield
+  LayoutGrid, Shield, Mail, Users, Send,
+  FileBox, LineChart
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -37,6 +38,16 @@ export default function AdminSidebar({ activeView, onViewChange }: AdminSidebarP
         { id: "posts", label: "Editorial Posts", icon: FileText },
         { id: "newsroom", label: "Newsroom", icon: Newspaper },
         { id: "guides", label: "Guides & Resources", icon: BookOpen },
+      ]
+    },
+    {
+      label: "Marketing",
+      items: [
+        { id: "marketing", label: "Overview", icon: BarChart3 },
+        { id: "subscribers", label: "Subscribers", icon: Users },
+        { id: "campaigns", label: "Campaigns", icon: Send },
+        { id: "templates", label: "Templates", icon: FileBox },
+        { id: "analytics", label: "Email Analytics", icon: LineChart },
       ]
     },
     {
