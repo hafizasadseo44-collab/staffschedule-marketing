@@ -106,11 +106,18 @@ export async function PUT(
       });
     }
 
-    // Create a revision
+    // Create a revision.
+    // NOTE: PostRevision.title is NOT NULL in the schema — omitting it caused
+    // "Null constraint violation on the fields: (`title`)" and broke every
+    // post update. We mirror the post's title/excerpt/image into the revision
+    // so the revision is a self-contained snapshot of the saved state.
     await db.postRevision.create({
       data: {
         postId: id,
+        title: post.title || title || "Untitled",
         content: content,
+        excerpt: post.excerpt ?? (excerpt ?? null),
+        image: post.image ?? (image ?? null),
         authorId: session.userId || null
       }
     });
