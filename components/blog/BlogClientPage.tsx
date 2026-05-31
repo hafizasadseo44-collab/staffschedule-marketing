@@ -7,7 +7,7 @@ import {
   Search, Calendar, Clock, ArrowRight, ChevronRight,
   TrendingUp, Zap, Globe, Target, BookOpen, Sparkles, X,
 } from "lucide-react";
-import SubscribeForm from "../SubscribeForm";
+import NewsletterForm from "@/components/newsletter/NewsletterForm";
 
 /* ─── TYPES ─── */
 interface Post {
@@ -416,7 +416,13 @@ export default function BlogClientPage({ posts }: { posts: Post[] }) {
                   <p className="text-slate-400 text-xs font-medium leading-relaxed mb-5">
                     Get weekly insights on AI scheduling, workforce trends, and operational excellence delivered to your inbox.
                   </p>
-                  <SubscribeForm variant="dark" type="blog" />
+                  <NewsletterForm
+                    variant="minimal"
+                    cta="Subscribe"
+                    source="/blog"
+                    preferences={["blog", "weeklyDigest"]}
+                    className="[&_input]:bg-white/5 [&_input]:border-white/10 [&_input]:text-white [&_input]:placeholder:text-white/40 [&_button]:bg-violet-500 [&_button]:hover:bg-violet-600"
+                  />
                   <p className="text-[10px] text-slate-600 font-medium mt-3">No spam. Unsubscribe anytime.</p>
                 </div>
 
@@ -464,7 +470,13 @@ export default function BlogClientPage({ posts }: { posts: Post[] }) {
               </p>
             </div>
             <div>
-              <SubscribeForm variant="dark" type="blog" />
+              <NewsletterForm
+                variant="minimal"
+                cta="Join free"
+                source="/blog"
+                preferences={["blog", "weeklyDigest"]}
+                className="[&_input]:bg-white/5 [&_input]:border-white/10 [&_input]:text-white [&_input]:placeholder:text-white/40"
+              />
             </div>
           </div>
         </div>
