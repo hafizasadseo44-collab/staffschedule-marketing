@@ -262,7 +262,21 @@ function MobileShareBar({ post }: { post: Post }) {
 }
 
 /* ─── MAIN COMPONENT ─── */
-export default function BlogPostClient({ post, relatedPosts }: { post: Post; relatedPosts: any[] }) {
+export default function BlogPostClient({
+  post,
+  relatedPosts,
+  initialComments = [],
+  commentsTotal = 0,
+  commentsHasMore = false,
+  turnstileSiteKey = null,
+}: {
+  post: Post;
+  relatedPosts: any[];
+  initialComments?: any[];
+  commentsTotal?: number;
+  commentsHasMore?: boolean;
+  turnstileSiteKey?: string | null;
+}) {
   const headings = useHeadings(post.content);
   const [activeId, setActiveId] = useState("");
   const [readingTime, setReadingTime] = useState(5);
@@ -423,8 +437,15 @@ export default function BlogPostClient({ post, relatedPosts }: { post: Post; rel
               />
             </div>
 
-            {/* Comments */}
-            <CommentSection postId={post.id} postSlug={post.slug} />
+            {/* Comments — SSR'd initial page hydrates the client section */}
+            <CommentSection
+              postId={post.id}
+              postSlug={post.slug}
+              initialComments={initialComments}
+              initialTotal={commentsTotal}
+              initialHasMore={commentsHasMore}
+              turnstileSiteKey={turnstileSiteKey}
+            />
 
             {/* Related Posts Section */}
             {relatedPosts.length > 0 && (

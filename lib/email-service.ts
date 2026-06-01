@@ -12,6 +12,8 @@ import WeeklyDigestEmail, {
 import ProductUpdateEmail from "@/emails/ProductUpdateEmail";
 import ContactReplyEmail from "@/emails/ContactReplyEmail";
 import ContactNotificationEmail from "@/emails/ContactNotificationEmail";
+import CommentNotificationEmail from "@/emails/CommentNotificationEmail";
+import CommentApprovedEmail from "@/emails/CommentApprovedEmail";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 
@@ -786,6 +788,113 @@ export async function sendContactEmails(submission: ContactSubmission) {
     autoReplySent: autoReplyResult.status === "fulfilled",
     notificationSent: notifResult.status === "fulfilled",
   };
+}
+
+// ───────────────────────────────────────────────────────────────────
+// Comment notifications
+// ───────────────────────────────────────────────────────────────────
+
+export interface CommentNotificationPayload {
+  commenterName: string;
+  commenterEmail: string;
+  commenterCompany?: string | null;
+  content: string;
+  postTitle: string;
+  postSlug: string;
+  spamScore: number;
+  spamReasons?: string[];
+  status: "PENDING" | "APPROVED" | "SPAM";
+  ipAddress?: string | null;
+}
+
+/**
+ * Notify the moderator inbox that a new comment landed. Uses hello@ as sender
+ * so replies from the moderator can be sent directly to the team inbox if
+ * forwarding is set up, and the submitter's email as Reply-To so the
+ * moderator can hit Reply to engage them directly.
+ */
+export async function sendCommentNotification(p: CommentNotificationPayload) {
+  const resend = getResend();
+  if (!resend) {
+    console.warn("[Email] RESEND_API_KEY missing, skipping comment notif");
+    return { sent: false, skipped: true };
+  }
+
+  const postUrl = `${SITE_URL}/blog/${p.postSlug}#comments`;
+  const adminUrl = `${SITE_URL}/admin`;
+
+  const html = await render(
+    React.createElement(CommentNotificationEmail, {
+      commenterName: p.commenterName,
+      commenterEmail: p.commenterEmail,
+      commenterCompany: p.commenterCompany,
+      content: p.content,
+      postTitle: p.postTitle,
+      postUrl,
+      spamScore: p.spamScore,
+      spamReasons: p.spamReasons,
+      status: p.status,
+      ipAddress: p.ipAddress,
+      adminUrl,
+    })
+  );
+
+  try {
+    const typeLabel = p.status === "PENDING" ? "Pending" : p.status === "SPAM" ? "Spam" : "Approved";
+    await resend.emails.send({
+      from: SENDER.hello,
+      replyTo: p.commenterEmail,
+      to: CONTACT_INBOX,
+      subject: `[${typeLabel} comment] ${p.commenterName} on "${p.postTitle}"`,
+      html,
+    });
+    return { sent: true };
+  } catch (err: any) {
+    console.error("[Email] Comment notif failed:", err.message);
+    return { sent: false, error: err.message };
+  }
+}
+
+/**
+ * Notify the commenter that their comment was approved and is now live.
+ * Sent only on admin manual approval (not on auto-approval to avoid noise).
+ */
+export async function sendCommentApprovedEmail(opts: {
+  commenterName: string;
+  commenterEmail: string;
+  content: string;
+  postTitle: string;
+  postSlug: string;
+}) {
+  const resend = getResend();
+  if (!resend) return { sent: false, skipped: true };
+
+  const postUrl = `${SITE_URL}/blog/${opts.postSlug}`;
+  const html = await render(
+    React.createElement(CommentApprovedEmail, {
+      name: opts.commenterName,
+      postTitle: opts.postTitle,
+      postUrl,
+      content: opts.content,
+      siteUrl: SITE_URL,
+      unsubscribeUrl: `${SITE_URL}/unsubscribe?email=${encodeURIComponent(opts.commenterEmail)}`,
+      preferencesUrl: `${SITE_URL}/preferences?email=${encodeURIComponent(opts.commenterEmail)}`,
+    })
+  );
+
+  try {
+    await resend.emails.send({
+      from: SENDER.hello,
+      replyTo: SENDER.hello.replace(/.*<|>.*/g, "").trim(),
+      to: opts.commenterEmail,
+      subject: `Your comment is live on "${opts.postTitle}"`,
+      html,
+    });
+    return { sent: true };
+  } catch (err: any) {
+    console.error("[Email] Comment approved email failed:", err.message);
+    return { sent: false, error: err.message };
+  }
 }
 
 export async function renderProductUpdateHtml(opts: {

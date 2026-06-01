@@ -258,7 +258,7 @@ export async function ensureDatabase() {
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_email_idx" ON "EmailEvent"("email")`);
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_type_idx" ON "EmailEvent"("type")`);
 
-    // Comment — threaded blog comments with moderation
+    // Comment — threaded blog comments with moderation + spam scoring
     await db.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "Comment" (
         "id" TEXT NOT NULL PRIMARY KEY,
@@ -266,18 +266,24 @@ export async function ensureDatabase() {
         "parentId" TEXT,
         "name" TEXT NOT NULL,
         "email" TEXT NOT NULL,
+        "company" TEXT,
         "website" TEXT,
         "avatar" TEXT,
         "content" TEXT NOT NULL,
-        "status" TEXT NOT NULL DEFAULT 'APPROVED',
+        "status" TEXT NOT NULL DEFAULT 'PENDING',
         "isPinned" INTEGER NOT NULL DEFAULT 0,
         "isAuthor" INTEGER NOT NULL DEFAULT 0,
         "isAdmin" INTEGER NOT NULL DEFAULT 0,
+        "isTrusted" INTEGER NOT NULL DEFAULT 0,
+        "spamScore" INTEGER NOT NULL DEFAULT 0,
+        "spamReasons" TEXT,
         "likeCount" INTEGER NOT NULL DEFAULT 0,
         "ipAddress" TEXT,
         "userAgent" TEXT,
+        "country" TEXT,
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "approvedAt" DATETIME,
         FOREIGN KEY("postId") REFERENCES "Post"("id") ON DELETE CASCADE,
         FOREIGN KEY("parentId") REFERENCES "Comment"("id") ON DELETE CASCADE
       )
@@ -286,6 +292,27 @@ export async function ensureDatabase() {
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_status_idx" ON "Comment"("status")`);
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_parentId_idx" ON "Comment"("parentId")`);
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_createdAt_idx" ON "Comment"("createdAt")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_email_idx" ON "Comment"("email")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_ipAddress_idx" ON "Comment"("ipAddress")`);
+
+    // Subscribe-time migration: existing rows from the previous schema get the new columns.
+    try {
+      const colInfo = await db.$queryRawUnsafe(`PRAGMA table_info(Comment)`) as any[];
+      const have = new Set(colInfo.map((c: any) => c.name));
+      const newCols = [
+        { name: "company", type: "TEXT" },
+        { name: "isTrusted", type: "INTEGER NOT NULL DEFAULT 0" },
+        { name: "spamScore", type: "INTEGER NOT NULL DEFAULT 0" },
+        { name: "spamReasons", type: "TEXT" },
+        { name: "country", type: "TEXT" },
+        { name: "approvedAt", type: "DATETIME" },
+      ];
+      for (const col of newCols) {
+        if (!have.has(col.name)) {
+          try { await db.$executeRawUnsafe(`ALTER TABLE "Comment" ADD COLUMN "${col.name}" ${col.type}`); } catch (e) {}
+        }
+      }
+    } catch (e) {}
 
     // CommentLike — anonymous fingerprint-based likes
     await db.$executeRawUnsafe(`

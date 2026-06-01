@@ -268,29 +268,41 @@ model Comment {
   parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies   Comment[] @relation("CommentReplies")
 
-  // Author identity (no login — guests submit with name + email)
+  // Author identity (no login — guests submit with name + email + optional company).
+  // `website` is kept on the column for back-compat but is NEVER accepted from
+  // new submissions or rendered publicly. It is a deprecated backlink vector.
   name      String
   email     String
-  website   String?   // optional personal site
-  avatar    String?   // gravatar URL or fallback initials color
+  company   String?
+  website   String?
+  avatar    String?
 
   content   String
 
-  // Moderation lifecycle
-  status    String    @default("APPROVED") // APPROVED | PENDING | REJECTED | SPAM
+  // Moderation lifecycle — defaults to PENDING. Admin must approve before
+  // public render. Once a commenter is trusted (isTrusted on a prior approved
+  // comment with same email), subsequent submissions auto-approve.
+  status    String    @default("PENDING") // PENDING | APPROVED | REJECTED | SPAM
   isPinned  Boolean   @default(false)
-  isAuthor  Boolean   @default(false) // marked by admin if commenter IS the post author
-  isAdmin   Boolean   @default(false) // marked by admin replying as staff
+  isAuthor  Boolean   @default(false)
+  isAdmin   Boolean   @default(false)
+  isTrusted Boolean   @default(false)  // admin marks repeat good actors
+
+  // Spam analysis (computed at submit time, surfaced in admin)
+  spamScore     Int    @default(0)  // 0-100, higher = more spammy
+  spamReasons   String?              // comma-separated short codes for the admin UI
 
   // Engagement
   likeCount Int       @default(0)
 
-  // Spam detection
+  // Forensics
   ipAddress String?
   userAgent String?
+  country   String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  approvedAt DateTime?
 
   likes     CommentLike[]
 
@@ -298,6 +310,8 @@ model Comment {
   @@index([status])
   @@index([parentId])
   @@index([createdAt])
+  @@index([email])
+  @@index([ipAddress])
 }
 
 model CommentLike {

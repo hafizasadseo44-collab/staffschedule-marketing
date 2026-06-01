@@ -23,6 +23,11 @@ import {
   Inbox,
   ShieldAlert,
   Ban,
+  History,
+  Star,
+  X,
+  Briefcase,
+  Network,
 } from "lucide-react";
 
 interface AdminComment {
@@ -31,13 +36,16 @@ interface AdminComment {
   parentId: string | null;
   name: string;
   email: string;
-  website: string | null;
+  company: string | null;
   avatar: string | null;
   content: string;
   status: "APPROVED" | "PENDING" | "REJECTED" | "SPAM";
   isPinned: boolean;
   isAuthor: boolean;
   isAdmin: boolean;
+  isTrusted: boolean;
+  spamScore: number;
+  spamReasons: string | null;
   likeCount: number;
   ipAddress: string | null;
   createdAt: string;
@@ -76,6 +84,7 @@ export default function CommentsManager() {
     null
   );
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [historyEmail, setHistoryEmail] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -133,7 +142,7 @@ export default function CommentsManager() {
   };
 
   const doBulk = async (
-    action: "approve" | "reject" | "spam" | "pin" | "unpin" | "delete"
+    action: "approve" | "reject" | "spam" | "pin" | "unpin" | "delete" | "trust" | "untrust"
   ) => {
     if (selectedIds.size === 0) return;
     if (action === "delete" && !confirm(`Delete ${selectedIds.size} comment(s)? This cannot be undone.`)) return;
@@ -157,7 +166,7 @@ export default function CommentsManager() {
 
   const doSingle = async (
     id: string,
-    action: "approve" | "reject" | "spam" | "pin" | "unpin" | "delete"
+    action: "approve" | "reject" | "spam" | "pin" | "unpin" | "delete" | "trust" | "untrust"
   ) => {
     if (action === "delete" && !confirm("Delete this comment?")) return;
     try {
@@ -172,11 +181,15 @@ export default function CommentsManager() {
         action === "delete"
           ? "Comment deleted"
           : action === "approve"
-          ? "Approved"
+          ? "Approved — commenter notified"
           : action === "reject"
           ? "Rejected"
           : action === "spam"
           ? "Marked as spam"
+          : action === "trust"
+          ? "Commenter trusted — future comments auto-approve"
+          : action === "untrust"
+          ? "Trust revoked"
           : action === "pin"
           ? "Pinned"
           : "Unpinned"
@@ -311,6 +324,13 @@ export default function CommentsManager() {
               <AlertOctagon className="w-3.5 h-3.5" /> Mark spam
             </button>
             <button
+              onClick={() => doBulk("trust")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition"
+              title="Future comments from these emails auto-approve"
+            >
+              <Star className="w-3.5 h-3.5" /> Trust
+            </button>
+            <button
               onClick={() => doBulk("delete")}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-rose-200 text-rose-600 text-xs font-bold hover:bg-rose-50 transition"
             >
@@ -408,11 +428,41 @@ export default function CommentsManager() {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <span className="font-bold text-sm text-slate-900">
+                          <button
+                            onClick={() => setHistoryEmail(c.email)}
+                            className="font-bold text-sm text-slate-900 hover:text-violet-600 hover:underline transition"
+                            title="View commenter history"
+                          >
                             {c.name}
-                          </span>
+                          </button>
                           <span className="text-xs text-slate-400">{c.email}</span>
+                          {c.company && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                              <Briefcase className="w-2.5 h-2.5" />
+                              {c.company}
+                            </span>
+                          )}
                           <StatusPill status={c.status} />
+                          {c.isTrusted && (
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[9px] font-bold uppercase">
+                              <Star className="w-2 h-2 fill-amber-700" /> Trusted
+                            </span>
+                          )}
+                          {/* Spam score chip — color coded by risk */}
+                          {typeof c.spamScore === "number" && c.spamScore > 0 && (
+                            <span
+                              title={c.spamReasons?.replace(/_/g, " ") || ""}
+                              className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[9px] font-bold uppercase ${
+                                c.spamScore >= 60
+                                  ? "bg-rose-100 text-rose-700"
+                                  : c.spamScore >= 25
+                                  ? "bg-amber-100 text-amber-700"
+                                  : "bg-slate-100 text-slate-500"
+                              }`}
+                            >
+                              <ShieldAlert className="w-2 h-2" /> {c.spamScore}
+                            </span>
+                          )}
                           {c.isAuthor && (
                             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-violet-100 text-violet-700 text-[9px] font-bold uppercase">
                               <PenTool className="w-2 h-2" /> Author
@@ -429,6 +479,20 @@ export default function CommentsManager() {
                             </span>
                           )}
                         </div>
+
+                        {/* Spam reasons row (small) */}
+                        {c.spamReasons && c.spamScore >= 25 && (
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {c.spamReasons.split(",").slice(0, 4).map((r, i) => (
+                              <span
+                                key={i}
+                                className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600"
+                              >
+                                {r.replace(/_/g, " ")}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
                         <p
                           className={`text-sm text-slate-700 leading-relaxed mb-3 whitespace-pre-wrap ${
@@ -480,15 +544,33 @@ export default function CommentsManager() {
 
                       {/* Quick actions */}
                       <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          onClick={() => setHistoryEmail(c.email)}
+                          title="View commenter history"
+                          className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-violet-600 transition"
+                        >
+                          <History className="w-4 h-4" />
+                        </button>
                         {c.status !== "APPROVED" && (
                           <button
                             onClick={() => doSingle(c.id, "approve")}
-                            title="Approve"
+                            title="Approve & email commenter"
                             className="p-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 text-slate-400 transition"
                           >
                             <CheckCircle2 className="w-4 h-4" />
                           </button>
                         )}
+                        <button
+                          onClick={() => doSingle(c.id, c.isTrusted ? "untrust" : "trust")}
+                          title={c.isTrusted ? "Revoke trust" : "Trust commenter (future auto-approve)"}
+                          className={`p-2 rounded-lg transition ${
+                            c.isTrusted
+                              ? "bg-amber-50 text-amber-600 hover:bg-amber-100"
+                              : "hover:bg-slate-50 hover:text-amber-600 text-slate-400"
+                          }`}
+                        >
+                          <Star className={`w-4 h-4 ${c.isTrusted ? "fill-amber-600" : ""}`} />
+                        </button>
                         {c.status !== "SPAM" && (
                           <button
                             onClick={() => doSingle(c.id, "spam")}
@@ -581,6 +663,205 @@ export default function CommentsManager() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Commenter history modal */}
+      <AnimatePresence>
+        {historyEmail && (
+          <CommenterHistoryModal
+            email={historyEmail}
+            onClose={() => setHistoryEmail(null)}
+            onAfterAction={() => {
+              load();
+            }}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Commenter history modal ─────────────────────────────────────
+
+function CommenterHistoryModal({
+  email,
+  onClose,
+  onAfterAction,
+}: {
+  email: string;
+  onClose: () => void;
+  onAfterAction: () => void;
+}) {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch(`/api/admin/comments/history?email=${encodeURIComponent(email)}`)
+      .then((r) => r.json())
+      .then((d) => setData(d))
+      .finally(() => setLoading(false));
+  }, [email]);
+
+  const profile = data?.profile;
+  const stats = data?.stats;
+  const comments = data?.comments || [];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+          <div className="flex items-center gap-4 min-w-0">
+            {profile?.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.avatar}
+                alt=""
+                className="w-12 h-12 rounded-xl shrink-0 shadow-md"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white font-black flex items-center justify-center shrink-0">
+                {profile?.name?.[0]?.toUpperCase() || email[0].toUpperCase()}
+              </div>
+            )}
+            <div className="min-w-0">
+              <h3 className="font-extrabold text-slate-900 text-lg truncate">
+                {profile?.name || email}
+              </h3>
+              <p className="text-xs text-slate-400 truncate">
+                {email}
+                {profile?.company && ` · ${profile.company}`}
+              </p>
+              {profile?.isTrusted && (
+                <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px] font-bold uppercase">
+                  <Star className="w-2.5 h-2.5 fill-amber-700" /> Trusted commenter
+                </span>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 shrink-0"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-20 text-slate-400 gap-2">
+            <Loader2 className="w-5 h-5 animate-spin" /> Loading history...
+          </div>
+        ) : (
+          <>
+            {/* Stats grid */}
+            {stats && (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 p-4 border-b border-slate-100 bg-slate-50">
+                <StatCell label="Comments" value={stats.total} accent="text-slate-900" />
+                <StatCell label="Approved" value={stats.APPROVED} accent="text-emerald-600" />
+                <StatCell label="Pending" value={stats.PENDING} accent="text-amber-600" />
+                <StatCell label="Spam" value={stats.SPAM} accent="text-rose-600" />
+                <StatCell label="Avg risk" value={`${profile?.avgSpamScore ?? 0}`} accent={
+                  (profile?.avgSpamScore ?? 0) >= 60
+                    ? "text-rose-600"
+                    : (profile?.avgSpamScore ?? 0) >= 25
+                    ? "text-amber-600"
+                    : "text-emerald-600"
+                } />
+              </div>
+            )}
+
+            {/* IP + first seen */}
+            {profile && (
+              <div className="flex items-center gap-4 px-5 py-3 border-b border-slate-100 text-xs text-slate-500 flex-wrap">
+                {profile.ipAddress && (
+                  <span className="flex items-center gap-1.5">
+                    <Network className="w-3 h-3" />
+                    <span className="font-mono">{profile.ipAddress}</span>
+                  </span>
+                )}
+                {profile.firstSeen && (
+                  <span>
+                    First seen{" "}
+                    <strong className="text-slate-700">
+                      {new Date(profile.firstSeen).toLocaleDateString()}
+                    </strong>
+                  </span>
+                )}
+                <span>
+                  Across <strong className="text-slate-700">{profile.uniquePosts}</strong> post(s)
+                </span>
+              </div>
+            )}
+
+            {/* Comments list */}
+            <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
+              {comments.map((c: any) => (
+                <div key={c.id} className="p-4 hover:bg-slate-50">
+                  <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                    <StatusPill status={c.status} />
+                    {c.spamScore > 0 && (
+                      <span
+                        className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md ${
+                          c.spamScore >= 60
+                            ? "bg-rose-100 text-rose-700"
+                            : c.spamScore >= 25
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        risk {c.spamScore}
+                      </span>
+                    )}
+                    <a
+                      href={`/blog/${c.post?.slug}#comments`}
+                      target="_blank"
+                      rel="noopener"
+                      className="text-xs font-bold text-violet-600 hover:text-violet-700 truncate max-w-[280px]"
+                    >
+                      {c.post?.title}
+                    </a>
+                    <span className="text-xs text-slate-400">
+                      · {new Date(c.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 whitespace-pre-wrap">
+                    {c.content}
+                  </p>
+                </div>
+              ))}
+              {comments.length === 0 && (
+                <div className="text-center py-12 text-sm text-slate-400">
+                  No prior comments
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function StatCell({ label, value, accent }: { label: string; value: any; accent: string }) {
+  return (
+    <div className="text-center">
+      <div className={`text-xl font-extrabold tracking-tight ${accent}`}>
+        {value}
+      </div>
+      <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-0.5">
+        {label}
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { ensureDatabase } from "@/lib/db-init";
+import { sendCommentApprovedEmail } from "@/lib/email-service";
 
 export const dynamic = "force-dynamic";
 
@@ -84,12 +85,29 @@ export async function POST(request: Request) {
     let result: any = {};
 
     switch (action) {
-      case "approve":
+      case "approve": {
+        // Fetch the comments first so we can send approval emails AFTER
+        // updating status (and only for ones that weren't already approved).
+        const toApprove = await db.comment.findMany({
+          where: { id: { in: ids }, status: { not: "APPROVED" } },
+          include: { post: { select: { title: true, slug: true } } },
+        });
         result = await db.comment.updateMany({
           where: { id: { in: ids } },
-          data: { status: "APPROVED" },
+          data: { status: "APPROVED", approvedAt: new Date() },
         });
+        // Fire-and-forget per-recipient emails. Don't block the response.
+        for (const c of toApprove) {
+          sendCommentApprovedEmail({
+            commenterName: c.name,
+            commenterEmail: c.email,
+            content: c.content,
+            postTitle: c.post.title,
+            postSlug: c.post.slug,
+          }).catch((e) => console.error("[Admin Comment Approve email]", e));
+        }
         break;
+      }
       case "reject":
         result = await db.comment.updateMany({
           where: { id: { in: ids } },
@@ -102,6 +120,44 @@ export async function POST(request: Request) {
           data: { status: "SPAM" },
         });
         break;
+      case "trust": {
+        // Mark commenter as trusted — future comments from this email auto-approve.
+        result = await db.comment.updateMany({
+          where: { id: { in: ids } },
+          data: { isTrusted: true },
+        });
+        // Propagate trust across ALL prior comments from the same emails
+        const emails = await db.comment.findMany({
+          where: { id: { in: ids } },
+          select: { email: true },
+          distinct: ["email"],
+        });
+        if (emails.length > 0) {
+          await db.comment.updateMany({
+            where: { email: { in: emails.map((e) => e.email) } },
+            data: { isTrusted: true },
+          });
+        }
+        break;
+      }
+      case "untrust": {
+        result = await db.comment.updateMany({
+          where: { id: { in: ids } },
+          data: { isTrusted: false },
+        });
+        const emails = await db.comment.findMany({
+          where: { id: { in: ids } },
+          select: { email: true },
+          distinct: ["email"],
+        });
+        if (emails.length > 0) {
+          await db.comment.updateMany({
+            where: { email: { in: emails.map((e) => e.email) } },
+            data: { isTrusted: false },
+          });
+        }
+        break;
+      }
       case "pin":
         result = await db.comment.updateMany({
           where: { id: { in: ids } },
