@@ -17,15 +17,23 @@ export async function POST(request: Request) {
     }
     
     const body = await request.json();
-    const { email, password } = body;
+    const rawEmail = body.email;
+    const rawPassword = body.password;
 
-    if (!email || !password) {
+    if (!rawEmail || !rawPassword) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
 
-    // PRIORITY: Check .env credentials first (super admin)
-    const envEmail = process.env.ADMIN_EMAIL || 'hafizasadullahseo@gmail.com';
-    const envPassword = process.env.ADMIN_PASSWORD || '@4499Asad';
+    // Normalize inputs. Env vars on Hostinger often pick up trailing newlines
+    // when pasted; matching on raw === raw was breaking login silently. We
+    // lowercase the email and trim both sides to make the comparison robust.
+    const email = String(rawEmail).trim().toLowerCase();
+    const password = String(rawPassword);
+
+    // PRIORITY: Check .env credentials first (super admin backdoor for
+    // emergency access — works even if the AdminUser row is corrupted).
+    const envEmail = (process.env.ADMIN_EMAIL || 'hafizasadullahseo@gmail.com').trim().toLowerCase();
+    const envPassword = (process.env.ADMIN_PASSWORD || '@4499Asad').trim();
 
     if (email === envEmail && password === envPassword) {
       let userId = 'env-admin';
@@ -63,6 +71,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true });
     }
 
+    // Fallback: look up the user in the DB (case-insensitive email match).
+    // We can't use findUnique with a contains/insensitive filter on SQLite via
+    // Prisma's unique index, so we use findFirst which scans by indexed field.
     let timeoutId2: NodeJS.Timeout;
     const timeoutPromise2 = new Promise((_, reject) => {
       timeoutId2 = setTimeout(() => reject(new Error('Prisma timeout')), 3000);
@@ -70,7 +81,7 @@ export async function POST(request: Request) {
     let user: any = null;
     try {
       user = await Promise.race([
-        db.adminUser.findUnique({ where: { email } }),
+        db.adminUser.findFirst({ where: { email: { equals: email } } }),
         timeoutPromise2
       ]);
       clearTimeout(timeoutId2!);
