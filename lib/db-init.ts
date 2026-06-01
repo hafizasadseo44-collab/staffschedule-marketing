@@ -258,6 +258,49 @@ export async function ensureDatabase() {
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_email_idx" ON "EmailEvent"("email")`);
     await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "EmailEvent_type_idx" ON "EmailEvent"("type")`);
 
+    // Comment — threaded blog comments with moderation
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Comment" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "postId" TEXT NOT NULL,
+        "parentId" TEXT,
+        "name" TEXT NOT NULL,
+        "email" TEXT NOT NULL,
+        "website" TEXT,
+        "avatar" TEXT,
+        "content" TEXT NOT NULL,
+        "status" TEXT NOT NULL DEFAULT 'APPROVED',
+        "isPinned" INTEGER NOT NULL DEFAULT 0,
+        "isAuthor" INTEGER NOT NULL DEFAULT 0,
+        "isAdmin" INTEGER NOT NULL DEFAULT 0,
+        "likeCount" INTEGER NOT NULL DEFAULT 0,
+        "ipAddress" TEXT,
+        "userAgent" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY("postId") REFERENCES "Post"("id") ON DELETE CASCADE,
+        FOREIGN KEY("parentId") REFERENCES "Comment"("id") ON DELETE CASCADE
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_postId_idx" ON "Comment"("postId")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_status_idx" ON "Comment"("status")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_parentId_idx" ON "Comment"("parentId")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Comment_createdAt_idx" ON "Comment"("createdAt")`);
+
+    // CommentLike — anonymous fingerprint-based likes
+    await db.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "CommentLike" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "commentId" TEXT NOT NULL,
+        "fingerprint" TEXT NOT NULL,
+        "ipAddress" TEXT,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY("commentId") REFERENCES "Comment"("id") ON DELETE CASCADE
+      )
+    `);
+    await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "CommentLike_commentId_fingerprint_key" ON "CommentLike"("commentId", "fingerprint")`);
+    await db.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "CommentLike_commentId_idx" ON "CommentLike"("commentId")`);
+
     // EmailTemplate
     await db.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "EmailTemplate" (

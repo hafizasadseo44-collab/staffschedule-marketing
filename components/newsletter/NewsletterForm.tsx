@@ -260,81 +260,350 @@ export default function NewsletterForm({
     );
   }
 
-  // SPLIT variant - 2-column with marketing copy + form
+  // SPLIT variant — Premium animated hero card with mesh gradient,
+  // floating orbs, glassmorphism input, social proof stack, and a
+  // shimmer on the CTA. Designed for bottom-of-article placement where
+  // we want maximum conversion impact.
   if (variant === "split") {
     return (
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          "relative overflow-hidden rounded-3xl border border-slate-200 shadow-2xl shadow-indigo-200/40 bg-white",
+          "relative overflow-hidden rounded-[2rem] isolate",
+          // Animated gradient border via outer wrapper
+          "p-[1.5px] bg-gradient-to-br from-indigo-400/40 via-purple-400/40 to-pink-400/40 shadow-[0_30px_80px_-30px_rgba(109,93,246,0.5)]",
           className
         )}
       >
-        <div className="grid md:grid-cols-2">
-          <div className="relative p-10 md:p-12 bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 text-white overflow-hidden">
-            <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-400/20 rounded-full blur-3xl" />
-            <div className="relative">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 mb-5">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  Free Newsletter
-                </span>
-              </div>
-              <h3 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 leading-tight">
-                {heading || "Master workforce scheduling"}
-              </h3>
-              <p className="text-white/80 leading-relaxed mb-6">
-                {subheading ||
-                  "Join 12,000+ operations leaders who get our best scheduling playbooks, AI workforce trends, and product launches first."}
-              </p>
-              <div className="space-y-2.5">
-                {[
-                  "Weekly digest every Monday morning",
-                  "Templates, frameworks, and exclusive guides",
-                  "Beta-feature access before public launch",
-                ].map((t, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-                    <span className="text-white/90">{t}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <div className="relative rounded-[calc(2rem-1.5px)] overflow-hidden bg-slate-950">
+          {/* ─── Animated mesh gradient background ─── */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0F0A2E] via-[#1A1247] to-[#2D1B69]" />
+
+            {/* Floating mesh orbs */}
+            <motion.div
+              animate={{ x: [0, 50, -30, 0], y: [0, -40, 20, 0], scale: [1, 1.15, 0.95, 1] }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-32 -left-20 w-[500px] h-[500px] rounded-full opacity-60"
+              style={{
+                background: "radial-gradient(circle, rgba(139,92,246,0.6) 0%, rgba(109,93,246,0.2) 40%, transparent 70%)",
+                filter: "blur(60px)",
+              }}
+            />
+            <motion.div
+              animate={{ x: [0, -40, 30, 0], y: [0, 30, -30, 0], scale: [1, 0.9, 1.1, 1] }}
+              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-32 -right-20 w-[500px] h-[500px] rounded-full opacity-50"
+              style={{
+                background: "radial-gradient(circle, rgba(236,72,153,0.5) 0%, rgba(168,85,247,0.2) 40%, transparent 70%)",
+                filter: "blur(60px)",
+              }}
+            />
+            <motion.div
+              animate={{ x: [0, 30, -20, 0], y: [0, -20, 20, 0] }}
+              transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/3 right-1/3 w-[300px] h-[300px] rounded-full opacity-40"
+              style={{
+                background: "radial-gradient(circle, rgba(99,102,241,0.6) 0%, transparent 70%)",
+                filter: "blur(50px)",
+              }}
+            />
+
+            {/* Grid pattern overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+                backgroundSize: "48px 48px",
+              }}
+            />
+
+            {/* Noise texture */}
+            <div
+              className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
+              }}
+            />
           </div>
 
-          <div className="p-10 md:p-12 bg-white">
-            <h4 className="text-xl font-extrabold text-slate-900 mb-2">
-              Subscribe — it&apos;s free
-            </h4>
-            <p className="text-slate-500 text-sm mb-6">
-              No credit card. Unsubscribe with one click.
-            </p>
-            <form onSubmit={onSubmit} className="flex flex-col gap-3">
-              {fieldsContent}
-            </form>
-            <AnimatePresence>
-              {status === "error" && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-1.5 mt-3 text-rose-600 text-xs font-bold"
-                >
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  {errorMsg}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <p className="mt-5 text-[11px] text-slate-400 font-medium">
-              By subscribing you agree to our{" "}
-              <a href="/privacy" className="underline hover:text-indigo-600">
-                Privacy Policy
-              </a>
-              .
-            </p>
+          <div className="relative grid md:grid-cols-5 gap-0">
+            {/* ─── LEFT: Marketing copy (3 cols) ─── */}
+            <div className="md:col-span-3 p-8 md:p-12 lg:p-14 relative">
+              {/* Premium badge with glow */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 relative overflow-hidden group"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 bg-amber-400 rounded-full blur-md opacity-60" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300 relative" />
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/90">
+                  The Workforce Brief
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+                  Live
+                </span>
+              </motion.div>
+
+              {/* Headline */}
+              <motion.h3
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.1] mb-5"
+              >
+                {heading?.split(/(?<=\s)/).slice(0, -2).join("") ||
+                  "Enjoyed this "}
+                <span className="relative inline-block">
+                  <span
+                    className="bg-clip-text text-transparent bg-gradient-to-r from-violet-300 via-fuchsia-300 to-pink-300"
+                    style={{
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {heading?.split(/(?<=\s)/).slice(-2).join("") || "article?"}
+                  </span>
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.8, duration: 0.6 }}
+                    className="absolute -bottom-1 left-0 right-0 h-[3px] origin-left bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 rounded-full"
+                  />
+                </span>
+              </motion.h3>
+
+              {/* Subheading */}
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="text-base md:text-lg text-white/70 leading-relaxed mb-7 max-w-lg font-medium"
+              >
+                {subheading ||
+                  "Join 12,000+ operations leaders who get our best scheduling playbooks, AI workforce trends, and product launches first."}
+              </motion.p>
+
+              {/* Trust bullets — premium glass pills */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="flex flex-wrap gap-2 mb-8"
+              >
+                {[
+                  { icon: "⚡", text: "Weekly digest" },
+                  { icon: "📚", text: "Exclusive guides" },
+                  { icon: "🎁", text: "Beta access" },
+                ].map((b, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.55 + i * 0.08 }}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold text-white/90"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      backdropFilter: "blur(10px)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    <span>{b.icon}</span>
+                    <span>{b.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Social proof: avatar stack + rating */}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7 }}
+                className="flex items-center gap-4 flex-wrap"
+              >
+                {/* Avatar stack */}
+                <div className="flex -space-x-2.5">
+                  {[
+                    "from-rose-400 to-pink-500",
+                    "from-amber-400 to-orange-500",
+                    "from-emerald-400 to-teal-500",
+                    "from-cyan-400 to-blue-500",
+                    "from-violet-400 to-purple-500",
+                  ].map((c, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        "w-9 h-9 rounded-full border-2 border-slate-900 bg-gradient-to-br shadow-lg ring-1 ring-white/10",
+                        c
+                      )}
+                    />
+                  ))}
+                  <div className="w-9 h-9 rounded-full border-2 border-slate-900 bg-white/10 backdrop-blur-sm flex items-center justify-center text-[9px] font-black text-white">
+                    +12K
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1 mb-0.5">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <svg
+                        key={i}
+                        className="w-3.5 h-3.5 text-amber-400 fill-amber-400"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-xs text-white/60 font-medium">
+                    <span className="text-white font-bold">4.9/5</span> from
+                    1,200+ reviews
+                  </span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* ─── RIGHT: Form card with glassmorphism (2 cols) ─── */}
+            <div className="md:col-span-2 p-8 md:p-12 lg:p-14 md:pl-0 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className="relative rounded-2xl p-6 md:p-7"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  boxShadow: "0 24px 60px -20px rgba(0,0,0,0.6)",
+                }}
+              >
+                <div className="mb-5">
+                  <h4 className="text-xl font-extrabold text-white mb-1 tracking-tight">
+                    Subscribe — it&apos;s free
+                  </h4>
+                  <p className="text-xs text-white/60 font-medium">
+                    No credit card · Unsubscribe with one click
+                  </p>
+                </div>
+
+                <form onSubmit={onSubmit} className="flex flex-col gap-3">
+                  {/* Honeypot */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] opacity-0 pointer-events-none"
+                  />
+
+                  {showName && (
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Your name (optional)"
+                      disabled={status === "loading"}
+                      className="h-12 px-4 rounded-xl text-sm font-medium transition-all disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-white/30 bg-white/10 border border-white/15 text-white placeholder:text-white/40 backdrop-blur-sm"
+                    />
+                  )}
+
+                  <div className="relative">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (status === "error") setStatus("idle");
+                      }}
+                      placeholder="you@company.com"
+                      required
+                      disabled={status === "loading"}
+                      className="w-full h-13 pl-11 pr-4 py-3.5 rounded-xl text-sm font-medium bg-white/10 border border-white/15 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-violet-400/40 focus:border-violet-300/40 focus:bg-white/15 backdrop-blur-sm transition-all disabled:opacity-70"
+                    />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="relative h-13 py-3.5 px-6 rounded-xl font-bold text-sm text-white shadow-2xl transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 group overflow-hidden"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #6D5DF6 0%, #A855F7 50%, #EC4899 100%)",
+                      boxShadow: "0 10px 30px -5px rgba(168, 85, 247, 0.5)",
+                    }}
+                  >
+                    {/* Shimmer overlay */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <span className="relative flex items-center gap-2">
+                      {status === "loading" ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          {cta}
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </span>
+                  </button>
+                </form>
+
+                <AnimatePresence>
+                  {status === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-1.5 mt-3 text-rose-300 text-xs font-bold"
+                    >
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      {errorMsg}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <p className="mt-5 text-[11px] text-white/40 font-medium leading-relaxed">
+                  By subscribing you agree to our{" "}
+                  <a
+                    href="/privacy"
+                    className="underline hover:text-violet-300 transition"
+                  >
+                    Privacy Policy
+                  </a>
+                  . We&apos;ll never share your data.
+                </p>
+              </motion.div>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 

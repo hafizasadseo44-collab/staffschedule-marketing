@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import BlockRenderer from "./BlockRenderer";
 import NewsletterForm from "@/components/newsletter/NewsletterForm";
+import CommentSection from "./CommentSection";
 
 /* ─── TYPES ─── */
 interface Author { name: string; slug: string; avatar?: string | null; gender?: string | null; bio?: string | null; }
@@ -421,6 +422,9 @@ export default function BlogPostClient({ post, relatedPosts }: { post: Post; rel
                 subheading="Join 12,000+ ops leaders getting our best scheduling playbooks, AI workforce trends, and exclusive guides — straight to your inbox every Monday."
               />
             </div>
+
+            {/* Comments */}
+            <CommentSection postId={post.id} postSlug={post.slug} />
 
             {/* Related Posts Section */}
             {relatedPosts.length > 0 && (

@@ -15,6 +15,7 @@ import SubscriberManager from "@/components/admin/marketing/SubscriberManager";
 import CampaignManager from "@/components/admin/marketing/CampaignManager";
 import TemplateManager from "@/components/admin/marketing/TemplateManager";
 import EmailAnalytics from "@/components/admin/marketing/EmailAnalytics";
+import CommentsManager from "@/components/admin/CommentsManager";
 import { Loader2 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -245,6 +246,7 @@ export default function AdminDashboard() {
       case "campaigns": return <CampaignManager />;
       case "templates": return <TemplateManager />;
       case "analytics": return <EmailAnalytics />;
+      case "comments": return <CommentsManager />;
       case "categories": return <CategoryManager 
           categories={categories} posts={posts} 
           newCatName={newCatName} setNewCatName={setNewCatName} newCatColor={newCatColor} setNewCatColor={setNewCatColor}

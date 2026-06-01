@@ -7,7 +7,7 @@ import {
   Tag, User, Globe, LogOut, ChevronRight,
   Sparkles, Settings, BarChart3, BookOpen,
   LayoutGrid, Shield, Mail, Users, Send,
-  FileBox, LineChart
+  FileBox, LineChart, MessageCircle
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -48,6 +48,12 @@ export default function AdminSidebar({ activeView, onViewChange }: AdminSidebarP
         { id: "campaigns", label: "Campaigns", icon: Send },
         { id: "templates", label: "Templates", icon: FileBox },
         { id: "analytics", label: "Email Analytics", icon: LineChart },
+      ]
+    },
+    {
+      label: "Engagement",
+      items: [
+        { id: "comments", label: "Comments", icon: MessageCircle },
       ]
     },
     {

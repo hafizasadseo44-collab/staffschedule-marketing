@@ -59,6 +59,7 @@ model Post {
   author          Author?  @relation(fields: [authorId], references: [id])
   revisions       PostRevision[]
   analytics       PostAnalytics[]
+  comments        Comment[]
 }
 
 model Author {
@@ -255,4 +256,59 @@ model PostAnalytics {
   date           DateTime @default(now())
   views          Int      @default(1)
   uniqueVisitors Int      @default(1)
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  postId    String
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Threading — single-level replies. parentId points to the top-level comment.
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  // Author identity (no login — guests submit with name + email)
+  name      String
+  email     String
+  website   String?   // optional personal site
+  avatar    String?   // gravatar URL or fallback initials color
+
+  content   String
+
+  // Moderation lifecycle
+  status    String    @default("APPROVED") // APPROVED | PENDING | REJECTED | SPAM
+  isPinned  Boolean   @default(false)
+  isAuthor  Boolean   @default(false) // marked by admin if commenter IS the post author
+  isAdmin   Boolean   @default(false) // marked by admin replying as staff
+
+  // Engagement
+  likeCount Int       @default(0)
+
+  // Spam detection
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  likes     CommentLike[]
+
+  @@index([postId])
+  @@index([status])
+  @@index([parentId])
+  @@index([createdAt])
+}
+
+model CommentLike {
+  id          String   @id @default(cuid())
+  commentId   String
+  comment     Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  // Anonymous fingerprint: cookie-stored UUID stable per browser
+  fingerprint String
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  @@unique([commentId, fingerprint])
+  @@index([commentId])
 }
