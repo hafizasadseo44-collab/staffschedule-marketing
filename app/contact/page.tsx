@@ -225,10 +225,9 @@ export default function ContactPage() {
       {/* ═══ QUICK CONTACT CARDS ═══ */}
       <section className="relative -mt-8 z-30">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16">
             {[
               { icon: Mail, title: "Email Us", value: "hello@staffschedule.io", sub: "General & billing inquiries", href: "mailto:hello@staffschedule.io", color: "from-indigo-500 to-blue-500" },
-              { icon: Phone, title: "Call Sales", value: "+1 (800) 555-0199", sub: "Mon–Fri, 9am–6pm EST", href: "tel:+18005550199", color: "from-emerald-500 to-teal-500" },
               { icon: CalendarRange, title: "Contact Sales", value: "30-min live walkthrough", sub: "See AI scheduling in action", href: "#contact-form", color: "from-purple-500 to-pink-500" },
             ].map((card, i) => (
               <motion.a key={card.title} href={card.href} {...fadeUp} transition={{ ...fadeUp.transition, delay: i * 0.08 }}
