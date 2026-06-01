@@ -20,6 +20,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import EmailDiagnostics from "./EmailDiagnostics";
+import SubjectAnalyzer from "./SubjectAnalyzer";
 
 interface Campaign {
   id: string;
@@ -498,8 +499,12 @@ function CreateCampaignModal({
             <input
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder="Big news from StaffSchedule.io"
+              placeholder="Quick read for your Monday morning"
               className="w-full h-11 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400"
+            />
+            <SubjectAnalyzer
+              value={subject}
+              onPickSuggestion={(s) => setSubject(s)}
             />
           </div>
           <div>

@@ -4,16 +4,21 @@ import { randomUUID } from "crypto";
 import * as React from "react";
 import { db } from "./db";
 import WelcomeEmail from "@/emails/WelcomeEmail";
+import PersonalWelcomeEmail from "@/emails/PersonalWelcomeEmail";
 import BlogPostEmail from "@/emails/BlogPostEmail";
+import PersonalBlogPostEmail from "@/emails/PersonalBlogPostEmail";
 import WeeklyDigestEmail, {
   DigestArticle,
   DigestGuide,
 } from "@/emails/WeeklyDigestEmail";
+import PersonalDigestEmail from "@/emails/PersonalDigestEmail";
 import ProductUpdateEmail from "@/emails/ProductUpdateEmail";
 import ContactReplyEmail from "@/emails/ContactReplyEmail";
+import PersonalContactReplyEmail from "@/emails/PersonalContactReplyEmail";
 import ContactNotificationEmail from "@/emails/ContactNotificationEmail";
 import CommentNotificationEmail from "@/emails/CommentNotificationEmail";
 import CommentApprovedEmail from "@/emails/CommentApprovedEmail";
+import PersonalCommentApprovedEmail from "@/emails/PersonalCommentApprovedEmail";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 
@@ -210,26 +215,18 @@ export async function sendWelcomeEmail(opts: {
     return { sent: false, skipped: true };
   }
 
-  // Fetch up to 3 most-recent published posts for "Popular Reads"
-  let popularPosts: { title: string; url: string; category?: string }[] = [];
-  try {
-    const posts = await db.post.findMany({
-      where: { published: true, type: "ARTICLE" },
-      orderBy: { createdAt: "desc" },
-      take: 3,
-      select: { title: true, slug: true, category: true },
-    });
-    popularPosts = posts.map((p) => ({
-      title: p.title,
-      url: `${SITE_URL}/blog/${p.slug}`,
-      category: p.category || undefined,
-    }));
-  } catch {}
-
   const unsubscribeUrl = buildUnsubscribeUrl(opts.unsubscribeToken);
   const preferencesUrl = buildPreferencesUrl(opts.unsubscribeToken);
 
-  // Pre-create a SENT event so we can embed its id in the pixel + click links
+  // The welcome email uses the PERSONAL template (plain-text-style, no
+  // gradient hero, single column, conversational) — designed to land in
+  // Gmail's Primary tab rather than Promotions. Marketing-style design is
+  // reserved for newsletter campaigns where Promotions is acceptable.
+  //
+  // We deliberately DO NOT inject the tracking pixel here. The pixel is a
+  // strong signal to Gmail that this is a marketing email, which pushes it
+  // to the Promotions tab. We still wrap click links because outbound clicks
+  // are useful analytics that don't materially affect tab placement.
   const event = await db.emailEvent.create({
     data: {
       type: "SENT",
@@ -239,27 +236,32 @@ export async function sendWelcomeEmail(opts: {
   });
 
   let html = await render(
-    React.createElement(WelcomeEmail, {
+    React.createElement(PersonalWelcomeEmail, {
       name: opts.name,
       siteUrl: SITE_URL,
       unsubscribeUrl,
       preferencesUrl,
-      popularPosts,
     })
   );
   html = wrapLinksForTracking(html, event.id);
-  html = injectTrackingPixel(html, event.id);
+  // No tracking pixel for welcome emails — Primary inbox > pixel signal
+
+  const fromName =
+    process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+  const fromAddress = SENDER.hello.replace(/.*<|>.*/g, "").trim();
+  const personalFrom = `${fromName} <${fromAddress}>`;
 
   try {
     await resend.emails.send({
-      // Welcome is technically transactional (triggered by user action), so
-      // we send from noreply@ but set reply-to to hello@ for real replies.
-      from: SENDER.noreply,
-      replyTo: REPLY_TO.noreply,
+      // Personal-style email uses hello@ (looks human) with a personal From
+      // name. Reply-To matches so replies arrive at the team inbox.
+      from: personalFrom,
+      replyTo: fromAddress,
       to: opts.email,
+      // Personal subject — no emojis, no shouting, conversational
       subject: opts.name?.trim()
-        ? `Welcome to StaffSchedule.io, ${opts.name.trim().split(" ")[0]} 👋`
-        : "Welcome to StaffSchedule.io 👋",
+        ? `Quick hello, ${opts.name.trim().split(" ")[0]}`
+        : "Quick hello from StaffSchedule.io",
       html,
       headers: {
         "List-Unsubscribe": `<${unsubscribeUrl}>`,
@@ -293,6 +295,8 @@ async function sendCampaignBatch(opts: {
   subject: string;
   fromName: string;
   fromEmail: string;
+  /** When true, skip the 1x1 tracking pixel injection (Primary-inbox friendly) */
+  noTrackingPixel?: boolean;
   recipients: Array<{
     id: string;
     email: string;
@@ -319,23 +323,25 @@ async function sendCampaignBatch(opts: {
   let totalSent = 0;
   let totalFailed = 0;
 
-  // All broadcast campaigns send from newsletter@ for proper deliverability
-  // separation. We ignore per-campaign fromName/fromEmail unless explicitly
-  // overridden to a known-good sender — Resend rejects unverified addresses.
+  // Default broadcast sender is hello@ (personal-looking) so messages look
+  // like one-to-one mail and bias toward Primary inbox. We still allow the
+  // caller to override with newsletter@ / noreply@ if they specifically want
+  // those — useful for high-volume transactional sends where keeping the
+  // newsletter@ reputation separate matters.
   const senderEmail = opts.fromEmail.includes("@")
     ? opts.fromEmail.replace(/.*<|>.*/g, "").trim()
-    : SENDER.newsletter.replace(/.*<|>.*/g, "").trim();
-  const senderName = opts.fromName || "StaffSchedule.io Team";
+    : SENDER.hello.replace(/.*<|>.*/g, "").trim();
+  const senderName = opts.fromName || process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+  const helloAddr = SENDER.hello.replace(/.*<|>.*/g, "").trim();
   const from = senderEmail.startsWith("hello@") ||
     senderEmail.startsWith("newsletter@") ||
     senderEmail.startsWith("noreply@")
     ? `${senderName} <${senderEmail}>`
-    : SENDER.newsletter;
+    : `${senderName} <${helloAddr}>`;
 
   for (let i = 0; i < opts.recipients.length; i += BATCH_SIZE) {
     const batch = opts.recipients.slice(i, i + BATCH_SIZE);
 
-    // Per-recipient render so each gets its own tracking pixel + tokens
     const messages = await Promise.all(
       batch.map(async (r) => {
         const token = await ensureUnsubscribeToken(r.id, r.unsubscribeToken);
@@ -360,11 +366,19 @@ async function sendCampaignBatch(opts: {
           })
         );
         html = wrapLinksForTracking(html, event.id);
-        html = injectTrackingPixel(html, event.id);
+        // Skip the 1x1 tracking pixel for personal-style emails. The pixel
+        // is a strong Promotions-tab signal because almost no human-to-human
+        // email contains one. We still get click attribution via the wrapped
+        // links — that's enough for engagement metrics without sacrificing
+        // inbox placement.
+        if (!opts.noTrackingPixel) {
+          html = injectTrackingPixel(html, event.id);
+        }
 
         return {
           from,
-          replyTo: REPLY_TO.newsletter,
+          // Reply-To = hello@ so subscriber replies reach a human inbox
+          replyTo: helloAddr,
           to: r.email,
           subject: opts.subject,
           html,
@@ -442,44 +456,50 @@ export async function sendBlogPostCampaign(opts: {
   };
   const recipients = await resolveAudience(audience);
 
+  const personalName =
+    process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+
   const campaign = await db.campaign.create({
     data: {
       type: type === "news" ? "NEWS" : "BLOG",
       name: post.title,
+      // Conversational subject lines bias toward Primary inbox rather than
+      // the Promotions tab. We avoid emojis and marketing lead-ins which
+      // Gmail's classifier treats as bulk mail.
       subject:
         type === "news"
-          ? `📢 ${post.title}`
-          : `✍️ New on the blog: ${post.title}`,
+          ? `Update: ${post.title}`
+          : `Thought you'd find this useful: ${post.title}`,
       preheader: post.excerpt || "",
-      contentHtml: "", // populated after first render below
+      contentHtml: "",
       contentJson: JSON.stringify({ postId: post.id, audience }),
       audience: JSON.stringify(audience),
       status: "SENDING",
       postId: post.id,
       totalRecipients: recipients.length,
-      fromName: "StaffSchedule.io Team",
-      fromEmail: SENDER.newsletter,
+      fromName: personalName,
+      fromEmail: SENDER.hello,
     },
   });
 
   const result = await sendCampaignBatch({
     campaignId: campaign.id,
     subject: campaign.subject,
-    fromName: "StaffSchedule.io Team",
-    fromEmail: SENDER.newsletter,
+    fromName: personalName,
+    fromEmail: SENDER.hello,
+    noTrackingPixel: true,
     recipients,
-    renderForRecipient: ({ unsubscribeUrl, preferencesUrl }) =>
-      React.createElement(BlogPostEmail, {
+    renderForRecipient: ({ name, unsubscribeUrl, preferencesUrl }) =>
+      React.createElement(PersonalBlogPostEmail, {
         postTitle: post.title,
         postExcerpt:
           post.excerpt || "A new update from StaffSchedule.io",
         postUrl,
-        postImage: post.image,
         category: post.category,
         authorName: post.author?.name,
-        authorAvatar: post.author?.avatar,
         readingTime: post.readingTime,
         type,
+        recipientFirstName: name?.trim().split(" ")[0] || null,
         siteUrl: SITE_URL,
         unsubscribeUrl,
         preferencesUrl,
@@ -489,16 +509,15 @@ export async function sendBlogPostCampaign(opts: {
   // Store a sample-rendered html for the dashboard preview
   try {
     const previewHtml = await render(
-      React.createElement(BlogPostEmail, {
+      React.createElement(PersonalBlogPostEmail, {
         postTitle: post.title,
         postExcerpt: post.excerpt || "",
         postUrl,
-        postImage: post.image,
         category: post.category,
         authorName: post.author?.name,
-        authorAvatar: post.author?.avatar,
         readingTime: post.readingTime,
         type,
+        recipientFirstName: null,
         siteUrl: SITE_URL,
         unsubscribeUrl: `${SITE_URL}/unsubscribe`,
         preferencesUrl: `${SITE_URL}/preferences`,
@@ -576,13 +595,33 @@ export async function sendWeeklyDigest(opts: { dryRun?: boolean } = {}) {
 
   const weekRange = `${formatDate(weekAgo)} — ${formatDate(now)}`;
 
+  // Map shared DigestArticle / DigestGuide into the slimmer shape used
+  // by the Primary-inbox-friendly PersonalDigestEmail.
+  const personalArticles = restArticles.map((a) => ({
+    title: a.title,
+    url: a.url,
+    excerpt: a.excerpt,
+    readingTime: a.readingTime,
+  }));
+  const personalFeatured = featuredArticle && {
+    title: featuredArticle.title,
+    url: featuredArticle.url,
+    excerpt: featuredArticle.excerpt,
+    readingTime: featuredArticle.readingTime,
+  };
+  const personalGuides = digestGuides.map((g) => ({
+    title: g.title,
+    url: g.url,
+  }));
+
   if (opts.dryRun) {
     const html = await render(
-      React.createElement(WeeklyDigestEmail, {
+      React.createElement(PersonalDigestEmail, {
         weekRange,
-        featuredArticle,
-        articles: restArticles,
-        guides: digestGuides,
+        featuredArticle: personalFeatured,
+        articles: personalArticles,
+        guides: personalGuides,
+        recipientFirstName: null,
         siteUrl: SITE_URL,
         unsubscribeUrl: `${SITE_URL}/unsubscribe`,
         preferencesUrl: `${SITE_URL}/preferences`,
@@ -593,34 +632,39 @@ export async function sendWeeklyDigest(opts: { dryRun?: boolean } = {}) {
 
   const recipients = await resolveAudience({ preferences: ["weeklyDigest"] });
 
+  const personalName =
+    process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+
   const campaign = await db.campaign.create({
     data: {
       type: "DIGEST",
       name: `Weekly Digest · ${weekRange}`,
-      subject: `📬 Your Weekly Workforce Digest (${weekRange})`,
+      subject: `This week's workforce reads (${weekRange})`,
       preheader: `${articles.length} articles · ${guides.length} guides · this week`,
       contentHtml: "",
       contentJson: JSON.stringify({ weekRange, postIds: posts.map(p => p.slug) }),
       audience: JSON.stringify({ preferences: ["weeklyDigest"] }),
       status: "SENDING",
       totalRecipients: recipients.length,
-      fromName: "StaffSchedule.io Team",
-      fromEmail: SENDER.newsletter,
+      fromName: personalName,
+      fromEmail: SENDER.hello,
     },
   });
 
   const result = await sendCampaignBatch({
     campaignId: campaign.id,
     subject: campaign.subject,
-    fromName: "StaffSchedule.io Team",
-    fromEmail: SENDER.newsletter,
+    fromName: personalName,
+    fromEmail: SENDER.hello,
+    noTrackingPixel: true,
     recipients,
-    renderForRecipient: ({ unsubscribeUrl, preferencesUrl }) =>
-      React.createElement(WeeklyDigestEmail, {
+    renderForRecipient: ({ name, unsubscribeUrl, preferencesUrl }) =>
+      React.createElement(PersonalDigestEmail, {
         weekRange,
-        featuredArticle,
-        articles: restArticles,
-        guides: digestGuides,
+        featuredArticle: personalFeatured,
+        articles: personalArticles,
+        guides: personalGuides,
+        recipientFirstName: name?.trim().split(" ")[0] || null,
         siteUrl: SITE_URL,
         unsubscribeUrl,
         preferencesUrl,
@@ -724,8 +768,10 @@ export async function sendContactEmails(submission: ContactSubmission) {
   });
 
   // ─── Auto-reply to submitter ───
+  // Uses the plain-text-style template so the auto-reply looks like a
+  // personal email and lands in Primary, not Promotions.
   const autoReplyHtml = await render(
-    React.createElement(ContactReplyEmail, {
+    React.createElement(PersonalContactReplyEmail, {
       name: submission.name,
       formType: submission.formType,
       message: submission.message,
@@ -735,11 +781,13 @@ export async function sendContactEmails(submission: ContactSubmission) {
     })
   );
 
+  // Personal-style subjects: no emojis, conversational, addressed to the person.
+  const firstName = submission.name.trim().split(" ")[0];
   const subjectByType: Record<ContactSubmission["formType"], string> = {
-    demo: "Your StaffSchedule.io demo request — what happens next",
-    sales: "Thanks — we're preparing your custom quote",
-    support: "Support ticket received — we're on it",
-    general: "Thanks for reaching out to StaffSchedule.io",
+    demo: `${firstName}, your StaffSchedule demo is on the way`,
+    sales: `${firstName}, we're putting together your quote`,
+    support: `${firstName}, we got your support request`,
+    general: `Thanks for reaching out, ${firstName}`,
   };
 
   // ─── Internal notification ───
@@ -758,10 +806,17 @@ export async function sendContactEmails(submission: ContactSubmission) {
     general: "Contact",
   }[submission.formType];
 
+  // Use the personal From name on the auto-reply so it reads like a
+  // real human just answered, biasing Gmail toward Primary placement.
+  const helloAddr = SENDER.hello.replace(/.*<|>.*/g, "").trim();
+  const personalName =
+    process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+  const personalFrom = `${personalName} <${helloAddr}>`;
+
   const [autoReplyResult, notifResult] = await Promise.allSettled([
     resend.emails.send({
-      from: SENDER.hello,
-      replyTo: SENDER.hello.replace(/.*<|>.*/g, "").trim(),
+      from: personalFrom,
+      replyTo: helloAddr,
       to: submission.email,
       subject: subjectByType[submission.formType],
       html: autoReplyHtml,
@@ -870,8 +925,10 @@ export async function sendCommentApprovedEmail(opts: {
   if (!resend) return { sent: false, skipped: true };
 
   const postUrl = `${SITE_URL}/blog/${opts.postSlug}`;
+  // PersonalCommentApprovedEmail is plain-text-styled → lands in Primary
+  // instead of Promotions.
   const html = await render(
-    React.createElement(CommentApprovedEmail, {
+    React.createElement(PersonalCommentApprovedEmail, {
       name: opts.commenterName,
       postTitle: opts.postTitle,
       postUrl,
@@ -882,12 +939,17 @@ export async function sendCommentApprovedEmail(opts: {
     })
   );
 
+  const helloAddr = SENDER.hello.replace(/.*<|>.*/g, "").trim();
+  const personalName =
+    process.env.RESEND_FROM_PERSONAL_NAME || "Hafiz from StaffSchedule.io";
+
   try {
     await resend.emails.send({
-      from: SENDER.hello,
-      replyTo: SENDER.hello.replace(/.*<|>.*/g, "").trim(),
+      from: `${personalName} <${helloAddr}>`,
+      replyTo: helloAddr,
       to: opts.commenterEmail,
-      subject: `Your comment is live on "${opts.postTitle}"`,
+      // Conversational subject — no quotes around the title (less marketing-y)
+      subject: `Your comment on "${opts.postTitle}" is live`,
       html,
     });
     return { sent: true };

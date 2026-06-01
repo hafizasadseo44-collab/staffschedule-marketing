@@ -180,6 +180,50 @@ hit the endpoint. Use the free **cron-job.org**:
 You can also trigger the digest manually anytime from the admin dashboard:
 **Campaigns → Send Weekly Digest** button.
 
+---
+
+## 3. Landing in Gmail's Primary Inbox (not Promotions)
+
+Gmail uses an algorithm to categorize incoming mail into Primary / Promotions
+/ Social tabs. It looks at **visual signals** (gradient banners, big CTAs,
+multiple columns), **language** (marketing words, urgency), and **sender
+reputation**. Out of the box, marketing-style emails land in Promotions.
+
+The system is already optimized for Primary on welcome emails:
+- Welcome uses a plain-text-style template (no hero banner, no big buttons)
+- Sent from a personal-looking address: `Hafiz from StaffSchedule.io <hello@>`
+- No tracking pixel (strong promo signal)
+- Conversational subject: "Quick hello, {firstName}"
+- Asks the reader to drag the email to Primary
+
+For broadcast newsletters, Promotions placement is acceptable (and even
+expected — that's where users look for newsletters they subscribed to). To
+maximize Primary placement, use the subject-line analyzer that appears
+under the Subject field in the Create Campaign form. Aim for "Likely Primary"
+(green pill) before sending.
+
+### Additional steps to improve overall deliverability
+
+1. **Add a DMARC DNS record** at Hostinger (if not done yet):
+
+   | Type | Name | Value |
+   |---|---|---|
+   | TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:hello@staffschedule.io; pct=100; adkim=s; aspf=s;` |
+
+2. **Warm up the sender** — for the first 2 weeks, send to fewer than
+   100 subscribers per day so Gmail builds trust in the sender reputation.
+
+3. **Ask new subscribers to add `hello@staffschedule.io` to their contacts** —
+   the welcome email already does this implicitly with the "drag to Primary"
+   instruction.
+
+4. **Avoid Promotions trigger words** in subject lines — the analyzer in
+   the admin will flag them in real time.
+
+5. **Monitor open rates** in **Marketing → Email Analytics**. If open rate
+   drops below 15%, your sender reputation is suffering — review subject
+   lines and reduce send frequency.
+
 ### D. Test before going live
 1. Visit `/admin` and log in.
 2. Click **Marketing → Subscribers**. The dashboard should load.

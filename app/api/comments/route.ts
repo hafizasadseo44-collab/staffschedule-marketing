@@ -344,19 +344,24 @@ export async function POST(request: Request) {
       select: COMMENT_PUBLIC_SELECT,
     });
 
-    // 10. Email moderator (fire-and-forget)
-    sendCommentNotification({
-      commenterName: cleanName,
-      commenterEmail: normalizedEmail,
-      commenterCompany: cleanCompany,
-      content: cleanContent,
-      postTitle: resolvedPostTitle || "Untitled",
-      postSlug: resolvedPostSlug || "",
-      spamScore: report.score,
-      spamReasons: report.reasons,
-      status,
-      ipAddress: ip,
-    }).catch((e) => console.error("[Comment] notif failed:", e));
+    // 10. Email moderator — OFF by default.
+    // The admin sees pending comments in the dashboard sidebar count and the
+    // /admin/comments view. Per-comment email notifications create too much
+    // noise, so we only send them when COMMENT_ADMIN_NOTIFICATIONS=true.
+    if (process.env.COMMENT_ADMIN_NOTIFICATIONS === "true") {
+      sendCommentNotification({
+        commenterName: cleanName,
+        commenterEmail: normalizedEmail,
+        commenterCompany: cleanCompany,
+        content: cleanContent,
+        postTitle: resolvedPostTitle || "Untitled",
+        postSlug: resolvedPostSlug || "",
+        spamScore: report.score,
+        spamReasons: report.reasons,
+        status,
+        ipAddress: ip,
+      }).catch((e) => console.error("[Comment] notif failed:", e));
+    }
 
     return NextResponse.json({
       success: true,
