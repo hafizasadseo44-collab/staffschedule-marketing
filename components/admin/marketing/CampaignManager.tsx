@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import EmailDiagnostics from "./EmailDiagnostics";
 
 interface Campaign {
   id: string;
@@ -143,6 +144,7 @@ export default function CampaignManager() {
             Send beautiful, branded emails to your subscribers.
           </p>
         </div>
+        {/* Right side action area filled by buttons below */}
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={sendDigestNow}
@@ -164,6 +166,9 @@ export default function CampaignManager() {
           </button>
         </div>
       </div>
+
+      {/* Email setup diagnostics — auto-expands when something's broken */}
+      <EmailDiagnostics />
 
       {/* From-blog quick action */}
       {posts.length > 0 && (
